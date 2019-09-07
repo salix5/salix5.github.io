@@ -1,0 +1,154 @@
+<meta charset="utf8" />
+<html>
+  <script src='./dist/sql-wasm.js'></script>
+  <script>
+	// const
+	const TYPE_MONSTER		=0x1		//怪兽卡
+	const TYPE_SPELL			=0x2		//魔法卡
+	const TYPE_TRAP			=0x4		//陷阱卡
+	const TYPE_NORMAL			=0x10		//通常怪兽
+	const TYPE_EFFECT			=0x20		//效果
+	const TYPE_FUSION			=0x40		//融合
+	const TYPE_RITUAL			=0x80		//仪式
+	const TYPE_TRAPMONSTER	=0x100		//陷阱怪兽
+	const TYPE_SPIRIT			=0x200		//灵魂
+	const TYPE_UNION			=0x400		//同盟
+	const TYPE_DUAL			=0x800		//二重
+	const TYPE_TUNER			=0x1000		//调整
+	const TYPE_SYNCHRO		=0x2000		//同调
+	const TYPE_TOKEN			=0x4000		//衍生物
+	const TYPE_QUICKPLAY		=0x10000	//速攻
+	const TYPE_CONTINUOUS		=0x20000	//永续
+	const TYPE_EQUIP			=0x40000	//装备
+	const TYPE_FIELD			=0x80000	//场地
+	const TYPE_COUNTER		=0x100000	//反击
+	const TYPE_FLIP			=0x200000	//翻转
+	const TYPE_TOON			=0x400000	//卡通
+	const TYPE_XYZ			=0x800000	//超量
+	const TYPE_PENDULUM		=0x1000000	//灵摆
+	const TYPE_SPSUMMON		=0x2000000	//特殊召唤
+	const TYPE_LINK			=0x4000000	//连接
+  
+    config = {
+      locateFile: filename => `./dist/${filename}` 
+    }
+	
+	var db;
+	
+	
+    // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.
+    // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.
+    initSqlJs(config).then(function(SQL){
+	
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', './cards.cdb', true);
+		xhr.responseType = 'arraybuffer';
+		
+		xhr.onload = e => {
+			var arr1 = new Uint8Array(xhr.response);
+			db = new SQL.Database(arr1);
+		};
+		xhr.send();
+		}
+	);
+	
+	function query1(){
+		// Prepare a statement
+		var text_name = document.getElementById('text_name');
+		var qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text_name.value + "%\'";
+		
+		var stmt = db.prepare(qstr);
+		var table1 = document.getElementById('table1');
+		
+		// clear
+		var n = table1.rows.length;
+		for(var i = 1; i<=n-1; ++i)
+			table1.deleteRow(-1);
+		text_name.value='';
+		
+		while(stmt.step()) {
+			var result = stmt.getAsObject();
+			//console.log('Here is a row: ' + JSON.stringify(row));
+			
+			if(Math.abs(result.alias-result.id) <= 10 || (result.type & TYPE_TOKEN))
+				continue;
+			
+			var row = table1.insertRow(-1);
+			
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			cell1.innerHTML = "<a href=\'https://ocg-card.com/list/result/?search=" + result.id + "&search-op=1\' target=\'_blank\'>" + result.id + "</a>";
+			cell2.innerHTML = result.name;
+			
+			if(result.type & TYPE_MONSTER)
+				cell3.innerHTML = "怪獸";
+			else if(result.type & TYPE_SPELL)
+				cell3.innerHTML = "魔法";
+			else if(result.type & TYPE_SPELL)
+				cell3.innerHTML = "陷阱";
+			cell4.innerHTML = result.desc;
+		}
+	}
+	
+	function query2(){
+		// Prepare a statement
+		var text_id = document.getElementById('text_id');
+		var qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + text_id.value;
+		
+		var stmt = db.prepare(qstr);
+		var table1 = document.getElementById('table1');
+		
+		// clear
+		var n = table1.rows.length;
+		for(var i = 1; i<=n-1; ++i)
+			table1.deleteRow(-1);
+		text_id.value='';
+		
+		
+		while(stmt.step()) {
+			var result = stmt.getAsObject();
+			//console.log('Here is a row: ' + JSON.stringify(row));
+			
+			if(Math.abs(result.alias-result.id) <= 10)
+				continue;
+			
+			var row = table1.insertRow(-1);
+			
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			if(result.type & TYPE_TOKEN)
+				cell1.innerHTML = result.id;
+			else
+				cell1.innerHTML = "<a href=\'https://ocg-card.com/list/result/?search=" + result.id + "&search-op=1\' target=\'_blank\'>" + result.id + "</a>";
+			cell2.innerHTML = result.name;
+			
+			if(result.type & TYPE_MONSTER)
+				cell3.innerHTML = "怪獸";
+			else if(result.type & TYPE_SPELL)
+				cell3.innerHTML = "魔法";
+			else if(result.type & TYPE_SPELL)
+				cell3.innerHTML = "陷阱";
+			cell4.innerHTML = result.desc;
+		}
+	}
+	
+  </script>
+  <body>
+    密碼：<input id="text_id" type="textbox">  <input type="button" value="搜尋" onclick="query2()"><br>
+	<br>
+	卡名：<input id="text_name" type="textbox">  <input type="button" value="搜尋" onclick="query1()"><br>
+	<br>
+	<table  id="table1" border = "1">
+		 <thead>
+			<th>密碼</th>
+			<th>卡名</th>
+			<th>類型</th>
+			<th>效果</th>
+		 </thead>
+	</table>
+  </body>
+</html>
