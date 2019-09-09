@@ -62,8 +62,12 @@
 
 	function query1(tid){
 		// Prepare a statement
-		var text_name = document.getElementById('text_name');
-		var qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text_name.value + "%\'";
+		var text = document.getElementById(tid);
+		var qstr;
+                if(tid =='text_id)
+                    qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + text.value;
+                else if(tid == 'text_name')
+                    qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
 		
 		var stmt = db.prepare(qstr);
 		var table1 = document.getElementById('table1');
@@ -72,7 +76,7 @@
 		var n = table1.rows.length;
 		for(var i = 0; i<=n-1; ++i)
 			table1.deleteRow(-1);
-		document.getElementById(tid).value='';
+		text.value='';
 		
 		while(stmt.step()) {
 			var result = stmt.getAsObject();
