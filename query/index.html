@@ -64,7 +64,7 @@
 		// Prepare a statement
 		var text = document.getElementById(tid);
 		var qstr;
-                if(tid =='text_id)
+                if(tid =='text_id')
                     qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + text.value;
                 else if(tid == 'text_name')
                     qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
