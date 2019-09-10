@@ -103,9 +103,10 @@
 			else if(result.type & TYPE_TRAP)
 				cell3.innerHTML = "陷阱";
 			cell4.innerHTML = result.desc;
+                        cell4.colSpan = "3";
 		}
 	}
-	
+	/*
 	function query2(){
 		// Prepare a statement
 		var text_id = document.getElementById('text_id');
@@ -147,10 +148,9 @@
 			else if(result.type & TYPE_TRAP)
 				cell3.innerHTML = "陷阱";
 			cell4.innerHTML = result.desc;
-                        cell4.colSpan = "3";
 		}
 	}
-	
+	*/
   </script>
   <body>
   密碼：<input id="text_id" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_id')"><br>
