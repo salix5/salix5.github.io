@@ -102,7 +102,7 @@
 				cell3.innerHTML = "魔法";
 			else if(result.type & TYPE_TRAP)
 				cell3.innerHTML = "陷阱";
-			cell4.innerHTML = result.desc;
+			cell4.innerHTML = result.desc.replace(/\r\n/, '<br>');
                         cell4.colSpan = "3";
 		}
 	}
