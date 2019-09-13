@@ -69,13 +69,17 @@
 		var table1 = document.getElementById('table1');
 		var qstr = '';
 		
-		if(text.value == '')
-			return
-		
-		if(tid =='text_id')
-			qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + text.value;
-		else if(tid == 'text_name')
+		if(tid =='text_id'){
+			var cid = parseInt(text.value);
+			if(isNaN(cid))
+				return
+			qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + cid;
+		}
+		else if(tid == 'text_name'){
+			if(text.value == '')
+				return
 			qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
+		}
 		
 		// Prepare a statement
 		var stmt = db.prepare(qstr);
@@ -101,8 +105,8 @@
 			var row2 = table1.insertRow(-1);    
 			var cell4 = row2.insertCell(0);
 			
-			if(result.ot = 2){
-				cell1.innerHTML = "<a href=\'https://yugipedia.com/wiki/" + result.id + "\' target=\'_blank\'>" + result.id + "</a>";
+			if(result.ot == 2){
+				cell1.innerHTML = "<a href=\'https://yugipedia.com/wiki/" + result.id.toString().padStart(8, '0') + "\' target=\'_blank\'>" + result.id + "</a>";
 				cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
 			}
 			else{
