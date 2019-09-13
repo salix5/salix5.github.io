@@ -7,22 +7,26 @@
 	const TYPE_MONSTER		=0x1		//怪兽卡
 	const TYPE_SPELL			=0x2		//魔法卡
 	const TYPE_TRAP			=0x4		//陷阱卡
+	
 	const TYPE_NORMAL			=0x10		//通常怪兽
 	const TYPE_EFFECT			=0x20		//效果
 	const TYPE_FUSION			=0x40		//融合
 	const TYPE_RITUAL			=0x80		//仪式
-	const TYPE_TRAPMONSTER	=0x100		//陷阱怪兽
+	//const TYPE_TRAPMONSTER	=0x100		//陷阱怪兽
 	const TYPE_SPIRIT			=0x200		//灵魂
 	const TYPE_UNION			=0x400		//同盟
 	const TYPE_DUAL			=0x800		//二重
 	const TYPE_TUNER			=0x1000		//调整
 	const TYPE_SYNCHRO		=0x2000		//同调
 	const TYPE_TOKEN			=0x4000		//衍生物
+	
 	const TYPE_QUICKPLAY		=0x10000	//速攻
 	const TYPE_CONTINUOUS		=0x20000	//永续
 	const TYPE_EQUIP			=0x40000	//装备
 	const TYPE_FIELD			=0x80000	//场地
+	
 	const TYPE_COUNTER		=0x100000	//反击
+	
 	const TYPE_FLIP			=0x200000	//翻转
 	const TYPE_TOON			=0x400000	//卡通
 	const TYPE_XYZ			=0x800000	//超量
@@ -52,25 +56,29 @@
 		xhr.send();
 		}
 	);
-
-    function is_virtual(result) {
-        if(Math.abs(result.alias-result.id) <= 10)
-            return true;
-        if(result.type & TYPE_TOKEN)
-            return true;
-    }
+	
+	function is_virtual(result) {
+	if(Math.abs(result.alias-result.id) <= 10)
+		return true;
+	if(result.type & TYPE_TOKEN)
+		return true;
+	}
 
 	function query1(tid){
-		// Prepare a statement
 		var text = document.getElementById(tid);
-		var qstr;
-                if(tid =='text_id')
-                    qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + text.value;
-                else if(tid == 'text_name')
-                    qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
-		
-		var stmt = db.prepare(qstr);
 		var table1 = document.getElementById('table1');
+		var qstr = '';
+		
+		if(text.value == '')
+			return
+		
+		if(tid =='text_id')
+			qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + text.value;
+		else if(tid == 'text_name')
+			qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
+		
+		// Prepare a statement
+		var stmt = db.prepare(qstr);
 		
 		// clear
 		var n = table1.rows.length;
@@ -79,78 +87,64 @@
 		text.value='';
 		
 		while(stmt.step()) {
+			// execute
 			var result = stmt.getAsObject();
-			//console.log('Here is a row: ' + JSON.stringify(row));
 			
 			if(is_virtual(result))
 				continue;
 			
 			var row = table1.insertRow(-1);
-			
 			var cell1 = row.insertCell(0);
 			var cell2 = row.insertCell(1);
 			var cell3 = row.insertCell(2);
 
-                        var row2 = table1.insertRow(-1);    
+			var row2 = table1.insertRow(-1);    
 			var cell4 = row2.insertCell(0);
-			cell1.innerHTML = "<a href=\'https://ocg-card.com/list/result/?search=" + result.id + "&search-op=1\' target=\'_blank\'>" + result.id + "</a>";
-			cell2.innerHTML = result.name;
 			
-			if(result.type & TYPE_MONSTER)
-				cell3.innerHTML = "怪獸";
-			else if(result.type & TYPE_SPELL)
-				cell3.innerHTML = "魔法";
-			else if(result.type & TYPE_TRAP)
-				cell3.innerHTML = "陷阱";
-			cell4.innerHTML = result.desc.replace(/\r\n/g, "<br>");
-                        cell4.colSpan = "3";
-		}
-	}
-	/*
-	function query2(){
-		// Prepare a statement
-		var text_id = document.getElementById('text_id');
-		var qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + text_id.value;
-		
-		var stmt = db.prepare(qstr);
-		var table1 = document.getElementById('table1');
-		
-		// clear
-		var n = table1.rows.length;
-		for(var i = 1; i<=n-1; ++i)
-			table1.deleteRow(-1);
-		text_id.value='';
-		
-		
-		while(stmt.step()) {
-			var result = stmt.getAsObject();
-			//console.log('Here is a row: ' + JSON.stringify(row));
-			
-			if(Math.abs(result.alias-result.id) <= 10)
-				continue;
-			
-			var row = table1.insertRow(-1);
-			
-			var cell1 = row.insertCell(0);
-			var cell2 = row.insertCell(1);
-			var cell3 = row.insertCell(2);
-			var cell4 = row.insertCell(3);
-			if(result.type & TYPE_TOKEN)
-				cell1.innerHTML = result.id;
-			else
+			if(result.ot = 2){
+				cell1.innerHTML = "<a href=\'https://yugipedia.com/wiki/" + result.id + "\' target=\'_blank\'>" + result.id + "</a>";
+				cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
+			}
+			else{
 				cell1.innerHTML = "<a href=\'https://ocg-card.com/list/result/?search=" + result.id + "&search-op=1\' target=\'_blank\'>" + result.id + "</a>";
-			cell2.innerHTML = result.name;
+				cell2.innerHTML = result.name;
+			}
 			
-			if(result.type & TYPE_MONSTER)
-				cell3.innerHTML = "怪獸";
-			else if(result.type & TYPE_SPELL)
-				cell3.innerHTML = "魔法";
-			else if(result.type & TYPE_TRAP)
-				cell3.innerHTML = "陷阱";
-			cell4.innerHTML = result.desc;
+			
+			var ctype='';
+			var subtype='';
+			
+			if(result.type & TYPE_MONSTER){
+				ctype = '怪獸';
+			}
+			else if(result.type & TYPE_SPELL){
+				ctype = '魔法';
+				if(result.type & TYPE_QUICKPLAY)
+					subtype = '速攻';
+				else if(result.type & TYPE_CONTINUOUS)
+					subtype = '永續';
+				else if(result.type & TYPE_EQUIP)
+					subtype = '裝備';
+				else if(result.type & TYPE_FIELD)
+					subtype = '場地';
+				else
+					subtype = '通常';
+			}
+			else if(result.type & TYPE_TRAP){
+				ctype = '陷阱';
+				if(result.type & TYPE_CONTINUOUS)
+					subtype = '永續';
+				else if(result.type & TYPE_COUNTER)
+					subtype = '反擊';
+				else
+					subtype = '通常';
+			}
+			cell3.innerHTML = subtype + ctype;
+			
+			cell4.innerHTML = result.desc.replace(/\r\n/g, "<br>");
+			cell4.colSpan = "3";
 		}
 	}
-	*/
   </script>
   <body>
   密碼：<input id="text_id" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_id')"><br>
@@ -158,12 +152,6 @@
   卡名：<input id="text_name" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_name')"><br>
   <br>
 	<table  id="table1" border = "1">
-		 <!--<thead>
-			<th>密碼</th>
-			<th>卡名</th>
-			<th>類型</th>
-			<th>效果</th>
-		 </thead>-->
 	</table>
   </body>
 </html>
