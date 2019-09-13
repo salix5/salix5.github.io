@@ -73,12 +73,12 @@
 			var cid = parseInt(text.value);
 			if(isNaN(cid))
 				return
-			qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + cid;
+			qstr = "SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + cid;
 		}
 		else if(tid == 'text_name'){
 			if(text.value == '')
 				return
-			qstr = "SELECT datas.id, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
+			qstr = "SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
 		}
 		
 		// Prepare a statement
