@@ -80,6 +80,11 @@
 				return
 			qstr = "SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
 		}
+		else if(tid == 'text_effect'){
+			if(text.value == '')
+				return
+			qstr = "SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND desc LIKE \'%" + text.value + "%\'";
+		}
 		
 		// Prepare a statement
 		var stmt = db.prepare(qstr);
@@ -155,6 +160,7 @@
   <br>
   卡名：<input id="text_name" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_name')"><br>
   <br>
+  效果：<input id="text_effect" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_effect')"><br>
 	<table  id="table1" border = "1">
 	</table>
   </body>
