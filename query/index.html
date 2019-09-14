@@ -154,13 +154,37 @@
 			cell4.colSpan = "3";
 		}
 	}
+	
+	function key_id(e){
+		switch (e.key) {
+			case 'Enter':
+				query1('text_id');
+				break;
+		}
+	}
+	
+	function key_text(e){
+		switch (e.key) {
+			case 'Enter':
+				query1('text_name');
+				break;
+		}
+	}
+	
+	function key_effect(e){
+		switch (e.key) {
+			case 'Enter':
+				query1('text_effect');
+				break;
+		}
+	}
   </script>
   <body>
-  密碼：<input id="text_id" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_id')"><br>
+  密碼：<input id="text_id" type="textbox" onkeydown ="key_id(event)">  <input type="button" value="搜尋" onclick="query1('text_id')"><br>
   <br>
-  卡名：<input id="text_name" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_name')"><br>
+  卡名：<input id="text_name" type="textbox" onkeydown ="key_text(event)">  <input type="button" value="搜尋" onclick="query1('text_name')"><br>
   <br>
-  效果：<input id="text_effect" type="textbox">  <input type="button" value="搜尋" onclick="query1('text_effect')"><br>
+  效果：<input id="text_effect" type="textbox" onkeydown ="key_effect(event)">  <input type="button" value="搜尋" onclick="query1('text_effect')"><br>
 	<table  id="table1" border = "1">
 	</table>
   </body>
