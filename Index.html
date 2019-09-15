@@ -1,6 +1,10 @@
+<html>
+<head>
 <meta charset="utf8" />
 <meta name="viewport" content="width=device-width">
-<html>
+<title>卡片查詢</title>
+</head>
+  <body>
   <script src='./dist/sql-wasm.js'></script>
   <script>
 	// const
@@ -179,7 +183,6 @@
 		}
 	}
   </script>
-  <body>
   密碼：<input id="text_id" type="textbox" onkeydown ="key_id(event)">  <input type="button" value="搜尋" onclick="query1('text_id')"><br>
   <br>
   卡名：<input id="text_name" type="textbox" onkeydown ="key_text(event)">  <input type="button" value="搜尋" onclick="query1('text_name')"><br>
