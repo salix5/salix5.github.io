@@ -68,37 +68,44 @@
 		return true;
 	}
 
-	function query1(tid){
-		var text = document.getElementById(tid);
+	function query1(){
+		//var text = document.getElementById(tid);
+		var text_id = document.getElementById('text_id');
+		var text_name = document.getElementById('text_name');
+		var text_effect = document.getElementById('text_effect');
 		var table1 = document.getElementById('table1');
-		var qstr = '';
 		
-		if(tid =='text_id'){
-			var cid = parseInt(text.value);
-			if(isNaN(cid))
-				return
-			qstr = "SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND datas.id==" + cid;
-		}
-		else if(tid == 'text_name'){
-			if(text.value == '')
-				return
-			qstr = "SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND name LIKE \'%" + text.value + "%\'";
-		}
-		else if(tid == 'text_effect'){
-			if(text.value == '')
-				return
-			qstr = "SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id AND desc LIKE \'%" + text.value + "%\'";
-		}
+		var qstr = 'SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id';
+		var cid = parseInt(text_id.value);
+		var valid = false;
 		
-		// Prepare a statement
-		var stmt = db.prepare(qstr);
+		if(!isNaN(cid)){
+			qstr = qstr + " AND datas.id==" + cid;
+			valid = true;
+		}
+		if(text_name.value != ''){
+			qstr = qstr + " AND name LIKE \'%" + text_name.value + "%\'";
+			valid = true;
+		}
+		if(text_effect.value != ''){
+			qstr = qstr + " AND desc LIKE \'%" + text_effect.value + "%\'";
+			valid = true;
+		}
 		
 		// clear
 		var n = table1.rows.length;
 		for(var i = 0; i<=n-1; ++i)
 			table1.deleteRow(-1);
-		text.value='';
 		
+		text_id.value = '';
+		text_name.value = '';
+		text_effect.value = '';
+		
+		if(!valid)
+			return;
+		
+		// Prepare a statement
+		var stmt = db.prepare(qstr);
 		while(stmt.step()) {
 			// execute
 			var result = stmt.getAsObject();
@@ -159,35 +166,20 @@
 		}
 	}
 	
-	function key_id(e){
+	function key_search(e){
 		switch (e.key) {
 			case 'Enter':
-				query1('text_id');
+				query1();
 				break;
 		}
 	}
 	
-	function key_text(e){
-		switch (e.key) {
-			case 'Enter':
-				query1('text_name');
-				break;
-		}
-	}
-	
-	function key_effect(e){
-		switch (e.key) {
-			case 'Enter':
-				query1('text_effect');
-				break;
-		}
-	}
   </script>
-  密碼：<input id="text_id" type="textbox" onkeydown ="key_id(event)">  <input type="button" value="搜尋" onclick="query1('text_id')"><br>
+  密碼：<input id="text_id" type="textbox" onkeydown ="key_search(event)"> <br>
   <br>
-  卡名：<input id="text_name" type="textbox" onkeydown ="key_text(event)">  <input type="button" value="搜尋" onclick="query1('text_name')"><br>
+  卡名：<input id="text_name" type="textbox" onkeydown ="key_search(event)"> <br>
   <br>
-  效果：<input id="text_effect" type="textbox" onkeydown ="key_effect(event)">  <input type="button" value="搜尋" onclick="query1('text_effect')"><br>
+  效果：<input id="text_effect" type="textbox" onkeydown ="key_search(event)">  <input type="button" value="搜尋" onclick="query1()"><br>
 	<table  id="table1" border = "1">
 	</table>
   </body>
