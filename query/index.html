@@ -271,8 +271,8 @@
 			qstr = qstr + " AND (level & 0xff)==" + clv;
 			valid = true;
 		}
-		if(cscale>0){
-			qstr = qstr + " AND type &" + TYPE_PENDULUM + "AND (level >> 24) & 0xff ==" + cscale;
+		if(cscale>=0){
+			qstr = qstr + " AND type & " + TYPE_PENDULUM + " AND (level >> 24) & 0xff == " + cscale;
 			valid = true;
 		}
 		
