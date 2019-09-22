@@ -1,42 +1,86 @@
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf8" />
-<meta name="viewport" content="width=device-width">
-<title>卡片查詢</title>
+	<meta charset="utf8" />
+	<meta name="viewport" content="width=device-width">
+	<title>卡片查詢</title>
+	<style>
+		.half-line {
+			line-height: 0.3;
+		}
+	</style>
 </head>
-  <body>
+<body>
   <script src='./dist/sql-wasm.js'></script>
   <script>
-	// const
+	// type
 	const TYPE_MONSTER		=0x1		//怪兽卡
 	const TYPE_SPELL			=0x2		//魔法卡
 	const TYPE_TRAP			=0x4		//陷阱卡
 	
+	// subtype
 	const TYPE_NORMAL			=0x10		//通常怪兽
 	const TYPE_EFFECT			=0x20		//效果
 	const TYPE_FUSION			=0x40		//融合
 	const TYPE_RITUAL			=0x80		//仪式
-	//const TYPE_TRAPMONSTER	=0x100		//陷阱怪兽
+	const TYPE_SYNCHRO		=0x2000		//同调
+	const TYPE_XYZ			=0x800000	//超量
+	const TYPE_PENDULUM		=0x1000000	//灵摆
+	const TYPE_LINK			=0x4000000	//连接
+	
+	//extype
 	const TYPE_SPIRIT			=0x200		//灵魂
 	const TYPE_UNION			=0x400		//同盟
-	const TYPE_DUAL			=0x800		//二重
+	const TYPE_DUAL			=0x800			//二重
 	const TYPE_TUNER			=0x1000		//调整
-	const TYPE_SYNCHRO		=0x2000		//同调
 	const TYPE_TOKEN			=0x4000		//衍生物
+	const TYPE_FLIP			=0x200000	//翻转
+	const TYPE_TOON			=0x400000	//卡通
+	const TYPE_SPSUMMON		=0x2000000	//特殊召唤
 	
+	// spell type
 	const TYPE_QUICKPLAY		=0x10000	//速攻
 	const TYPE_CONTINUOUS		=0x20000	//永续
 	const TYPE_EQUIP			=0x40000	//装备
 	const TYPE_FIELD			=0x80000	//场地
-	
+	// trap type
 	const TYPE_COUNTER		=0x100000	//反击
 	
-	const TYPE_FLIP			=0x200000	//翻转
-	const TYPE_TOON			=0x400000	//卡通
-	const TYPE_XYZ			=0x800000	//超量
-	const TYPE_PENDULUM		=0x1000000	//灵摆
-	const TYPE_SPSUMMON		=0x2000000	//特殊召唤
-	const TYPE_LINK			=0x4000000	//连接
+	// race
+	const RACE_WARRIOR		=0x1		//战士
+	const RACE_SPELLCASTER	=0x2		//魔法师
+	const RACE_FAIRY			=0x4		//天使
+	const RACE_FIEND			=0x8		//恶魔
+	const RACE_ZOMBIE			=0x10		//不死
+	const RACE_MACHINE		=0x20		//机械
+	const RACE_AQUA			=0x40		//水
+	const RACE_PYRO			=0x80		//炎
+	const RACE_ROCK			=0x100		//岩石
+	const RACE_WINDBEAST		=0x200		//鸟兽
+	const RACE_PLANT			=0x400		//植物
+	const RACE_INSECT			=0x800		//昆虫
+	const RACE_THUNDER		=0x1000			//雷
+	const RACE_DRAGON			=0x2000		//龙
+	const RACE_BEAST			=0x4000		//兽
+	const RACE_BEASTWARRIOR	=0x8000			//兽战士
+	const RACE_DINOSAUR		=0x10000		//恐龙
+	const RACE_FISH			=0x20000		//鱼
+	const RACE_SEASERPENT		=0x40000	//海龙
+	const RACE_REPTILE		=0x80000		//爬虫类
+	const RACE_PSYCHO			=0x100000	//念动力
+	const RACE_DIVINE			=0x200000	//幻神兽
+	const RACE_CREATORGOD		=0x400000	//创造神
+	const RACE_WYRM			=0x800000		//幻龙
+	const RACE_CYBERSE		=0x1000000		//电子界
+	
+	// attr
+	const ATTRIBUTE_EARTH		=0x01		//地
+	const ATTRIBUTE_WATER		=0x02		//水
+	const ATTRIBUTE_FIRE		=0x04		//炎
+	const ATTRIBUTE_WIND		=0x08		//风
+	const ATTRIBUTE_LIGHT		=0x10		//光
+	const ATTRIBUTE_DARK		=0x20		//暗
+	const ATTRIBUTE_DIVINE	=0x40		//神
   
     config = {
       locateFile: filename => `./dist/${filename}` 
@@ -67,22 +111,282 @@
 	if(result.type & TYPE_TOKEN)
 		return true;
 	}
-
+	
+	
+	function print_attr(x){
+		switch(x){
+			case ATTRIBUTE_EARTH:
+				return '地';
+			case ATTRIBUTE_WATER:
+				return '水';
+			case ATTRIBUTE_FIRE:
+				return '炎';
+			case ATTRIBUTE_WIND:
+				return '風';
+			case ATTRIBUTE_LIGHT:
+				return '光';
+			case ATTRIBUTE_DARK:
+				return '暗';
+			case ATTRIBUTE_DIVINE:
+				return '神';
+		}
+	}
+	
+	function print_race(x){
+		switch(x){
+			case RACE_WARRIOR:
+				return '戰士';
+			case RACE_SPELLCASTER:
+				return '魔法使';
+			case RACE_FAIRY:
+				return '天使';
+			case RACE_FIEND:
+				return '惡魔';
+			case RACE_ZOMBIE:
+				return '不死';
+			case RACE_MACHINE:
+				return '機械';
+			case RACE_AQUA:
+				return '水';
+			case RACE_PYRO:
+				return '炎';
+			case RACE_ROCK:
+				return '岩石';
+			case RACE_WINDBEAST:
+				return '鳥獸';
+			case RACE_PLANT:
+				return '植物';
+			case RACE_INSECT:
+				return '昆蟲';
+			case RACE_THUNDER:
+				return '雷';
+			case RACE_DRAGON:
+				return '龍';
+			case RACE_BEAST:
+				return '獸';
+			case RACE_BEASTWARRIOR:
+				return '獸戰士';
+			case RACE_DINOSAUR:
+				return '恐龍';
+			case RACE_FISH:
+				return '魚';
+			case RACE_SEASERPENT:
+				return '海龍';
+			case RACE_REPTILE:
+				return '爬蟲類';
+			case RACE_PSYCHO:
+				return '超能';
+			case RACE_DIVINE:
+				return '幻神獸';
+			case RACE_CREATORGOD:
+				return '創造神';
+			case RACE_WYRM:
+				return '幻龍';
+			case RACE_CYBERSE:
+				return '電子界';
+		}
+	}
+	
+	function print_ad(x){
+		if(x == -2)
+			return '?';
+		else
+			return x;
+	}
+	
 	function query1(){
-		//var text = document.getElementById(tid);
 		var text_id = document.getElementById('text_id');
 		var text_name = document.getElementById('text_name');
 		var text_effect = document.getElementById('text_effect');
+		
+		var text_atk = document.getElementById('text_atk');
+		var text_def = document.getElementById('text_def');
+		
+		var select_type = document.getElementById('select_type');
+		var select_subtype = document.getElementById('select_subtype');
+		var select_lv = document.getElementById('select_lv');
+		var select_scale = document.getElementById('select_scale');
+		var select_race = document.getElementById('select_race');
+		var select_attr  = document.getElementById('select_attr');
+		
 		var table1 = document.getElementById('table1');
 		
-		var qstr = 'SELECT datas.id, ot, alias, type, name, desc FROM datas, texts WHERE datas.id==texts.id';
-		var cid = parseInt(text_id.value);
+		var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
+		var cid = parseInt(text_id.value, 10);
+		var ctype = 0;
+		var catk = 0;
+		var cdef = 0;
+		var clv = select_lv.selectedIndex;
+		var cscale = select_scale.selectedIndex - 1;
+		var cattr = 0;
+		var crace = 0;
+		
 		var valid = false;
 		
-		if(!isNaN(cid)){
+		if(cid > 0){
 			qstr = qstr + " AND datas.id==" + cid;
 			valid = true;
 		}
+		
+		// type
+		if(select_type.value != ''){
+			switch(select_type.value){
+				case 'TYPE_MONSTER':
+					ctype = TYPE_MONSTER;
+					break;
+				case 'TYPE_SPELL':
+					ctype = TYPE_SPELL;
+					break;
+				case 'TYPE_TRAP':
+					ctype = TYPE_TRAP;
+					break;
+			}
+			qstr = qstr + " AND type&" + ctype;
+			valid = true;
+		}
+		if(select_subtype.value != ''){
+			
+		}
+		
+		// atk/def
+		if(text_atk.value == '?' || text_atk.value == '？')
+			catk = -2;
+		else
+			catk = parseInt(text_atk.value, 10);
+		if(catk >= 0 || catk == -2){
+			qstr = qstr + " AND atk==" + catk;
+			valid = true;
+		}
+		if(text_def.value == '?' || text_def.value == '？')
+			cdef = -2;
+		else
+			cdef = parseInt(text_def.value, 10);
+		if(cdef >= 0 || cdef == -2){
+			qstr = qstr + " AND def==" + cdef;
+			valid = true;
+		}
+		
+		// lv, scale
+		if(clv > 0){
+			qstr = qstr + " AND (level & 0xff)==" + clv;
+			valid = true;
+		}
+		if(cscale>0){
+			qstr = qstr + " AND type &" + TYPE_PENDULUM + "AND (level >> 24) & 0xff ==" + cscale;
+			valid = true;
+		}
+		
+		// attr, race
+		if(select_attr.value != ''){
+			switch(select_subtype.value){
+				case 'ATTRIBUTE_EARTH':
+					cattr = ATTRIBUTE_EARTH;
+					break;
+				case 'ATTRIBUTE_WATER':
+					cattr = ATTRIBUTE_WATER;
+					break;
+				case 'ATTRIBUTE_FIRE':
+					cattr = ATTRIBUTE_FIRE;
+					break;
+				case 'ATTRIBUTE_WIND':
+					cattr = ATTRIBUTE_WIND;
+					break;
+				case 'ATTRIBUTE_LIGHT':
+					cattr = ATTRIBUTE_LIGHT;
+					break;
+				case 'ATTRIBUTE_DARK':
+					cattr = ATTRIBUTE_DARK;
+					break;
+				case 'ATTRIBUTE_DIVINE':
+					cattr = ATTRIBUTE_DIVINE;
+					break;
+			}
+			qstr = qstr + " AND attribute&" + catr;
+			valid = true;
+		}
+		if(select_race.value != ''){
+			switch(select_race.value){
+				case 'RACE_WARRIOR':
+					crace = RACE_WARRIOR;
+					break;
+				case 'RACE_SPELLCASTER':
+					crace = RACE_SPELLCASTER;
+					break;
+				case 'RACE_FAIRY':
+					crace = RACE_FAIRY;
+					break;
+				case 'RACE_FIEND':
+					crace = RACE_FIEND;
+					break;
+				case 'RACE_ZOMBIE':
+					crace = RACE_ZOMBIE;
+					break;
+				case 'RACE_MACHINE':
+					crace = RACE_MACHINE;
+					break;
+				case 'RACE_AQUA':
+					crace = RACE_AQUA;
+					break;
+				case 'RACE_PYRO':
+					crace = RACE_PYRO;
+					break;
+				case 'RACE_ROCK':
+					crace = RACE_ROCK;
+					break;
+				case 'RACE_WINDBEAST':
+					crace = RACE_WINDBEAST;
+					break;
+				case 'RACE_PLANT':
+					crace = RACE_PLANT;
+					break;
+				case 'RACE_INSECT':
+					crace = RACE_INSECT;
+					break;
+				case 'RACE_THUNDER':
+					crace = RACE_THUNDER;
+					break;
+				case 'RACE_DRAGON':
+					crace = RACE_DRAGON;
+					break;
+				case 'RACE_BEAST':
+					crace = RACE_BEAST;
+					break;
+				case 'RACE_BEASTWARRIOR':
+					crace = RACE_BEASTWARRIOR;
+					break;
+				case 'RACE_DINOSAUR':
+					crace = RACE_DINOSAUR;
+					break;
+				case 'RACE_FISH':
+					crace = RACE_FISH;
+					break;
+				case 'RACE_SEASERPENT':
+					crace = RACE_SEASERPENT;
+					break;
+				case 'RACE_REPTILE':
+					crace = RACE_REPTILE;
+					break;
+				case 'RACE_PSYCHO':
+					crace = RACE_PSYCHO;
+					break;
+				case 'RACE_DIVINE':
+					crace = RACE_DIVINE;
+					break;
+				case 'RACE_CREATORGOD':
+					crace = RACE_CREATORGOD;
+					break;
+				case 'RACE_WYRM':
+					crace = RACE_WYRM;
+					break;
+				case 'RACE_CYBERSE':
+					crace = RACE_CYBERSE;
+					break;
+			}
+			qstr = qstr + " AND race&" + crace;
+			valid = true;
+		}
+		
+		// name, effect
 		if(text_name.value != ''){
 			qstr = qstr + " AND name LIKE \'%" + text_name.value + "%\'";
 			valid = true;
@@ -99,7 +403,14 @@
 		
 		text_id.value = '';
 		text_name.value = '';
+		text_atk.value = '';
+		text_def.value = '';
 		text_effect.value = '';
+		
+		select_type.selectedIndex = '0';
+		select_subtype.selectedIndex = '0';
+		select_race.selectedIndex = '0';
+		select_attr.selectedIndex = '0';
 		
 		if(!valid)
 			return;
@@ -111,15 +422,11 @@
 			var result = stmt.getAsObject();
 			
 			if(is_virtual(result))
-				continue;
-			
+				continue;			
 			var row = table1.insertRow(-1);
 			var cell1 = row.insertCell(0);
 			var cell2 = row.insertCell(1);
 			var cell3 = row.insertCell(2);
-
-			var row2 = table1.insertRow(-1);    
-			var cell4 = row2.insertCell(0);
 			
 			if(result.ot == 2){
 				cell1.innerHTML = "<a href=\'https://yugipedia.com/wiki/" + result.id.toString().padStart(8, '0') + "\' target=\'_blank\'>" + result.id + "</a>";
@@ -130,12 +437,49 @@
 				cell2.innerHTML = result.name;
 			}
 			
-			
-			var ctype='';
-			var subtype='';
-			
+			var ctype = '';
+			var subtype = '';
+			var extype = '';
+			var lvstr = '等級';
 			if(result.type & TYPE_MONSTER){
 				ctype = '怪獸';
+				if(result.type & TYPE_RITUAL)
+					subtype = '儀式';
+				else if(result.type & TYPE_FUSION)
+					subtype = '融合';
+				else if(result.type & TYPE_SYNCHRO)
+					subtype = '同步';
+				else if(result.type & TYPE_XYZ){
+					subtype = '超量';
+					lvstr = '階級';
+				}
+				else if(result.type & TYPE_PENDULUM){
+					subtype = '靈擺';
+					extype = '/通常';
+				}
+				else if(result.type & TYPE_LINK){
+					subtype = '連結';
+					lvstr = '連結';
+				}
+				else if(result.type & TYPE_NORMAL)
+					subtype = '通常';
+				else if(result.type & TYPE_EFFECT)
+					subtype = '效果';
+				// extype
+				if(result.type & TYPE_SPIRIT)
+					extype = extype + '/靈魂';
+				if(result.type & TYPE_UNION)
+					extype = extype + '/聯合';
+				if(result.type & TYPE_DUAL)
+					extype = extype + '/二重';
+				if(result.type & TYPE_TUNER)
+					extype = extype + '/協調';
+				if(result.type & TYPE_FLIP)
+					extype = extype + '/反轉';
+				if(result.type & TYPE_TOON)
+					extype = extype + '/卡通';
+				if(result.type & TYPE_SPSUMMON)
+					extype = extype + '/特殊召喚';
 			}
 			else if(result.type & TYPE_SPELL){
 				ctype = '魔法';
@@ -159,10 +503,33 @@
 				else
 					subtype = '通常';
 			}
-			cell3.innerHTML = subtype + ctype;
+			cell3.innerHTML = subtype + ctype + extype;
 			
-			cell4.innerHTML = result.desc.replace(/\r\n/g, "<br>");
-			cell4.colSpan = "3";
+			if(result.type & TYPE_MONSTER){
+				var row_data = table1.insertRow(-1);
+				var cell_lv = row_data.insertCell(0);
+				var cell_attr = row_data.insertCell(1);
+				var cell_race = row_data.insertCell(2);
+				
+				cell_lv.innerHTML = lvstr + (result.level & 0xff);
+				cell_attr.innerHTML = print_attr(result.attribute) + '屬性';
+				cell_race.innerHTML = print_race(result.race) + '族';
+			
+				var row_ad = table1.insertRow(-1);
+				var cell_atk = row_data.insertCell(0);
+				var cell_def = row_data.insertCell(1);
+				cell_atk.innerHTML = print_ad(result.atk);
+				cell_def.innerHTML = print_ad(result.def);
+				if(result.type & TYPE_PENDULUM){
+					var cell_scale = row_data.insertCell(2);
+					cell_scale.innerHTML = "刻度" + (result.level >> 24) & 0xff;
+				}
+			}
+			
+			var row_effect = table1.insertRow(-1);    
+			var cell_effect = row_effect.insertCell(0);
+			cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
+			cell_effect.colSpan = "3";
 		}
 	}
 	
@@ -175,12 +542,98 @@
 	}
 	
   </script>
-  密碼：<input id="text_id" type="textbox" onkeydown ="key_search(event)"> <br>
-  <br>
-  卡名：<input id="text_name" type="textbox" onkeydown ="key_search(event)"> <br>
-  <br>
-  效果：<input id="text_effect" type="textbox" onkeydown ="key_search(event)">  <input type="button" value="搜尋" onclick="query1()"><br>
+	密碼：<input id="text_id" type="textbox" onkeydown ="key_search(event)">
+	<div class="half-line">&nbsp;</div>
+	卡名：<input id="text_name" type="textbox" onkeydown ="key_search(event)">
+	<div class="half-line">&nbsp;</div>
+	種類：<select id="select_type">
+		<option value=""></option>
+		<option value="monster">怪獸</option>
+		<option value="spell">魔法</option>
+		<option value="trap">陷阱</option>
+	</select>
+	<select id="select_subtype">
+		<option value=""></option>
+	</select>
+	<div class="half-line">&nbsp;</div>
+	星數：<select id="select_lv">
+		<option></option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+	</select>
+	靈擺刻度：<select id="select_scale">
+		<option></option>
+		<option>0</option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+	</select>
+	<div class="half-line">&nbsp;</div>
+	屬性：<select id="select_attr">
+		<option value=""></option>
+		<option value="ATTRIBUTE_EARTH">地</option>
+		<option value="ATTRIBUTE_WATER">水</option>
+		<option value="ATTRIBUTE_FIRE">炎</option>
+		<option value="ATTRIBUTE_WIND">風</option>
+		<option value="ATTRIBUTE_LIGHT">光</option>
+		<option value="ATTRIBUTE_DARK">暗</option>
+		<option value="ATTRIBUTE_DIVINE">神</option>
+	</select>
+	種族：<select id="select_race">
+		<option value=""></option>
+		<option value="RACE_WARRIOR">戰士</option>
+		<option value="RACE_SPELLCASTER">魔法使</option>
+		<option value="RACE_FAIRY">天使</option>
+		<option value="RACE_FIEND">惡魔</option>
+		<option value="RACE_ZOMBIE">不死</option>
+		<option value="RACE_MACHINE">機械</option>
+		<option value="RACE_AQUA">水</option>
+		<option value="RACE_PYRO">炎</option>
+		<option value="RACE_ROCK">岩石</option>
+		<option value="RACE_WINDBEAST">鳥獸</option>
+		<option value="RACE_PLANT">植物</option>
+		<option value="RACE_INSECT">昆蟲</option>
+		<option value="RACE_THUNDER">雷</option>
+		<option value="RACE_DRAGON">龍</option>
+		<option value="RACE_BEAST">獸</option>
+		<option value="RACE_BEASTWARRIOR">獸戰士</option>
+		<option value="RACE_DINOSAUR">恐龍</option>
+		<option value="RACE_FISH">魚</option>
+		<option value="RACE_SEASERPENT">海龍</option>
+		<option value="RACE_REPTILE">爬蟲類</option>
+		<option value="RACE_PSYCHO">超能</option>
+		<option value="RACE_DIVINE">幻神獸</option>
+		<option value="RACE_CREATORGOD">創造神</option>
+		<option value="RACE_WYRM">幻龍</option>
+		<option value="RACE_CYBERSE">電子界</option>
+	</select>
+	<div class="half-line">&nbsp;</div>
+	攻擊力：<input id="text_atk" type="textbox" onkeydown ="key_search(event)">
+	<div class="half-line">&nbsp;</div>
+	守備力：<input id="text_def" type="textbox" onkeydown ="key_search(event)">
+	<div class="half-line">&nbsp;</div>
+	效果：<input id="text_effect" type="textbox" onkeydown ="key_search(event)"> <input type="button" value="搜尋" onclick="query1()"><br>
 	<table  id="table1" border = "1">
 	</table>
-  </body>
+</body>
 </html>
