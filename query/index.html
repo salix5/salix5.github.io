@@ -516,12 +516,12 @@
 				cell_race.innerHTML = print_race(result.race) + '族';
 			
 				var row_ad = table1.insertRow(-1);
-				var cell_atk = row_data.insertCell(0);
-				var cell_def = row_data.insertCell(1);
+				var cell_atk = row_ad.insertCell(0);
+				var cell_def = row_ad.insertCell(1);
 				cell_atk.innerHTML = print_ad(result.atk);
 				cell_def.innerHTML = print_ad(result.def);
 				if(result.type & TYPE_PENDULUM){
-					var cell_scale = row_data.insertCell(2);
+					var cell_scale = row_ad.insertCell(2);
 					cell_scale.innerHTML = "刻度" + (result.level >> 24) & 0xff;
 				}
 			}
