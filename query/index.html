@@ -455,19 +455,28 @@
 					subtype = '超量';
 					lvstr = '階級';
 				}
-				else if(result.type & TYPE_PENDULUM){
-					subtype = '靈擺';
-					extype = '/通常';
-				}
 				else if(result.type & TYPE_LINK){
 					subtype = '連結';
 					lvstr = '連結';
 				}
+				// extype
+				if(result.type & TYPE_PENDULUM){
+				        if(subtype == ''){
+				            subtype = '靈擺';
+				            if(result.type & TYPE_NORMAL)
+				                extype = '/通常';
+				            else
+				                extype = '/效果';
+				        }
+				        else {
+				            extype = '/靈擺';
+				        }
+				}
 				else if(result.type & TYPE_NORMAL)
 					subtype = '通常';
-				else if(result.type & TYPE_EFFECT)
+				else if(subtype == '')
 					subtype = '效果';
-				// extype
+				
 				if(result.type & TYPE_SPIRIT)
 					extype = extype + '/靈魂';
 				if(result.type & TYPE_UNION)
