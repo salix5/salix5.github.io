@@ -524,7 +524,7 @@
 				}
 				if(result.type & TYPE_PENDULUM){
 					var cell_scale = row_ad.insertCell(2);
-					cell_scale.innerHTML = "刻度" + (result.level >> 24) & 0xff;
+					cell_scale.innerHTML = "刻度" + ((result.level >> 24) & 0xff);
 				}
 			}
 			
