@@ -222,6 +222,7 @@
 		var crace = 0;
 		
 		var valid = false;
+		var monly = false;
 		
 		if(cid > 0){
 			qstr = qstr + " AND datas.id==" + cid;
@@ -256,29 +257,33 @@
 		if(catk >= 0 || catk == -2){
 			qstr = qstr + " AND atk==" + catk;
 			valid = true;
+			monly = true;
 		}
 		if(text_def.value == '?' || text_def.value == '？')
 			cdef = -2;
 		else
 			cdef = parseInt(text_def.value, 10);
 		if(cdef >= 0 || cdef == -2){
-			qstr = qstr + " AND def==" + cdef;
+			qstr = qstr + " AND NOT type & TYPE_LINK AND def==" + cdef;
 			valid = true;
+			monly = true;
 		}
 		
 		// lv, scale
 		if(clv > 0){
 			qstr = qstr + " AND (level & 0xff)==" + clv;
 			valid = true;
+			monly = true;
 		}
 		if(cscale>=0){
 			qstr = qstr + " AND type & " + TYPE_PENDULUM + " AND (level >> 24) & 0xff == " + cscale;
 			valid = true;
+			monly = true;
 		}
 		
 		// attr, race
 		if(select_attr.value != ''){
-			switch(select_subtype.value){
+			switch(select_attr.value){
 				case 'ATTRIBUTE_EARTH':
 					cattr = ATTRIBUTE_EARTH;
 					break;
@@ -301,8 +306,9 @@
 					cattr = ATTRIBUTE_DIVINE;
 					break;
 			}
-			qstr = qstr + " AND attribute&" + catr;
+			qstr = qstr + " AND attribute&" + cattr;
 			valid = true;
+			monly = true;
 		}
 		if(select_race.value != ''){
 			switch(select_race.value){
@@ -384,6 +390,7 @@
 			}
 			qstr = qstr + " AND race&" + crace;
 			valid = true;
+			monly = true;
 		}
 		
 		// name, effect
@@ -395,7 +402,9 @@
 			qstr = qstr + " AND desc LIKE \'%" + text_effect.value + "%\'";
 			valid = true;
 		}
-		
+		if(monly)
+                    qstr = qstr + " AND type & TYPE_MONSTER";
+
 		// clear
 		var n = table1.rows.length;
 		for(var i = 0; i<=n-1; ++i)
