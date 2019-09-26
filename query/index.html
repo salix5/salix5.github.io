@@ -264,7 +264,7 @@
 		else
 			cdef = parseInt(text_def.value, 10);
 		if(cdef >= 0 || cdef == -2){
-			qstr = qstr + " AND NOT type & TYPE_LINK AND def==" + cdef;
+			qstr = qstr + " AND NOT type&" + TYPE_LINK + " AND def==" + cdef;
 			valid = true;
 			monly = true;
 		}
@@ -276,7 +276,7 @@
 			monly = true;
 		}
 		if(cscale>=0){
-			qstr = qstr + " AND type & " + TYPE_PENDULUM + " AND (level >> 24) & 0xff == " + cscale;
+			qstr = qstr + " AND type&" + TYPE_PENDULUM + " AND (level >> 24) & 0xff == " + cscale;
 			valid = true;
 			monly = true;
 		}
@@ -403,7 +403,7 @@
 			valid = true;
 		}
 		if(monly)
-                    qstr = qstr + " AND type & TYPE_MONSTER";
+                    qstr = qstr + " AND type&" + TYPE_MONSTER;
 
 		// clear
 		var n = table1.rows.length;
