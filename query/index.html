@@ -242,11 +242,11 @@
 					ctype = TYPE_TRAP;
 					break;
 			}
+			if(select_subtype.value != ''){
+				ctype = ctype | parseInt(select_subtype.value, 16);
+			}
 			qstr = qstr + " AND type&" + ctype;
 			valid = true;
-		}
-		if(select_subtype.value != ''){
-			
 		}
 		
 		// atk/def
@@ -403,7 +403,7 @@
 			valid = true;
 		}
 		if(monly)
-                    qstr = qstr + " AND type&" + TYPE_MONSTER;
+			qstr = qstr + " AND type&" + TYPE_MONSTER;
 
 		// clear
 		var n = table1.rows.length;
@@ -563,16 +563,64 @@
 		}
 	}
 	
+	function add_opt(sel, value, text){
+		opt = document.createElement("option");
+		opt.value = value.toString(16);
+		opt.text = text;
+		sel.add(opt);
+	}
+	
+	function create_subtype(){
+		var select_type = document.getElementById('select_type');
+		var select_subtype = document.getElementById('select_subtype');
+		var opt;
+		var len = select_subtype.length;
+		
+		for(var i=1; i < len; ++i)
+			select_subtype.remove(select_subtype.length - 1);
+		switch(select_type.value){
+			case 'TYPE_MONSTER':
+				add_opt(select_subtype, TYPE_NORMAL, '通常');
+				add_opt(select_subtype, TYPE_RITUAL, '儀式');
+				add_opt(select_subtype, TYPE_FUSION, '融合');
+				add_opt(select_subtype, TYPE_SYNCHRO, '同步');
+				add_opt(select_subtype, TYPE_SYNCHRO | TYPE_TUNER, '協調同步');
+				add_opt(select_subtype, TYPE_XYZ, '超量');
+				add_opt(select_subtype, TYPE_PENDULUM, '靈擺');
+				add_opt(select_subtype, TYPE_LINK, '連結');
+				add_opt(select_subtype, TYPE_SPIRIT, '/靈魂');
+				add_opt(select_subtype, TYPE_UNION, '/聯合');
+				add_opt(select_subtype, TYPE_DUAL, '/二重');
+				add_opt(select_subtype, TYPE_TUNER, '/協調');
+				add_opt(select_subtype, TYPE_FLIP, '/反轉');
+				add_opt(select_subtype, TYPE_TOON, '/卡通');
+				add_opt(select_subtype, TYPE_SPSUMMON, '/特殊召喚');
+				break;
+			case 'TYPE_SPELL':
+				add_opt(select_subtype, 0, '通常');
+				add_opt(select_subtype, TYPE_QUICKPLAY, '速攻');
+				add_opt(select_subtype, TYPE_CONTINUOUS, '永續');
+				add_opt(select_subtype, TYPE_EQUIP, '裝備');
+				add_opt(select_subtype, TYPE_FIELD, '場地');
+				break;
+			case 'TYPE_TRAP':
+				add_opt(select_subtype, 0, '通常');
+				add_opt(select_subtype, TYPE_CONTINUOUS, '永續');
+				add_opt(select_subtype, TYPE_COUNTER, '反擊');
+				break;
+		}
+	}
+	
   </script>
 	密碼：<input id="text_id" type="textbox" onkeydown ="key_search(event)">
 	<div class="half-line">&nbsp;</div>
 	卡名：<input id="text_name" type="textbox" onkeydown ="key_search(event)">
 	<div class="half-line">&nbsp;</div>
-	種類：<select id="select_type">
+	種類：<select id="select_type" onchange="create_subtype()">
 		<option value=""></option>
-		<option value="monster">怪獸</option>
-		<option value="spell">魔法</option>
-		<option value="trap">陷阱</option>
+		<option value="TYPE_MONSTER">怪獸</option>
+		<option value="TYPE_SPELL">魔法</option>
+		<option value="TYPE_TRAP">陷阱</option>
 	</select>
 	<select id="select_subtype">
 		<option value=""></option>
