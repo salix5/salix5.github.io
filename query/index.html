@@ -245,7 +245,7 @@
 			if(select_subtype.value != ''){
 				ctype = ctype | parseInt(select_subtype.value, 16);
 			}
-			qstr = qstr + " AND type&" + ctype;
+			qstr = qstr + " AND type&" + ctype + "==" + ctype;
 			valid = true;
 		}
 		
