@@ -590,24 +590,24 @@
 			cell3.innerHTML = subtype + ctype + extype;
 			
 			if(result.type & TYPE_MONSTER){
-				var row_data = table1.insertRow(-1);
-				var cell_lv = row_data.insertCell(-1);
-				var cell_attr = row_data.insertCell(-1);
-				var cell_race = row_data.insertCell(-1);
+				//var row_data = table1.insertRow(-1);
+				var cell_lv = row.insertCell(-1);
+				var cell_attr = row.insertCell(-1);
+				var cell_race = row.insertCell(-1);
 				
 				cell_lv.innerHTML = lvstr + (result.level & 0xff);
 				cell_attr.innerHTML = print_attr(result.attribute) + '屬性';
 				cell_race.innerHTML = print_race(result.race) + '族';
 			
 				//var row_ad = table1.insertRow(-1);
-				var cell_atk = row_data.insertCell(-1);
+				var cell_atk = row.insertCell(-1);
 				cell_atk.innerHTML = print_ad(result.atk);
 				if(!(result.type & TYPE_LINK)){
-					var cell_def = row_data.insertCell(-1);
+					var cell_def = row.insertCell(-1);
 					cell_def.innerHTML = print_ad(result.def);
 				}
 				if(result.type & TYPE_PENDULUM){
-					var cell_scale = row_data.insertCell(-1);
+					var cell_scale = row.insertCell(-1);
 					cell_scale.innerHTML = "刻度" + ((result.level >> 24) & 0xff);
 				}
 			}
