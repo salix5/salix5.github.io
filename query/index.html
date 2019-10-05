@@ -254,7 +254,7 @@
 			qstr = qstr + " AND type&" + ctype + "==" + ctype;
 			valid = true;
 		}
-		
+		// atk
 		catk = parseInt(text_atk.value, 10);
 		if(catk >= 0 || catk == -1){
 			if(catk == -1){
@@ -270,7 +270,7 @@
 					case 'above':
 						relation = '>=';
 						break;
-					case '':
+					case 'below':
 						relation = '<=';
 						break;
 				}
@@ -280,8 +280,10 @@
 			monly = true;
 		}
 		
+		// def, exclude link monsters
 		cdef = parseInt(text_def.value, 10);
 		if(cdef >= 0 || cdef == -1){
+			qstr = qstr + " AND NOT type&" + TYPE_LINK;
 			if(cdef == -1){
 				cdef = -2;
 				qstr = qstr + " AND def==" + cdef;
@@ -295,7 +297,7 @@
 					case 'above':
 						relation = '>=';
 						break;
-					case '':
+					case 'below':
 						relation = '<=';
 						break;
 				}
@@ -673,7 +675,7 @@
 	}
 	
   </script>
-	密碼：<input id="text_id" type="number" onkeydown ="key_search(event)">
+	密碼：<input id="text_id" type="number" min="0" onkeydown ="key_search(event)">
 	<div class="half-line">&nbsp;</div>
 	卡名：<input id="text_name" type="text" onkeydown ="key_search(event)">
 	<div class="half-line">&nbsp;</div>
@@ -794,14 +796,14 @@
 		<option value="RACE_CYBERSE">電子界</option>
 	</select>
 	<div class="half-line">&nbsp;</div>
-	攻擊力：<input id="text_atk" type="number" onkeydown ="key_search(event)">
+	攻擊力：<input id="text_atk" type="number" min="-1" onkeydown ="key_search(event)">
 	<select id="atk_relation">
 		<option value=""></option>
 		<option value="above">以上</option>
 		<option value="below">以下</option>
 	</select>
 	<div class="half-line">&nbsp;</div>
-	守備力：<input id="text_def" type="number" onkeydown ="key_search(event)">
+	守備力：<input id="text_def" type="number" min="-1" onkeydown ="key_search(event)">
 	<select id="def_relation">
 		<option value=""></option>
 		<option value="above">以上</option>
