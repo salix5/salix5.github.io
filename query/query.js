@@ -515,7 +515,7 @@
 			var ctype = '';
 			var subtype = '';
 			var extype = '';
-			var lvstr = '等級';
+			var lvstr = 'L';
 			if(result.type & TYPE_MONSTER){
 				ctype = '怪獸';
 				if(result.type & TYPE_RITUAL)
@@ -526,11 +526,11 @@
 					subtype = '同步';
 				else if(result.type & TYPE_XYZ){
 					subtype = '超量';
-					lvstr = '階級';
+					lvstr = 'R';
 				}
 				else if(result.type & TYPE_LINK){
 					subtype = '連結';
-					lvstr = '連結';
+					lvstr = 'LINK-';
 				}
 				// extype
 				if(result.type & TYPE_PENDULUM){
@@ -599,7 +599,7 @@
 			
 			if(result.type & TYPE_MONSTER){
 				cell_lv.innerHTML = lvstr + (result.level & 0xff);
-				cell_attr.innerHTML = print_attr(result.attribute) + '屬性';
+				cell_attr.innerHTML = print_attr(result.attribute);
 				cell_race.innerHTML = print_race(result.race) + '族';
 			
 				//var row_ad = table1.insertRow(-1);
