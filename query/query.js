@@ -615,7 +615,7 @@
 			var row_effect = table1.insertRow(-1);    
 			var cell_effect = row_effect.insertCell(-1);
 			cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
-			cell_effect.colSpan = row.cols.length.toString(10);
+			cell_effect.colSpan = row.cells.length.toString(10);
 		}
 	}
 	
