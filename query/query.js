@@ -589,34 +589,44 @@
 			}
 			cell3.innerHTML = subtype + ctype + extype;
 			
-			//var row_data = table1.insertRow(-1);
-			var cell_lv = row.insertCell(-1);
-			var cell_attr = row.insertCell(-1);
+			var row_data = table1.insertRow(-1);
+			var cell_data = row_data.insertCell(-1);
+			/*var cell_attr = row.insertCell(-1);
 			var cell_race = row.insertCell(-1);
 			var cell_atk = row.insertCell(-1);
 			var cell_def = row.insertCell(-1);
-			var cell_scale = row.insertCell(-1);
+			var cell_scale = row.insertCell(-1);*/
 			
 			if(result.type & TYPE_MONSTER){
-				cell_lv.innerHTML = lvstr + (result.level & 0xff);
+				var data = '';
+				/*cell_lv.innerHTML = lvstr + (result.level & 0xff);
 				cell_attr.innerHTML = print_attr(result.attribute);
-				cell_race.innerHTML = print_race(result.race) + '族';
+				cell_race.innerHTML = print_race(result.race) + '族';*/
 			
 				//var row_ad = table1.insertRow(-1);
+				//cell_atk.innerHTML = print_ad(result.atk);
 				
-				cell_atk.innerHTML = print_ad(result.atk);
+				data = data + lvstr + (result.level & 0xff);
+				data = data + '/' + print_attr(result.attribute);
+				data = data + '/' + print_race(result.race) + '族';
+				data = data + '/' + print_ad(result.atk);
+				
 				if(!(result.type & TYPE_LINK)){
-					cell_def.innerHTML = print_ad(result.def);
+					//cell_def.innerHTML = print_ad(result.def);
+					data = data + '/' + print_ad(result.def);
 				}
 				if(result.type & TYPE_PENDULUM){
-					cell_scale.innerHTML = "刻度" + ((result.level >> 24) & 0xff);
+					//cell_scale.innerHTML = "刻度" + ((result.level >> 24) & 0xff);
+					data = data + "刻度" + ((result.level >> 24) & 0xff);
 				}
+				cell_data.innerHTML = data;
+				cell_data.colSpan = "3";
 			}
 			
 			var row_effect = table1.insertRow(-1);    
 			var cell_effect = row_effect.insertCell(-1);
 			cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
-			cell_effect.colSpan = "9";
+			cell_effect.colSpan = "3";
 		}
 	}
 	
