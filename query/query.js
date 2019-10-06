@@ -517,7 +517,7 @@
 			var extype = '';
 			var lvstr = 'L';
 			if(result.type & TYPE_MONSTER){
-				ctype = '怪獸';
+				ctype = '';
 				if(result.type & TYPE_RITUAL)
 					subtype = '儀式';
 				else if(result.type & TYPE_FUSION)
@@ -589,8 +589,6 @@
 			}
 			cell3.innerHTML = subtype + ctype + extype;
 			
-			var row_data = table1.insertRow(-1);
-			var cell_data = row_data.insertCell(-1);
 			/*var cell_attr = row.insertCell(-1);
 			var cell_race = row.insertCell(-1);
 			var cell_atk = row.insertCell(-1);
@@ -598,6 +596,8 @@
 			var cell_scale = row.insertCell(-1);*/
 			
 			if(result.type & TYPE_MONSTER){
+			        var row_data = table1.insertRow(-1);
+			        var cell_data = row_data.insertCell(-1);
 				var data = '';
 				/*cell_lv.innerHTML = lvstr + (result.level & 0xff);
 				cell_attr.innerHTML = print_attr(result.attribute);
