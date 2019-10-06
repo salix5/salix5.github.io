@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+<html>
 <head>
 <meta name="viewport" content="width=device-width">
 <title>時代的印記</title>
 </head>
 <body>
+<input type="text" id="text1">
+<button type="button" onclick="mark_of_time()">複製</button>
 <script>
 	var n = 7;
 	var r = Math.floor(Math.random() * n);	//0~n-1
@@ -32,6 +35,13 @@
                       text = "等於等於";
                       break;
 	}
-	document.write(text);
+	var text1 = document.getElementById('text1');
+	text1.value = text;
+	
+	function mark_of_time(){
+		text1.select();
+		document.execCommand("copy");
+	}
 </script>
 </body>
+</html>
