@@ -617,7 +617,7 @@
 				}
 				if(result.type & TYPE_PENDULUM){
 					//cell_scale.innerHTML = "刻度" + ((result.level >> 24) & 0xff);
-					data = data + "刻度" + ((result.level >> 24) & 0xff);
+					data = data + '/刻度' + ((result.level >> 24) & 0xff);
 				}
 				cell_data.innerHTML = data;
 				cell_data.colSpan = "3";
