@@ -8,6 +8,7 @@
 <input type="text" id="text1">
 <button type="button" onclick="mark_of_time()">複製</button>
 <button type="button" onclick="until_dawn()">直到黎明</button>
+<div id="dawn"></div>
 <script>
 	var n = 6;   // # of normal texts
 	var layer = Math.floor(Math.random() * 1000) + 1;	//1~1000
@@ -55,7 +56,7 @@
         }while(layer > 7);
         var text1 = document.getElementById('text1');
 	text1.value = "那還是人嗎？";
-        document.write('總共抽了' + stone + '次！<br>');
+        document.getElementById("dawn").innerHTML = '總共抽了' + stone + '次！';
     }
 </script>
 </body>
