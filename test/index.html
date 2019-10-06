@@ -7,25 +7,37 @@
 <body>
 <input type="text" id="text1">
 <button type="button" onclick="mark_of_time()">複製</button>
+<button type="button" onclick="until_dawn()">直到黎明</button>
 <script>
-	var n = 1000;
-	var r = Math.floor(Math.random() * n) + 1;	//1~n
+	var n = 6;   // # of normal texts
+	var layer = Math.floor(Math.random() * 1000) + 1;	//1~1000
 	var text = '';
 	
-	if(r <= 7) // pick up
+	if(layer <= 7) // pick up
 		text = "那還是人嗎？";
-	else if(7 < r && r<=10+165)
-		text = "NZMB";
-	else if(10+165 < r && r<=10+165*2)
-		text = "那還可以吧";
-	else if(10+165*2 < r && r<=10+165*3)
-		text = "好8我接受";
-	else if(10+165*3 <= r && r<=10+165*4)
-		text = "嗯 你說得對";
-	else if(10+165*4 <= r && r<=10+165*5)
-		text = "對";
-	else if(10+165*5 <= r && r<=10+165*6)
-		text = "等於等於";
+	else{
+            var r = Math.floor(Math.random() * n) + 1;
+	    switch(r){
+		case 1:
+			text = "那還可以吧";
+			break;
+		case 2:
+			text = "NZMB";
+			break;
+		case 3:
+			text = "好8我接受";
+			break;
+		case 4:
+			text = "嗯 你說得對";
+			break;
+		case 5:
+			text = "對";
+			break;
+		case 6:
+			text = "等於等於";
+			break;
+	    }
+        }
 	
 	var text1 = document.getElementById('text1');
 	text1.value = text;
@@ -34,6 +46,17 @@
 		text1.select();
 		document.execCommand("copy");
 	}
+    function until_dawn(){
+        var layer = 0;
+        var stone = 0;
+        do{
+            ++stone;
+            layer = Math.floor(Math.random() * 1000) + 1;
+        }while(layer > 7);
+        var text1 = document.getElementById('text1');
+	text1.value = "那還是人嗎？";
+        document.write('總共抽了' + stone + '次！<br>');
+    }
 </script>
 </body>
 </html>
