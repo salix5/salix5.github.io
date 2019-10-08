@@ -13,6 +13,7 @@
 	const TYPE_XYZ			=0x800000	//超量
 	const TYPE_PENDULUM		=0x1000000	//灵摆
 	const TYPE_LINK			=0x4000000	//连接
+        const ext = TYPE_FUSION | TYPE_SYNCHRO | TYPE_XYZ | TYPE_LINK;
 	
 	//extype
 	const TYPE_SPIRIT		=0x200		//灵魂
@@ -238,7 +239,14 @@
 					break;
 			}
 			if(select_subtype1.value != ''){
-				ctype = ctype | parseInt(select_subtype1.value, 16);
+				if(select_subtype1.value == 'deck'){
+				        qstr = qstr + " AND NOT type&" + ext;
+				}
+				else if(select_subtype1.value == 'extra'){
+				        qstr = qstr + " AND type&" + ext;
+				}
+				else
+				        ctype = ctype | parseInt(select_subtype1.value, 16);
 			}
 			if(select_subtype2.value != ''){
 				ctype = ctype | parseInt(select_subtype2.value, 16);
@@ -670,6 +678,15 @@
 				add_opt(select_subtype1, TYPE_XYZ, '超量');
 				add_opt(select_subtype1, TYPE_PENDULUM, '靈擺');
 				add_opt(select_subtype1, TYPE_LINK, '連結');
+        var opt = document.createElement("option");
+        opt.value = 'deck';
+        opt.text = '（牌組）';
+        select_subtype1.add(opt);
+        opt = document.createElement("option");
+        opt.value = 'extra';
+        opt.text = '（額外）'; 
+        select_subtype1.add(opt);
+
 				
 				add_opt(select_subtype2, TYPE_SPIRIT, '/靈魂');
 				add_opt(select_subtype2, TYPE_UNION, '/聯合');
