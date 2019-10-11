@@ -92,9 +92,6 @@ initSqlJs(config).then(function(SQL){
 	}
 );
 
-if(window.innerWidth > 1200)
-	document.getElementById('table1').style.width = "1200gx";
-
 function is_virtual(result) {
 if(Math.abs(result.alias-result.id) <= 10)
 	return true;
@@ -220,6 +217,9 @@ function query1(){
 	
 	var valid = false;
 	var monly = false;
+	
+	if(window.innerWidth > 1200)
+		document.getElementById('table1').style.width = "1200gx";
 	
 	// id
 	cid = parseInt(text_id.value, 10);
