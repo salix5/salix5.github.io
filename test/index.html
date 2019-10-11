@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>時代的印記</title>
 </head>
 <body>
@@ -10,38 +10,41 @@
 <button type="button" onclick="until_dawn()">直到黎明</button>
 <div id="dawn"></div>
 <script>
-	var n = 6;   // # of normal texts
-	var layer = getRandomIntInclusive(1, 1000);
-	var text = '';
-	
-	if(layer <= 7) // pick up
-		text = "那還是人嗎？";
-	else{
-            var r = getRandomIntInclusive(1, n);
-	    switch(r){
+var n = 7;   // # of normal texts
+var layer = getRandomIntInclusive(1, 1000);
+var text = '';
+
+if(layer <= 7) // pick up
+	text = "那還是人嗎？";
+else{
+	var r = getRandomIntInclusive(1, n);
+	switch(r){
 		case 1:
-			text = "那還可以吧";
-			break;
-		case 2:
-			text = "NZMB";
-			break;
-		case 3:
-			text = "好8我接受";
-			break;
-		case 4:
-			text = "嗯 你說得對";
-			break;
-		case 5:
-			text = "對";
-			break;
-		case 6:
-			text = "等於等於";
-			break;
-	    }
-        }
-	
-	var text1 = document.getElementById('text1');
-	text1.value = text;
+		text = "那還可以吧";
+		break;
+	case 2:
+		text = "NZMB";
+		break;
+	case 3:
+		text = "好8我接受";
+		break;
+	case 4:
+		text = "嗯 你說得對";
+		break;
+	case 5:
+		text = "對";
+		break;
+	case 6:
+		text = "等於等於";
+		break;
+	case 7:
+		text = "好窩";
+		break;
+    }
+}
+
+var text1 = document.getElementById('text1');
+text1.value = text;
 
 function getRandomIntInclusive(min, max) {
     const randomBuffer = new Uint32Array(1);
@@ -55,21 +58,22 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(randomNumber * (max - min + 1)) + min;
 }
 
-	function mark_of_time(){
-		text1.select();
-		document.execCommand("copy");
-	}
-    function until_dawn(){
-        var layer = 0;
-        var stone = 0;
-        do{
-            ++stone;
-            layer = getRandomIntInclusive(1, 1000);
-        }while(layer > 7);
-        var text1 = document.getElementById('text1');
+function mark_of_time(){
+	text1.select();
+	document.execCommand("copy");
+}
+
+function until_dawn(){
+	var layer = 0;
+	var stone = 0;
+	do{
+		++stone;
+		layer = getRandomIntInclusive(1, 1000);
+	}while(layer > 7);
+	var text1 = document.getElementById('text1');
 	text1.value = "那還是人嗎？";
-        document.getElementById("dawn").innerHTML = document.getElementById("dawn").innerHTML + '總共抽了' + stone + '次！<br>';
-    }
+	document.getElementById("dawn").innerHTML = document.getElementById("dawn").innerHTML + '總共抽了' + stone + '次！<br>';
+}
 </script>
 </body>
 </html>
