@@ -10,37 +10,33 @@
 <button type="button" onclick="until_dawn()">直到黎明</button>
 <div id="dawn"></div>
 <script>
-var n = 7;   // # of normal texts
+'use strict';
 var layer = getRandomIntInclusive(1, 1000);
+var r = 0;
 var text = '';
 
-if(layer <= 7) // pick up
-	text = "那還是人嗎？";
+var pu_quotes = [
+'那還是人嗎'
+];
+
+var normal_quotes = [
+'那還可以吧', 
+'NZMB',
+'好8我接受',
+'嗯 你說得對',
+'對',
+'等於等於',
+'好窩'
+];
+
+if(layer <= 7){ 
+	// pick up
+	r = getRandomIntInclusive(0, pu_quotes.length - 1);
+	text = pu_quotes[r];
+}
 else{
-	var r = getRandomIntInclusive(1, n);
-	switch(r){
-		case 1:
-		text = "那還可以吧";
-		break;
-	case 2:
-		text = "NZMB";
-		break;
-	case 3:
-		text = "好8我接受";
-		break;
-	case 4:
-		text = "嗯 你說得對";
-		break;
-	case 5:
-		text = "對";
-		break;
-	case 6:
-		text = "等於等於";
-		break;
-	case 7:
-		text = "好窩";
-		break;
-    }
+	r = getRandomIntInclusive(0, normal_quotes.length - 1);
+	text = normal_quotes[r];
 }
 
 var text1 = document.getElementById('text1');
@@ -48,13 +44,15 @@ text1.value = text;
 
 function getRandomIntInclusive(min, max) {
     const randomBuffer = new Uint32Array(1);
+	min = Math.ceil(min);
+    max = Math.floor(max);
+	
+	if(min == max)
+		return min;
 
     window.crypto.getRandomValues(randomBuffer);
-
     let randomNumber = randomBuffer[0] / (0xffffffff + 1);
 
-    min = Math.ceil(min);
-    max = Math.floor(max);
     return Math.floor(randomNumber * (max - min + 1)) + min;
 }
 
@@ -64,14 +62,15 @@ function mark_of_time(){
 }
 
 function until_dawn(){
-	var layer = 0;
 	var stone = 0;
 	do{
 		++stone;
 		layer = getRandomIntInclusive(1, 1000);
 	}while(layer > 7);
+	
 	var text1 = document.getElementById('text1');
-	text1.value = "那還是人嗎？";
+	r = getRandomIntInclusive(0, pu_quotes.length - 1);
+	text1.value = pu_quotes[r];
 	document.getElementById("dawn").innerHTML = document.getElementById("dawn").innerHTML + '總共抽了' + stone + '次！<br>';
 }
 </script>
