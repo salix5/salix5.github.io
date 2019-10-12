@@ -218,8 +218,9 @@ function query1(){
 	var valid = false;
 	var monly = false;
 	
-	if(window.innerWidth > 1200)
-		document.getElementById('table1').style.width = "1200gx";
+	if(window.innerWidth > 1200){
+		table1.style.width = '1200px';
+	}
 	
 	// id
 	cid = parseInt(text_id.value, 10);
@@ -514,14 +515,12 @@ function query1(){
 		var cell2 = row.insertCell(-1);
 		var cell3 = row.insertCell(-1);
 		
-		if(result.ot == 2){
-			cell1.innerHTML = "<a href=\'https://yugipedia.com/wiki/" + result.id.toString().padStart(8, '0') + "\' target=\'_blank\'>" + result.id + "</a>";
+		
+		cell1.innerHTML = "<a href=\'https://yugipedia.com/wiki/" + result.id.toString().padStart(8, '0') + "\' target=\'_blank\'>" + result.id.toString().padStart(8, '0') + "</a>";
+		if(result.ot == 2)
 			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
-		}
-		else{
-			cell1.innerHTML = "<a href=\'https://ocg-card.com/list/result/?search=" + result.id + "&search-op=1\' target=\'_blank\'>" + result.id + "</a>";
+		else
 			cell2.innerHTML = result.name;
-		}
 		
 		var ctype = '';
 		var subtype = '';
