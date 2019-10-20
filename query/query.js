@@ -74,6 +74,7 @@ var config = {
 }   
 
 var db;
+var ready = false;
 
 
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
@@ -86,7 +87,10 @@ initSqlJs(config).then(function(SQL){
 	
 	xhr.onload = e => {
 		var arr1 = new Uint8Array(xhr.response);
+                var button1 = document.getElementById('button1');
 		db = new SQL.Database(arr1);
+		button1.disabled = false;
+		ready = true;
 	};
 	xhr.send();
 	}
@@ -470,7 +474,7 @@ function query1(){
 
 	// clear
 	var n = table1.rows.length;
-	for(var i = 0; i<=n-1; ++i)
+	for(let i = 0; i<=n-1; ++i)
 		table1.deleteRow(-1);
 	
 	text_id.value = '';
@@ -482,11 +486,11 @@ function query1(){
 	select_type.selectedIndex = 0;
 	
 	var len = select_subtype1.length;
-	for(var i=1; i < len; ++i)
+	for(let i=1; i < len; ++i)
 		select_subtype1.remove(select_subtype1.length - 1);
 	
 	len = select_subtype2.length;
-	for(var i=1; i < len; ++i)
+	for(let i=1; i < len; ++i)
 		select_subtype2.remove(select_subtype2.length - 1);
 	select_subtype2.style.visibility = "hidden";
 	
@@ -522,12 +526,12 @@ function query1(){
 		else
 			cell2.innerHTML = result.name;
 		
-		var ctype = '';
+		var mtype = '';
 		var subtype = '';
 		var extype = '';
 		var lvstr = 'L';
 		if(result.type & TYPE_MONSTER){
-			ctype = '';
+			mtype = '';
 			if(result.type & TYPE_RITUAL)
 				subtype = '儀式';
 			else if(result.type & TYPE_FUSION)
@@ -576,7 +580,7 @@ function query1(){
 				extype = extype + '/特殊召喚';
 		}
 		else if(result.type & TYPE_SPELL){
-			ctype = '魔法';
+			mtype = '魔法';
 			if(result.type & TYPE_QUICKPLAY)
 				subtype = '速攻';
 			else if(result.type & TYPE_CONTINUOUS)
@@ -589,7 +593,7 @@ function query1(){
 				subtype = '通常';
 		}
 		else if(result.type & TYPE_TRAP){
-			ctype = '陷阱';
+			mtype = '陷阱';
 			if(result.type & TYPE_CONTINUOUS)
 				subtype = '永續';
 			else if(result.type & TYPE_COUNTER)
@@ -597,24 +601,12 @@ function query1(){
 			else
 				subtype = '通常';
 		}
-		cell3.innerHTML = subtype + ctype + extype;
-		
-		/*var cell_attr = row.insertCell(-1);
-		var cell_race = row.insertCell(-1);
-		var cell_atk = row.insertCell(-1);
-		var cell_def = row.insertCell(-1);
-		var cell_scale = row.insertCell(-1);*/
+		cell3.innerHTML = subtype + mtype + extype;
 		
 		if(result.type & TYPE_MONSTER){
 		        var row_data = table1.insertRow(-1);
 		        var cell_data = row_data.insertCell(-1);
 			var data = '';
-			/*cell_lv.innerHTML = lvstr + (result.level & 0xff);
-			cell_attr.innerHTML = print_attr(result.attribute);
-			cell_race.innerHTML = print_race(result.race) + '族';*/
-		
-			//var row_ad = table1.insertRow(-1);
-			//cell_atk.innerHTML = print_ad(result.atk);
 			
 			data = data + lvstr + (result.level & 0xff);
 			data = data + '/' + print_attr(result.attribute);
@@ -641,6 +633,8 @@ function query1(){
 }
 
 function key_search(e){
+	if(!ready)
+		return;
 	switch (e.key) {
 		case 'Enter':
 			query1();
