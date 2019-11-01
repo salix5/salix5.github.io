@@ -229,7 +229,7 @@ function query1(){
 	// id
 	cid = parseInt(text_id.value, 10);
 	if(cid > 0){
-		qstr = qstr + " AND datas.id==" + cid;
+		qstr = qstr + " AND datas.id==@cid";
 		valid = true;
 	}
 	
@@ -508,6 +508,7 @@ function query1(){
 	
 	// Prepare a statement
 	var stmt = db.prepare(qstr);
+        stmt.bind({'@cid': cid});
 	while(stmt.step()) {
 		// execute
 		var result = stmt.getAsObject();
