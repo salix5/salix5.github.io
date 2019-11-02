@@ -485,13 +485,13 @@ function query1(){
 	
 	// name, effect
 	if(text_name.value != ''){
-		qstr = qstr + " AND name LIKE \'%$name%\'";
-		arg.$name = text_name.value;
+		qstr = qstr + " AND name LIKE $name";
+		arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
 		valid = true;
 	}
 	if(text_effect.value != ''){
-		qstr = qstr + " AND desc LIKE \'%$desc%\'";
-		arg.$desc = text_effect.value;
+		qstr = qstr + " AND desc LIKE $desc";
+		arg.$desc = '%' + text_effect.value.replace(/[%_]/, '') + '%';
 		valid = true;
 	}
 	if(monly)
