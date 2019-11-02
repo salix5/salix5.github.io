@@ -1,7 +1,7 @@
 "use strict";
 // type
 const TYPE_MONSTER		=0x1		//怪兽卡
-const TYPE_SPELL			=0x2		//魔法卡
+const TYPE_SPELL		=0x2		//魔法卡
 const TYPE_TRAP			=0x4		//陷阱卡
 
 // subtype
@@ -97,10 +97,10 @@ initSqlJs(config).then(function(SQL){
 );
 
 function is_virtual(result) {
-if(Math.abs(result.alias-result.id) <= 10)
-	return true;
-if(result.type & TYPE_TOKEN)
-	return true;
+	if(Math.abs(result.alias-result.id) <= 10)
+		return true;
+	if(result.type & TYPE_TOKEN)
+		return true;
 }
 
 
@@ -219,6 +219,7 @@ function query1(){
 	var cattr = 0;
 	var crace = 0;
 	
+	var arg = new Object();
 	var valid = false;
 	var monly = false;
 	
@@ -229,7 +230,8 @@ function query1(){
 	// id
 	cid = parseInt(text_id.value, 10);
 	if(cid > 0){
-		qstr = qstr + " AND datas.id==@cid";
+		qstr = qstr + " AND datas.id == $id";
+		arg.$id = cid;
 		valid = true;
 	}
 	
@@ -259,7 +261,8 @@ function query1(){
 		if(select_subtype2.value != ''){
 			ctype = ctype | parseInt(select_subtype2.value, 16);
 		}
-		qstr = qstr + " AND type&" + ctype + "==" + ctype;
+		qstr = qstr + " AND type & $type == $type";
+		arg.$type = ctype;
 		valid = true;
 	}
 	// atk
@@ -267,7 +270,7 @@ function query1(){
 	if(catk >= 0 || catk == -1){
 		if(catk == -1){
 			catk = -2;
-			qstr = qstr + " AND atk==" + catk;
+			qstr = qstr + " AND atk == $atk";
 		}
 		else{
 			var relation = '';
@@ -282,8 +285,9 @@ function query1(){
 					relation = '<=';
 					break;
 			}
-			qstr = qstr + " AND atk" + relation + catk;
+			qstr = qstr + " AND atk " + relation + " $atk";
 		}
+		arg.$atk = catk;
 		valid = true;
 		monly = true;
 	}
@@ -291,10 +295,10 @@ function query1(){
 	// def, exclude link monsters
 	cdef = parseInt(text_def.value, 10);
 	if(cdef >= 0 || cdef == -1){
-		qstr = qstr + " AND NOT type&" + TYPE_LINK;
+		qstr = qstr + " AND NOT type & " + TYPE_LINK;
 		if(cdef == -1){
 			cdef = -2;
-			qstr = qstr + " AND def==" + cdef;
+			qstr = qstr + " AND def == $def";
 		}
 		else{
 			var relation = '';
@@ -309,8 +313,9 @@ function query1(){
 					relation = '<=';
 					break;
 			}
-			qstr = qstr + " AND def" + relation + cdef;
+			qstr = qstr + " AND def " + relation + " $def";;
 		}
+		arg.$def = cdef;
 		valid = true;
 		monly = true;
 	}
@@ -320,29 +325,45 @@ function query1(){
 	lv2 = select_lv2.selectedIndex;
 	sc1 = select_scale1.selectedIndex;
 	sc2 = select_scale2.selectedIndex;
+	var lv_min = 0;
+	var lv_max = 0;
+	var sc_min = 0;
+	var sc_min = 0;
 	if(lv1 || lv2){
-		if(!lv2)
-			qstr = qstr + " AND level & 0xff ==" + lv1;
-		else if(!lv1)
-			qstr = qstr + " AND level & 0xff ==" + lv2;
+		if(!lv2){
+			qstr = qstr + " AND level & 0xff == $lv";
+			arg.$lv = lv1;
+		}
+		else if(!lv1){
+			qstr = qstr + " AND level & 0xff == $lv";
+			arg.$lv = lv2;
+		}
 		else{
-			var min = Math.min(lv1, lv2);
-			var max = Math.max(lv1, lv2);
-			qstr = qstr + " AND (level & 0xff)>=" + min + " AND (level & 0xff)<=" + max;
+			lv_min = Math.min(lv1, lv2);
+			lv_max = Math.max(lv1, lv2);
+			qstr = qstr + " AND level & 0xff >= $lv_min AND level & 0xff <= $lv_max";
+			arg.$lv_min = lv_min;
+			arg.$lv_max = lv_max;
 		}
 		valid = true;
 		monly = true;
 	}
 	if(sc1 || sc2){
 		qstr = qstr + " AND type&" + TYPE_PENDULUM;
-		if(!sc2)
-			qstr = qstr + " AND (level >> 24) & 0xff == " + (sc1 - 1);
-		else if(!sc1)
-			qstr = qstr + " AND (level >> 24) & 0xff == " + (sc2 - 1);
+		if(!sc2){
+			qstr = qstr + " AND (level >> 24) & 0xff == $sc";
+			arg.$sc = sc1 - 1;
+		}
+		else if(!sc1){
+			qstr = qstr + " AND (level >> 24) & 0xff == $sc";
+			arg.$sc = sc2 - 1;
+		}
 		else{
-			var min = Math.min(sc1 - 1, sc2 - 1);
-			var max = Math.max(sc1 - 1, sc2 - 1);
-			qstr = qstr + " AND (level >> 24) & 0xff >= " + min + " AND (level >> 24) & 0xff <= " + max;
+			sc_min = Math.min(sc1 - 1, sc2 - 1);
+			sc_max = Math.max(sc1 - 1, sc2 - 1);
+			qstr = qstr + " AND level & 0xff >= $sc_min AND level & 0xff <= $sc_max";
+			arg.$sc_min = sc_min;
+			arg.$sc_max = sc_max;
 		}
 		valid = true;
 		monly = true;
@@ -373,7 +394,8 @@ function query1(){
 				cattr = ATTRIBUTE_DIVINE;
 				break;
 		}
-		qstr = qstr + " AND attribute&" + cattr;
+		qstr = qstr + " AND attribute & $attr";
+		arg.$attr = cattr;
 		valid = true;
 		monly = true;
 	}
@@ -455,22 +477,25 @@ function query1(){
 				crace = RACE_CYBERSE;
 				break;
 		}
-		qstr = qstr + " AND race&" + crace;
+		qstr = qstr + " AND race & $race";
+		arg.$race = crace;
 		valid = true;
 		monly = true;
 	}
 	
 	// name, effect
 	if(text_name.value != ''){
-		qstr = qstr + " AND name LIKE \'%" + text_name.value + "%\'";
+		qstr = qstr + " AND name LIKE \'%$name%\'";
+		arg.$name = text_name.value;
 		valid = true;
 	}
 	if(text_effect.value != ''){
-		qstr = qstr + " AND desc LIKE \'%" + text_effect.value + "%\'";
+		qstr = qstr + " AND desc LIKE \'%$desc%\'";
+		arg.$desc = text_effect.value;
 		valid = true;
 	}
 	if(monly)
-		qstr = qstr + " AND type&" + TYPE_MONSTER;
+		qstr = qstr + " AND type & " + TYPE_MONSTER;
 
 	// clear
 	var n = table1.rows.length;
@@ -508,7 +533,7 @@ function query1(){
 	
 	// Prepare a statement
 	var stmt = db.prepare(qstr);
-        stmt.bind({'@cid': cid});
+	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
 		var result = stmt.getAsObject();
@@ -615,11 +640,9 @@ function query1(){
 			data = data + '/' + print_ad(result.atk);
 			
 			if(!(result.type & TYPE_LINK)){
-				//cell_def.innerHTML = print_ad(result.def);
 				data = data + '/' + print_ad(result.def);
 			}
 			if(result.type & TYPE_PENDULUM){
-				//cell_scale.innerHTML = "刻度" + ((result.level >> 24) & 0xff);
 				data = data + '/刻度' + ((result.level >> 24) & 0xff);
 			}
 			cell_data.innerHTML = data;
