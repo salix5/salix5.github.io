@@ -29,7 +29,7 @@ var normal_quotes = [
 '好窩'
 ];
 
-if(layer <= 7){ 
+if(layer <= 8){ 
 	// pick up
 	r = getRandomIntInclusive(0, pu_quotes.length - 1);
 	text = pu_quotes[r];
@@ -65,7 +65,7 @@ function until_dawn(){
 	do{
 		++stone;
 		layer = getRandomIntInclusive(1, 1000);
-	}while(layer > 7);
+	}while(layer > 8);
 	
 	var text1 = document.getElementById('text1');
 	r = getRandomIntInclusive(0, pu_quotes.length - 1);
