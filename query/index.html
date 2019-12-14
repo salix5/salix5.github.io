@@ -8,10 +8,16 @@
 		.half-line {
 			line-height: 0.3;
 		}
-		table{
-			border-collapse: collapse;
+		table.hidden{
+			border-style: none;
+			margin: 0 auto;
 		}
-		table, td{
+		table.query{
+			border-collapse: collapse;
+			border: 1px solid black;
+			margin: 0 auto;
+		}
+		td.query{
 			border: 1px solid black;
 		}
 	</style>
@@ -19,24 +25,26 @@
 <body>
   <script src='dist/sql-wasm.js'></script>
   <script src='query.js'></script>
-	密碼：<input id="text_id" type="number" min="0" onkeydown ="key_search(event)">
-	<div class="half-line">&nbsp;</div>
-	卡名：<input id="text_name" type="text" onkeydown ="key_search(event)">
-	<div class="half-line">&nbsp;</div>
-	種類：<select id="select_type" onchange="create_subtype()">
+  <script src='functions.js'></script>
+	<table class="hidden">
+	<tr><td>密碼：<input id="text_id" type="number" min="0" onkeydown ="key_search(event)"></td></tr>
+	
+	<tr><td>卡名：<input id="text_name" type="text" onkeydown ="key_search(event)"></td></tr>
+	
+	<tr><td>種類：<select id="select_type" onchange="create_subtype()">
 		<option value=""></option>
-		<option value="TYPE_MONSTER">怪獸</option>
-		<option value="TYPE_SPELL">魔法</option>
-		<option value="TYPE_TRAP">陷阱</option>
+		<option value="0x1">怪獸</option>
+		<option value="0x2">魔法</option>
+		<option value="0x4">陷阱</option>
 	</select>
 	<select id="select_subtype1">
 		<option value=""></option>
 	</select>
 	<select id="select_subtype2" style="visibility: hidden;">
 		<option value=""></option>
-	</select>
-	<div class="half-line">&nbsp;</div>
-	星數：<select id="select_lv1">
+	</select></td></tr>
+	
+	<tr><td>星數：<select id="select_lv1">
 		<option></option>
 		<option>1</option>
 		<option>2</option>
@@ -66,9 +74,9 @@
 		<option>10</option>
 		<option>11</option>
 		<option>12</option>
-	</select>
-	<div class="half-line">&nbsp;</div>
-	刻度：<select id="select_scale1">
+	</select></td></tr>
+	
+	<tr><td>刻度：<select id="select_scale1">
 		<option></option>
 		<option>0</option>
 		<option>1</option>
@@ -102,65 +110,68 @@
 		<option>11</option>
 		<option>12</option>
 		<option>13</option>
-	</select>
-	<div class="half-line">&nbsp;</div>
-	屬性：<select id="select_attr">
+	</select></td></tr>
+	
+	<tr><td>屬性：<select id="select_attr">
 		<option value=""></option>
-		<option value="ATTRIBUTE_EARTH">地</option>
-		<option value="ATTRIBUTE_WATER">水</option>
-		<option value="ATTRIBUTE_FIRE">炎</option>
-		<option value="ATTRIBUTE_WIND">風</option>
-		<option value="ATTRIBUTE_LIGHT">光</option>
-		<option value="ATTRIBUTE_DARK">暗</option>
-		<option value="ATTRIBUTE_DIVINE">神</option>
+		<option value="0x1">地</option>
+		<option value="0x2">水</option>
+		<option value="0x4">炎</option>
+		<option value="0x8">風</option>
+		<option value="0x10">光</option>
+		<option value="0x20">暗</option>
+		<option value="0x40">神</option>
 	</select>
 	種族：<select id="select_race">
 		<option value=""></option>
-		<option value="RACE_WARRIOR">戰士</option>
-		<option value="RACE_SPELLCASTER">魔法使</option>
-		<option value="RACE_FAIRY">天使</option>
-		<option value="RACE_FIEND">惡魔</option>
-		<option value="RACE_ZOMBIE">不死</option>
-		<option value="RACE_MACHINE">機械</option>
-		<option value="RACE_AQUA">水</option>
-		<option value="RACE_PYRO">炎</option>
-		<option value="RACE_ROCK">岩石</option>
-		<option value="RACE_WINDBEAST">鳥獸</option>
-		<option value="RACE_PLANT">植物</option>
-		<option value="RACE_INSECT">昆蟲</option>
-		<option value="RACE_THUNDER">雷</option>
-		<option value="RACE_DRAGON">龍</option>
-		<option value="RACE_BEAST">獸</option>
-		<option value="RACE_BEASTWARRIOR">獸戰士</option>
-		<option value="RACE_DINOSAUR">恐龍</option>
-		<option value="RACE_FISH">魚</option>
-		<option value="RACE_SEASERPENT">海龍</option>
-		<option value="RACE_REPTILE">爬蟲類</option>
-		<option value="RACE_PSYCHO">超能</option>
-		<option value="RACE_DIVINE">幻神獸</option>
-		<option value="RACE_CREATORGOD">創造神</option>
-		<option value="RACE_WYRM">幻龍</option>
-		<option value="RACE_CYBERSE">電子界</option>
-	</select>
-	<div class="half-line">&nbsp;</div>
-	攻擊力：<input id="text_atk" type="number" min="-1" onkeydown ="key_search(event)">
+		<option value="0x1">戰士</option>
+		<option value="0x2">魔法使</option>
+		<option value="0x4">天使</option>
+		<option value="0x8">惡魔</option>
+		<option value="0x10">不死</option>
+		<option value="0x20">機械</option>
+		<option value="0x40">水</option>
+		<option value="0x80">炎</option>
+		<option value="0x100">岩石</option>
+		<option value="0x200">鳥獸</option>
+		<option value="0x400">植物</option>
+		<option value="0x800">昆蟲</option>
+		<option value="0x1000">雷</option>
+		<option value="0x2000">龍</option>
+		<option value="0x4000">獸</option>
+		<option value="0x8000">獸戰士</option>
+		<option value="0x10000">恐龍</option>
+		<option value="0x20000">魚</option>
+		<option value="0x40000">海龍</option>
+		<option value="0x80000">爬蟲類</option>
+		<option value="0x100000">超能</option>
+		<option value="0x200000">幻神獸</option>
+		<option value="0x400000">創造神</option>
+		<option value="0x800000">幻龍</option>
+		<option value="0x1000000">電子界</option>
+	</select></td></tr>
+	
+	<tr><td>攻擊力：<input id="text_atk" type="number" min="-1" onkeydown ="key_search(event)">
 	<select id="atk_relation">
 		<option value=""></option>
 		<option value="above">以上</option>
 		<option value="below">以下</option>
-	</select> (? = -1)
-	<div class="half-line">&nbsp;</div>
-	守備力：<input id="text_def" type="number" min="-1" onkeydown ="key_search(event)">
+	</select> (? = -1)</td></tr>
+	
+	<tr><td>守備力：<input id="text_def" type="number" min="-1" onkeydown ="key_search(event)">
 	<select id="def_relation">
 		<option value=""></option>
 		<option value="above">以上</option>
 		<option value="below">以下</option>
-	</select>
+	</select></td></tr>
+	
+	<tr><td>效果：<input id="text_effect" type="text" onkeydown ="key_search(event)">
+    <button id="button1" disabled="true" onclick="query()">搜尋</button></td></tr>
+    </table>
+	
 	<div class="half-line">&nbsp;</div>
-	效果：<input id="text_effect" type="text" onkeydown ="key_search(event)">
-        <button id="button1" disabled="true" onclick="query1()">搜尋</button>
-        <div class="half-line">&nbsp;</div>
-	<table id="table1">
+	</table>
+	<table id="table1" class="query">
 	</table>
 </body>
 </html>

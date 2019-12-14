@@ -61,14 +61,29 @@ const RACE_WYRM			=0x800000		//幻龙
 const RACE_CYBERSE		=0x1000000		//电子界
 
 // attr
-const ATTRIBUTE_EARTH		=0x01		//地
-const ATTRIBUTE_WATER		=0x02		//水
-const ATTRIBUTE_FIRE		=0x04		//炎
-const ATTRIBUTE_WIND		=0x08		//风
-const ATTRIBUTE_LIGHT		=0x10		//光
-const ATTRIBUTE_DARK		=0x20		//暗
+const ATTRIBUTE_EARTH	=0x01		//地
+const ATTRIBUTE_WATER	=0x02		//水
+const ATTRIBUTE_FIRE	=0x04		//炎
+const ATTRIBUTE_WIND	=0x08		//风
+const ATTRIBUTE_LIGHT	=0x10		//光
+const ATTRIBUTE_DARK	=0x20		//暗
 const ATTRIBUTE_DIVINE	=0x40		//神
-  
+
+// Link Marker
+const LINK_MARKER_BOTTOM_LEFT	=0x001 // ↙
+const LINK_MARKER_BOTTOM		=0x002 // ↓
+const LINK_MARKER_BOTTOM_RIGHT	=0x004 // ↘
+
+const LINK_MARKER_LEFT			=0x008 // ←
+const LINK_MARKER_RIGHT			=0x020 // →
+
+const LINK_MARKER_TOP_LEFT		=0x040 // ↖
+const LINK_MARKER_TOP			=0x080 // ↑
+const LINK_MARKER_TOP_RIGHT		=0x100 // ↗
+
+// table width
+const max_witdh = 1000;	
+
 var config = {   
   locateFile: filename => `./dist/${filename}`    
 }   
@@ -97,7 +112,7 @@ initSqlJs(config).then(function(SQL){
 );
 
 function is_virtual(result) {
-	if(Math.abs(result.alias-result.id) <= 10)
+	if(Math.abs(result.alias-result.id) < 10)
 		return true;
 	if(result.type & TYPE_TOKEN)
 		return true;
@@ -185,7 +200,36 @@ function print_ad(x){
 		return x;
 }
 
-function query1(){
+function print_link(id){
+	switch(id){
+		case 10000000:
+			return "<a href=\'https://yugipedia.com/wiki/Obelisk_the_Tormentor\' target=\'_blank\'>"
+			break;
+		case 10000010:
+			return "<a href=\'https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra\' target=\'_blank\'>"
+			break;
+		case 10000020:
+			return "<a href=\'https://yugipedia.com/wiki/Slifer_the_Sky_Dragon\' target=\'_blank\'>"
+			break;
+		case 10000030:
+			return "<a href=\'https://yugipedia.com/wiki/Magi_Magi_%E2%98%86_Magician_Gal\' target=\'_blank\'>"
+			break;
+		case 10000040:
+			return "<a href=\'https://yugipedia.com/wiki/Holactie_the_Creator_of_Light\' target=\'_blank\'>"
+			break;
+		case 10000080:
+			return "<a href=\'https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Sphere_Mode\' target=\'_blank\'>"
+			break;
+		case 10000090:
+			return "<a href=\'https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Immortal_Phoenix\' target=\'_blank\'>"
+			break;
+		default:
+			return "<a href=\'https://yugipedia.com/wiki/" + id.toString().padStart(8, '0') + "\' target=\'_blank\'>";
+			break;
+	}
+}
+
+function query(){
 	var text_id = document.getElementById('text_id');
 	var text_name = document.getElementById('text_name');
 	var text_effect = document.getElementById('text_effect');
@@ -216,15 +260,13 @@ function query1(){
 	var lv2 = 0;
 	var sc1 = 0;
 	var sc2 = 0;
-	var cattr = 0;
-	var crace = 0;
 	
 	var arg = new Object();
 	var valid = false;
 	var monly = false;
 	
-	if(window.innerWidth > 1200){
-		table1.style.width = '1200px';
+	if(window.innerWidth > max_witdh){
+		table1.style.width = max_witdh.toString() + 'px';
 	}
 	
 	// id
@@ -237,17 +279,7 @@ function query1(){
 	
 	// type
 	if(select_type.value != ''){
-		switch(select_type.value){
-			case 'TYPE_MONSTER':
-				ctype = TYPE_MONSTER;
-				break;
-			case 'TYPE_SPELL':
-				ctype = TYPE_SPELL;
-				break;
-			case 'TYPE_TRAP':
-				ctype = TYPE_TRAP;
-				break;
-		}
+		ctype = parseInt(select_type.value, 16);
 		if(select_subtype1.value != ''){
 			if(select_subtype1.value == 'deck'){
 			        qstr = qstr + " AND NOT type&" + ext;
@@ -371,114 +403,14 @@ function query1(){
 	
 	// attr, race
 	if(select_attr.value != ''){
-		switch(select_attr.value){
-			case 'ATTRIBUTE_EARTH':
-				cattr = ATTRIBUTE_EARTH;
-				break;
-			case 'ATTRIBUTE_WATER':
-				cattr = ATTRIBUTE_WATER;
-				break;
-			case 'ATTRIBUTE_FIRE':
-				cattr = ATTRIBUTE_FIRE;
-				break;
-			case 'ATTRIBUTE_WIND':
-				cattr = ATTRIBUTE_WIND;
-				break;
-			case 'ATTRIBUTE_LIGHT':
-				cattr = ATTRIBUTE_LIGHT;
-				break;
-			case 'ATTRIBUTE_DARK':
-				cattr = ATTRIBUTE_DARK;
-				break;
-			case 'ATTRIBUTE_DIVINE':
-				cattr = ATTRIBUTE_DIVINE;
-				break;
-		}
 		qstr = qstr + " AND attribute & $attr";
-		arg.$attr = cattr;
+		arg.$attr = parseInt(select_attr.value, 16);
 		valid = true;
 		monly = true;
 	}
 	if(select_race.value != ''){
-		switch(select_race.value){
-			case 'RACE_WARRIOR':
-				crace = RACE_WARRIOR;
-				break;
-			case 'RACE_SPELLCASTER':
-				crace = RACE_SPELLCASTER;
-				break;
-			case 'RACE_FAIRY':
-				crace = RACE_FAIRY;
-				break;
-			case 'RACE_FIEND':
-				crace = RACE_FIEND;
-				break;
-			case 'RACE_ZOMBIE':
-				crace = RACE_ZOMBIE;
-				break;
-			case 'RACE_MACHINE':
-				crace = RACE_MACHINE;
-				break;
-			case 'RACE_AQUA':
-				crace = RACE_AQUA;
-				break;
-			case 'RACE_PYRO':
-				crace = RACE_PYRO;
-				break;
-			case 'RACE_ROCK':
-				crace = RACE_ROCK;
-				break;
-			case 'RACE_WINDBEAST':
-				crace = RACE_WINDBEAST;
-				break;
-			case 'RACE_PLANT':
-				crace = RACE_PLANT;
-				break;
-			case 'RACE_INSECT':
-				crace = RACE_INSECT;
-				break;
-			case 'RACE_THUNDER':
-				crace = RACE_THUNDER;
-				break;
-			case 'RACE_DRAGON':
-				crace = RACE_DRAGON;
-				break;
-			case 'RACE_BEAST':
-				crace = RACE_BEAST;
-				break;
-			case 'RACE_BEASTWARRIOR':
-				crace = RACE_BEASTWARRIOR;
-				break;
-			case 'RACE_DINOSAUR':
-				crace = RACE_DINOSAUR;
-				break;
-			case 'RACE_FISH':
-				crace = RACE_FISH;
-				break;
-			case 'RACE_SEASERPENT':
-				crace = RACE_SEASERPENT;
-				break;
-			case 'RACE_REPTILE':
-				crace = RACE_REPTILE;
-				break;
-			case 'RACE_PSYCHO':
-				crace = RACE_PSYCHO;
-				break;
-			case 'RACE_DIVINE':
-				crace = RACE_DIVINE;
-				break;
-			case 'RACE_CREATORGOD':
-				crace = RACE_CREATORGOD;
-				break;
-			case 'RACE_WYRM':
-				crace = RACE_WYRM;
-				break;
-			case 'RACE_CYBERSE':
-				crace = RACE_CYBERSE;
-				break;
-		}
 		qstr = qstr + " AND race & $race";
-		arg.$race = crace;
+		arg.$race = parseInt(select_race.value, 16);
 		valid = true;
 		monly = true;
 	}
@@ -545,8 +477,11 @@ function query1(){
 		var cell2 = row.insertCell(-1);
 		var cell3 = row.insertCell(-1);
 		
+		cell1.className = "query";
+		cell2.className = "query";
+		cell3.className = "query";
 		
-		cell1.innerHTML = "<a href=\'https://yugipedia.com/wiki/" + result.id.toString().padStart(8, '0') + "\' target=\'_blank\'>" + result.id.toString().padStart(8, '0') + "</a>";
+		cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + "</a>";
 		if(result.ot == 2)
 			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
 		else
@@ -630,8 +565,8 @@ function query1(){
 		cell3.innerHTML = subtype + mtype + extype;
 		
 		if(result.type & TYPE_MONSTER){
-		        var row_data = table1.insertRow(-1);
-		        var cell_data = row_data.insertCell(-1);
+		    var row_data = table1.insertRow(-1);
+		    var cell_data = row_data.insertCell(-1);
 			var data = '';
 			
 			data = data + lvstr + (result.level & 0xff);
@@ -645,88 +580,15 @@ function query1(){
 			if(result.type & TYPE_PENDULUM){
 				data = data + '/刻度' + ((result.level >> 24) & 0xff);
 			}
+			cell_data.className = "query";
 			cell_data.innerHTML = data;
 			cell_data.colSpan = "3";
 		}
 		
 		var row_effect = table1.insertRow(-1);    
 		var cell_effect = row_effect.insertCell(-1);
+		cell_effect.className = "query";
 		cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
 		cell_effect.colSpan = "3";
-	}
-}
-
-function key_search(e){
-	if(!ready)
-		return;
-	switch (e.key) {
-		case 'Enter':
-			query1();
-			break;
-	}
-}
-
-function add_opt(sel, value, text){
-	var opt = document.createElement("option");
-	opt.value = value.toString(16);
-	opt.text = text;
-	sel.add(opt);
-}
-
-function create_subtype(){
-	var select_type = document.getElementById('select_type');
-	var select_subtype1 = document.getElementById('select_subtype1');
-	var select_subtype2 = document.getElementById('select_subtype2');
-	var opt;
-	
-	var len = select_subtype1.length;
-	for(var i=1; i < len; ++i)
-		select_subtype1.remove(select_subtype1.length - 1);
-	
-	len = select_subtype2.length;
-	for(var i=1; i < len; ++i)
-		select_subtype2.remove(select_subtype2.length - 1);
-	select_subtype2.style.visibility = "hidden";
-	
-	switch(select_type.value){
-		case 'TYPE_MONSTER':
-			add_opt(select_subtype1, TYPE_NORMAL, '通常');
-			add_opt(select_subtype1, TYPE_RITUAL, '儀式');
-			add_opt(select_subtype1, TYPE_FUSION, '融合');
-			add_opt(select_subtype1, TYPE_SYNCHRO, '同步');
-			add_opt(select_subtype1, TYPE_XYZ, '超量');
-			add_opt(select_subtype1, TYPE_PENDULUM, '靈擺');
-			add_opt(select_subtype1, TYPE_LINK, '連結');
-			
-			var opt = document.createElement("option");
-			opt.value = 'deck';
-			opt.text = '（牌組）';
-			select_subtype1.add(opt);
-			opt = document.createElement("option");
-			opt.value = 'extra';
-			opt.text = '（額外）'; 
-			select_subtype1.add(opt);
-			
-			add_opt(select_subtype2, TYPE_SPIRIT, '/靈魂');
-			add_opt(select_subtype2, TYPE_UNION, '/聯合');
-			add_opt(select_subtype2, TYPE_DUAL, '/二重');
-			add_opt(select_subtype2, TYPE_TUNER, '/協調');
-			add_opt(select_subtype2, TYPE_FLIP, '/反轉');
-			add_opt(select_subtype2, TYPE_TOON, '/卡通');
-			add_opt(select_subtype2, TYPE_SPSUMMON, '/特殊召喚');
-			select_subtype2.style.visibility = 'visible';
-			break;
-		case 'TYPE_SPELL':
-			add_opt(select_subtype1, 0, '通常');
-			add_opt(select_subtype1, TYPE_QUICKPLAY, '速攻');
-			add_opt(select_subtype1, TYPE_CONTINUOUS, '永續');
-			add_opt(select_subtype1, TYPE_EQUIP, '裝備');
-			add_opt(select_subtype1, TYPE_FIELD, '場地');
-			break;
-		case 'TYPE_TRAP':
-			add_opt(select_subtype1, 0, '通常');
-			add_opt(select_subtype1, TYPE_CONTINUOUS, '永續');
-			add_opt(select_subtype1, TYPE_COUNTER, '反擊');
-			break;
 	}
 }
