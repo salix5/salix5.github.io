@@ -31,7 +31,7 @@ function create_subtype(){
 	select_subtype2.style.visibility = "hidden";
 	
 	switch(select_type.value){
-		case 'TYPE_MONSTER':
+		case '0x1':
 			add_opt(select_subtype1, TYPE_NORMAL, '通常');
 			add_opt(select_subtype1, TYPE_RITUAL, '儀式');
 			add_opt(select_subtype1, TYPE_FUSION, '融合');
@@ -58,14 +58,14 @@ function create_subtype(){
 			add_opt(select_subtype2, TYPE_SPSUMMON, '/特殊召喚');
 			select_subtype2.style.visibility = 'visible';
 			break;
-		case 'TYPE_SPELL':
+		case '0x2':
 			add_opt(select_subtype1, 0, '通常');
 			add_opt(select_subtype1, TYPE_QUICKPLAY, '速攻');
 			add_opt(select_subtype1, TYPE_CONTINUOUS, '永續');
 			add_opt(select_subtype1, TYPE_EQUIP, '裝備');
 			add_opt(select_subtype1, TYPE_FIELD, '場地');
 			break;
-		case 'TYPE_TRAP':
+		case '0x4':
 			add_opt(select_subtype1, 0, '通常');
 			add_opt(select_subtype1, TYPE_CONTINUOUS, '永續');
 			add_opt(select_subtype1, TYPE_COUNTER, '反擊');
