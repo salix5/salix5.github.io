@@ -575,48 +575,47 @@ function query(){
 			data = data + '/' + print_attr(result.attribute);
 			data = data + '/' + print_race(result.race) + '族';
 			data = data + '/' + print_ad(result.atk);
-			
-if(result.type & TYPE_LINK){
-marker = '<br>';
-if(result.def & LINK_MARKER_TOP_LEFT)
-    marker = marker + '↖';
-else
-    marker = marker + '　';
-if(result.def & LINK_MARKER_TOP )
-    marker = marker + '↑';
-else
-    marker = marker + '　';
-if(result.def & LINK_MARKER_TOP_RIGHT)
-    marker = marker + '↗';
-else
-    marker = marker + '　';
-marker = marker + '<br>';
+			if(result.type & TYPE_LINK){
+				marker = '<br>';
+				if(result.def & LINK_MARKER_TOP_LEFT)
+					marker = marker + '↖';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_TOP )
+					marker = marker + ' ↑ ';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_TOP_RIGHT)
+					marker = marker + '↗';
+				else
+					marker = marker + '　';
 
-if(result.def & LINK_MARKER_LEFT)
-    marker = marker + '←';
-else
-    marker = marker + '　';
-marker = marker + '　';
-if(result.def & LINK_MARKER_RIGHT)
-    marker = marker + '→';
-else
-    marker = marker + '　';
-marker = marker + '<br>';
+				marker = marker + '<br>';
+				if(result.def & LINK_MARKER_LEFT)
+					marker = marker + '←';
+				else
+					marker = marker + '　';
+				marker = marker + '　';
+				if(result.def & LINK_MARKER_RIGHT)
+					marker = marker + '→';
+				else
+					marker = marker + '　';
+				marker = marker + '<br>';
 
-if(result.def & LINK_MARKER_BOTTOM_LEFT)
-    marker = marker + '↙';
-else
-    marker = marker + '　';
-if(result.def & LINK_MARKER_BOTTOM )
-    marker = marker + '↓';
-else
-    marker = marker + '　';
-if(result.def & LINK_MARKER_BOTTOM_RIGHT)
-    marker = marker + '↘';
-else
-    marker = marker + '　';
-}
-                        else{
+				if(result.def & LINK_MARKER_BOTTOM_LEFT)
+					marker = marker + '↙';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_BOTTOM )
+					marker = marker + ' ↓ ';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_BOTTOM_RIGHT)
+					marker = marker + '↘';
+				else
+					marker = marker + '　';
+			}
+			else{
 				data = data + '/' + print_ad(result.def);
 			}
 			if(result.type & TYPE_PENDULUM){
