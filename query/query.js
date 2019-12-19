@@ -97,12 +97,12 @@ var ready = false;
 initSqlJs(config).then(function(SQL){   
 
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', './cards.cdb', true);
+	xhr.open('GET', 'cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
 	
 	xhr.onload = e => {
 		var arr1 = new Uint8Array(xhr.response);
-                var button1 = document.getElementById('button1');
+		var button1 = document.getElementById('button1');
 		db = new SQL.Database(arr1);
 		button1.disabled = false;
 		ready = true;
