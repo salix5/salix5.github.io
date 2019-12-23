@@ -88,7 +88,7 @@ var config = {
   locateFile: filename => `./dist/${filename}`    
 }   
 
-var db;
+var db, db2;
 var ready = false;
 
 
@@ -227,6 +227,169 @@ function print_link(id){
 			return "<a href=\'https://yugipedia.com/wiki/" + id.toString().padStart(8, '0') + "\' target=\'_blank\'>";
 			break;
 	}
+}
+
+function create_rows(result){
+var table1 = document.getElementById('table1');
+var row = table1.insertRow(-1);
+		var cell1 = row.insertCell(-1);
+		var cell2 = row.insertCell(-1);
+		var cell3 = row.insertCell(-1);
+		
+		cell1.className = "query";
+		cell2.className = "query";
+		cell3.className = "query";
+		
+		cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + "</a>";
+		if(result.ot == 2)
+			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
+		else
+			cell2.innerHTML = result.name;
+		
+		var mtype = '';
+		var subtype = '';
+		var extype = '';
+		var lvstr = 'L';
+                var marker = '';
+
+		if(result.type & TYPE_MONSTER){
+			mtype = '';
+			if(result.type & TYPE_RITUAL)
+				subtype = '儀式';
+			else if(result.type & TYPE_FUSION)
+				subtype = '融合';
+			else if(result.type & TYPE_SYNCHRO)
+				subtype = '同步';
+			else if(result.type & TYPE_XYZ){
+				subtype = '超量';
+				lvstr = 'R';
+			}
+			else if(result.type & TYPE_LINK){
+				subtype = '連結';
+				lvstr = 'LINK-';
+			}
+			// extype
+			if(result.type & TYPE_PENDULUM){
+			        if(subtype == ''){
+			            subtype = '靈擺';
+			            if(result.type & TYPE_NORMAL)
+			                extype = '/通常';
+			            else
+			                extype = '/效果';
+			        }
+			        else {
+			            extype = '/靈擺';
+			        }
+			}
+			else if(result.type & TYPE_NORMAL)
+				subtype = '通常';
+			else if(subtype == '')
+				subtype = '效果';
+			
+			if(result.type & TYPE_SPIRIT)
+				extype = extype + '/靈魂';
+			if(result.type & TYPE_UNION)
+				extype = extype + '/聯合';
+			if(result.type & TYPE_DUAL)
+				extype = extype + '/二重';
+			if(result.type & TYPE_TUNER)
+				extype = extype + '/協調';
+			if(result.type & TYPE_FLIP)
+				extype = extype + '/反轉';
+			if(result.type & TYPE_TOON)
+				extype = extype + '/卡通';
+			if(result.type & TYPE_SPSUMMON)
+				extype = extype + '/特殊召喚';
+		}
+		else if(result.type & TYPE_SPELL){
+			mtype = '魔法';
+			if(result.type & TYPE_QUICKPLAY)
+				subtype = '速攻';
+			else if(result.type & TYPE_CONTINUOUS)
+				subtype = '永續';
+			else if(result.type & TYPE_EQUIP)
+				subtype = '裝備';
+			else if(result.type & TYPE_FIELD)
+				subtype = '場地';
+			else
+				subtype = '通常';
+		}
+		else if(result.type & TYPE_TRAP){
+			mtype = '陷阱';
+			if(result.type & TYPE_CONTINUOUS)
+				subtype = '永續';
+			else if(result.type & TYPE_COUNTER)
+				subtype = '反擊';
+			else
+				subtype = '通常';
+		}
+		cell3.innerHTML = subtype + mtype + extype;
+		
+		if(result.type & TYPE_MONSTER){
+		    var row_data = table1.insertRow(-1);
+		    var cell_data = row_data.insertCell(-1);
+			var data = '';
+			
+			data = data + lvstr + (result.level & 0xff);
+			data = data + '/' + print_attr(result.attribute);
+			data = data + '/' + print_race(result.race) + '族';
+			data = data + '/' + print_ad(result.atk);
+			if(result.type & TYPE_LINK){
+				marker = '<br>';
+				if(result.def & LINK_MARKER_TOP_LEFT)
+					marker = marker + '↖';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_TOP )
+					marker = marker + ' ↑ ';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_TOP_RIGHT)
+					marker = marker + '↗';
+				else
+					marker = marker + '　';
+
+				marker = marker + '<br>';
+				if(result.def & LINK_MARKER_LEFT)
+					marker = marker + '←';
+				else
+					marker = marker + '　';
+				marker = marker + '　';
+				if(result.def & LINK_MARKER_RIGHT)
+					marker = marker + '→';
+				else
+					marker = marker + '　';
+				marker = marker + '<br>';
+
+				if(result.def & LINK_MARKER_BOTTOM_LEFT)
+					marker = marker + '↙';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_BOTTOM )
+					marker = marker + ' ↓ ';
+				else
+					marker = marker + '　';
+				if(result.def & LINK_MARKER_BOTTOM_RIGHT)
+					marker = marker + '↘';
+				else
+					marker = marker + '　';
+			}
+			else{
+				data = data + '/' + print_ad(result.def);
+			}
+			if(result.type & TYPE_PENDULUM){
+				data = data + '/刻度' + ((result.level >> 24) & 0xff);
+			}
+			cell_data.className = "query";
+			cell_data.innerHTML = data + marker;
+			cell_data.colSpan = "3";
+		}
+		
+		var row_effect = table1.insertRow(-1);    
+		var cell_effect = row_effect.insertCell(-1);
+		cell_effect.className = "query";
+		cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
+		cell_effect.colSpan = "3";
 }
 
 function query(){
@@ -469,167 +632,9 @@ function query(){
 	while(stmt.step()) {
 		// execute
 		var result = stmt.getAsObject();
-		
+
 		if(is_virtual(result))
-			continue;			
-		var row = table1.insertRow(-1);
-		var cell1 = row.insertCell(-1);
-		var cell2 = row.insertCell(-1);
-		var cell3 = row.insertCell(-1);
-		
-		cell1.className = "query";
-		cell2.className = "query";
-		cell3.className = "query";
-		
-		cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + "</a>";
-		if(result.ot == 2)
-			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
-		else
-			cell2.innerHTML = result.name;
-		
-		var mtype = '';
-		var subtype = '';
-		var extype = '';
-		var lvstr = 'L';
-                var marker = '';
-
-		if(result.type & TYPE_MONSTER){
-			mtype = '';
-			if(result.type & TYPE_RITUAL)
-				subtype = '儀式';
-			else if(result.type & TYPE_FUSION)
-				subtype = '融合';
-			else if(result.type & TYPE_SYNCHRO)
-				subtype = '同步';
-			else if(result.type & TYPE_XYZ){
-				subtype = '超量';
-				lvstr = 'R';
-			}
-			else if(result.type & TYPE_LINK){
-				subtype = '連結';
-				lvstr = 'LINK-';
-			}
-			// extype
-			if(result.type & TYPE_PENDULUM){
-			        if(subtype == ''){
-			            subtype = '靈擺';
-			            if(result.type & TYPE_NORMAL)
-			                extype = '/通常';
-			            else
-			                extype = '/效果';
-			        }
-			        else {
-			            extype = '/靈擺';
-			        }
-			}
-			else if(result.type & TYPE_NORMAL)
-				subtype = '通常';
-			else if(subtype == '')
-				subtype = '效果';
-			
-			if(result.type & TYPE_SPIRIT)
-				extype = extype + '/靈魂';
-			if(result.type & TYPE_UNION)
-				extype = extype + '/聯合';
-			if(result.type & TYPE_DUAL)
-				extype = extype + '/二重';
-			if(result.type & TYPE_TUNER)
-				extype = extype + '/協調';
-			if(result.type & TYPE_FLIP)
-				extype = extype + '/反轉';
-			if(result.type & TYPE_TOON)
-				extype = extype + '/卡通';
-			if(result.type & TYPE_SPSUMMON)
-				extype = extype + '/特殊召喚';
-		}
-		else if(result.type & TYPE_SPELL){
-			mtype = '魔法';
-			if(result.type & TYPE_QUICKPLAY)
-				subtype = '速攻';
-			else if(result.type & TYPE_CONTINUOUS)
-				subtype = '永續';
-			else if(result.type & TYPE_EQUIP)
-				subtype = '裝備';
-			else if(result.type & TYPE_FIELD)
-				subtype = '場地';
-			else
-				subtype = '通常';
-		}
-		else if(result.type & TYPE_TRAP){
-			mtype = '陷阱';
-			if(result.type & TYPE_CONTINUOUS)
-				subtype = '永續';
-			else if(result.type & TYPE_COUNTER)
-				subtype = '反擊';
-			else
-				subtype = '通常';
-		}
-		cell3.innerHTML = subtype + mtype + extype;
-		
-		if(result.type & TYPE_MONSTER){
-		    var row_data = table1.insertRow(-1);
-		    var cell_data = row_data.insertCell(-1);
-			var data = '';
-			
-			data = data + lvstr + (result.level & 0xff);
-			data = data + '/' + print_attr(result.attribute);
-			data = data + '/' + print_race(result.race) + '族';
-			data = data + '/' + print_ad(result.atk);
-			if(result.type & TYPE_LINK){
-				marker = '<br>';
-				if(result.def & LINK_MARKER_TOP_LEFT)
-					marker = marker + '↖';
-				else
-					marker = marker + '　';
-				if(result.def & LINK_MARKER_TOP )
-					marker = marker + ' ↑ ';
-				else
-					marker = marker + '　';
-				if(result.def & LINK_MARKER_TOP_RIGHT)
-					marker = marker + '↗';
-				else
-					marker = marker + '　';
-
-				marker = marker + '<br>';
-				if(result.def & LINK_MARKER_LEFT)
-					marker = marker + '←';
-				else
-					marker = marker + '　';
-				marker = marker + '　';
-				if(result.def & LINK_MARKER_RIGHT)
-					marker = marker + '→';
-				else
-					marker = marker + '　';
-				marker = marker + '<br>';
-
-				if(result.def & LINK_MARKER_BOTTOM_LEFT)
-					marker = marker + '↙';
-				else
-					marker = marker + '　';
-				if(result.def & LINK_MARKER_BOTTOM )
-					marker = marker + ' ↓ ';
-				else
-					marker = marker + '　';
-				if(result.def & LINK_MARKER_BOTTOM_RIGHT)
-					marker = marker + '↘';
-				else
-					marker = marker + '　';
-			}
-			else{
-				data = data + '/' + print_ad(result.def);
-			}
-			if(result.type & TYPE_PENDULUM){
-				data = data + '/刻度' + ((result.level >> 24) & 0xff);
-			}
-			cell_data.className = "query";
-			cell_data.innerHTML = data + marker;
-			cell_data.colSpan = "3";
-		}
-		
-		var row_effect = table1.insertRow(-1);    
-		var cell_effect = row_effect.insertCell(-1);
-		cell_effect.className = "query";
-		cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
-		cell_effect.colSpan = "3";
+			continue;
+                create_rows(result);			
 	}
 }
