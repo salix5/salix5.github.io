@@ -108,6 +108,15 @@ initSqlJs(config).then(function(SQL){
 		ready = true;
 	};
 	xhr.send();
+        var xhr2 = new XMLHttpRequest();
+	xhr2.open('GET', 'beta.cdb', true);
+	xhr2.responseType = 'arraybuffer';
+	
+	xhr2.onload = e => {
+		var arr1 = new Uint8Array(xhr2.response);
+		db2 = new SQL.Database(arr1);
+	};
+	xhr2.send();
 	}
 );
 
@@ -631,6 +640,16 @@ function query(){
 	
 	// Prepare a statement
 	var stmt = db.prepare(qstr);
+	stmt.bind(arg);
+	while(stmt.step()) {
+		// execute
+		var result = stmt.getAsObject();
+
+		if(is_virtual(result))
+			continue;
+                create_rows(result);			
+	}
+      stmt = db2.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
