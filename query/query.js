@@ -240,7 +240,10 @@ var row = table1.insertRow(-1);
 		cell2.className = "query";
 		cell3.className = "query";
 		
-		cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + "</a>";
+                if(result.id <= 99999999)
+		    cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + "</a>";
+                else
+                    cell1.innerHTML = result.id.toString();
 		if(result.ot == 2)
 			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
 		else
