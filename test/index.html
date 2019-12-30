@@ -5,7 +5,7 @@
 <title>時代的印記</title>
 </head>
 <body>
-<input type="text" id="text1">
+<input type="text" id="text1" readonly>
 <button type="button" onclick="mark_of_time()">複製</button>
 <button type="button" onclick="until_dawn()">直到黎明</button>
 <div id="dawn"></div>
@@ -59,6 +59,7 @@ function getRandomIntInclusive(min, max) {
 function mark_of_time(){
 	text1.select();
 	document.execCommand("copy");
+       window.getSelection().removeAllRanges();
 }
 
 function until_dawn(){
