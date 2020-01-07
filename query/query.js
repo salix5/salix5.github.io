@@ -97,7 +97,7 @@ var ready = false;
 initSqlJs(config).then(function(SQL){   
 
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'cards.cdb', true);
+	xhr.open('GET', 'https://github.com/salix5/CardEditor/raw/master/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
 	
 	xhr.onload = e => {
