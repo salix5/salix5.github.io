@@ -92,6 +92,7 @@ var db, db2;
 var ready = false;
 var ltable = new Object();
 
+/*
 var lflist = new XMLHttpRequest();
 lflist.open('GET', 'lflist.conf', true);	
 lflist.onload = e => {
@@ -115,7 +116,7 @@ for(var i = 0; i < line.length; ++i){
 }
 };
 lflist.send();
-
+*/
 
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
 // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
