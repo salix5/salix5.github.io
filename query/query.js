@@ -135,7 +135,7 @@ initSqlJs(config).then(function(SQL){
 	};
 	xhr.send();
         var xhr2 = new XMLHttpRequest();
-	xhr2.open('GET', 'beta.cdb', true);
+	xhr2.open('GET', '../CardEditor/expansions/beta.cdb', true);
 	xhr2.responseType = 'arraybuffer';
 	
 	xhr2.onload = e => {
