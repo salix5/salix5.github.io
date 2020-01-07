@@ -90,6 +90,31 @@ var config = {
 
 var db, db2;
 var ready = false;
+var ltable = new Object();
+
+var lflist = new XMLHttpRequest();
+lflist.open('GET', '../CardEditor/lflist.conf', true);	
+lflist.onload = e => {
+var data = lflist.responseText.replace(/\r\n/g, '\n');
+var line = data.split('\n');
+var count = 0;
+for(var i = 0; i < line.length; ++i){
+    var init = line[i].substring(0, 1);
+    if(init == '!'){
+        ++count;
+        if(count == 2)
+            break;
+    }
+    else if(init == '#')
+    else{
+        var part = line[i].split(' ');
+        var id = parseInt(part[0], 10);
+        var limit = parseInt(part[1], 10);
+        ltable[id] = limit;
+    }
+}
+};
+lflist.send();
 
 
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
@@ -97,7 +122,7 @@ var ready = false;
 initSqlJs(config).then(function(SQL){   
 
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
+	xhr.open('GET', '../CardEditor/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
 	
 	xhr.onload = e => {
@@ -109,7 +134,7 @@ initSqlJs(config).then(function(SQL){
 	};
 	xhr.send();
         var xhr2 = new XMLHttpRequest();
-	xhr2.open('GET', 'https://salix5.github.io/CardEditor/expansions/beta.cdb', true);
+	xhr2.open('GET', '../CardEditor/expansions/beta.cdb', true);
 	xhr2.responseType = 'arraybuffer';
 	
 	xhr2.onload = e => {
@@ -238,6 +263,17 @@ function print_link(id){
 	}
 }
 
+function print_limit(id){
+    if(ltable[id] == 0)
+      return '（禁止）';
+    else if(ltable[id] == 1)
+      return '（限制）';
+    else if(ltable[id] == 2)
+      return '（準限制）';
+    else
+      return '';
+}
+
 function create_rows(result){
 var table1 = document.getElementById('table1');
 var row = table1.insertRow(-1);
@@ -254,9 +290,9 @@ var row = table1.insertRow(-1);
                 else
                     cell1.innerHTML = result.id.toString();
 		if(result.ot == 2)
-			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + "</span>";
+			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + print_limit(result.id) + "</span>";
 		else
-			cell2.innerHTML = result.name;
+			cell2.innerHTML = result.name + print_limit(result.id);
 		
 		var mtype = '';
 		var subtype = '';
