@@ -123,7 +123,7 @@ lflist.send();
 initSqlJs(config).then(function(SQL){   
 
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'cards.cdb', true);
+	xhr.open('GET', '../CardEditor/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
 	
 	xhr.onload = e => {
