@@ -93,7 +93,7 @@ var ready = false;
 var ltable = new Object();
 
 var lflist = new XMLHttpRequest();
-lflist.open('GET', '../CardEditor/lflist.conf', true);	
+lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);	
 lflist.onload = e => {
 var data = lflist.responseText.replace(/\r\n/g, '\n');
 var line = data.split('\n');
@@ -122,7 +122,7 @@ lflist.send();
 initSqlJs(config).then(function(SQL){   
 
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '../CardEditor/cards.cdb', true);
+	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
 	
 	xhr.onload = e => {
@@ -134,7 +134,7 @@ initSqlJs(config).then(function(SQL){
 	};
 	xhr.send();
         var xhr2 = new XMLHttpRequest();
-	xhr2.open('GET', '../CardEditor/expansions/beta.cdb', true);
+	xhr2.open('GET', 'https://salix5.github.io/CardEditor/expansions/beta.cdb', true);
 	xhr2.responseType = 'arraybuffer';
 	
 	xhr2.onload = e => {
