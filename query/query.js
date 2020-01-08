@@ -135,7 +135,7 @@ for(var i = 0; i < line.length; ++i){
         if(count == 2)
             break;
     }
-    else if(init == '#')
+    else if(init == '#'){}
     else{
         var part = line[i].split(' ');
         var id = parseInt(part[0], 10);
