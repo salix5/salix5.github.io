@@ -63,6 +63,7 @@ function create_subtype(){
 			add_opt(select_subtype1, TYPE_QUICKPLAY, '速攻');
 			add_opt(select_subtype1, TYPE_CONTINUOUS, '永續');
 			add_opt(select_subtype1, TYPE_EQUIP, '裝備');
+			add_opt(select_subtype1, TYPE_RITUAL, '儀式');
 			add_opt(select_subtype1, TYPE_FIELD, '場地');
 			break;
 		case '0x4':
