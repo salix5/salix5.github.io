@@ -92,9 +92,29 @@ var db, db2;
 var ready = false;
 var ltable = new Object();
 
-/*
-
-*/
+var lflist = new XMLHttpRequest();
+lflist.open('GET', '../CardEditor/lflist.conf', true);	
+lflist.onload = e => {
+var ldata = lflist.responseText.replace(/\r\n/g, '\n');
+var line = ldata.split('\n');
+var count = 0;
+for(var i = 0; i < line.length; ++i){
+    var init = line[i].substring(0, 1);
+    if(init == '!'){
+        ++count;
+        if(count == 2)
+            break;
+    }
+    else if(init == '#'){}
+    else{
+        var part = line[i].split(' ');
+        var id = parseInt(part[0], 10);
+        var limit = parseInt(part[1], 10);
+        ltable[id] = limit;
+    }
+}
+};
+lflist.send();
 
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
 // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
@@ -121,31 +141,6 @@ initSqlJs(config).then(function(SQL){
 		db2 = new SQL.Database(arr1);
 	};
 	xhr2.send();
-
-var lflist = new XMLHttpRequest();
-lflist.open('GET', 'lflist.conf', true);	
-lflist.onload = e => {
-var data = lflist.responseText.replace(/\r\n/g, '\n');
-var line = data.split('\n');
-var count = 0;
-for(var i = 0; i < line.length; ++i){
-    var init = line[i].substring(0, 1);
-    if(init == '!'){
-        ++count;
-        if(count == 2)
-            break;
-    }
-    else if(init == '#'){}
-    else{
-        var part = line[i].split(' ');
-        var id = parseInt(part[0], 10);
-        var limit = parseInt(part[1], 10);
-        ltable[id] = limit;
-    }
-}
-};
-lflist.send();
-
 	}
 );
 
@@ -269,11 +264,11 @@ function print_link(id){
 
 function print_limit(id){
     if(ltable[id] == 0)
-      return '（禁止）';
+      return '\u{1f6ab}';
     else if(ltable[id] == 1)
-      return '（限制）';
+      return '\u{31}\u{fe0f}\u{20e3}';
     else if(ltable[id] == 2)
-      return '（準限制）';
+      return '\u{32}\u{fe0f}\u{20e3}';
     else
       return '';
 }
