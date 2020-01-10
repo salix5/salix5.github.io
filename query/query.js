@@ -95,24 +95,24 @@ var ltable = new Object();
 var lflist = new XMLHttpRequest();
 lflist.open('GET', '../CardEditor/lflist.conf', true);	
 lflist.onload = e => {
-var ldata = lflist.responseText.replace(/\r\n/g, '\n');
-var line = ldata.split('\n');
-var count = 0;
-for(var i = 0; i < line.length; ++i){
-    var init = line[i].substring(0, 1);
-    if(init == '!'){
-        ++count;
-        if(count == 2)
-            break;
-    }
-    else if(init == '#'){}
-    else{
-        var part = line[i].split(' ');
-        var id = parseInt(part[0], 10);
-        var limit = parseInt(part[1], 10);
-        ltable[id] = limit;
-    }
-}
+	var ldata = lflist.responseText.replace(/\r\n/g, '\n');
+	var line = ldata.split('\n');
+	var count = 0;
+	for(var i = 0; i < line.length; ++i){
+		var init = line[i].substring(0, 1);
+		if(init == '!'){
+			++count;
+			if(count == 2)
+				break;
+		}
+		else if(init == '#'){}
+		else{
+			var part = line[i].split(' ');
+			var id = parseInt(part[0], 10);
+			var limit = parseInt(part[1], 10);
+			ltable[id] = limit;
+			}
+	}
 };
 lflist.send();
 
@@ -236,41 +236,41 @@ function print_ad(x){
 function print_link(id){
 	switch(id){
 		case 10000000:
-			return "<a href=\'https://yugipedia.com/wiki/Obelisk_the_Tormentor\' target=\'_blank\'>"
+			return '<a href="https://yugipedia.com/wiki/Obelisk_the_Tormentor" target="_blank">'
 			break;
 		case 10000010:
-			return "<a href=\'https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra\' target=\'_blank\'>"
+			return '<a href="https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra" target="_blank">'
 			break;
 		case 10000020:
-			return "<a href=\'https://yugipedia.com/wiki/Slifer_the_Sky_Dragon\' target=\'_blank\'>"
+			return '<a href="https://yugipedia.com/wiki/Slifer_the_Sky_Dragon" target="_blank">'
 			break;
 		case 10000030:
-			return "<a href=\'https://yugipedia.com/wiki/Magi_Magi_%E2%98%86_Magician_Gal\' target=\'_blank\'>"
+			return '<a href="https://yugipedia.com/wiki/Magi_Magi_%E2%98%86_Magician_Gal" target="_blank">'
 			break;
 		case 10000040:
-			return "<a href=\'https://yugipedia.com/wiki/Holactie_the_Creator_of_Light\' target=\'_blank\'>"
+			return '<a href="https://yugipedia.com/wiki/Holactie_the_Creator_of_Light" target="_blank">'
 			break;
 		case 10000080:
-			return "<a href=\'https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Sphere_Mode\' target=\'_blank\'>"
+			return '<a href="https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Sphere_Mode" target="_blank">'
 			break;
 		case 10000090:
-			return "<a href=\'https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Immortal_Phoenix\' target=\'_blank\'>"
+			return '<a href="https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Immortal_Phoenix" target="_blank">'
 			break;
 		default:
-			return "<a href=\'https://yugipedia.com/wiki/" + id.toString().padStart(8, '0') + "\' target=\'_blank\'>";
+			return '<a href="https://yugipedia.com/wiki/' + id.toString().padStart(8, '0') + '" target="_blank">';
 			break;
 	}
 }
 
 function print_limit(id){
-    if(ltable[id] == 0)
-      return '\u{1f6ab}';
-    else if(ltable[id] == 1)
-      return '\u{31}\u{fe0f}\u{20e3}';
-    else if(ltable[id] == 2)
-      return '\u{32}\u{fe0f}\u{20e3}';
-    else
-      return '';
+	if(ltable[id] == 0)
+		return '<img src="../CardEditor/data/0.png" height="20" width="20">';
+	else if(ltable[id] == 1)
+		return '<img src="../CardEditor/data/1.png" height="20" width="20">';
+	else if(ltable[id] == 2)
+		return '<img src="../CardEditor/data/2.png" height="20" width="20">';
+	else
+		return '';
 }
 
 function create_rows(result){
@@ -285,11 +285,11 @@ var row = table1.insertRow(-1);
 		cell3.className = "query";
 		
                 if(result.id <= 99999999)
-		    cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + "</a>";
+		    cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + '</a>';
                 else
                     cell1.innerHTML = result.id.toString();
 		if(result.ot == 2)
-			cell2.innerHTML = "<span style=\'color: red;\'>" + result.name + print_limit(result.id) + "</span>";
+			cell2.innerHTML = '<span style="color: red;">' + result.name + '</span>' + print_limit(result.id);
 		else
 			cell2.innerHTML = result.name + print_limit(result.id);
 		
