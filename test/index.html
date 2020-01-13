@@ -16,8 +16,7 @@ var r = 0;
 var text = '';
 
 var pu_quotes = [
-'那還是人嗎',
-'那還是人嗎（2020的碎片）'
+'那還是人嗎'
 ];
 
 var normal_quotes = [
@@ -72,8 +71,8 @@ function until_dawn(){
 	}while(layer > 8);
 	
 	var text1 = document.getElementById('text1');
-	//r = getRandomIntInclusive(0, pu_quotes.length - 1);
-	text1.value = pu_quotes[0];
+	r = getRandomIntInclusive(0, pu_quotes.length - 1);
+	text1.value = pu_quotes[r];
 	document.getElementById("dawn").innerHTML = document.getElementById("dawn").innerHTML + '總共抽了' + stone + '次！<br>';
 }
 </script>
