@@ -29,8 +29,11 @@ const TYPE_SPSUMMON		=0x2000000	//特殊召唤
 const TYPE_QUICKPLAY		=0x10000	//速攻
 const TYPE_CONTINUOUS		=0x20000	//永续
 const TYPE_EQUIP			=0x40000	//装备
+//const TYPE_RITUAL			=0x80
 const TYPE_FIELD			=0x80000	//场地
+
 // trap type
+//const TYPE_CONTINUOUS		=0x20000
 const TYPE_COUNTER		=0x100000	//反击
 
 // race
@@ -356,6 +359,8 @@ var row = table1.insertRow(-1);
 				subtype = '永續';
 			else if(result.type & TYPE_EQUIP)
 				subtype = '裝備';
+			else if(result.type & TYPE_RITUAL)
+				subtype = '儀式';
 			else if(result.type & TYPE_FIELD)
 				subtype = '場地';
 			else
