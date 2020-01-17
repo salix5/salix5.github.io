@@ -144,13 +144,13 @@ initSqlJs(config).then(function(SQL){
 	}
 );
 
+// require: id, alias, type
 function is_virtual(result) {
 	if(Math.abs(result.alias-result.id) < 10)
 		return true;
 	if(result.type & TYPE_TOKEN)
 		return true;
 }
-
 
 function print_attr(x){
 	switch(x){
@@ -264,11 +264,11 @@ function print_link(id){
 
 function print_limit(id){
 	if(ltable[id] == 0)
-		return '<img src="../CardEditor/data/0.png" height="20" width="20">';
+		return '<img src="0.png" height="20" width="20">';
 	else if(ltable[id] == 1)
-		return '<img src="../CardEditor/data/1.png" height="20" width="20">';
+		return '<img src="1.png" height="20" width="20">';
 	else if(ltable[id] == 2)
-		return '<img src="../CardEditor/data/2.png" height="20" width="20">';
+		return '<img src="2.png" height="20" width="20">';
 	else
 		return '';
 }
