@@ -237,30 +237,31 @@ function print_ad(x){
 }
 
 function print_link(id){
+	var prefix = 'https://yugioh.fandom.com/wiki/';
 	switch(id){
 		case 10000000:
-			return '<a href="https://yugipedia.com/wiki/Obelisk_the_Tormentor" target="_blank">'
+			return prefix + 'Obelisk_the_Tormentor'
 			break;
 		case 10000010:
-			return '<a href="https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra" target="_blank">'
+			return prefix + 'The_Winged_Dragon_of_Ra'
 			break;
 		case 10000020:
-			return '<a href="https://yugipedia.com/wiki/Slifer_the_Sky_Dragon" target="_blank">'
+			return prefix + 'Slifer_the_Sky_Dragon'
 			break;
 		case 10000030:
-			return '<a href="https://yugipedia.com/wiki/Magi_Magi_%E2%98%86_Magician_Gal" target="_blank">'
+			return prefix + 'Magi_Magi_%E2%98%86_Magician_Gal'
 			break;
 		case 10000040:
-			return '<a href="https://yugipedia.com/wiki/Holactie_the_Creator_of_Light" target="_blank">'
+			return prefix + 'Holactie_the_Creator_of_Light'
 			break;
 		case 10000080:
-			return '<a href="https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Sphere_Mode" target="_blank">'
+			return prefix + 'The_Winged_Dragon_of_Ra_-_Sphere_Mode'
 			break;
 		case 10000090:
-			return '<a href="https://yugipedia.com/wiki/The_Winged_Dragon_of_Ra_-_Immortal_Phoenix" target="_blank">'
+			return prefix + 'The_Winged_Dragon_of_Ra_-_Immortal_Phoenix'
 			break;
 		default:
-			return '<a href="https://yugipedia.com/wiki/' + id.toString().padStart(8, '0') + '" target="_blank">';
+			return prefix + id.toString().padStart(8, '0');
 			break;
 	}
 }
@@ -286,11 +287,11 @@ var row = table1.insertRow(-1);
 		cell1.className = "query";
 		cell2.className = "query";
 		cell3.className = "query";
+		if(result.id <= 99999999)
+			cell1.innerHTML = '<a href="' + print_link(result.id) + '" target="_blank">' + result.id.toString().padStart(8, '0') + '</a>';
+		else
+			cell1.innerHTML = result.id.toString();
 		
-                if(result.id <= 99999999)
-		    cell1.innerHTML = print_link(result.id) + result.id.toString().padStart(8, '0') + '</a>';
-                else
-                    cell1.innerHTML = result.id.toString();
 		if(result.ot == 2)
 			cell2.innerHTML = '<span style="color: red;">' + result.name + '</span>' + print_limit(result.id);
 		else
