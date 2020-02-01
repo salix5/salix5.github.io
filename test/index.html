@@ -70,7 +70,6 @@ function until_dawn(){
 		layer = getRandomIntInclusive(1, 1000);
 	}while(layer > 8);
 	
-	var text1 = document.getElementById('text1');
 	r = getRandomIntInclusive(0, pu_quotes.length - 1);
 	text1.value = pu_quotes[r];
 	document.getElementById("dawn").innerHTML = document.getElementById("dawn").innerHTML + '總共抽了' + stone + '次！<br>';
