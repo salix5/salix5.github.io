@@ -97,7 +97,6 @@ var ltable = new Object();
 var cid_table;
 
 var lflist = new XMLHttpRequest();
-lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);	
 lflist.onload = e => {
 	var ldata = lflist.responseText.replace(/\r\n/g, '\n');
 	var line = ldata.split('\n');
@@ -118,14 +117,15 @@ lflist.onload = e => {
 			}
 	}
 };
+lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);
 lflist.send();
 
 var cid_xhr = new XMLHttpRequest();
-cid_xhr.open('GET', 'cid.json', true);	
-cid_xhr.responseType = 'json';
 cid_xhr.onload = e => {
 	cid_table = cid_xhr.response;
 };
+cid_xhr.open('GET', 'cid.json', true);	
+cid_xhr.responseType = 'json';
 cid_xhr.send();
 
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
@@ -133,8 +133,6 @@ cid_xhr.send();
 initSqlJs(config).then(function(SQL){   
 
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
-	xhr.responseType = 'arraybuffer';
 	xhr.onload = e => {
 		var arr1 = new Uint8Array(xhr.response);
 		var button1 = document.getElementById('button1');
@@ -142,15 +140,17 @@ initSqlJs(config).then(function(SQL){
 		button1.disabled = false;
 		ready = true;
 	};
+	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
+	xhr.responseType = 'arraybuffer';
 	xhr.send();
 	
 	var xhr2 = new XMLHttpRequest();
-	xhr2.open('GET', 'beta.cdb', true);
-	xhr2.responseType = 'arraybuffer';	
 	xhr2.onload = e => {
 		var arr1 = new Uint8Array(xhr2.response);
 		db2 = new SQL.Database(arr1);
 	};
+	xhr2.open('GET', 'beta.cdb', true);
+	xhr2.responseType = 'arraybuffer';	
 	xhr2.send();
 	}
 );
