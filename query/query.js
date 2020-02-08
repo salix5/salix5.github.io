@@ -656,8 +656,10 @@ function query(){
 
 	text_id.value = '';
 	text_name.value = '';
-	text_atk.value = '';
-	text_def.value = '';
+	text_atk1.value = '';
+	text_atk2.value = '';
+	text_def1.value = '';
+	text_def2.value = '';
 	text_effect.value = '';
 	
 	select_type.selectedIndex = 0;
