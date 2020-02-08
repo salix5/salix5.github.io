@@ -163,6 +163,13 @@ function is_virtual(result) {
 		return true;
 }
 
+function is_legal(atk){
+	if(atk == -1 || atk >= 0)
+	    return true;
+	else
+	    return false;
+}
+
 function print_attr(x){
 	switch(x){
 		case ATTRIBUTE_EARTH:
@@ -441,10 +448,12 @@ function query(){
 	var text_name = document.getElementById('text_name');
 	var text_effect = document.getElementById('text_effect');
 	
-	var text_atk = document.getElementById('text_atk');
-	var text_def = document.getElementById('text_def');
-	var atk_relation = document.getElementById('atk_relation');
-	var def_relation = document.getElementById('def_relation');
+	var text_atk1 = document.getElementById('text_atk1');
+	var text_atk2 = document.getElementById('text_atk2');
+	var text_def1 = document.getElementById('text_def1');
+    var text_def2 = document.getElementById('text_def2');
+	//var atk_relation = document.getElementById('atk_relation');
+	//var def_relation = document.getElementById('def_relation');
 	
 	var select_type = document.getElementById('select_type');
 	var select_subtype1 = document.getElementById('select_subtype1');
@@ -461,8 +470,10 @@ function query(){
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
 	var cid = 0;
 	var ctype = 0;
-	var catk = 0;
-	var cdef = 0;
+	var atk1 = 0;
+	var atk2 = 0;
+	var def1 = 0;
+	var def2 = 0;
 	var lv1 = 0;
 	var lv2 = 0;
 	var sc1 = 0;
@@ -505,56 +516,58 @@ function query(){
 		valid = true;
 	}
 	// atk
-	catk = parseInt(text_atk.value, 10);
-	if(catk >= 0 || catk == -1){
-		if(catk == -1){
-			catk = -2;
+	atk1 = parseInt(text_atk1.value, 10);
+    atk2 = parseInt(text_atk2.value, 10);
+
+	if(is_legal(atk1) || is_legal(atk2)){
+		if(atk1 == -1 || atk2 == -1){
 			qstr = qstr + " AND atk == $atk";
+			arg.$atk = -2;
 		}
-		else{
-			var relation = '';
-			switch(atk_relation.value){
-				case '':
-					relation = '==';
-					break;
-				case 'above':
-					relation = '>=';
-					break;
-				case 'below':
-					relation = '<=';
-					break;
-			}
-			qstr = qstr + " AND atk " + relation + " $atk";
+		else if(!is_legal(atk2)){
+			qstr = qstr + " AND atk == $atk";
+			arg.$atk = atk1;
 		}
-		arg.$atk = catk;
+		else if(!is_legal(atk1)){
+			qstr = qstr + " AND atk == $atk";
+			arg.$atk = atk2;
+		}
+		else {
+			var atk_min = Math.min(atk1, atk2);
+			var atk_max = Math.max(atk1, atk2);
+			qstr = qstr + " AND atk >= $atk_min AND atk <= $atk_max";
+			arg.$atk_min = atk_min;
+			arg.$atk_max = atk_max;
+		}
 		valid = true;
 		monly = true;
 	}
 	
 	// def, exclude link monsters
-	cdef = parseInt(text_def.value, 10);
-	if(cdef >= 0 || cdef == -1){
+	def1 = parseInt(text_def1.value, 10);
+    def2 = parseInt(text_def2.value, 10);
+
+	if(is_legal(def1) || is_legal(def2)){
 		qstr = qstr + " AND NOT type & " + TYPE_LINK;
-		if(cdef == -1){
-			cdef = -2;
+		if(def1 == -1 || def2 == -1){
 			qstr = qstr + " AND def == $def";
+			arg.$def = -2;
 		}
-		else{
-			var relation = '';
-			switch(def_relation.value){
-				case '':
-					relation = '==';
-					break;
-				case 'above':
-					relation = '>=';
-					break;
-				case 'below':
-					relation = '<=';
-					break;
-			}
-			qstr = qstr + " AND def " + relation + " $def";;
+		else if(!is_legal(def2)){
+			qstr = qstr + " AND def == $def";
+			arg.$def = def1;
 		}
-		arg.$def = cdef;
+		else if(!is_legal(def1)){
+			qstr = qstr + " AND def == $def";
+			arg.$def = def2;
+		}
+		else {
+			var def_min = Math.min(def1, def2);
+			var def_max = Math.max(def1, def2);
+			qstr = qstr + " AND def >= $def_min AND def <= $def_max";
+			arg.$def_min = def_min;
+			arg.$def_max = def_max;
+		}
 		valid = true;
 		monly = true;
 	}
@@ -640,7 +653,7 @@ function query(){
 	var n = table1.rows.length;
 	for(let i = 0; i<=n-1; ++i)
 		table1.deleteRow(-1);
-	
+
 	text_id.value = '';
 	text_name.value = '';
 	text_atk.value = '';
@@ -664,8 +677,8 @@ function query(){
 	select_scale2.selectedIndex = 0;
 	select_race.selectedIndex = 0;
 	select_attr.selectedIndex = 0;
-	atk_relation.selectedIndex = 0;
-	def_relation.selectedIndex = 0;
+	//atk_relation.selectedIndex = 0;
+	//def_relation.selectedIndex = 0;
 	
 	if(!valid)
 		return;
@@ -681,7 +694,7 @@ function query(){
 			continue;
                 create_rows(result);			
 	}
-      stmt = db2.prepare(qstr);
+	stmt = db2.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
