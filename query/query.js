@@ -450,6 +450,7 @@ function create_rows(result){
 		div_result.insertBefore(table1, null);
 		var div_half = document.createElement('div');
 		div_half.className = 'half-line';
+		div_half.innerHTML = ' ';
 		div_result.insertBefore(div_half, null);
 }
 
