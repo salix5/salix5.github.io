@@ -276,8 +276,14 @@ function print_limit(id){
 }
 
 function create_rows(result){
-var table1 = document.getElementById('table1');
-var row = table1.insertRow(-1);
+	//var table1 = document.getElementById('table1');
+	var div_result = document.getElementById('div_result');
+	var table1 = document.createElement('table');
+	table1.className = "query";
+	if(window.innerWidth > max_witdh){
+		table1.style.width = max_witdh.toString() + 'px';
+	}
+	var row = table1.insertRow(-1);
 		var cell1 = row.insertCell(-1);
 		var cell2 = row.insertCell(-1);
 		var cell3 = row.insertCell(-1);
@@ -302,7 +308,7 @@ var row = table1.insertRow(-1);
                 var marker = '';
 
 		if(result.type & TYPE_MONSTER){
-			mtype = '';
+			mtype = '怪獸';
 			if(result.type & TYPE_RITUAL)
 				subtype = '儀式';
 			else if(result.type & TYPE_FUSION)
@@ -441,6 +447,7 @@ var row = table1.insertRow(-1);
 		cell_effect.className = "query";
 		cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
 		cell_effect.colSpan = "3";
+		div_result.insertBefore(table1, null);
 }
 
 function query(){
@@ -465,8 +472,8 @@ function query(){
 	var select_race = document.getElementById('select_race');
 	var select_attr  = document.getElementById('select_attr');
 	
-	var table1 = document.getElementById('table1');
-	
+	//var table1 = document.getElementById('table1');
+	var div_result = document.getElementById('div_result');
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
 	var cid = 0;
 	var ctype = 0;
@@ -482,10 +489,6 @@ function query(){
 	var arg = new Object();
 	var valid = false;
 	var monly = false;
-	
-	if(window.innerWidth > max_witdh){
-		table1.style.width = max_witdh.toString() + 'px';
-	}
 	
 	// id
 	cid = parseInt(text_id.value, 10);
@@ -650,10 +653,11 @@ function query(){
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
 
 	// clear
-	var n = table1.rows.length;
+	/*var n = table1.rows.length;
 	for(let i = 0; i<=n-1; ++i)
-		table1.deleteRow(-1);
-
+		table1.deleteRow(-1); */
+	
+	div_result.innerHTML = '';
 	text_id.value = '';
 	text_name.value = '';
 	text_atk1.value = '';
