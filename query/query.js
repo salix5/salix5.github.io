@@ -448,6 +448,9 @@ function create_rows(result){
 		cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
 		cell_effect.colSpan = "3";
 		div_result.insertBefore(table1, null);
+		var div_half = document.createElement('div');
+		div_half.className = 'half-line';
+		div_result.insertBefore(div_half, null);
 }
 
 function query(){
