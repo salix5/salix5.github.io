@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>卡片查詢</title>
+	<style>
+		.half-line {
+			line-height: 0.6;
+		}
+		table.hidden{
+			border-style: none;
+			margin: 0 auto;
+		}
+		table.query{
+			border-collapse: collapse;
+			border: 1px solid black;
+			margin: 0 auto;
+		}
+		td.query{
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+  <script src='dist/sql-wasm.js'></script>
+  <script src='query.js'></script>
+  <script src='functions.js'></script>
+	<table class="hidden">
+	<tr><td>密碼：<input id="text_id" type="number" min="0" onkeydown ="key_search(event)"></td></tr>
+	<tr><td>卡名：<input id="text_name" type="search" onkeydown ="key_search(event)"></td></tr>
+	<tr><td>TCG：<select id="select_ot">
+		<option value="">包含TCG獨有卡</option>
+		<option value="o">不含TCG獨有卡</option>
+		<option value="t">TCG獨有卡</option>
+	</select></td></tr>
+	<tr><td>種類：<select id="select_type" onchange="create_subtype()">
+		<option value=""></option>
+		<option value="0x1">怪獸</option>
+		<option value="0x2">魔法</option>
+		<option value="0x4">陷阱</option>
+	</select>
+	<select id="select_subtype1">
+		<option value=""></option>
+	</select>
+	<select id="select_subtype2" style="visibility: hidden;">
+		<option value=""></option>
+	</select></td></tr>
+	
+	<tr><td>星數：<select id="select_lv1">
+		<option></option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+	</select>
+	～
+	<select id="select_lv2">
+		<option></option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+	</select></td></tr>
+	
+	<tr><td>刻度：<select id="select_scale1">
+		<option></option>
+		<option>0</option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+	</select>
+	～
+	<select id="select_scale2">
+		<option></option>
+		<option>0</option>
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option>10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+	</select></td></tr>
+	
+	<tr><td>屬性：<select id="select_attr">
+		<option value=""></option>
+		<option value="0x1">地</option>
+		<option value="0x2">水</option>
+		<option value="0x4">炎</option>
+		<option value="0x8">風</option>
+		<option value="0x10">光</option>
+		<option value="0x20">暗</option>
+		<option value="0x40">神</option>
+	</select>
+	種族：<select id="select_race">
+		<option value=""></option>
+		<option value="0x1">戰士</option>
+		<option value="0x2">魔法使</option>
+		<option value="0x4">天使</option>
+		<option value="0x8">惡魔</option>
+		<option value="0x10">不死</option>
+		<option value="0x20">機械</option>
+		<option value="0x40">水</option>
+		<option value="0x80">炎</option>
+		<option value="0x100">岩石</option>
+		<option value="0x200">鳥獸</option>
+		<option value="0x400">植物</option>
+		<option value="0x800">昆蟲</option>
+		<option value="0x1000">雷</option>
+		<option value="0x2000">龍</option>
+		<option value="0x4000">獸</option>
+		<option value="0x8000">獸戰士</option>
+		<option value="0x10000">恐龍</option>
+		<option value="0x20000">魚</option>
+		<option value="0x40000">海龍</option>
+		<option value="0x80000">爬蟲類</option>
+		<option value="0x100000">超能</option>
+		<option value="0x200000">幻神獸</option>
+		<option value="0x400000">創造神</option>
+		<option value="0x800000">幻龍</option>
+		<option value="0x1000000">電子界</option>
+	</select></td></tr>
+	
+	<tr><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
+	～
+	<input id="text_atk2" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
+	<!--<select id="atk_relation">
+		<option value=""></option>
+		<option value="above">以上</option>
+		<option value="below">以下</option>
+	</select> -->
+	(? = -1)</td></tr>
+	
+	<tr><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
+	～
+	<input id="text_def2" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
+	<!--<select id="def_relation">
+		<option value=""></option>
+		<option value="above">以上</option>
+		<option value="below">以下</option>
+	</select>-->
+	</td></tr>
+	
+	<tr><td>效果：<input id="text_effect" type="search" onkeydown ="key_search(event)">
+    <button id="button1" disabled="true" onclick="query()">搜尋</button></td></tr>
+    </table>
+	<div class="half-line">&nbsp;</div>
+	<!--<table id="table1" class="query">
+	</table> -->
+	<div id="div_result"></div>
+</body>
+</html>
