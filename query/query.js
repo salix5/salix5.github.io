@@ -465,7 +465,7 @@ function query(){
     var text_def2 = document.getElementById('text_def2');
 	//var atk_relation = document.getElementById('atk_relation');
 	//var def_relation = document.getElementById('def_relation');
-	
+	var select_ot  = document.getElementById('select_ot');
 	var select_type = document.getElementById('select_type');
 	var select_subtype1 = document.getElementById('select_subtype1');
 	var select_subtype2 = document.getElementById('select_subtype2');
@@ -480,6 +480,7 @@ function query(){
 	var div_result = document.getElementById('div_result');
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
 	var cid = 0;
+	var ot = 0;
 	var ctype = 0;
 	var atk1 = 0;
 	var atk2 = 0;
@@ -502,15 +503,27 @@ function query(){
 		valid = true;
 	}
 	
+	// ot
+	if(select_ot.value != ''){
+		switch (select_ot.value){
+			case 'o':
+			    qstr = qstr + " AND datas.ot != 2";
+			    break;
+			case 't':
+			    qstr = qstr + " AND datas.ot == 2";
+			    break;
+		}
+		valid = true;
+	}
 	// type
 	if(select_type.value != ''){
 		ctype = parseInt(select_type.value, 16);
 		if(select_subtype1.value != ''){
 			if(select_subtype1.value == 'deck'){
-			        qstr = qstr + " AND NOT type&" + ext;
+			        qstr = qstr + " AND NOT type & " + ext;
 			}
 			else if(select_subtype1.value == 'extra'){
-			        qstr = qstr + " AND type&" + ext;
+			        qstr = qstr + " AND type & " + ext;
 			}
 			else
 			        ctype = ctype | parseInt(select_subtype1.value, 16);
@@ -670,14 +683,15 @@ function query(){
 	text_def2.value = '';
 	text_effect.value = '';
 	
+	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
 	
 	var len = select_subtype1.length;
-	for(let i=1; i < len; ++i)
+	for(let i=1; i <= len-1; ++i)
 		select_subtype1.remove(select_subtype1.length - 1);
 	
 	len = select_subtype2.length;
-	for(let i=1; i < len; ++i)
+	for(let i=1; i <= len-1; ++i)
 		select_subtype2.remove(select_subtype2.length - 1);
 	select_subtype2.style.visibility = "hidden";
 	
