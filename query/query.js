@@ -296,10 +296,9 @@ function create_rows(result){
 		else
 			cell1.innerHTML = result.id.toString();
 		
+		cell2.innerHTML = result.name + print_limit(result.id);
 		if(result.ot == 2)
-			cell2.innerHTML = '<span style="color: red;">' + result.name + '</span>' + print_limit(result.id);
-		else
-			cell2.innerHTML = result.name + print_limit(result.id);
+			cell2.innerHTML += '<span style="color: OrangeRed;">&nbsp;(TCG)</span>';
 		
 		var mtype = '';
 		var subtype = '';
