@@ -85,7 +85,7 @@ const LINK_MARKER_TOP			=0x080 // ↑
 const LINK_MARKER_TOP_RIGHT		=0x100 // ↗
 
 // table width
-const max_witdh = 1000;	
+const max_witdh = 700;	
 
 var config = {   
   locateFile: filename => `./dist/${filename}`    
@@ -303,57 +303,50 @@ function create_rows(result){
 		var mtype = '';
 		var subtype = '';
 		var extype = '';
-		var lvstr = 'L';
-                var marker = '';
+		var lvstr = '等級';
+        var marker = '';
+        var data = '';
 
 		if(result.type & TYPE_MONSTER){
 			mtype = '怪獸';
 			if(result.type & TYPE_RITUAL)
-				subtype = '儀式';
+				subtype = '/儀式';
 			else if(result.type & TYPE_FUSION)
-				subtype = '融合';
+				subtype = '/融合';
 			else if(result.type & TYPE_SYNCHRO)
-				subtype = '同步';
+				subtype = '/同步';
 			else if(result.type & TYPE_XYZ){
-				subtype = '超量';
-				lvstr = 'R';
+				subtype = '/超量';
+				lvstr = '階級';
 			}
 			else if(result.type & TYPE_LINK){
-				subtype = '連結';
+				subtype = '/連結';
 				lvstr = 'LINK-';
 			}
 			// extype
 			if(result.type & TYPE_PENDULUM){
-			        if(subtype == ''){
-			            subtype = '靈擺';
-			            if(result.type & TYPE_NORMAL)
-			                extype = '/通常';
-			            else
-			                extype = '/效果';
-			        }
-			        else {
-			            extype = '/靈擺';
-			        }
+			           subtype += '/靈擺';
 			}
-			else if(result.type & TYPE_NORMAL)
-				subtype = '通常';
-			else if(subtype == '')
-				subtype = '效果';
+			if(result.type & TYPE_NORMAL)
+				subtype += '/通常';
+			if(result.type & TYPE_EFFECT)
+				subtype += '/效果';
 			
 			if(result.type & TYPE_SPIRIT)
-				extype = extype + '/靈魂';
+				subtype += '/靈魂';
 			if(result.type & TYPE_UNION)
-				extype = extype + '/聯合';
+				subtype += '/聯合';
 			if(result.type & TYPE_DUAL)
-				extype = extype + '/二重';
+				subtype += '/二重';
 			if(result.type & TYPE_TUNER)
-				extype = extype + '/協調';
+				subtype += '/協調';
 			if(result.type & TYPE_FLIP)
-				extype = extype + '/反轉';
+				subtype += '/反轉';
 			if(result.type & TYPE_TOON)
-				extype = extype + '/卡通';
+				subtype += '/卡通';
 			if(result.type & TYPE_SPSUMMON)
-				extype = extype + '/特殊召喚';
+				subtype += '/特殊召喚';
+			cell3.innerHTML = mtype + subtype;
 		}
 		else if(result.type & TYPE_SPELL){
 			mtype = '魔法';
@@ -369,6 +362,7 @@ function create_rows(result){
 				subtype = '場地';
 			else
 				subtype = '通常';
+			cell3.innerHTML = subtype + mtype;
 		}
 		else if(result.type & TYPE_TRAP){
 			mtype = '陷阱';
@@ -378,18 +372,17 @@ function create_rows(result){
 				subtype = '反擊';
 			else
 				subtype = '通常';
+			cell3.innerHTML = subtype + mtype;
 		}
-		cell3.innerHTML = subtype + mtype + extype;
 		
 		if(result.type & TYPE_MONSTER){
-		    var row_data = table1.insertRow(-1);
-		    var cell_data = row_data.insertCell(-1);
-			var data = '';
+		    //var row_data = table1.insertRow(-1);
+		    //var cell_data = row_data.insertCell(-1);
 			
-			data = data + lvstr + (result.level & 0xff);
-			data = data + '/' + print_attr(result.attribute);
-			data = data + '/' + print_race(result.race) + '族';
-			data = data + '/' + print_ad(result.atk);
+			data += lvstr + (result.level & 0xff);
+			data += '/' + print_attr(result.attribute);
+			data += '/' + print_race(result.race) + '族<br>'; 
+			data += print_ad(result.atk);
 			if(result.type & TYPE_LINK){
 				marker = '<br>';
 				if(result.def & LINK_MARKER_TOP_LEFT)
@@ -431,20 +424,20 @@ function create_rows(result){
 					marker = marker + '　';
 			}
 			else{
-				data = data + '/' + print_ad(result.def);
+				data +=  '/' + print_ad(result.def);
 			}
 			if(result.type & TYPE_PENDULUM){
-				data = data + '/刻度' + ((result.level >> 24) & 0xff);
+				data += '/刻度' + ((result.level >> 24) & 0xff);
 			}
-			cell_data.className = "query";
-			cell_data.innerHTML = data + marker;
-			cell_data.colSpan = "3";
+			//cell_data.className = "query";
+			//cell_data.innerHTML = data + marker;
+			//cell_data.colSpan = "3";
 		}
 		
 		var row_effect = table1.insertRow(-1);    
 		var cell_effect = row_effect.insertCell(-1);
 		cell_effect.className = "query";
-		cell_effect.innerHTML = result.desc.replace(/\r\n/g, "<br>");
+		cell_effect.innerHTML = data + marker + '<br>' + result.desc.replace(/\r\n/g, "<br>");
 		cell_effect.colSpan = "3";
 		div_result.insertBefore(table1, null);
 		var div_half = document.createElement('div');
@@ -503,16 +496,15 @@ function query(){
 	}
 	
 	// ot
-	if(select_ot.value != ''){
-		switch (select_ot.value){
+	switch (select_ot.value){
 			case 'o':
 			    qstr = qstr + " AND datas.ot != 2";
+			    valid = true;
 			    break;
 			case 't':
 			    qstr = qstr + " AND datas.ot == 2";
+			    valid = true;
 			    break;
-		}
-		valid = true;
 	}
 	// type
 	if(select_type.value != ''){
@@ -728,3 +720,21 @@ function query(){
                 create_rows(result);			
 	}
 }
+);			
+	}
+	stmt = db2.prepare(qstr);
+	stmt.bind(arg);
+	while(stmt.step()) {
+		// execute
+		var result = stmt.getAsObject();
+
+		if(is_virtual(result))
+			continue;
+                create_rows(result);			
+	}
+}
+
+ult);			
+	}
+}
+
