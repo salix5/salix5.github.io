@@ -720,21 +720,3 @@ function query(){
                 create_rows(result);			
 	}
 }
-);			
-	}
-	stmt = db2.prepare(qstr);
-	stmt.bind(arg);
-	while(stmt.step()) {
-		// execute
-		var result = stmt.getAsObject();
-
-		if(is_virtual(result))
-			continue;
-                create_rows(result);			
-	}
-}
-
-ult);			
-	}
-}
-
