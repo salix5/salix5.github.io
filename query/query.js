@@ -163,8 +163,8 @@ function is_virtual(result) {
 		return true;
 }
 
-function is_legal(atk){
-	if(atk == -1 || atk >= 0)
+function is_atk(x){
+	if(x == -1 || x >= 0)
 	    return true;
 	else
 	    return false;
@@ -437,7 +437,7 @@ function create_rows(result){
 		var row_effect = table1.insertRow(-1);    
 		var cell_effect = row_effect.insertCell(-1);
 		cell_effect.className = "query";
-		cell_effect.innerHTML = data + marker + '<br>' + result.desc.replace(/\r\n/g, "<br>");
+		cell_effect.innerHTML = '<span style="color: Blue;">' + data + marker + '</span><br>' + result.desc.replace(/\r\n/g, "<br>");
 		cell_effect.colSpan = "3";
 		div_result.insertBefore(table1, null);
 		var div_half = document.createElement('div');
@@ -530,16 +530,16 @@ function query(){
 	atk1 = parseInt(text_atk1.value, 10);
     atk2 = parseInt(text_atk2.value, 10);
 
-	if(is_legal(atk1) || is_legal(atk2)){
+	if(is_atk(atk1) || is_atk(atk2)){
 		if(atk1 == -1 || atk2 == -1){
 			qstr = qstr + " AND atk == $atk";
 			arg.$atk = -2;
 		}
-		else if(!is_legal(atk2)){
+		else if(!is_atk(atk2)){
 			qstr = qstr + " AND atk == $atk";
 			arg.$atk = atk1;
 		}
-		else if(!is_legal(atk1)){
+		else if(!is_atk(atk1)){
 			qstr = qstr + " AND atk == $atk";
 			arg.$atk = atk2;
 		}
@@ -558,17 +558,17 @@ function query(){
 	def1 = parseInt(text_def1.value, 10);
     def2 = parseInt(text_def2.value, 10);
 
-	if(is_legal(def1) || is_legal(def2)){
+	if(is_atk(def1) || is_atk(def2)){
 		qstr = qstr + " AND NOT type & " + TYPE_LINK;
 		if(def1 == -1 || def2 == -1){
 			qstr = qstr + " AND def == $def";
 			arg.$def = -2;
 		}
-		else if(!is_legal(def2)){
+		else if(!is_atk(def2)){
 			qstr = qstr + " AND def == $def";
 			arg.$def = def1;
 		}
-		else if(!is_legal(def1)){
+		else if(!is_atk(def1)){
 			qstr = qstr + " AND def == $def";
 			arg.$def = def2;
 		}
@@ -661,10 +661,6 @@ function query(){
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
 
 	// clear
-	/*var n = table1.rows.length;
-	for(let i = 0; i<=n-1; ++i)
-		table1.deleteRow(-1); */
-	
 	div_result.innerHTML = '';
 	text_id.value = '';
 	text_name.value = '';
@@ -704,19 +700,17 @@ function query(){
 	while(stmt.step()) {
 		// execute
 		var result = stmt.getAsObject();
-
 		if(is_virtual(result))
 			continue;
-                create_rows(result);			
+        create_rows(result);			
 	}
 	stmt = db2.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
 		var result = stmt.getAsObject();
-
 		if(is_virtual(result))
 			continue;
-                create_rows(result);			
+        create_rows(result);			
 	}
 }
