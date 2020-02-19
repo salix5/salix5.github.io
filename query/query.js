@@ -286,11 +286,11 @@ function create_rows(result){
 	var row = table1.insertRow(-1);
 		var cell1 = row.insertCell(-1);
 		var cell2 = row.insertCell(-1);
-		var cell3 = row.insertCell(-1);
+		//var cell3 = row.insertCell(-1);
 		
 		cell1.className = "query";
 		cell2.className = "query";
-		cell3.className = "query";
+		//cell3.className = "query";
 		if(result.id <= 99999999)
 			cell1.innerHTML = '<a href="' + print_link(result.id, result.ot) + '" target="_blank">' + result.id.toString().padStart(8, '0') + '</a>';
 		else
@@ -302,10 +302,10 @@ function create_rows(result){
 		
 		var mtype = '';
 		var subtype = '';
-		var extype = '';
 		var lvstr = '等級';
         var marker = '';
         var data = '';
+        var output = '';
 
 		if(result.type & TYPE_MONSTER){
 			mtype = '怪獸';
@@ -346,7 +346,7 @@ function create_rows(result){
 				subtype += '/卡通';
 			if(result.type & TYPE_SPSUMMON)
 				subtype += '/特殊召喚';
-			cell3.innerHTML = mtype + subtype;
+			data = '[' + mtype + subtype + '] ';
 		}
 		else if(result.type & TYPE_SPELL){
 			mtype = '魔法';
@@ -362,7 +362,7 @@ function create_rows(result){
 				subtype = '場地';
 			else
 				subtype = '通常';
-			cell3.innerHTML = subtype + mtype;
+			data = '[' + subtype + mtype + '] ';
 		}
 		else if(result.type & TYPE_TRAP){
 			mtype = '陷阱';
@@ -372,7 +372,7 @@ function create_rows(result){
 				subtype = '反擊';
 			else
 				subtype = '通常';
-			cell3.innerHTML = subtype + mtype;
+			data = '[' + subtype + mtype + '] ';
 		}
 		
 		if(result.type & TYPE_MONSTER){
@@ -384,7 +384,7 @@ function create_rows(result){
 			data += '/' + print_race(result.race) + '族<br>'; 
 			data += print_ad(result.atk);
 			if(result.type & TYPE_LINK){
-				marker = '<br>';
+				marker = '<br><span style="color: Red;">';
 				if(result.def & LINK_MARKER_TOP_LEFT)
 					marker = marker + '↖';
 				else
@@ -422,6 +422,7 @@ function create_rows(result){
 					marker = marker + '↘';
 				else
 					marker = marker + '　';
+				marker += '</span>';
 			}
 			else{
 				data +=  '/' + print_ad(result.def);
@@ -433,13 +434,15 @@ function create_rows(result){
 			//cell_data.innerHTML = data + marker;
 			//cell_data.colSpan = "3";
 		}
-		
+		output = '<span style="color: Blue;">' + data + '</span>' + marker + '<br>';
+		output += result.desc.replace(/\r\n/g, "<br>");
 		var row_effect = table1.insertRow(-1);    
 		var cell_effect = row_effect.insertCell(-1);
 		cell_effect.className = "query";
-		cell_effect.innerHTML = '<span style="color: Blue;">' + data + marker + '</span><br>' + result.desc.replace(/\r\n/g, "<br>");
-		cell_effect.colSpan = "3";
+		cell_effect.innerHTML = output;
+		cell_effect.colSpan = "2";
 		div_result.insertBefore(table1, null);
+		
 		var div_half = document.createElement('div');
 		div_half.className = 'half-line';
 		div_half.innerHTML = '&nbsp;';
