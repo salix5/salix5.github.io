@@ -114,7 +114,7 @@ lflist.onload = e => {
 			var id = parseInt(part[0], 10);
 			var limit = parseInt(part[1], 10);
 			ltable[id] = limit;
-			}
+		}
 	}
 };
 lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);
