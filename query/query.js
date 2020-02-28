@@ -610,7 +610,7 @@ function query(){
 	var lv_min = 0;
 	var lv_max = 0;
 	var sc_min = 0;
-	var sc_min = 0;
+	var sc_max = 0;
 	if(is_lv(lv1) || is_lv(lv2)){
 		if(!is_lv(lv2)){
 			qstr = qstr + " AND level & 0xff == $lv";
@@ -643,7 +643,7 @@ function query(){
 		else{
 			sc_min = Math.min(sc1, sc2);
 			sc_max = Math.max(sc1, sc2);
-			qstr = qstr + " AND level & 0xff >= $sc_min AND level & 0xff <= $sc_max";
+			qstr = qstr + " AND (level >> 24) & 0xff >= $sc_min AND (level >> 24) & 0xff <= $sc_max";
 			arg.$sc_min = sc_min;
 			arg.$sc_max = sc_max;
 		}
