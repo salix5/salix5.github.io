@@ -298,7 +298,7 @@ function create_rows(result){
 		
 		cell2.innerHTML = result.name + print_limit(result.id);
 		if(result.ot == 2)
-			cell2.innerHTML += '<span style="color: OrangeRed;">&nbsp;(TCG)</span>';
+			cell2.innerHTML += '<img src="tcg.png" height="20" width="40">';
 		
 		var mtype = '';
 		var subtype = '';
