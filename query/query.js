@@ -85,7 +85,10 @@ const LINK_MARKER_TOP			=0x080 // ↑
 const LINK_MARKER_TOP_RIGHT		=0x100 // ↗
 
 // table width
-const max_witdh = 700;	
+const MAX_WIDTH = 700;	
+
+// MAX_SAFE_INTEGER in JS: 16 digit
+const MAX_DIGIT = 15;
 
 var config = {   
   locateFile: filename => `./dist/${filename}`    
@@ -168,6 +171,20 @@ function is_atk(x){
 	    return true;
 	else
 	    return false;
+}
+
+function is_lv(x){
+	if(x >= 1 && x <= 12)
+		return true;
+	else
+		return false;
+}
+
+function is_scale(x){
+	if(x >= 0 && x <= 13)
+		return true;
+	else
+		return false;
 }
 
 function print_attr(x){
@@ -276,21 +293,18 @@ function print_limit(id){
 }
 
 function create_rows(result){
-	//var table1 = document.getElementById('table1');
 	var div_result = document.getElementById('div_result');
 	var table1 = document.createElement('table');
 	table1.className = "query";
-	if(window.innerWidth > max_witdh){
-		table1.style.width = max_witdh.toString() + 'px';
+	if(window.innerWidth > MAX_WIDTH){
+		table1.style.width = MAX_WIDTH + 'px';
 	}
 	var row = table1.insertRow(-1);
 		var cell1 = row.insertCell(-1);
 		var cell2 = row.insertCell(-1);
-		//var cell3 = row.insertCell(-1);
 		
 		cell1.className = "query";
 		cell2.className = "query";
-		//cell3.className = "query";
 		if(result.id <= 99999999)
 			cell1.innerHTML = '<a href="' + print_link(result.id, result.ot) + '" target="_blank">' + result.id.toString().padStart(8, '0') + '</a>';
 		else
@@ -376,9 +390,6 @@ function create_rows(result){
 		}
 		
 		if(result.type & TYPE_MONSTER){
-		    //var row_data = table1.insertRow(-1);
-		    //var cell_data = row_data.insertCell(-1);
-			
 			data += lvstr + (result.level & 0xff);
 			data += '/' + print_attr(result.attribute);
 			data += '/' + print_race(result.race) + '族<br>'; 
@@ -430,9 +441,6 @@ function create_rows(result){
 			if(result.type & TYPE_PENDULUM){
 				data += '/刻度' + ((result.level >> 24) & 0xff);
 			}
-			//cell_data.className = "query";
-			//cell_data.innerHTML = data + marker;
-			//cell_data.colSpan = "3";
 		}
 		output = '<span style="color: Blue;">' + data + '</span>' + marker + '<br>';
 		output += result.desc.replace(/\r\n/g, "<br>");
@@ -458,8 +466,6 @@ function query(){
 	var text_atk2 = document.getElementById('text_atk2');
 	var text_def1 = document.getElementById('text_def1');
     var text_def2 = document.getElementById('text_def2');
-	//var atk_relation = document.getElementById('atk_relation');
-	//var def_relation = document.getElementById('def_relation');
 	var select_ot  = document.getElementById('select_ot');
 	var select_type = document.getElementById('select_type');
 	var select_subtype1 = document.getElementById('select_subtype1');
@@ -471,27 +477,27 @@ function query(){
 	var select_race = document.getElementById('select_race');
 	var select_attr  = document.getElementById('select_attr');
 	
-	//var table1 = document.getElementById('table1');
 	var div_result = document.getElementById('div_result');
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
 	var cid = 0;
 	var ot = 0;
-	var ctype = 0;
-	var atk1 = 0;
-	var atk2 = 0;
-	var def1 = 0;
-	var def2 = 0;
+	var ctype = 0;	
+	var atk1 = -2;
+	var atk2 = -2;
+	var def1 = -2;
+	var def2 = -2;
 	var lv1 = 0;
 	var lv2 = 0;
-	var sc1 = 0;
-	var sc2 = 0;
+	var sc1 = -1;
+	var sc2 = -1;
 	
 	var arg = new Object();
 	var valid = false;
 	var monly = false;
 	
 	// id
-	cid = parseInt(text_id.value, 10);
+	if(text_id.value.length <= MAX_DIGIT)
+		cid = parseInt(text_id.value, 10);
 	if(cid > 0){
 		qstr = qstr + " AND datas.id == $id";
 		arg.$id = cid;
@@ -500,17 +506,18 @@ function query(){
 	
 	// ot
 	switch (select_ot.value){
-			case 'o':
-			    qstr = qstr + " AND datas.ot != 2";
-			    valid = true;
-			    break;
-			case 't':
-			    qstr = qstr + " AND datas.ot == 2";
-			    valid = true;
-			    break;
+		case 'o':
+		    qstr = qstr + " AND datas.ot != 2";
+		    valid = true;
+		    break;
+		case 't':
+		    qstr = qstr + " AND datas.ot == 2";
+		    valid = true;
+		    break;
 	}
-	// type
-	if(select_type.value != ''){
+	
+	// type (incomplete)
+	if(select_type.value.length <= 13 && select_type.value != ''){
 		ctype = parseInt(select_type.value, 16);
 		if(select_subtype1.value != ''){
 			if(select_subtype1.value == 'deck'){
@@ -529,9 +536,12 @@ function query(){
 		arg.$type = ctype;
 		valid = true;
 	}
+	
 	// atk
-	atk1 = parseInt(text_atk1.value, 10);
-    atk2 = parseInt(text_atk2.value, 10);
+	if(text_atk1.value.length <= MAX_DIGIT)
+		atk1 = parseInt(text_atk1.value, 10);
+	if(text_atk2.value.length <= MAX_DIGIT)
+		atk2 = parseInt(text_atk2.value, 10);
 
 	if(is_atk(atk1) || is_atk(atk2)){
 		if(atk1 == -1 || atk2 == -1){
@@ -558,8 +568,10 @@ function query(){
 	}
 	
 	// def, exclude link monsters
-	def1 = parseInt(text_def1.value, 10);
-    def2 = parseInt(text_def2.value, 10);
+	if(text_def1.value.length <= MAX_DIGIT)
+		def1 = parseInt(text_def1.value, 10);
+	if(text_def2.value.length <= MAX_DIGIT)
+		def2 = parseInt(text_def2.value, 10);
 
 	if(is_atk(def1) || is_atk(def2)){
 		qstr = qstr + " AND NOT type & " + TYPE_LINK;
@@ -587,20 +599,24 @@ function query(){
 	}
 	
 	// lv, scale
-	lv1 = select_lv1.selectedIndex;
-	lv2 = select_lv2.selectedIndex;
-	sc1 = select_scale1.selectedIndex;
-	sc2 = select_scale2.selectedIndex;
+	if(Number.isSafeInteger(select_lv1.selectedIndex))
+		lv1 = select_lv1.selectedIndex;
+	if(Number.isSafeInteger(select_lv2.selectedIndex))
+		lv2 = select_lv2.selectedIndex;
+	if(Number.isSafeInteger(select_scale1.selectedIndex))
+		sc1 = select_scale1.selectedIndex - 1;
+	if(Number.isSafeInteger(select_scale2.selectedIndex))
+		sc2 = select_scale2.selectedIndex - 1;
 	var lv_min = 0;
 	var lv_max = 0;
 	var sc_min = 0;
 	var sc_min = 0;
-	if(lv1 || lv2){
-		if(!lv2){
+	if(is_lv(lv1) || is_lv(lv2)){
+		if(!is_lv(lv2)){
 			qstr = qstr + " AND level & 0xff == $lv";
 			arg.$lv = lv1;
 		}
-		else if(!lv1){
+		else if(!is_lv(lv1)){
 			qstr = qstr + " AND level & 0xff == $lv";
 			arg.$lv = lv2;
 		}
@@ -614,19 +630,19 @@ function query(){
 		valid = true;
 		monly = true;
 	}
-	if(sc1 || sc2){
+	if(is_scale(sc1) || is_scale(sc2)){
 		qstr = qstr + " AND type&" + TYPE_PENDULUM;
-		if(!sc2){
+		if(!is_scale(sc2)){
 			qstr = qstr + " AND (level >> 24) & 0xff == $sc";
-			arg.$sc = sc1 - 1;
+			arg.$sc = sc1;
 		}
-		else if(!sc1){
+		else if(!is_scale(sc1)){
 			qstr = qstr + " AND (level >> 24) & 0xff == $sc";
-			arg.$sc = sc2 - 1;
+			arg.$sc = sc2;
 		}
 		else{
-			sc_min = Math.min(sc1 - 1, sc2 - 1);
-			sc_max = Math.max(sc1 - 1, sc2 - 1);
+			sc_min = Math.min(sc1, sc2);
+			sc_max = Math.max(sc1, sc2);
 			qstr = qstr + " AND level & 0xff >= $sc_min AND level & 0xff <= $sc_max";
 			arg.$sc_min = sc_min;
 			arg.$sc_max = sc_max;
@@ -636,13 +652,13 @@ function query(){
 	}
 	
 	// attr, race
-	if(select_attr.value != ''){
+	if(select_attr.value.length <= 13 && select_attr.value != ''){
 		qstr = qstr + " AND attribute & $attr";
 		arg.$attr = parseInt(select_attr.value, 16);
 		valid = true;
 		monly = true;
 	}
-	if(select_race.value != ''){
+	if(select_race.value.length <= 13 && select_race.value != ''){
 		qstr = qstr + " AND race & $race";
 		arg.$race = parseInt(select_race.value, 16);
 		valid = true;
@@ -650,12 +666,12 @@ function query(){
 	}
 	
 	// name, effect
-	if(text_name.value != ''){
+	if(text_name.value.length <= 1000 && text_name.value != ''){
 		qstr = qstr + " AND name LIKE $name";
 		arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
 		valid = true;
 	}
-	if(text_effect.value != ''){
+	if(text_effect.value.length <= 1000 && text_effect.value != ''){
 		qstr = qstr + " AND desc LIKE $desc";
 		arg.$desc = '%' + text_effect.value.replace(/[%_]/, '') + '%';
 		valid = true;
@@ -691,8 +707,6 @@ function query(){
 	select_scale2.selectedIndex = 0;
 	select_race.selectedIndex = 0;
 	select_attr.selectedIndex = 0;
-	//atk_relation.selectedIndex = 0;
-	//def_relation.selectedIndex = 0;
 	
 	if(!valid)
 		return;
@@ -705,7 +719,7 @@ function query(){
 		var result = stmt.getAsObject();
 		if(is_virtual(result))
 			continue;
-        create_rows(result);			
+		create_rows(result);			
 	}
 	stmt = db2.prepare(qstr);
 	stmt.bind(arg);
@@ -714,6 +728,6 @@ function query(){
 		var result = stmt.getAsObject();
 		if(is_virtual(result))
 			continue;
-        create_rows(result);			
+		create_rows(result);			
 	}
 }
