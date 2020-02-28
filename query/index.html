@@ -154,32 +154,20 @@
 		<option value="0x1000000">電子界</option>
 	</select></td></tr>
 	
-	<tr><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
+	<tr><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" onkeydown ="key_search(event)">
 	～
-	<input id="text_atk2" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
-	<!--<select id="atk_relation">
-		<option value=""></option>
-		<option value="above">以上</option>
-		<option value="below">以下</option>
-	</select> -->
+	<input id="text_atk2" type="number" min="-1" max="99999" style="width: 5em" onkeydown ="key_search(event)">
 	(? = -1)</td></tr>
 	
-	<tr><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
+	<tr><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" style="width: 5em" onkeydown ="key_search(event)">
 	～
-	<input id="text_def2" type="number" min="-1" max="99999" onkeydown ="key_search(event)">
-	<!--<select id="def_relation">
-		<option value=""></option>
-		<option value="above">以上</option>
-		<option value="below">以下</option>
-	</select>-->
+	<input id="text_def2" type="number" min="-1" max="99999" style="width: 5em" onkeydown ="key_search(event)">
 	</td></tr>
 	
 	<tr><td>效果：<input id="text_effect" type="search" onkeydown ="key_search(event)">
     <button id="button1" disabled="true" onclick="query()">搜尋</button></td></tr>
     </table>
 	<div class="half-line">&nbsp;</div>
-	<!--<table id="table1" class="query">
-	</table> -->
 	<div id="div_result"></div>
 </body>
 </html>
