@@ -462,26 +462,33 @@ function query(){
 	var text_name = document.getElementById('text_name');
 	var text_effect = document.getElementById('text_effect');
 	
+	var text_lv1 = document.getElementById('text_lv1');
+	var text_lv2 = document.getElementById('text_lv2');
+	var text_sc1 = document.getElementById('text_sc1');
+	var text_sc2 = document.getElementById('text_sc2');
+	
 	var text_atk1 = document.getElementById('text_atk1');
 	var text_atk2 = document.getElementById('text_atk2');
 	var text_def1 = document.getElementById('text_def1');
     var text_def2 = document.getElementById('text_def2');
+	
 	var select_ot  = document.getElementById('select_ot');
 	var select_type = document.getElementById('select_type');
 	var select_subtype1 = document.getElementById('select_subtype1');
 	var select_subtype2 = document.getElementById('select_subtype2');
-	var select_lv1 = document.getElementById('select_lv1');
-	var select_lv2 = document.getElementById('select_lv2');
-	var select_scale1 = document.getElementById('select_scale1');
-	var select_scale2 = document.getElementById('select_scale2');
-	var select_race = document.getElementById('select_race');
-	var select_attr  = document.getElementById('select_attr');
+	//var select_race = document.getElementById('select_race');
+	//var select_attr  = document.getElementById('select_attr');
+	var cb_attr = document.getElementsByName("cb_attr");
+	var cb_race = document.getElementsByName("cb_race");
 	
 	var div_result = document.getElementById('div_result');
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
 	var cid = 0;
 	var ot = 0;
-	var ctype = 0;	
+	var ctype = 0;
+	var cattr = 0;
+	var crace = 0;
+	
 	var atk1 = -2;
 	var atk2 = -2;
 	var def1 = -2;
@@ -521,13 +528,13 @@ function query(){
 		ctype = parseInt(select_type.value, 16);
 		if(select_subtype1.value != ''){
 			if(select_subtype1.value == 'deck'){
-			        qstr = qstr + " AND NOT type & " + ext;
+		        qstr = qstr + " AND NOT type & " + ext;
 			}
 			else if(select_subtype1.value == 'extra'){
-			        qstr = qstr + " AND type & " + ext;
+		        qstr = qstr + " AND type & " + ext;
 			}
 			else
-			        ctype = ctype | parseInt(select_subtype1.value, 16);
+		        ctype = ctype | parseInt(select_subtype1.value, 16);
 		}
 		if(select_subtype2.value != ''){
 			ctype = ctype | parseInt(select_subtype2.value, 16);
@@ -599,14 +606,14 @@ function query(){
 	}
 	
 	// lv, scale
-	if(Number.isSafeInteger(select_lv1.selectedIndex))
-		lv1 = select_lv1.selectedIndex;
-	if(Number.isSafeInteger(select_lv2.selectedIndex))
-		lv2 = select_lv2.selectedIndex;
-	if(Number.isSafeInteger(select_scale1.selectedIndex))
-		sc1 = select_scale1.selectedIndex - 1;
-	if(Number.isSafeInteger(select_scale2.selectedIndex))
-		sc2 = select_scale2.selectedIndex - 1;
+	if(text_lv1.value.length <= MAX_DIGIT)
+		lv1 = parseInt(text_lv1.value, 10);
+	if(text_lv2.value.length <= MAX_DIGIT)
+		lv2 = parseInt(text_lv2.value, 10);
+	if(text_sc1.value.length <= MAX_DIGIT)
+		sc1 = parseInt(text_sc1.value, 10);
+	if(text_sc2.value.length <= MAX_DIGIT)
+		sc2 = parseInt(text_sc2.value, 10);
 	var lv_min = 0;
 	var lv_max = 0;
 	var sc_min = 0;
@@ -652,7 +659,7 @@ function query(){
 	}
 	
 	// attr, race
-	if(select_attr.value.length <= 13 && select_attr.value != ''){
+	/*if(select_attr.value.length <= 13 && select_attr.value != ''){
 		qstr = qstr + " AND attribute & $attr";
 		arg.$attr = parseInt(select_attr.value, 16);
 		valid = true;
@@ -663,8 +670,32 @@ function query(){
 		arg.$race = parseInt(select_race.value, 16);
 		valid = true;
 		monly = true;
+	}*/
+	var tmp = ATTRIBUTE_EARTH;
+	arg.$attr = 0;
+	for(let i = 0; i < cb_attr.length; ++i){
+		if(cb_attr[i].checked)
+			arg.$attr |= tmp;
+		tmp <<= 1;
+	}
+	if(arg.$attr){
+		qstr = qstr + " AND attribute & $attr";
+		valid = true;
+		monly = true;
 	}
 	
+	tmp = RACE_WARRIOR;
+	arg.$race = 0;
+	for(let i = 0; i < cb_race.length; ++i){
+		if(cb_race[i].checked)
+			arg.$race |= tmp;
+		tmp <<= 1;
+	}
+	if(arg.$race){
+		qstr = qstr + " AND race & $race";
+		valid = true;
+		monly = true;
+	}
 	// name, effect
 	if(text_name.value.length <= 1000 && text_name.value != ''){
 		qstr = qstr + " AND name LIKE $name";
@@ -683,6 +714,11 @@ function query(){
 	div_result.innerHTML = '';
 	text_id.value = '';
 	text_name.value = '';
+	text_lv1.value = '';
+	text_lv2.value = '';
+	text_sc1.value = '';
+	text_sc2.value = '';
+	
 	text_atk1.value = '';
 	text_atk2.value = '';
 	text_def1.value = '';
@@ -701,10 +737,6 @@ function query(){
 		select_subtype2.remove(select_subtype2.length - 1);
 	select_subtype2.style.visibility = "hidden";
 	
-	select_lv1.selectedIndex = 0;
-	select_lv2.selectedIndex = 0;
-	select_scale1.selectedIndex = 0;
-	select_scale2.selectedIndex = 0;
 	select_race.selectedIndex = 0;
 	select_attr.selectedIndex = 0;
 	
