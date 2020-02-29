@@ -73,3 +73,20 @@ function create_subtype(){
 			break;
 	}
 }
+function clear_attr(){
+	var cb_attr = document.getElementsByName("cb_attr");
+	for(let i = 0; i < cb_attr.length; ++i){
+		cb_attr[i].checked = false;
+	}
+	var rst = document.getElementById('attr_reset');
+	rst.checked = false;
+}
+
+function clear_race(){
+	var cb_race = document.getElementsByName("cb_race");
+	for(let i = 0; i < cb_race.length; ++i){
+		cb_race[i].checked = false;
+	}
+	var rst = document.getElementById('race_reset');
+	rst.checked = false;
+}
