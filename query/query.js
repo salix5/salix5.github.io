@@ -676,6 +676,7 @@ function query(){
 	for(let i = 0; i < cb_attr.length; ++i){
 		if(cb_attr[i].checked)
 			arg.$attr |= tmp;
+		cb_attr[i].checked = false;
 		tmp <<= 1;
 	}
 	if(arg.$attr){
@@ -689,6 +690,7 @@ function query(){
 	for(let i = 0; i < cb_race.length; ++i){
 		if(cb_race[i].checked)
 			arg.$race |= tmp;
+		cb_race[i].checked = false;
 		tmp <<= 1;
 	}
 	if(arg.$race){
@@ -737,8 +739,8 @@ function query(){
 		select_subtype2.remove(select_subtype2.length - 1);
 	select_subtype2.style.visibility = "hidden";
 	
-	select_race.selectedIndex = 0;
-	select_attr.selectedIndex = 0;
+	//select_race.selectedIndex = 0;
+	//select_attr.selectedIndex = 0;
 	
 	if(!valid)
 		return;
