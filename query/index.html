@@ -47,75 +47,25 @@
 		<option value=""></option>
 	</select></td></tr>
 	
-	<tr><td>星數：<select id="select_lv1">
-		<option></option>
-		<option>1</option>
-		<option>2</option>
-		<option>3</option>
-		<option>4</option>
-		<option>5</option>
-		<option>6</option>
-		<option>7</option>
-		<option>8</option>
-		<option>9</option>
-		<option>10</option>
-		<option>11</option>
-		<option>12</option>
-	</select>
+	<tr><td>星數：<input id="text_lv1" type="number" min="1" max="12" style="width: 3em" onkeydown ="key_search(event)">
 	～
-	<select id="select_lv2">
-		<option></option>
-		<option>1</option>
-		<option>2</option>
-		<option>3</option>
-		<option>4</option>
-		<option>5</option>
-		<option>6</option>
-		<option>7</option>
-		<option>8</option>
-		<option>9</option>
-		<option>10</option>
-		<option>11</option>
-		<option>12</option>
-	</select></td></tr>
+	<input id="text_lv2" type="number" min="1" max="12" style="width: 3em" onkeydown ="key_search(event)">
+	</td></tr>
 	
-	<tr><td>刻度：<select id="select_scale1">
-		<option></option>
-		<option>0</option>
-		<option>1</option>
-		<option>2</option>
-		<option>3</option>
-		<option>4</option>
-		<option>5</option>
-		<option>6</option>
-		<option>7</option>
-		<option>8</option>
-		<option>9</option>
-		<option>10</option>
-		<option>11</option>
-		<option>12</option>
-		<option>13</option>
-	</select>
+	<tr><td>刻度：<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" onkeydown ="key_search(event)">
 	～
-	<select id="select_scale2">
-		<option></option>
-		<option>0</option>
-		<option>1</option>
-		<option>2</option>
-		<option>3</option>
-		<option>4</option>
-		<option>5</option>
-		<option>6</option>
-		<option>7</option>
-		<option>8</option>
-		<option>9</option>
-		<option>10</option>
-		<option>11</option>
-		<option>12</option>
-		<option>13</option>
-	</select></td></tr>
+	<input id="text_sc2" type="number" min="0" max="13" style="width: 3em" onkeydown ="key_search(event)">
+	</td></tr>
 	
-	<tr><td>屬性：<select id="select_attr">
+	<tr><td>屬性：<input type="checkbox" id="attr1" name="cb_attr"><label for="attr1">地</label>
+	<input type="checkbox" id="attr2" name="cb_attr"><label for="attr2">水</label>
+	<input type="checkbox" id="attr3" name="cb_attr"><label for="attr3">炎</label>
+	<input type="checkbox" id="attr4" name="cb_attr"><label for="attr4">風</label><br>
+	　　　<input type="checkbox" id="attr5" name="cb_attr"><label for="attr5">光</label>
+	<input type="checkbox" id="attr6" name="cb_attr"><label for="attr6">暗</label>
+	<input type="checkbox" id="attr7" name="cb_attr"><label for="attr7">神</label>
+	<input type="checkbox" id="attr_reset"><label for="attr_reset">Ｘ</label>
+	<!-- <select id="select_attr">
 		<option value=""></option>
 		<option value="0x1">地</option>
 		<option value="0x2">水</option>
@@ -124,8 +74,35 @@
 		<option value="0x10">光</option>
 		<option value="0x20">暗</option>
 		<option value="0x40">神</option>
-	</select>
-	種族：<select id="select_race">
+	</select> -->
+	</td></tr>
+	<tr><td>種族：<input type="checkbox" id="race1" name="cb_race"><label for="race1">戰士　</label>
+	<input type="checkbox" id="race2" name="cb_race"><label for="race2">魔法使</label>
+	<input type="checkbox" id="race3" name="cb_race"><label for="race3">天使　</label>
+	<input type="checkbox" id="race4" name="cb_race"><label for="race4">惡魔　</label><br>
+	　　　<input type="checkbox" id="race5" name="cb_race"><label for="race5">不死　</label>
+	<input type="checkbox" id="race6" name="cb_race"><label for="race6">機械　</label>
+	<input type="checkbox" id="race7" name="cb_race"><label for="race7">水　　</label>
+	<input type="checkbox" id="race8" name="cb_race"><label for="race8">炎　　</label><br>
+	　　　<input type="checkbox" id="race9" name="cb_race"><label for="race9">岩石　</label>
+	<input type="checkbox" id="race10" name="cb_race"><label for="race10">鳥獸　</label>
+	<input type="checkbox" id="race11" name="cb_race"><label for="race11">植物　</label>
+	<input type="checkbox" id="race12" name="cb_race"><label for="race12">昆蟲　</label><br>
+	　　　<input type="checkbox" id="race13" name="cb_race"><label for="race13">雷　　</label>
+	<input type="checkbox" id="race14" name="cb_race"><label for="race14">龍　　</label>
+	<input type="checkbox" id="race15" name="cb_race"><label for="race15">獸　　</label>
+	<input type="checkbox" id="race16" name="cb_race"><label for="race16">獸戰士</label><br>
+	　　　<input type="checkbox" id="race17" name="cb_race"><label for="race17">恐龍　</label>
+	<input type="checkbox" id="race18" name="cb_race"><label for="race18">魚　　</label>
+	<input type="checkbox" id="race19" name="cb_race"><label for="race19">海龍　</label>
+	<input type="checkbox" id="race20" name="cb_race"><label for="race20">爬蟲類</label><br>
+	　　　<input type="checkbox" id="race21" name="cb_race"><label for="race21">超能　</label>
+	<input type="checkbox" id="race22" name="cb_race"><label for="race22">幻神獸</label>
+	<input type="checkbox" id="race23" name="cb_race"><label for="race23">創造神</label>
+	<input type="checkbox" id="race24" name="cb_race"><label for="race24">幻龍　</label><br>
+	　　　<input type="checkbox" id="race25" name="cb_race"><label for="race25">電子界</label>
+	<input type="checkbox" id="race_reset"><label for="race_reset">Ｘ</label>
+	<!--<select id="select_race">
 		<option value=""></option>
 		<option value="0x1">戰士</option>
 		<option value="0x2">魔法使</option>
@@ -152,7 +129,8 @@
 		<option value="0x400000">創造神</option>
 		<option value="0x800000">幻龍</option>
 		<option value="0x1000000">電子界</option>
-	</select></td></tr>
+	</select>-->
+	</td></tr>
 	
 	<tr><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" onkeydown ="key_search(event)">
 	～
