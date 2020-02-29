@@ -25,7 +25,7 @@
 <body>
   <script src='dist/sql-wasm.js'></script>
   <script src='query.js'></script>
-  <script src='functions.js'></script>
+  <script src='webpage.js'></script>
 	<table class="hidden">
 	<tr><td>密碼：<input id="text_id" type="number" min="0" onkeydown ="key_search(event)"></td></tr>
 	<tr><td>卡名：<input id="text_name" type="search" onkeydown ="key_search(event)"></td></tr>
@@ -64,7 +64,7 @@
 	　　　<input type="checkbox" id="attr5" name="cb_attr"><label for="attr5">光</label>
 	<input type="checkbox" id="attr6" name="cb_attr"><label for="attr6">暗</label>
 	<input type="checkbox" id="attr7" name="cb_attr"><label for="attr7">神</label>
-	<input type="checkbox" id="attr_reset"><label for="attr_reset">Ｘ</label>
+	<input type="checkbox" id="attr_reset" onchange="clear_attr()"><label for="attr_reset">Ｘ</label>
 	<!-- <select id="select_attr">
 		<option value=""></option>
 		<option value="0x1">地</option>
@@ -101,7 +101,7 @@
 	<input type="checkbox" id="race23" name="cb_race"><label for="race23">創造神</label>
 	<input type="checkbox" id="race24" name="cb_race"><label for="race24">幻龍　</label><br>
 	　　　<input type="checkbox" id="race25" name="cb_race"><label for="race25">電子界</label>
-	<input type="checkbox" id="race_reset"><label for="race_reset">Ｘ</label>
+	<input type="checkbox" id="race_reset" onchange="clear_race()"><label for="race_reset">Ｘ</label>
 	<!--<select id="select_race">
 		<option value=""></option>
 		<option value="0x1">戰士</option>
