@@ -528,6 +528,11 @@ function query(){
 	var select_ot  = document.getElementById('select_ot');
 	var select_type = document.getElementById('select_type');
 	var select_ao = document.getElementById('select_ao');
+	
+	var dm = document.getElementById('subtype_m');
+	var ds = document.getElementById('subtype_s');
+	var dt = document.getElementById('subtype_t');
+	
 	var mtype_deck = document.getElementById('mtype_deck');
 	var stype1 = document.getElementById('stype1');
 	var ttype1 = document.getElementById('ttype1');
@@ -827,6 +832,10 @@ function query(){
 	clear_cb('mtype');
 	clear_cb('stype');
 	clear_cb('ttype');
+	dm.style.display = 'none';
+	ds.style.display = 'none';
+	dt.style.display = 'none';
+	
 	clear_cb('attr');
 	clear_cb('race');
 	
