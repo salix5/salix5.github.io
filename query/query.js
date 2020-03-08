@@ -231,9 +231,9 @@ function id_to_type(id){
 		case 'stype6':
 			return TYPE_FIELD;
 		
-		case 'ttype1':
+		case 'ttype2':
 			return TYPE_CONTINUOUS;
-		case 'ttype1':
+		case 'ttype3':
 			return TYPE_COUNTER;
 		default:
 			return 0;
