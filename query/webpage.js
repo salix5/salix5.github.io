@@ -17,7 +17,11 @@ function add_opt(sel, value, text){
 
 function create_subtype(){
 	var select_type = document.getElementById('select_type');
-	var select_subtype1 = document.getElementById('select_subtype1');
+	var select_ao = document.getElementById('select_ao');
+	var m = document.getElementById('subtype_m');
+	var s = document.getElementById('subtype_s');
+	var t = document.getElementById('subtype_t');
+	/*var select_subtype1 = document.getElementById('select_subtype1');
 	var select_subtype2 = document.getElementById('select_subtype2');
 	var opt;
 	
@@ -28,11 +32,16 @@ function create_subtype(){
 	len = select_subtype2.length;
 	for(var i=1; i < len; ++i)
 		select_subtype2.remove(select_subtype2.length - 1);
-	select_subtype2.style.visibility = "hidden";
-	
+	select_subtype2.style.visibility = "hidden";*/
 	switch(select_type.value){
-		case '0x1':
-			add_opt(select_subtype1, TYPE_NORMAL, '通常');
+		case '':
+			m.style.display = 'none';
+			s.style.display = 'none';
+			t.style.display = 'none';
+			select_ao.style.display = 'none';
+			break;
+		case 'm':
+			/*add_opt(select_subtype1, TYPE_NORMAL, '通常');
 			add_opt(select_subtype1, TYPE_RITUAL, '儀式');
 			add_opt(select_subtype1, TYPE_FUSION, '融合');
 			add_opt(select_subtype1, TYPE_SYNCHRO, '同步');
@@ -56,37 +65,42 @@ function create_subtype(){
 			add_opt(select_subtype2, TYPE_FLIP, '/反轉');
 			add_opt(select_subtype2, TYPE_TOON, '/卡通');
 			add_opt(select_subtype2, TYPE_SPSUMMON, '/特殊召喚');
-			select_subtype2.style.visibility = 'visible';
+			select_subtype2.style.visibility = 'visible';*/
+			m.style.display = 'initial';
+			s.style.display = 'none';
+			t.style.display = 'none';
+			select_ao.style.display = 'initial';
 			break;
-		case '0x2':
-			add_opt(select_subtype1, 0, '通常');
+		case 's':
+			/*add_opt(select_subtype1, 0, '通常');
 			add_opt(select_subtype1, TYPE_QUICKPLAY, '速攻');
 			add_opt(select_subtype1, TYPE_CONTINUOUS, '永續');
 			add_opt(select_subtype1, TYPE_EQUIP, '裝備');
 			add_opt(select_subtype1, TYPE_RITUAL, '儀式');
-			add_opt(select_subtype1, TYPE_FIELD, '場地');
+			add_opt(select_subtype1, TYPE_FIELD, '場地');*/
+			s.style.display = 'initial';
+			m.style.display = 'none';
+			t.style.display = 'none';
+			select_ao.style.display = 'none';
 			break;
-		case '0x4':
-			add_opt(select_subtype1, 0, '通常');
+		case 't':
+			/*add_opt(select_subtype1, 0, '通常');
 			add_opt(select_subtype1, TYPE_CONTINUOUS, '永續');
-			add_opt(select_subtype1, TYPE_COUNTER, '反擊');
+			add_opt(select_subtype1, TYPE_COUNTER, '反擊');*/
+			t.style.display = 'initial';
+			m.style.display = 'none';
+			s.style.display = 'none';
+			select_ao.style.display = 'none';
 			break;
 	}
-}
-function clear_attr(){
-	var cb_attr = document.getElementsByName("cb_attr");
-	for(let i = 0; i < cb_attr.length; ++i){
-		cb_attr[i].checked = false;
-	}
-	var rst = document.getElementById('attr_reset');
-	rst.checked = false;
+	
 }
 
-function clear_race(){
-	var cb_race = document.getElementsByName("cb_race");
-	for(let i = 0; i < cb_race.length; ++i){
-		cb_race[i].checked = false;
+function clear_cb(type){
+	var cb_list = document.getElementsByName('cb_' + type);
+	for(let i = 0; i < cb_list.length; ++i){
+		cb_list[i].checked = false;
 	}
-	var rst = document.getElementById('race_reset');
+	var rst = document.getElementById(type + '_reset');
 	rst.checked = false;
 }

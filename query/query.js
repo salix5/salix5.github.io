@@ -13,7 +13,7 @@ const TYPE_SYNCHRO		=0x2000		//同调
 const TYPE_XYZ			=0x800000	//超量
 const TYPE_PENDULUM		=0x1000000	//灵摆
 const TYPE_LINK			=0x4000000	//连接
-const ext = TYPE_FUSION | TYPE_SYNCHRO | TYPE_XYZ | TYPE_LINK;   
+const TYPE_EXT = TYPE_FUSION | TYPE_SYNCHRO | TYPE_XYZ | TYPE_LINK;   
 
 //extype
 const TYPE_SPIRIT		=0x200		//灵魂
@@ -185,6 +185,59 @@ function is_scale(x){
 		return true;
 	else
 		return false;
+}
+
+function id_to_type(id){
+	switch(id){
+		case 'mtype1':
+			return TYPE_NORMAL;
+		case 'mtype2':
+			return TYPE_EFFECT;
+		case 'mtype3':
+			return TYPE_RITUAL;
+		case 'mtype4':
+			return TYPE_FUSION;
+		case 'mtype5':
+			return TYPE_SYNCHRO;
+		case 'mtype6':
+			return TYPE_XYZ;
+		case 'mtype7':
+			return TYPE_PENDULUM;
+		case 'mtype8':
+			return TYPE_LINK;
+		case 'mtype9':
+			return TYPE_SPIRIT;
+		case 'mtype10':
+			return TYPE_UNION;
+		case 'mtype11':
+			return TYPE_DUAL;
+		case 'mtype12':
+			return TYPE_TUNER;
+		case 'mtype13':
+			return TYPE_FLIP;
+		case 'mtype14':
+			return TYPE_TOON;
+		case 'mtype15':
+			return TYPE_SPSUMMON;
+		
+		case 'stype2':
+			return TYPE_QUICKPLAY;
+		case 'stype3':
+			return TYPE_CONTINUOUS;
+		case 'stype4':
+			return TYPE_EQUIP;
+		case 'stype5':
+			return TYPE_RITUAL;
+		case 'stype6':
+			return TYPE_FIELD;
+		
+		case 'ttype1':
+			return TYPE_CONTINUOUS;
+		case 'ttype1':
+			return TYPE_COUNTER;
+		default:
+			return 0;
+	}
 }
 
 function print_attr(x){
@@ -474,8 +527,11 @@ function query(){
 	
 	var select_ot  = document.getElementById('select_ot');
 	var select_type = document.getElementById('select_type');
-	var select_subtype1 = document.getElementById('select_subtype1');
-	var select_subtype2 = document.getElementById('select_subtype2');
+	var select_ao = document.getElementById('select_ao');
+	var mtype_deck = document.getElementById('mtype_deck');
+	var stype1 = document.getElementById('stype1');
+	var ttype1 = document.getElementById('ttype1');
+	//var select_subtype2 = document.getElementById('select_subtype2');
 	//var select_race = document.getElementById('select_race');
 	//var select_attr  = document.getElementById('select_attr');
 	var cb_attr = document.getElementsByName("cb_attr");
@@ -502,6 +558,8 @@ function query(){
 	var valid = false;
 	var monly = false;
 	
+	var cb_list;
+	
 	// id
 	if(text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
@@ -523,25 +581,49 @@ function query(){
 		    break;
 	}
 	
-	// type (incomplete)
-	if(select_type.value.length <= 13 && select_type.value != ''){
-		ctype = parseInt(select_type.value, 16);
-		if(select_subtype1.value != ''){
-			if(select_subtype1.value == 'deck'){
-		        qstr = qstr + " AND NOT type & " + ext;
+	// type
+	switch(select_type.value){
+		case 'm':
+			cb_list = document.getElementsByName('cb_mtype');
+			for(let i = 0; i < cb_list.length; ++i){
+				if(cb_list[i].checked)
+					ctype |= id_to_type(cb_list[i].id);
 			}
-			else if(select_subtype1.value == 'extra'){
-		        qstr = qstr + " AND type & " + ext;
-			}
+			if(mtype_deck.checked)
+				qstr = qstr + " AND NOT type & " + TYPE_EXT;
+			if(select_ao.value == 'or')
+				qstr = qstr + " AND type & $type";
 			else
-		        ctype = ctype | parseInt(select_subtype1.value, 16);
-		}
-		if(select_subtype2.value != ''){
-			ctype = ctype | parseInt(select_subtype2.value, 16);
-		}
-		qstr = qstr + " AND type & $type == $type";
-		arg.$type = ctype;
-		valid = true;
+				qstr = qstr + " AND type & $type == $type";
+			arg.$type = ctype;
+			valid = true;
+			break;
+		case 's':
+			cb_list = document.getElementsByName('cb_mtype');
+			for(let i = 0; i < cb_list.length; ++i){
+				if(cb_list[i].checked)
+					ctype |= id_to_type(cb_list[i].id);
+			}
+			if(stype1.checked)
+				qstr = qstr + " AND (type & $type OR type == " + TYPE_SPELL + ")";
+			else
+				qstr = qstr + " AND type & $type";
+			arg.$type = ctype;
+			valid = true;
+			break;
+		case 't':
+			cb_list = document.getElementsByName('cb_mtype');
+			for(let i = 0; i < cb_list.length; ++i){
+				if(cb_list[i].checked)
+					ctype |= id_to_type(cb_list[i].id);
+			}
+			if(ttype1.checked)
+				qstr = qstr + " AND (type & $type OR type == " + TYPE_TRAP +")";
+			else
+				qstr = qstr + " AND type & $type";
+			arg.$type = ctype;
+			valid = true;
+			break;
 	}
 	
 	// atk
@@ -729,18 +811,23 @@ function query(){
 	
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
+	select_ao.selectedIndex = 0;
 	
-	var len = select_subtype1.length;
+	/*var len = select_subtype1.length;
 	for(let i=1; i <= len-1; ++i)
 		select_subtype1.remove(select_subtype1.length - 1);
 	
 	len = select_subtype2.length;
 	for(let i=1; i <= len-1; ++i)
 		select_subtype2.remove(select_subtype2.length - 1);
-	select_subtype2.style.visibility = "hidden";
-	
+	select_subtype2.style.visibility = "hidden";*/
 	//select_race.selectedIndex = 0;
 	//select_attr.selectedIndex = 0;
+	clear_cb('mtype');
+	clear_cb('stype');
+	clear_cb('ttype');
+	clear_cb('attr');
+	clear_cb('race');
 	
 	if(!valid)
 		return;
