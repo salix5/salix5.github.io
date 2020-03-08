@@ -589,44 +589,54 @@ function query(){
 	// type
 	switch(select_type.value){
 		case 'm':
+			qstr = qstr + " AND type & " + TYPE_MONSTER;
+			if(mtype_deck.checked)
+				qstr = qstr + " AND NOT type & " + TYPE_EXT;
+			
 			cb_list = document.getElementsByName('cb_mtype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
 					ctype |= id_to_type(cb_list[i].id);
 			}
-			if(mtype_deck.checked)
-				qstr = qstr + " AND NOT type & " + TYPE_EXT;
-			if(select_ao.value == 'or')
-				qstr = qstr + " AND type & $type";
-			else
-				qstr = qstr + " AND type & $type == $type";
-			arg.$type = ctype;
+			if(ctype){
+				if(select_ao.value == 'or')
+					qstr = qstr + " AND type & $type";
+				else
+					qstr = qstr + " AND type & $type == $type";
+				arg.$type = ctype;
+			}
 			valid = true;
 			break;
 		case 's':
+			qstr = qstr + " AND type & " + TYPE_SPELL;
 			cb_list = document.getElementsByName('cb_stype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
 					ctype |= id_to_type(cb_list[i].id);
 			}
-			if(stype1.checked)
-				qstr = qstr + " AND (type & $type OR type == " + TYPE_SPELL + ")";
-			else
-				qstr = qstr + " AND type & $type";
-			arg.$type = ctype;
+			if(ctype){
+				if(stype1.checked)
+					qstr = qstr + " AND (type & $type OR type == " + TYPE_SPELL + ")";
+				else
+					qstr = qstr + " AND type & $type";
+				arg.$type = ctype;
+			}
 			valid = true;
 			break;
 		case 't':
+			qstr = qstr + " AND type & " + TYPE_TRAP;
 			cb_list = document.getElementsByName('cb_ttype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
 					ctype |= id_to_type(cb_list[i].id);
 			}
-			if(ttype1.checked)
-				qstr = qstr + " AND (type & $type OR type == " + TYPE_TRAP +")";
-			else
-				qstr = qstr + " AND type & $type";
-			arg.$type = ctype;
+			if(ctype){
+				if(stype1.checked)
+					qstr = qstr + " AND (type & $type OR type == " + TYPE_TRAP + ")";
+				else
+					qstr = qstr + " AND type & $type";
+				arg.$type = ctype;
+			}
 			valid = true;
 			break;
 	}
