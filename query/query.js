@@ -396,8 +396,6 @@ function create_rows(result){
 			}
 			if(result.type & TYPE_NORMAL)
 				subtype += '/通常';
-			if(result.type & TYPE_EFFECT)
-				subtype += '/效果';
 			
 			if(result.type & TYPE_SPIRIT)
 				subtype += '/靈魂';
@@ -413,6 +411,8 @@ function create_rows(result){
 				subtype += '/卡通';
 			if(result.type & TYPE_SPSUMMON)
 				subtype += '/特殊召喚';
+			if(result.type & TYPE_EFFECT)
+				subtype += '/效果';
 			data = '[' + mtype + subtype + '] ';
 		}
 		else if(result.type & TYPE_SPELL){
@@ -599,7 +599,7 @@ function query(){
 			valid = true;
 			break;
 		case 's':
-			cb_list = document.getElementsByName('cb_mtype');
+			cb_list = document.getElementsByName('cb_stype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
 					ctype |= id_to_type(cb_list[i].id);
@@ -612,7 +612,7 @@ function query(){
 			valid = true;
 			break;
 		case 't':
-			cb_list = document.getElementsByName('cb_mtype');
+			cb_list = document.getElementsByName('cb_ttype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
 					ctype |= id_to_type(cb_list[i].id);
@@ -812,6 +812,7 @@ function query(){
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
 	select_ao.selectedIndex = 0;
+	select_ao.style.display = 'none';
 	
 	/*var len = select_subtype1.length;
 	for(let i=1; i <= len-1; ++i)
