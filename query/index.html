@@ -31,7 +31,7 @@
   <script src='webpage.js'></script>
   <form onsubmit="query()">
 	<table class="hidden">
-	<tr><td>密碼：<input id="text_id" type="number" min="0" ><!--onkeydown ="key_search(event)">--></td></tr>
+	<tr><td>密碼：<input id="text_id" type="number" min="0"  max="9999999999" onkeydown="key_search()"></td></tr>
 	<tr><td>卡名：<input id="text_name" type="search" ><!--onkeydown ="key_search(event)">--></td></tr>
 	<tr><td>TCG：<select id="select_ot">
 		<option value="">包含TCG特有卡</option>
@@ -81,14 +81,14 @@
 	</div>
 	</td></tr>
 	
-	<tr><td>星數：<input id="text_lv1" type="number" min="1" max="12" style="width: 3em" ><!--onkeydown ="key_search(event)">-->
+	<tr><td>星數：<input id="text_lv1" type="number" min="1" max="12" style="width: 3em" onkeydown="key_search()">
 	～
-	<input id="text_lv2" type="number" min="1" max="12" style="width: 3em" ><!--onkeydown ="key_search(event)">-->
+	<input id="text_lv2" type="number" min="1" max="12" style="width: 3em" onkeydown="key_search()">
 	</td></tr>
 	
-	<tr><td>刻度：<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" ><!--onkeydown ="key_search(event)">-->
+	<tr><td>刻度：<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" onkeydown="key_search()">
 	～
-	<input id="text_sc2" type="number" min="0" max="13" style="width: 3em" ><!--onkeydown ="key_search(event)">-->
+	<input id="text_sc2" type="number" min="0" max="13" style="width: 3em" onkeydown="key_search()">
 	</td></tr>
 	
 	<tr><td>屬性：<input type="checkbox" id="attr1" name="cb_attr"><label for="attr1">地</label>
@@ -166,15 +166,14 @@
 	</select>-->
 	</td></tr>
 	
-	<tr><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" ><!--onkeydown ="key_search(event)">-->
+	<tr><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	～
-	<input id="text_atk2" type="number" min="-1" max="99999" style="width: 5em" ><!--onkeydown ="key_search(event)">-->
+	<input id="text_atk2" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	(? = -1)</td></tr>
 	
-	<tr><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" style="width: 5em" ><!--onkeydown ="key_search(event)">-->
+	<tr><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	～
-	<input id="text_def2" type="number" min="-1" max="99999" style="width: 5em" >
-<!--onkeydown ="key_search(event)">-->
+	<input id="text_def2" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	</td></tr>
 	
 	<tr><td>效果：<input id="text_effect" type="search" >
