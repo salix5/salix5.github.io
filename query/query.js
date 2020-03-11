@@ -562,10 +562,9 @@ function query(){
 	var arg = new Object();
 	var valid = false;
 	var monly = false;
+	
 	var cb_list;
 	
-	button1.disabled = true;
-	event.preventDefault();
 	// id
 	if(text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
@@ -850,10 +849,8 @@ function query(){
 	clear_cb('attr');
 	clear_cb('race');
 	
-	if(!valid){
-		button1.disabled = false;
+	if(!valid)
 		return;
-	}
 	
 	// Prepare a statement
 	var stmt = db.prepare(qstr);
@@ -874,5 +871,4 @@ function query(){
 			continue;
 		create_rows(result);			
 	}
-	button1.disabled = false;
 }
