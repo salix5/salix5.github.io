@@ -95,7 +95,6 @@ var config = {
 }   
 
 var db, db2;
-var ready = false;
 var ltable = new Object();
 var cid_table;
 
@@ -141,7 +140,6 @@ initSqlJs(config).then(function(SQL){
 		var button1 = document.getElementById('button1');
 		db = new SQL.Database(arr1);
 		button1.disabled = false;
-		ready = true;
 	};
 	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
@@ -562,9 +560,9 @@ function query(){
 	var arg = new Object();
 	var valid = false;
 	var monly = false;
-	
 	var cb_list;
 	
+	button1.disabled = true;
 	// id
 	if(text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
@@ -849,8 +847,10 @@ function query(){
 	clear_cb('attr');
 	clear_cb('race');
 	
-	if(!valid)
+	if(!valid){
+		button1.disabled = false;
 		return;
+	}
 	
 	// Prepare a statement
 	var stmt = db.prepare(qstr);
@@ -871,4 +871,5 @@ function query(){
 			continue;
 		create_rows(result);			
 	}
+	button1.disabled = false;
 }
