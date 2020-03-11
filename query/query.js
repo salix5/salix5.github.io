@@ -565,6 +565,7 @@ function query(){
 	
 	var cb_list;
 	
+	event.preventDefault();
 	// id
 	if(text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);

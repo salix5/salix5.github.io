@@ -1,7 +1,7 @@
-function key_search(e){
+function key_search(){
 	if(!ready)
 		return;
-	switch (e.key) {
+	switch (event.key) {
 		case 'Enter':
 			query();
 			break;
