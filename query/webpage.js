@@ -1,9 +1,10 @@
 function key_search(){
-	if(!ready)
+	var button1 = document.getElementById('button1');
+	if(button1.disabled)
 		return;
 	switch (event.key) {
 		case 'Enter':
-			query();
+			button1.click();
 			return;
 	}
 }
