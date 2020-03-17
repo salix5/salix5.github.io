@@ -63,7 +63,7 @@
 	<input type="checkbox" id="mtype14" name="cb_mtype"><label for="mtype14">卡通</label>
 	<input type="checkbox" id="mtype15" name="cb_mtype"><label for="mtype15">特殊召喚</label><br>
 	　　　<input type="checkbox" id="mtype_deck" name="cb_mtype"><label for="mtype_deck">置於牌組</label>
-	<input type="checkbox" id="mtype_reset" onchange="clear_cb('mtype')"><label for="mtype_reset" class="clear">Ｘ</label>
+	<input type="checkbox" id="mtype_reset" onchange="clear_cb('mtype')"><label for="mtype_reset" class="clear">✗</label>
 	</div>
 	<div id="subtype_s" style="display: none">　　　<input type="checkbox" id="stype1" name="cb_stype"><label for="stype1">通常</label>
 	<input type="checkbox" id="stype2" name="cb_stype"><label for="stype2">速攻</label>
@@ -71,12 +71,12 @@
 	<input type="checkbox" id="stype4" name="cb_stype"><label for="stype4">裝備</label><br>
 	　　　<input type="checkbox" id="stype5" name="cb_stype"><label for="stype5">儀式</label>
 	<input type="checkbox" id="stype6" name="cb_stype"><label for="stype6">場地</label>
-	<input type="checkbox" id="stype_reset" onchange="clear_cb('stype')"><label for="stype_reset" class="clear">Ｘ</label>
+	<input type="checkbox" id="stype_reset" onchange="clear_cb('stype')"><label for="stype_reset" class="clear">✗</label>
 	</div>
 	<div id="subtype_t"  style="display: none">　　　<input type="checkbox" id="ttype1" name="cb_ttype"><label for="ttype1">通常</label>
 	<input type="checkbox" id="ttype2" name="cb_ttype"><label for="ttype2">永續</label>
 	<input type="checkbox" id="ttype3" name="cb_ttype"><label for="ttype3">反擊</label>
-	<input type="checkbox" id="ttype_reset" onchange="clear_cb('ttype')"><label for="ttype_reset" class="clear">Ｘ</label>
+	<input type="checkbox" id="ttype_reset" onchange="clear_cb('ttype')"><label for="ttype_reset" class="clear">✗</label>
 	</div>
 	</td></tr>
 	
@@ -97,7 +97,7 @@
 	　　　<input type="checkbox" id="attr5" name="cb_attr"><label for="attr5">光</label>
 	<input type="checkbox" id="attr6" name="cb_attr"><label for="attr6">暗</label>
 	<input type="checkbox" id="attr7" name="cb_attr"><label for="attr7">神</label>
-	<input type="checkbox" id="attr_reset" onchange="clear_cb('attr')"><label for="attr_reset" class="clear">Ｘ</label>
+	<input type="checkbox" id="attr_reset" onchange="clear_cb('attr')"><label for="attr_reset" class="clear">✗</label>
 	<!-- <select id="select_attr">
 		<option value=""></option>
 		<option value="0x1">地</option>
@@ -134,7 +134,7 @@
 	<input type="checkbox" id="race23" name="cb_race"><label for="race23">創造神</label>
 	<input type="checkbox" id="race24" name="cb_race"><label for="race24">幻龍　</label><br>
 	　　　<input type="checkbox" id="race25" name="cb_race"><label for="race25">電子界</label>
-	<input type="checkbox" id="race_reset" onchange="clear_cb('race')"><label for="race_reset" class="clear">Ｘ</label>
+	<input type="checkbox" id="race_reset" onchange="clear_cb('race')"><label for="race_reset" class="clear">✗</label>
 	<!--<select id="select_race">
 		<option value=""></option>
 		<option value="0x1">戰士</option>
@@ -177,8 +177,10 @@
 	
 	<tr><td>效果：<input id="text_effect" type="search" onkeydown="key_search()">
     <button id="button1" disabled="true" onclick="query()">搜尋</button></td></tr>
-    </table>
+	</table>
 	<div class="half-line">&nbsp;</div>
-	<div id="div_result"></div>
+	<!--<div id="div_result"></div>-->
+	<table class="query" id="table_result">
+	</table>
 </body>
 </html>

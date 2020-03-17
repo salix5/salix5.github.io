@@ -344,15 +344,15 @@ function print_limit(id){
 }
 
 function create_rows(result){
-	var div_result = document.getElementById('div_result');
-	var table1 = document.createElement('table');
+	//var div_result = document.getElementById('div_result');
+	var table1 = document.getElementById('table_result');
 	table1.className = "query";
 	if(window.innerWidth > MAX_WIDTH){
 		table1.style.width = MAX_WIDTH + 'px';
 	}
 	var row = table1.insertRow(-1);
-		var cell1 = row.insertCell(-1);
-		var cell2 = row.insertCell(-1);
+	var cell1 = row.insertCell(-1);
+	var cell2 = row.insertCell(-1);
 		
 		cell1.className = "query";
 		cell2.className = "query";
@@ -495,17 +495,17 @@ function create_rows(result){
 		}
 		output = '<span style="color: Blue;">' + data + '</span>' + marker + '<br>';
 		output += result.desc.replace(/\n/g, "<br>");
-		var row_effect = table1.insertRow(-1);    
+		var row_effect = table1.insertRow(-1);
 		var cell_effect = row_effect.insertCell(-1);
 		cell_effect.className = "query";
 		cell_effect.innerHTML = output;
 		cell_effect.colSpan = "2";
-		div_result.insertBefore(table1, null);
 		
+		/*div_result.insertBefore(table1, null);
 		var div_half = document.createElement('div');
 		div_half.className = 'half-line';
 		div_half.innerHTML = '&nbsp;';
-		div_result.insertBefore(div_half, null);
+		div_result.insertBefore(div_half, null);*/
 }
 
 function query(){
@@ -540,7 +540,7 @@ function query(){
 	var cb_attr = document.getElementsByName("cb_attr");
 	var cb_race = document.getElementsByName("cb_race");
 	
-	var div_result = document.getElementById('div_result');
+	var result = document.getElementById('table_result');
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
 	var cid = 0;
 	var ot = 0;
@@ -808,7 +808,7 @@ function query(){
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
 
 	// clear
-	div_result.innerHTML = '';
+	result.innerHTML = '';
 	text_id.value = '';
 	text_name.value = '';
 	text_lv1.value = '';
