@@ -494,7 +494,7 @@ function create_rows(result){
 			}
 		}
 		output = '<span style="color: Blue;">' + data + '</span>' + marker + '<br>';
-		output += result.desc.replace(/\r\n/g, "<br>");
+		output += result.desc.replace(/\n/g, "<br>");
 		var row_effect = table1.insertRow(-1);    
 		var cell_effect = row_effect.insertCell(-1);
 		cell_effect.className = "query";
