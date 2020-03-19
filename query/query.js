@@ -549,6 +549,7 @@ function query(){
 	var select_ot  = document.getElementById('select_ot');
 	var select_type = document.getElementById('select_type');
 	var select_ao1 = document.getElementById('select_ao1');
+	var select_ao2 = document.getElementById('select_ao2');
 	
 	var dm = document.getElementById('subtype_m');
 	var ds = document.getElementById('subtype_s');
