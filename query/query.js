@@ -238,6 +238,29 @@ function id_to_type(id){
 	}
 }
 
+function id_to_marker(id){
+	switch(id){
+		case: 'marker1':
+			return LINK_MARKER_TOP_LEFT;
+		case: 'marker2':
+			return LINK_MARKER_TOP;
+		case: 'marker3':
+			return LINK_MARKER_TOP_RIGHT;
+		case: 'marker4':
+			return LINK_MARKER_LEFT;
+		case: 'marker5':
+			return LINK_MARKER_RIGHT;
+		case: 'marker6':
+			return LINK_MARKER_BOTTOM_LEFT;
+		case: 'marker7':
+			return LINK_MARKER_BOTTOM;
+		case: 'marker8':
+			return LINK_MARKER_BOTTOM_RIGHT;
+		default:
+			return 0;
+	}
+}
+
 function print_attr(x){
 	switch(x){
 		case ATTRIBUTE_EARTH:
@@ -525,7 +548,7 @@ function query(){
 	
 	var select_ot  = document.getElementById('select_ot');
 	var select_type = document.getElementById('select_type');
-	var select_ao = document.getElementById('select_ao');
+	var select_ao1 = document.getElementById('select_ao1');
 	
 	var dm = document.getElementById('subtype_m');
 	var ds = document.getElementById('subtype_s');
@@ -534,11 +557,16 @@ function query(){
 	var mtype_deck = document.getElementById('mtype_deck');
 	var stype1 = document.getElementById('stype1');
 	var ttype1 = document.getElementById('ttype1');
-	//var select_subtype2 = document.getElementById('select_subtype2');
-	//var select_race = document.getElementById('select_race');
-	//var select_attr  = document.getElementById('select_attr');
 	var cb_attr = document.getElementsByName("cb_attr");
 	var cb_race = document.getElementsByName("cb_race");
+	
+	var row_lv = document.getElementById('row_lv');
+	var row_sc = document.getElementById('row_sc');
+	var row_marker = document.getElementById('row_marker');
+	var row_attr = document.getElementById('row_attr');
+	var row_race = document.getElementById('row_race');
+	var row_atk = document.getElementById('row_atk');
+	var row_def = document.getElementById('row_def');
 	
 	var result = document.getElementById('table_result');
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
@@ -559,7 +587,7 @@ function query(){
 	
 	var arg = new Object();
 	var valid = false;
-	var monly = false;
+	var query_monster = false;
 	var cb_list;
 	
 	button1.disabled = true;
@@ -597,7 +625,7 @@ function query(){
 					ctype |= id_to_type(cb_list[i].id);
 			}
 			if(ctype){
-				if(select_ao.value == 'or')
+				if(select_ao1.value == 'or')
 					qstr = qstr + " AND type & $type";
 				else
 					qstr = qstr + " AND type & $type == $type";
@@ -639,159 +667,150 @@ function query(){
 			break;
 	}
 	
-	// atk
-	if(text_atk1.value.length <= MAX_DIGIT)
-		atk1 = parseInt(text_atk1.value, 10);
-	if(text_atk2.value.length <= MAX_DIGIT)
-		atk2 = parseInt(text_atk2.value, 10);
-
-	if(is_atk(atk1) || is_atk(atk2)){
-		if(atk1 == -1 || atk2 == -1){
-			qstr = qstr + " AND atk == $atk";
-			arg.$atk = -2;
-		}
-		else if(!is_atk(atk2)){
-			qstr = qstr + " AND atk == $atk";
-			arg.$atk = atk1;
-		}
-		else if(!is_atk(atk1)){
-			qstr = qstr + " AND atk == $atk";
-			arg.$atk = atk2;
-		}
-		else {
-			var atk_min = Math.min(atk1, atk2);
-			var atk_max = Math.max(atk1, atk2);
-			qstr = qstr + " AND atk >= $atk_min AND atk <= $atk_max";
-			arg.$atk_min = atk_min;
-			arg.$atk_max = atk_max;
-		}
-		valid = true;
-		monly = true;
-	}
+	if(select_type.value == '' || select_type.value == 'm'){
+		// atk
+		if(text_atk1.value.length <= MAX_DIGIT)
+			atk1 = parseInt(text_atk1.value, 10);
+		if(text_atk2.value.length <= MAX_DIGIT)
+			atk2 = parseInt(text_atk2.value, 10);
 	
-	// def, exclude link monsters
-	if(text_def1.value.length <= MAX_DIGIT)
-		def1 = parseInt(text_def1.value, 10);
-	if(text_def2.value.length <= MAX_DIGIT)
-		def2 = parseInt(text_def2.value, 10);
-
-	if(is_atk(def1) || is_atk(def2)){
-		qstr = qstr + " AND NOT type & " + TYPE_LINK;
-		if(def1 == -1 || def2 == -1){
-			qstr = qstr + " AND def == $def";
-			arg.$def = -2;
+		if(is_atk(atk1) || is_atk(atk2)){
+			if(atk1 == -1 || atk2 == -1){
+				qstr = qstr + " AND atk == $atk";
+				arg.$atk = -2;
+			}
+			else if(!is_atk(atk2)){
+				qstr = qstr + " AND atk == $atk";
+				arg.$atk = atk1;
+			}
+			else if(!is_atk(atk1)){
+				qstr = qstr + " AND atk == $atk";
+				arg.$atk = atk2;
+			}
+			else {
+				qstr = qstr + " AND atk >= $atk1 AND atk <= $atk2";
+				arg.$atk1 = atk1;
+				arg.$atk2 = atk2;
+			}
+			valid = true;
+			query_monster = true;
 		}
-		else if(!is_atk(def2)){
-			qstr = qstr + " AND def == $def";
-			arg.$def = def1;
-		}
-		else if(!is_atk(def1)){
-			qstr = qstr + " AND def == $def";
-			arg.$def = def2;
-		}
-		else {
-			var def_min = Math.min(def1, def2);
-			var def_max = Math.max(def1, def2);
-			qstr = qstr + " AND def >= $def_min AND def <= $def_max";
-			arg.$def_min = def_min;
-			arg.$def_max = def_max;
-		}
-		valid = true;
-		monly = true;
-	}
+		
+		// def, exclude link monsters
+		if(text_def1.value.length <= MAX_DIGIT)
+			def1 = parseInt(text_def1.value, 10);
+		if(text_def2.value.length <= MAX_DIGIT)
+			def2 = parseInt(text_def2.value, 10);
 	
-	// lv, scale
-	if(text_lv1.value.length <= MAX_DIGIT)
-		lv1 = parseInt(text_lv1.value, 10);
-	if(text_lv2.value.length <= MAX_DIGIT)
-		lv2 = parseInt(text_lv2.value, 10);
-	if(text_sc1.value.length <= MAX_DIGIT)
-		sc1 = parseInt(text_sc1.value, 10);
-	if(text_sc2.value.length <= MAX_DIGIT)
-		sc2 = parseInt(text_sc2.value, 10);
-	var lv_min = 0;
-	var lv_max = 0;
-	var sc_min = 0;
-	var sc_max = 0;
-	if(is_lv(lv1) || is_lv(lv2)){
-		if(!is_lv(lv2)){
-			qstr = qstr + " AND level & 0xff == $lv";
-			arg.$lv = lv1;
+		if(is_atk(def1) || is_atk(def2)){
+			qstr = qstr + " AND NOT type & " + TYPE_LINK;
+			if(def1 == -1 || def2 == -1){
+				qstr = qstr + " AND def == $def";
+				arg.$def = -2;
+			}
+			else if(!is_atk(def2)){
+				qstr = qstr + " AND def == $def";
+				arg.$def = def1;
+			}
+			else if(!is_atk(def1)){
+				qstr = qstr + " AND def == $def";
+				arg.$def = def2;
+			}
+			else {
+				qstr = qstr + " AND def >= $def1 AND def <= $def_max";
+				arg.$def1 = def1;
+				arg.$def2 = def2;
+			}
+			valid = true;
+			query_monster = true;
 		}
-		else if(!is_lv(lv1)){
-			qstr = qstr + " AND level & 0xff == $lv";
-			arg.$lv = lv2;
+		// lv, scale
+		if(text_lv1.value.length <= MAX_DIGIT)
+			lv1 = parseInt(text_lv1.value, 10);
+		if(text_lv2.value.length <= MAX_DIGIT)
+			lv2 = parseInt(text_lv2.value, 10);
+		if(text_sc1.value.length <= MAX_DIGIT)
+			sc1 = parseInt(text_sc1.value, 10);
+		if(text_sc2.value.length <= MAX_DIGIT)
+			sc2 = parseInt(text_sc2.value, 10);
+		if(is_lv(lv1) || is_lv(lv2)){
+			if(!is_lv(lv2)){
+				qstr = qstr + " AND level & 0xff == $lv";
+				arg.$lv = lv1;
+			}
+			else if(!is_lv(lv1)){
+				qstr = qstr + " AND level & 0xff == $lv";
+				arg.$lv = lv2;
+			}
+			else{
+				qstr = qstr + " AND level & 0xff >= $lv1 AND level & 0xff <= $lv2";
+				arg.$lv1 = lv1;
+				arg.$lv2 = lv2;
+			}
+			valid = true;
+			query_monster = true;
 		}
-		else{
-			lv_min = Math.min(lv1, lv2);
-			lv_max = Math.max(lv1, lv2);
-			qstr = qstr + " AND level & 0xff >= $lv_min AND level & 0xff <= $lv_max";
-			arg.$lv_min = lv_min;
-			arg.$lv_max = lv_max;
+		if(is_scale(sc1) || is_scale(sc2)){
+			qstr = qstr + " AND type&" + TYPE_PENDULUM;
+			if(!is_scale(sc2)){
+				qstr = qstr + " AND (level >> 24) & 0xff == $sc";
+				arg.$sc = sc1;
+			}
+			else if(!is_scale(sc1)){
+				qstr = qstr + " AND (level >> 24) & 0xff == $sc";
+				arg.$sc = sc2;
+			}
+			else{
+				qstr = qstr + " AND (level >> 24) & 0xff >= $sc1 AND (level >> 24) & 0xff <= $sc2";
+				arg.$sc1 = sc1;
+				arg.$sc2 = sc2;
+			}
+			valid = true;
+			query_monster = true;
 		}
-		valid = true;
-		monly = true;
-	}
-	if(is_scale(sc1) || is_scale(sc2)){
-		qstr = qstr + " AND type&" + TYPE_PENDULUM;
-		if(!is_scale(sc2)){
-			qstr = qstr + " AND (level >> 24) & 0xff == $sc";
-			arg.$sc = sc1;
+		
+		// attr, race
+		var tmp = ATTRIBUTE_EARTH;
+		arg.$attr = 0;
+		for(let i = 0; i < cb_attr.length; ++i){
+			if(cb_attr[i].checked)
+				arg.$attr |= tmp;
+			tmp <<= 1;
 		}
-		else if(!is_scale(sc1)){
-			qstr = qstr + " AND (level >> 24) & 0xff == $sc";
-			arg.$sc = sc2;
+		if(arg.$attr){
+			qstr = qstr + " AND attribute & $attr";
+			valid = true;
+			query_monster = true;
 		}
-		else{
-			sc_min = Math.min(sc1, sc2);
-			sc_max = Math.max(sc1, sc2);
-			qstr = qstr + " AND (level >> 24) & 0xff >= $sc_min AND (level >> 24) & 0xff <= $sc_max";
-			arg.$sc_min = sc_min;
-			arg.$sc_max = sc_max;
+		
+		tmp = RACE_WARRIOR;
+		arg.$race = 0;
+		for(let i = 0; i < cb_race.length; ++i){
+			if(cb_race[i].checked)
+				arg.$race |= tmp;
+			tmp <<= 1;
 		}
-		valid = true;
-		monly = true;
-	}
-	
-	// attr, race
-	/*if(select_attr.value.length <= 13 && select_attr.value != ''){
-		qstr = qstr + " AND attribute & $attr";
-		arg.$attr = parseInt(select_attr.value, 16);
-		valid = true;
-		monly = true;
-	}
-	if(select_race.value.length <= 13 && select_race.value != ''){
-		qstr = qstr + " AND race & $race";
-		arg.$race = parseInt(select_race.value, 16);
-		valid = true;
-		monly = true;
-	}*/
-	var tmp = ATTRIBUTE_EARTH;
-	arg.$attr = 0;
-	for(let i = 0; i < cb_attr.length; ++i){
-		if(cb_attr[i].checked)
-			arg.$attr |= tmp;
-		cb_attr[i].checked = false;
-		tmp <<= 1;
-	}
-	if(arg.$attr){
-		qstr = qstr + " AND attribute & $attr";
-		valid = true;
-		monly = true;
-	}
-	
-	tmp = RACE_WARRIOR;
-	arg.$race = 0;
-	for(let i = 0; i < cb_race.length; ++i){
-		if(cb_race[i].checked)
-			arg.$race |= tmp;
-		cb_race[i].checked = false;
-		tmp <<= 1;
-	}
-	if(arg.$race){
-		qstr = qstr + " AND race & $race";
-		valid = true;
-		monly = true;
+		if(arg.$race){
+			qstr = qstr + " AND race & $race";
+			valid = true;
+			query_monster = true;
+		}
+		// marker
+		arg.$marker = 0;
+		cb_list = document.getElementsByName('cb_marker');
+		for(let i = 0; i < cb_list.length; ++i){
+			if(cb_list[i].checked)
+				arg.$marker |= id_to_marker(cb_list[i].id);
+		}
+		if(arg.$marker){
+			qstr = qstr + " AND type & " + TYPE_LINK;
+			if(select_ao2.value == 'or')
+				qstr = qstr + " AND def & $marker";
+			else
+				qstr = qstr + " AND def & $marker == $marker";
+			valid = true;
+			query_monster = true;
+		}
 	}
 	// name, effect
 	if(text_name.value.length <= 1000 && text_name.value != ''){
@@ -804,7 +823,7 @@ function query(){
 		arg.$desc = '%' + text_effect.value.replace(/[%_]/, '') + '%';
 		valid = true;
 	}
-	if(monly)
+	if(select_type.value == '' && query_monster)
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
 
 	// clear
@@ -824,28 +843,27 @@ function query(){
 	
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
-	select_ao.selectedIndex = 0;
-	select_ao.style.display = 'none';
+	select_ao1.selectedIndex = 0;
+	select_ao1.style.display = 'none';
+	select_ao2.selectedIndex = 0;
 	
-	/*var len = select_subtype1.length;
-	for(let i=1; i <= len-1; ++i)
-		select_subtype1.remove(select_subtype1.length - 1);
-	
-	len = select_subtype2.length;
-	for(let i=1; i <= len-1; ++i)
-		select_subtype2.remove(select_subtype2.length - 1);
-	select_subtype2.style.visibility = "hidden";*/
-	//select_race.selectedIndex = 0;
-	//select_attr.selectedIndex = 0;
 	clear_cb('mtype');
 	clear_cb('stype');
 	clear_cb('ttype');
 	dm.style.display = 'none';
 	ds.style.display = 'none';
 	dt.style.display = 'none';
+	row_lv.style.display = '';
+	row_sc.style.display = '';
+	row_marker.style.display = '';
+	row_attr.style.display = '';
+	row_race.style.display = '';
+	row_atk.style.display = '';
+	row_def.style.display = '';
 	
 	clear_cb('attr');
 	clear_cb('race');
+	clear_cb('marker');
 	
 	if(!valid){
 		button1.disabled = false;
