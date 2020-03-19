@@ -800,8 +800,10 @@ function query(){
 		arg.$marker = 0;
 		cb_list = document.getElementsByName('cb_marker');
 		for(let i = 0; i < cb_list.length; ++i){
-			if(cb_list[i].checked)
+			if(cb_list[i].checked){
 				arg.$marker |= id_to_marker(cb_list[i].id);
+				cb_list[i].checked = false;
+			}
 		}
 		if(arg.$marker){
 			qstr = qstr + " AND type & " + TYPE_LINK;
@@ -864,7 +866,6 @@ function query(){
 	
 	clear_cb('attr');
 	clear_cb('race');
-	clear_cb('marker');
 	
 	if(!valid){
 		button1.disabled = false;
