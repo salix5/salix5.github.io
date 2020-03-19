@@ -240,21 +240,21 @@ function id_to_type(id){
 
 function id_to_marker(id){
 	switch(id){
-		case: 'marker1':
+		case 'marker1':
 			return LINK_MARKER_TOP_LEFT;
-		case: 'marker2':
+		case 'marker2':
 			return LINK_MARKER_TOP;
-		case: 'marker3':
+		case 'marker3':
 			return LINK_MARKER_TOP_RIGHT;
-		case: 'marker4':
+		case 'marker4':
 			return LINK_MARKER_LEFT;
-		case: 'marker5':
+		case 'marker5':
 			return LINK_MARKER_RIGHT;
-		case: 'marker6':
+		case 'marker6':
 			return LINK_MARKER_BOTTOM_LEFT;
-		case: 'marker7':
+		case 'marker7':
 			return LINK_MARKER_BOTTOM;
-		case: 'marker8':
+		case 'marker8':
 			return LINK_MARKER_BOTTOM_RIGHT;
 		default:
 			return 0;
