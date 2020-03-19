@@ -43,7 +43,7 @@
 		<option value="s">魔法</option>
 		<option value="t">陷阱</option>
 	</select>
-	<select id="select_ao" style="display: none">
+	<select id="select_ao1" style="display: none">
 		<option value="or">OR</option>
 		<option value="and">AND</option>
 	</select><br>
@@ -80,17 +80,23 @@
 	</div>
 	</td></tr>
 	
-	<tr><td>星數：<input id="text_lv1" type="number" min="1" max="12" style="width: 3em" onkeydown="key_search()">
+	<tr id="row_lv" style="display: none"><td>星數：<input id="text_lv1" type="number" min="1" max="12" style="width: 3em" onkeydown="key_search()">
 	～
 	<input id="text_lv2" type="number" min="1" max="12" style="width: 3em" onkeydown="key_search()">
 	</td></tr>
-	
-	<tr><td>刻度：<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" onkeydown="key_search()">
+	<tr id="row_sc" style="display: none"><td>刻度：<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" onkeydown="key_search()">
 	～
 	<input id="text_sc2" type="number" min="0" max="13" style="width: 3em" onkeydown="key_search()">
 	</td></tr>
-	
-	<tr><td>屬性：<input type="checkbox" id="attr1" name="cb_attr"><label for="attr1">地</label>
+	<tr id="row_marker"><td>標記：<input type="checkbox" id="marker1" name="cb_marker"><input type="checkbox" id="marker2" name="cb_marker"><input type="checkbox" id="marker3" name="cb_marker">
+		<select id="select_ao2">
+			<option value="or">OR</option>
+			<option value="and">AND</option>
+		</select><br>
+		　　　<input type="checkbox" id="marker4" name="cb_marker"> 　<input type="checkbox" id="marker5" name="cb_marker"><br>
+		　　　<input type="checkbox" id="marker6" name="cb_marker"><input type="checkbox" id="marker7" name="cb_marker"><input type="checkbox" id="marker8" name="cb_marker">
+	</td></tr>
+	<tr id="row_attr"><td>屬性：<input type="checkbox" id="attr1" name="cb_attr"><label for="attr1">地</label>
 	<input type="checkbox" id="attr2" name="cb_attr"><label for="attr2">水</label>
 	<input type="checkbox" id="attr3" name="cb_attr"><label for="attr3">炎</label>
 	<input type="checkbox" id="attr4" name="cb_attr"><label for="attr4">風</label><br>
@@ -109,7 +115,7 @@
 		<option value="0x40">神</option>
 	</select> -->
 	</td></tr>
-	<tr><td>種族：<input type="checkbox" id="race1" name="cb_race"><label for="race1">戰士　</label>
+	<tr id="row_race"><td>種族：<input type="checkbox" id="race1" name="cb_race"><label for="race1">戰士　</label>
 	<input type="checkbox" id="race2" name="cb_race"><label for="race2">魔法使</label>
 	<input type="checkbox" id="race3" name="cb_race"><label for="race3">天使　</label>
 	<input type="checkbox" id="race4" name="cb_race"><label for="race4">惡魔　</label><br>
@@ -165,16 +171,14 @@
 	</select>-->
 	</td></tr>
 	
-	<tr><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
+	<tr id="row_atk"><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	～
 	<input id="text_atk2" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	(? = -1)</td></tr>
-	
-	<tr><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
+	<tr id="row_def"><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	～
 	<input id="text_def2" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
 	</td></tr>
-	
 	<tr><td>效果：<input id="text_effect" type="search" onkeydown="key_search()">
     <button id="button1" disabled="true" onclick="query()">搜尋</button></td></tr>
 	</table>
