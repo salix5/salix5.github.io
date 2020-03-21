@@ -370,7 +370,10 @@ function create_rows(result){
 	//var div_result = document.getElementById('div_result');
 	var table1 = document.getElementById('table_result');
 	table1.className = 'query';
-	table1.style.width = Math.min(window.innerWidth, MAX_WIDTH) + 'px';
+	if(window.innerWidth > MAX_WIDTH)
+		table1.style.width = MAX_WIDTH + 'px';
+	else
+		table1.style.width = '80%';
 	var row = table1.insertRow(-1);
 	var cell1 = row.insertCell(-1);
 	var cell2 = row.insertCell(-1);
