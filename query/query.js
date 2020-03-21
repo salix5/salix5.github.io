@@ -373,7 +373,7 @@ function create_rows(result){
 	if(window.innerWidth > MAX_WIDTH)
 		table1.style.width = MAX_WIDTH + 'px';
 	else
-		table1.style.width = '100%';
+		table1.style.width = '90%';
 	var row = table1.insertRow(-1);
 	var cell1 = row.insertCell(-1);
 	var cell2 = row.insertCell(-1);
