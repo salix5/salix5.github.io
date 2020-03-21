@@ -369,16 +369,14 @@ function print_limit(id){
 function create_rows(result){
 	//var div_result = document.getElementById('div_result');
 	var table1 = document.getElementById('table_result');
-	table1.className = "query";
-	if(window.innerWidth > MAX_WIDTH){
-		table1.style.width = MAX_WIDTH + 'px';
-	}
+	table1.className = 'query';
+	table1.style.width = Math.min(window.innerWidth, MAX_WIDTH) + 'px';
 	var row = table1.insertRow(-1);
 	var cell1 = row.insertCell(-1);
 	var cell2 = row.insertCell(-1);
 		
-		cell1.className = "query";
-		cell2.className = "query";
+		cell1.className = 'card_id';
+		cell2.className = 'query';
 		if(result.id <= 99999999)
 			cell1.innerHTML = '<a href="' + print_link(result.id, result.ot) + '" target="_blank">' + result.id.toString().padStart(8, '0') + '</a>';
 		else
