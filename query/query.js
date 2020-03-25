@@ -470,6 +470,7 @@ function create_rows(result){
 			data += '/' + print_race(result.race) + '族<br>'; 
 			data += print_ad(result.atk);
 			if(result.type & TYPE_LINK){
+				data += '/-';
 				marker = '<br><span style="color: Red;">';
 				if(result.def & LINK_MARKER_TOP_LEFT)
 					marker = marker + '↖';
