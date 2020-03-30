@@ -185,155 +185,81 @@ function is_scale(x){
 		return false;
 }
 
-function id_to_type(id){
-	switch(id){
-		case 'mtype1':
-			return TYPE_NORMAL;
-		case 'mtype2':
-			return TYPE_EFFECT;
-		case 'mtype3':
-			return TYPE_RITUAL;
-		case 'mtype4':
-			return TYPE_FUSION;
-		case 'mtype5':
-			return TYPE_SYNCHRO;
-		case 'mtype6':
-			return TYPE_XYZ;
-		case 'mtype7':
-			return TYPE_PENDULUM;
-		case 'mtype8':
-			return TYPE_LINK;
-		case 'mtype9':
-			return TYPE_SPIRIT;
-		case 'mtype10':
-			return TYPE_UNION;
-		case 'mtype11':
-			return TYPE_DUAL;
-		case 'mtype12':
-			return TYPE_TUNER;
-		case 'mtype13':
-			return TYPE_FLIP;
-		case 'mtype14':
-			return TYPE_TOON;
-		case 'mtype15':
-			return TYPE_SPSUMMON;
-		
-		case 'stype2':
-			return TYPE_QUICKPLAY;
-		case 'stype3':
-			return TYPE_CONTINUOUS;
-		case 'stype4':
-			return TYPE_EQUIP;
-		case 'stype5':
-			return TYPE_RITUAL;
-		case 'stype6':
-			return TYPE_FIELD;
-		
-		case 'ttype2':
-			return TYPE_CONTINUOUS;
-		case 'ttype3':
-			return TYPE_COUNTER;
-		default:
-			return 0;
-	}
-}
+var id_to_type = {
+	mtype1: TYPE_NORMAL,
+	mtype2: TYPE_EFFECT,
+	mtype3: TYPE_RITUAL,
+	mtype4: TYPE_FUSION,
+	mtype5: TYPE_SYNCHRO,
+	mtype6: TYPE_XYZ,
+	mtype7: TYPE_PENDULUM,
+	mtype8: TYPE_LINK,
+	mtype9: TYPE_SPIRIT,
+	mtype10: TYPE_UNION,
+	mtype11: TYPE_DUAL,
+	mtype12: TYPE_TUNER,
+	mtype13: TYPE_FLIP,
+	mtype14: TYPE_TOON,
+	mtype15: TYPE_SPSUMMON,
+	
+	stype2: TYPE_QUICKPLAY,
+	stype3: TYPE_CONTINUOUS,
+	stype4: TYPE_EQUIP,
+	stype5: TYPE_RITUAL,
+	stype6: TYPE_FIELD,
+	
+	ttype2: TYPE_CONTINUOUS,
+	ttype3: TYPE_COUNTER
+};
 
-function id_to_marker(id){
-	switch(id){
-		case 'marker1':
-			return LINK_MARKER_TOP_LEFT;
-		case 'marker2':
-			return LINK_MARKER_TOP;
-		case 'marker3':
-			return LINK_MARKER_TOP_RIGHT;
-		case 'marker4':
-			return LINK_MARKER_LEFT;
-		case 'marker5':
-			return LINK_MARKER_RIGHT;
-		case 'marker6':
-			return LINK_MARKER_BOTTOM_LEFT;
-		case 'marker7':
-			return LINK_MARKER_BOTTOM;
-		case 'marker8':
-			return LINK_MARKER_BOTTOM_RIGHT;
-		default:
-			return 0;
-	}
-}
+var id_to_marker = {
+	marker1: LINK_MARKER_TOP_LEFT,
+	marker2: LINK_MARKER_TOP,
+	marker3: LINK_MARKER_TOP_RIGHT,
+	marker4: LINK_MARKER_LEFT,
+	marker5: LINK_MARKER_RIGHT,
+	marker6: LINK_MARKER_BOTTOM_LEFT,
+	marker7: LINK_MARKER_BOTTOM,
+	marker8: LINK_MARKER_BOTTOM_RIGHT
+};
 
-function print_attr(x){
-	switch(x){
-		case ATTRIBUTE_EARTH:
-			return '地';
-		case ATTRIBUTE_WATER:
-			return '水';
-		case ATTRIBUTE_FIRE:
-			return '炎';
-		case ATTRIBUTE_WIND:
-			return '風';
-		case ATTRIBUTE_LIGHT:
-			return '光';
-		case ATTRIBUTE_DARK:
-			return '暗';
-		case ATTRIBUTE_DIVINE:
-			return '神';
-	}
-}
+var attr_to_str = {
+	[ATTRIBUTE_EARTH]: '地',
+	[ATTRIBUTE_WATER]: '水',
+	[ATTRIBUTE_FIRE]: '炎',
+	[ATTRIBUTE_WIND]: '風',
+	[ATTRIBUTE_LIGHT]: '光',
+	[ATTRIBUTE_DARK]: '暗',
+	[ATTRIBUTE_DIVINE]: '神'
+};
 
-function print_race(x){
-	switch(x){
-		case RACE_WARRIOR:
-			return '戰士';
-		case RACE_SPELLCASTER:
-			return '魔法使';
-		case RACE_FAIRY:
-			return '天使';
-		case RACE_FIEND:
-			return '惡魔';
-		case RACE_ZOMBIE:
-			return '不死';
-		case RACE_MACHINE:
-			return '機械';
-		case RACE_AQUA:
-			return '水';
-		case RACE_PYRO:
-			return '炎';
-		case RACE_ROCK:
-			return '岩石';
-		case RACE_WINDBEAST:
-			return '鳥獸';
-		case RACE_PLANT:
-			return '植物';
-		case RACE_INSECT:
-			return '昆蟲';
-		case RACE_THUNDER:
-			return '雷';
-		case RACE_DRAGON:
-			return '龍';
-		case RACE_BEAST:
-			return '獸';
-		case RACE_BEASTWARRIOR:
-			return '獸戰士';
-		case RACE_DINOSAUR:
-			return '恐龍';
-		case RACE_FISH:
-			return '魚';
-		case RACE_SEASERPENT:
-			return '海龍';
-		case RACE_REPTILE:
-			return '爬蟲類';
-		case RACE_PSYCHO:
-			return '超能';
-		case RACE_DIVINE:
-			return '幻神獸';
-		case RACE_CREATORGOD:
-			return '創造神';
-		case RACE_WYRM:
-			return '幻龍';
-		case RACE_CYBERSE:
-			return '電子界';
-	}
-}
+var race_to_str = {
+	[RACE_WARRIOR]: '戰士',
+	[RACE_SPELLCASTER]: '魔法使',
+	[RACE_FAIRY]: '天使',
+	[RACE_FIEND]: '惡魔',
+	[RACE_ZOMBIE]: '不死',
+	[RACE_MACHINE]: '機械',
+	[RACE_AQUA]: '水',
+	[RACE_PYRO]: '炎',
+	[RACE_ROCK]: '岩石',
+	[RACE_WINDBEAST]: '鳥獸',
+	[RACE_PLANT]: '植物',
+	[RACE_INSECT]: '昆蟲',
+	[RACE_THUNDER]: '雷',
+	[RACE_DRAGON]: '龍',
+	[RACE_BEAST]: '獸',
+	[RACE_BEASTWARRIOR]: '獸戰士',
+	[RACE_DINOSAUR]: '恐龍',
+	[RACE_FISH]: '魚',
+	[RACE_SEASERPENT]: '海龍',
+	[RACE_REPTILE]: '爬蟲類',
+	[RACE_PSYCHO]: '超能',
+	[RACE_DIVINE]: '幻神獸',
+	[RACE_CREATORGOD]: '創造神',
+	[RACE_WYRM]: '幻龍',
+	[RACE_CYBERSE]: '電子界'
+};
 
 function print_ad(x){
 	if(x == -2)
@@ -466,8 +392,8 @@ function create_rows(result){
 		
 		if(result.type & TYPE_MONSTER){
 			data += lvstr + (result.level & 0xff);
-			data += '/' + print_attr(result.attribute);
-			data += '/' + print_race(result.race) + '族<br>'; 
+			data += '/' + attr_to_str[result.attribute];
+			data += '/' + race_to_str[result.race] + '族<br>'; 
 			data += print_ad(result.atk);
 			if(result.type & TYPE_LINK){
 				data += '/-';
@@ -625,7 +551,7 @@ function query(){
 			cb_list = document.getElementsByName('cb_mtype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
-					ctype |= id_to_type(cb_list[i].id);
+					ctype |= id_to_type[cb_list[i].id];
 			}
 			if(ctype){
 				if(select_ao1.value == 'or')
@@ -641,7 +567,7 @@ function query(){
 			cb_list = document.getElementsByName('cb_stype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
-					ctype |= id_to_type(cb_list[i].id);
+					ctype |= id_to_type[cb_list[i].id];
 			}
 			if(ctype){
 				if(stype1.checked)
@@ -657,7 +583,7 @@ function query(){
 			cb_list = document.getElementsByName('cb_ttype');
 			for(let i = 0; i < cb_list.length; ++i){
 				if(cb_list[i].checked)
-					ctype |= id_to_type(cb_list[i].id);
+					ctype |= id_to_type[cb_list[i].id];
 			}
 			if(ctype){
 				if(stype1.checked)
@@ -803,7 +729,7 @@ function query(){
 		cb_list = document.getElementsByName('cb_marker');
 		for(let i = 0; i < cb_list.length; ++i){
 			if(cb_list[i].checked){
-				arg.$marker |= id_to_marker(cb_list[i].id);
+				arg.$marker |= id_to_marker[cb_list[i].id];
 				cb_list[i].checked = false;
 			}
 		}
