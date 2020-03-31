@@ -416,7 +416,7 @@ function create_rows(result){
 					marker += '<span class="l t">▲</span>';
 				else
 					marker += '<span class="l f">△</span>';
-				marker += '　';
+				marker += '<span>　</span>';
 				if(result.def & LINK_MARKER_RIGHT)
 					marker += '<span class="r t">▲</span>';
 				else
