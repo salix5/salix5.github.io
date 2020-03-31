@@ -143,16 +143,6 @@
 	<input type="checkbox" id="attr6" name="cb_attr"><label for="attr6">暗</label>
 	<input type="checkbox" id="attr7" name="cb_attr"><label for="attr7">神</label>
 	<input type="checkbox" id="attr_reset" onchange="clear_cb('attr')"><label for="attr_reset" class="clear">✗</label>
-	<!-- <select id="select_attr">
-		<option value=""></option>
-		<option value="0x1">地</option>
-		<option value="0x2">水</option>
-		<option value="0x4">炎</option>
-		<option value="0x8">風</option>
-		<option value="0x10">光</option>
-		<option value="0x20">暗</option>
-		<option value="0x40">神</option>
-	</select> -->
 	</td></tr>
 	<tr id="row_race"><td>種族：<input type="checkbox" id="race1" name="cb_race"><label for="race1">戰士　</label>
 	<input type="checkbox" id="race2" name="cb_race"><label for="race2">魔法使</label>
@@ -180,34 +170,6 @@
 	<input type="checkbox" id="race24" name="cb_race"><label for="race24">幻龍　</label><br>
 	　　　<input type="checkbox" id="race25" name="cb_race"><label for="race25">電子界</label>
 	<input type="checkbox" id="race_reset" onchange="clear_cb('race')"><label for="race_reset" class="clear">✗</label>
-	<!--<select id="select_race">
-		<option value=""></option>
-		<option value="0x1">戰士</option>
-		<option value="0x2">魔法使</option>
-		<option value="0x4">天使</option>
-		<option value="0x8">惡魔</option>
-		<option value="0x10">不死</option>
-		<option value="0x20">機械</option>
-		<option value="0x40">水</option>
-		<option value="0x80">炎</option>
-		<option value="0x100">岩石</option>
-		<option value="0x200">鳥獸</option>
-		<option value="0x400">植物</option>
-		<option value="0x800">昆蟲</option>
-		<option value="0x1000">雷</option>
-		<option value="0x2000">龍</option>
-		<option value="0x4000">獸</option>
-		<option value="0x8000">獸戰士</option>
-		<option value="0x10000">恐龍</option>
-		<option value="0x20000">魚</option>
-		<option value="0x40000">海龍</option>
-		<option value="0x80000">爬蟲類</option>
-		<option value="0x100000">超能</option>
-		<option value="0x200000">幻神獸</option>
-		<option value="0x400000">創造神</option>
-		<option value="0x800000">幻龍</option>
-		<option value="0x1000000">電子界</option>
-	</select>-->
 	</td></tr>
 	
 	<tr id="row_atk"><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
@@ -222,7 +184,6 @@
     <button id="button1" disabled="true" onclick="query()">搜尋</button></td></tr>
 	</table>
 	<div class="half-line">&nbsp;</div>
-	<!--<div id="div_result"></div>-->
 	<table class="query" id="table_result">
 	</table>
 </body>
