@@ -397,45 +397,45 @@ function create_rows(result){
 			data += print_ad(result.atk);
 			if(result.type & TYPE_LINK){
 				data += '/-';
-				marker = '<br><span style="color: Red;">';
+				marker = '<div class="marker">';
 				if(result.def & LINK_MARKER_TOP_LEFT)
-					marker = marker + '↖';
+					marker += '<span class="ul t">▲</span>';
 				else
-					marker = marker + '　';
+					marker += '<span class="ul f">△</span>';
 				if(result.def & LINK_MARKER_TOP )
-					marker = marker + ' ↑ ';
+					marker += '<span class="t">▲</span>';
 				else
-					marker = marker + '　';
+					marker += '<span class="f">△</span>';
 				if(result.def & LINK_MARKER_TOP_RIGHT)
-					marker = marker + '↗';
+					marker += '<span class="ur t">▲</span>';
 				else
-					marker = marker + '　';
+					marker += '<span class="ur f">△</span>';
 
-				marker = marker + '<br>';
+				marker += '<br>';
 				if(result.def & LINK_MARKER_LEFT)
-					marker = marker + '←';
+					marker += '<span class="l t">▲</span>';
 				else
-					marker = marker + '　';
-				marker = marker + '　';
+					marker += '<span class="l f">△</span>';
+				marker += '　';
 				if(result.def & LINK_MARKER_RIGHT)
-					marker = marker + '→';
+					marker += '<span class="r t">▲</span>';
 				else
-					marker = marker + '　';
+					marker += '<span class="r f">△</span>';
 				marker = marker + '<br>';
 
 				if(result.def & LINK_MARKER_BOTTOM_LEFT)
-					marker = marker + '↙';
+					marker += '<span class="dl t">▲</span>';
 				else
-					marker = marker + '　';
+					marker += '<span class="dl f">△</span>';
 				if(result.def & LINK_MARKER_BOTTOM )
-					marker = marker + ' ↓ ';
+					marker += '<span class="d t">▲</span>';
 				else
-					marker = marker + '　';
+					marker += '<span class="d f">△</span>';
 				if(result.def & LINK_MARKER_BOTTOM_RIGHT)
-					marker = marker + '↘';
+					marker += '<span class="dr t">▲</span>';
 				else
-					marker = marker + '　';
-				marker += '</span>';
+					marker += '<span class="dr f">△</span>';
+				marker += '</div>';
 			}
 			else{
 				data +=  '/' + print_ad(result.def);
@@ -444,7 +444,7 @@ function create_rows(result){
 				data += '/刻度' + ((result.level >> 24) & 0xff);
 			}
 		}
-		output = '<span style="color: Blue;">' + data + '</span>' + marker + '<br>';
+		output = '<span style="color: Blue;">' + data + '<br></span>' + marker;
 		output += result.desc.replace(/\n/g, "<br>");
 		var row_effect = table1.insertRow(-1);
 		var cell_effect = row_effect.insertCell(-1);
