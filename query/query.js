@@ -96,6 +96,7 @@ var config = {
 
 var db, db2;
 var ltable = new Object();
+var setname = new Object();
 var cid_table;
 
 var lflist = new XMLHttpRequest();
@@ -121,6 +122,26 @@ lflist.onload = e => {
 };
 lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);
 lflist.send();
+
+var strings = new XMLHttpRequest();
+strings.onload = e => {
+	var ldata = strings.responseText.replace(/\r\n/g, '\n');
+	var line = ldata.split('\n');
+	var count = 0;
+	for(var i = 0; i < line.length; ++i){
+		var init = line[i].substring(0, 8);
+		if(init == '!setname'){
+			var tmp = line[i].substring(9);  // code + name
+			var j = tmp.indexOf(' ');
+			var scode = tmp.substring(0, j);
+			var part = tmp.substring(j + 1).split('\t');
+			var sname = part[0];
+			setname[sname] = scode;
+		}
+	}
+};
+strings.open('GET', 'https://salix5.github.io/CardEditor/strings.conf', true);
+strings.send();
 
 var cid_xhr = new XMLHttpRequest();
 cid_xhr.onload = e => {
@@ -745,8 +766,15 @@ function query(){
 	}
 	// name, effect
 	if(text_name.value.length <= 1000 && text_name.value != ''){
-		qstr = qstr + " AND name LIKE $name";
-		arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
+		if(setname[text_name.value]){
+			qstr = qstr + " AND (name LIKE $name OR setcode == $setcode)";
+			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
+			arg.$setcode = parseInt(setname[text_name.value], 16);
+		}
+		else{
+			qstr = qstr + " AND name LIKE $name";
+			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
+		}
 		valid = true;
 	}
 	if(text_effect.value.length <= 1000 && text_effect.value != ''){
