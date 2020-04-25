@@ -767,7 +767,7 @@ function query(){
 	// name, effect
 	if(text_name.value.length <= 1000 && text_name.value != ''){
 		if(setname[text_name.value]){
-			qstr = qstr + " AND (name LIKE $name OR setcode == $setcode)";
+			qstr = qstr + " AND (name LIKE $name OR setcode & $setcode == $setcode)";
 			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
 			arg.$setcode = parseInt(setname[text_name.value], 16);
 		}
