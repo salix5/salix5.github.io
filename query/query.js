@@ -767,9 +767,11 @@ function query(){
 	// name, effect
 	if(text_name.value.length <= 1000 && text_name.value != ''){
 		if(setname[text_name.value]){
-			qstr = qstr + " AND (name LIKE $name OR setcode & $setcode == $setcode)";
+			var set_code = parseInt(setname[text_name.value], 16);
+			qstr = qstr + " AND (name LIKE $name OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
 			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
-			arg.$setcode = parseInt(setname[text_name.value], 16);
+			arg.$settype = set_code & 0xfff;
+			arg.$setsubtype = set_code & 0xf000;
 		}
 		else{
 			qstr = qstr + " AND name LIKE $name";
