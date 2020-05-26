@@ -151,6 +151,9 @@ cid_xhr.open('GET', 'cid.json', true);
 cid_xhr.responseType = 'json';
 cid_xhr.send();
 
+const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb':
+const url2 = 'beta.cdb';
+
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
 // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
 initSqlJs(config).then(function(SQL){   
@@ -171,7 +174,7 @@ initSqlJs(config).then(function(SQL){
 		var arr1 = new Uint8Array(xhr2.response);
 		db2 = new SQL.Database(arr1);
 	};
-	xhr2.open('GET', 'beta.cdb', true);
+	xhr2.open('GET', url1, true);
 	xhr2.responseType = 'arraybuffer';	
 	xhr2.send();
 	}
