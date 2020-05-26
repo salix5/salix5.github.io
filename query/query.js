@@ -151,7 +151,7 @@ cid_xhr.open('GET', 'cid.json', true);
 cid_xhr.responseType = 'json';
 cid_xhr.send();
 
-const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb':
+const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
 const url2 = 'beta.cdb';
 
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
