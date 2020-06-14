@@ -108,6 +108,7 @@ lflist.onload = e => {
 		var init = line[i].substring(0, 1);
 		if(init == '!'){
 			++count;
+			// only take the first banlist
 			if(count == 2)
 				break;
 		}
@@ -120,7 +121,7 @@ lflist.onload = e => {
 		}
 	}
 };
-lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);
+lflist.open('GET', 'https://raw.githubusercontent.com/Fluorohydride/ygopro/master/lflist.conf', true);
 lflist.send();
 
 var strings = new XMLHttpRequest();
