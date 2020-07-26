@@ -181,10 +181,8 @@ initSqlJs(config).then(function(SQL){
 	}
 );
 
-// require: id, alias, type
+// require: type
 function is_virtual(result) {
-	if(Math.abs(result.alias-result.id) < 10)
-		return true;
 	if(result.type & TYPE_TOKEN)
 		return true;
 }
@@ -484,6 +482,77 @@ function create_rows(result){
 		div_result.insertBefore(div_half, null);*/
 }
 
+function clear_query(){
+	var text_id = document.getElementById('text_id');
+	var text_name = document.getElementById('text_name');
+	var text_effect = document.getElementById('text_effect');
+	
+	var text_lv1 = document.getElementById('text_lv1');
+	var text_lv2 = document.getElementById('text_lv2');
+	var text_sc1 = document.getElementById('text_sc1');
+	var text_sc2 = document.getElementById('text_sc2');
+	
+	var text_atk1 = document.getElementById('text_atk1');
+	var text_atk2 = document.getElementById('text_atk2');
+	var text_def1 = document.getElementById('text_def1');
+    var text_def2 = document.getElementById('text_def2');
+	
+	var select_ot  = document.getElementById('select_ot');
+	var select_type = document.getElementById('select_type');
+	var select_ao1 = document.getElementById('select_ao1');
+	var select_ao2 = document.getElementById('select_ao2');
+	
+	var dm = document.getElementById('subtype_m');
+	var ds = document.getElementById('subtype_s');
+	var dt = document.getElementById('subtype_t');
+	
+	var row_lv = document.getElementById('row_lv');
+	var row_sc = document.getElementById('row_sc');
+	var row_marker = document.getElementById('row_marker');
+	var row_attr = document.getElementById('row_attr');
+	var row_race = document.getElementById('row_race');
+	var row_atk = document.getElementById('row_atk');
+	var row_def = document.getElementById('row_def');
+	
+	var result = document.getElementById('table_result');
+	result.innerHTML = '';
+	text_id.value = '';
+	text_name.value = '';
+	text_lv1.value = '';
+	text_lv2.value = '';
+	text_sc1.value = '';
+	text_sc2.value = '';
+	
+	text_atk1.value = '';
+	text_atk2.value = '';
+	text_def1.value = '';
+	text_def2.value = '';
+	text_effect.value = '';
+	
+	select_ot.selectedIndex = 0;
+	select_type.selectedIndex = 0;
+	select_ao1.selectedIndex = 0;
+	select_ao1.style.display = 'none';
+	select_ao2.selectedIndex = 0;
+	
+	clear_cb('mtype');
+	clear_cb('stype');
+	clear_cb('ttype');
+	dm.style.display = 'none';
+	ds.style.display = 'none';
+	dt.style.display = 'none';
+	row_lv.style.display = '';
+	row_sc.style.display = '';
+	row_marker.style.display = '';
+	row_attr.style.display = '';
+	row_race.style.display = '';
+	row_atk.style.display = '';
+	row_def.style.display = '';
+	
+	clear_cb('attr');
+	clear_cb('race');
+}
+
 function query(){
 	var text_id = document.getElementById('text_id');
 	var text_name = document.getElementById('text_name');
@@ -523,7 +592,8 @@ function query(){
 	var row_def = document.getElementById('row_def');
 	
 	var result = document.getElementById('table_result');
-	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id';
+	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id AND abs(datas.id - alias) >= 10';
+	var exact_qstr = '';
 	var cid = 0;
 	var ot = 0;
 	var ctype = 0;
@@ -768,73 +838,45 @@ function query(){
 			query_monster = true;
 		}
 	}
-	// name, effect
-	if(text_name.value.length <= 1000 && text_name.value != ''){
-		if(setname[text_name.value]){
-			var set_code = parseInt(setname[text_name.value], 16);
-			qstr = qstr + " AND (name LIKE $name OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
-			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
-			arg.$settype = set_code & 0xfff;
-			arg.$setsubtype = set_code & 0xf000;
-		}
-		else{
-			qstr = qstr + " AND name LIKE $name";
-			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
-		}
-		valid = true;
-	}
+	//effect
 	if(text_effect.value.length <= 1000 && text_effect.value != ''){
 		qstr = qstr + " AND desc LIKE $desc";
 		arg.$desc = '%' + text_effect.value.replace(/[%_]/, '') + '%';
 		valid = true;
 	}
+	// avoid trap monsters
 	if(select_type.value == '' && query_monster)
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
-
+	// name
+	if(text_name.value.length <= 1000 && text_name.value != ''){
+		if(setname[text_name.value]){
+			var set_code = parseInt(setname[text_name.value], 16);
+			exact_qstr = qstr + ' AND name == $exact_name';
+			qstr = qstr + " AND (name LIKE $name OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
+			arg.$exact_name = text_name.value.replace(/[%_]/, '');
+			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
+			arg.$settype = set_code & 0xfff;
+			arg.$setsubtype = set_code & 0xf000;
+		}
+		else{
+			exact_qstr = qstr + ' AND name == $exact_name';
+			qstr = qstr + " AND name LIKE $name";
+			arg.$exact_name = text_name.value.replace(/[%_]/, '');
+			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
+		}
+		valid = true;
+	}
+	
+	
 	// clear
-	result.innerHTML = '';
-	text_id.value = '';
-	text_name.value = '';
-	text_lv1.value = '';
-	text_lv2.value = '';
-	text_sc1.value = '';
-	text_sc2.value = '';
-	
-	text_atk1.value = '';
-	text_atk2.value = '';
-	text_def1.value = '';
-	text_def2.value = '';
-	text_effect.value = '';
-	
-	select_ot.selectedIndex = 0;
-	select_type.selectedIndex = 0;
-	select_ao1.selectedIndex = 0;
-	select_ao1.style.display = 'none';
-	select_ao2.selectedIndex = 0;
-	
-	clear_cb('mtype');
-	clear_cb('stype');
-	clear_cb('ttype');
-	dm.style.display = 'none';
-	ds.style.display = 'none';
-	dt.style.display = 'none';
-	row_lv.style.display = '';
-	row_sc.style.display = '';
-	row_marker.style.display = '';
-	row_attr.style.display = '';
-	row_race.style.display = '';
-	row_atk.style.display = '';
-	row_def.style.display = '';
-	
-	clear_cb('attr');
-	clear_cb('race');
+	clear_query();
 	
 	if(!valid){
 		button1.disabled = false;
 		return;
 	}
 	
-	// Prepare a statement
+	// released cards
 	var stmt = db.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
@@ -844,6 +886,8 @@ function query(){
 			continue;
 		create_rows(result);			
 	}
+	
+	// pre-release cards
 	stmt = db2.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
