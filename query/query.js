@@ -90,14 +90,15 @@ const MAX_WIDTH = 700;
 // MAX_SAFE_INTEGER in JS: 16 digit
 const MAX_DIGIT = 15;
 
-var config = {   
-  locateFile: filename => `./dist/${filename}`    
-}   
+var config = {
+	locateFile: filename => `./dist/${filename}`
+}
 
 var db, db2;
 var ltable = new Object();
 var setname = new Object();
 var cid_table;
+var name_table;
 
 var lflist = new XMLHttpRequest();
 lflist.onload = e => {
@@ -151,6 +152,14 @@ cid_xhr.onload = e => {
 cid_xhr.open('GET', 'cid.json', true);	
 cid_xhr.responseType = 'json';
 cid_xhr.send();
+
+var name_xhr = new XMLHttpRequest();
+name_xhr.onload = e => {
+	name_table = name_xhr.response;
+};
+name_xhr.open('GET', 'name_table.json', true);	
+name_xhr.responseType = 'json';
+name_xhr.send();
 
 const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
 const url2 = 'beta.cdb';
@@ -314,6 +323,14 @@ function print_limit(id){
 	else
 		return '';
 }
+
+String.prototype.toHalfWidth = function() {
+    return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)});
+};
+
+String.prototype.toFullWidth = function() {
+    return this.replace(/[A-Za-z0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
+};
 
 function create_rows(result){
 	//var div_result = document.getElementById('div_result');
@@ -849,24 +866,29 @@ function query(){
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
 	// name
 	if(text_name.value.length <= 1000 && text_name.value != ''){
-		if(setname[text_name.value]){
-			var set_code = parseInt(setname[text_name.value], 16);
+		var cname = text_name.value.toHalfWidth()
+		var nid = Object.keys(name_table).find(key => name_table[key] === cname);
+		if(nid){
+			qstr += ' AND datas.id == $nid';
+			arg.$nid = nid;
+		}
+		else if(setname[cname]){
+			var set_code = parseInt(setname[cname], 16);
 			exact_qstr = qstr + ' AND name == $exact_name';
-			qstr = qstr + " AND (name LIKE $name OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
-			arg.$exact_name = text_name.value.replace(/[%_]/, '');
-			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
+			qstr += " AND (name LIKE $name OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
+			arg.$exact_name = cname.replace(/[%_]/, '');
+			arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
 			arg.$settype = set_code & 0xfff;
 			arg.$setsubtype = set_code & 0xf000;
 		}
 		else{
 			exact_qstr = qstr + ' AND name == $exact_name';
 			qstr = qstr + " AND name LIKE $name";
-			arg.$exact_name = text_name.value.replace(/[%_]/, '');
-			arg.$name = '%' + text_name.value.replace(/[%_]/, '') + '%';
+			arg.$exact_name = cname.replace(/[%_]/, '');
+			arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
 		}
 		valid = true;
 	}
-	
 	
 	// clear
 	clear_query();
