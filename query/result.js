@@ -49,11 +49,11 @@ function create_rows(card){
 	var row1 = table1.insertRow(-1);
 	var cell1 = row1.insertCell(-1);
 	var cell2 = row1.insertCell(-1);
-	var cell3 = row1.insertCell(-1);
+	//var cell3 = row1.insertCell(-1);
 
 	cell1.className = 'card_id';
 	cell2.className = 'query';
-	cell3.className = 'query';
+	//cell3.className = 'query';
 	if(card.id <= 99999999)
 		cell1.innerHTML = '<a href="' + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.id.toString().padStart(8, '0') + '</a>';
 	else
@@ -62,7 +62,10 @@ function create_rows(card){
 	cell2.innerHTML = card.name + print_limit(card.limit);
 	if(card.ot == 2)
 		cell2.innerHTML += '<img src="tcg.png" height="20" width="40">';
-	cell3.innerHTML = card.jp_name;
+if(card.id <= 99999999)
+cell2.innerHTML += '<br>' + card.jp_name;
+
+	//cell3.innerHTML = card.jp_name;
 	
 	var mtype = '';
 	var subtype = '';
@@ -200,7 +203,6 @@ function create_rows(card){
 	cell_effect.className = "query";
 	cell_effect.innerHTML = output;
 	cell_effect.colSpan = "2";
-	cell_effect.colSpan = "3";
 	
 	/*div_result.insertBefore(table1, null);
 	var div_half = document.createElement('div');
