@@ -1,105 +1,47 @@
 "use strict";
-// type
-const TYPE_MONSTER		=0x1		//怪兽卡
-const TYPE_SPELL		=0x2		//魔法卡
-const TYPE_TRAP			=0x4		//陷阱卡
-
-// subtype
-const TYPE_NORMAL			=0x10		//通常怪兽
-const TYPE_EFFECT			=0x20		//效果
-const TYPE_FUSION			=0x40		//融合
-const TYPE_RITUAL			=0x80		//仪式
-const TYPE_SYNCHRO		=0x2000		//同调
-const TYPE_XYZ			=0x800000	//超量
-const TYPE_PENDULUM		=0x1000000	//灵摆
-const TYPE_LINK			=0x4000000	//连接
-const TYPE_EXT = TYPE_FUSION | TYPE_SYNCHRO | TYPE_XYZ | TYPE_LINK;   
-
-//extype
-const TYPE_SPIRIT		=0x200		//灵魂
-const TYPE_UNION		=0x400		//同盟
-const TYPE_DUAL			=0x800		//二重
-const TYPE_TUNER		=0x1000		//调整
-const TYPE_TOKEN		=0x4000		//衍生物
-const TYPE_FLIP			=0x200000	//翻转
-const TYPE_TOON			=0x400000	//卡通
-const TYPE_SPSUMMON		=0x2000000	//特殊召唤
-
-// spell type
-const TYPE_QUICKPLAY		=0x10000	//速攻
-const TYPE_CONTINUOUS		=0x20000	//永续
-const TYPE_EQUIP			=0x40000	//装备
-//const TYPE_RITUAL			=0x80
-const TYPE_FIELD			=0x80000	//场地
-
-// trap type
-//const TYPE_CONTINUOUS		=0x20000
-const TYPE_COUNTER		=0x100000	//反击
-
-// race
-const RACE_WARRIOR		=0x1		//战士
-const RACE_SPELLCASTER	=0x2		//魔法师
-const RACE_FAIRY			=0x4		//天使
-const RACE_FIEND			=0x8		//恶魔
-const RACE_ZOMBIE			=0x10		//不死
-const RACE_MACHINE		=0x20		//机械
-const RACE_AQUA			=0x40		//水
-const RACE_PYRO			=0x80		//炎
-const RACE_ROCK			=0x100		//岩石
-const RACE_WINDBEAST		=0x200		//鸟兽
-const RACE_PLANT			=0x400		//植物
-const RACE_INSECT			=0x800		//昆虫
-const RACE_THUNDER		=0x1000			//雷
-const RACE_DRAGON			=0x2000		//龙
-const RACE_BEAST			=0x4000		//兽
-const RACE_BEASTWARRIOR	=0x8000			//兽战士
-const RACE_DINOSAUR		=0x10000		//恐龙
-const RACE_FISH			=0x20000		//鱼
-const RACE_SEASERPENT		=0x40000	//海龙
-const RACE_REPTILE		=0x80000		//爬虫类
-const RACE_PSYCHO			=0x100000	//念动力
-const RACE_DIVINE			=0x200000	//幻神兽
-const RACE_CREATORGOD		=0x400000	//创造神
-const RACE_WYRM			=0x800000		//幻龙
-const RACE_CYBERSE		=0x1000000		//电子界
-
-// attr
-const ATTRIBUTE_EARTH	=0x01		//地
-const ATTRIBUTE_WATER	=0x02		//水
-const ATTRIBUTE_FIRE	=0x04		//炎
-const ATTRIBUTE_WIND	=0x08		//风
-const ATTRIBUTE_LIGHT	=0x10		//光
-const ATTRIBUTE_DARK	=0x20		//暗
-const ATTRIBUTE_DIVINE	=0x40		//神
-
-// Link Marker
-const LINK_MARKER_BOTTOM_LEFT	=0x001 // ↙
-const LINK_MARKER_BOTTOM		=0x002 // ↓
-const LINK_MARKER_BOTTOM_RIGHT	=0x004 // ↘
-
-const LINK_MARKER_LEFT			=0x008 // ←
-const LINK_MARKER_RIGHT			=0x020 // →
-
-const LINK_MARKER_TOP_LEFT		=0x040 // ↖
-const LINK_MARKER_TOP			=0x080 // ↑
-const LINK_MARKER_TOP_RIGHT		=0x100 // ↗
-
-// table width
-const MAX_WIDTH = 700;	
-
 // MAX_SAFE_INTEGER in JS: 16 digit
 const MAX_DIGIT = 15;
 
-var config = {
-	locateFile: filename => `./dist/${filename}`
-}
-
-var db, db2;
-var ltable = new Object();
-var setname = new Object();
 var cid_table;
-var name_table;
+var cid_xhr = new XMLHttpRequest();
+cid_xhr.onload = e => {
+	cid_table = cid_xhr.response;
+};
+cid_xhr.open('GET', 'cid.json', true);	
+cid_xhr.responseType = 'json';
+cid_xhr.send();
 
+var name_table;
+var name_xhr = new XMLHttpRequest();
+name_xhr.onload = e => {
+	name_table = name_xhr.response;
+};
+name_xhr.open('GET', 'name_table.json', true);	
+name_xhr.responseType = 'json';
+name_xhr.send();
+
+var setname = new Object();
+var strings = new XMLHttpRequest();
+strings.onload = e => {
+	var ldata = strings.responseText.replace(/\r\n/g, '\n');
+	var line = ldata.split('\n');
+	var count = 0;
+	for(var i = 0; i < line.length; ++i){
+		var init = line[i].substring(0, 8);
+		if(init == '!setname'){
+			var tmp = line[i].substring(9);  // code + name
+			var j = tmp.indexOf(' ');
+			var scode = tmp.substring(0, j);
+			var part = tmp.substring(j + 1).split('\t');
+			var sname = part[0];
+			setname[sname] = scode;
+		}
+	}
+};
+strings.open('GET', 'https://salix5.github.io/CardEditor/strings.conf', true);
+strings.send();
+
+var ltable = new Object();
 var lflist = new XMLHttpRequest();
 lflist.onload = e => {
 	var ldata = lflist.responseText.replace(/\r\n/g, '\n');
@@ -125,42 +67,13 @@ lflist.onload = e => {
 lflist.open('GET', 'https://raw.githubusercontent.com/Fluorohydride/ygopro/master/lflist.conf', true);
 lflist.send();
 
-var strings = new XMLHttpRequest();
-strings.onload = e => {
-	var ldata = strings.responseText.replace(/\r\n/g, '\n');
-	var line = ldata.split('\n');
-	var count = 0;
-	for(var i = 0; i < line.length; ++i){
-		var init = line[i].substring(0, 8);
-		if(init == '!setname'){
-			var tmp = line[i].substring(9);  // code + name
-			var j = tmp.indexOf(' ');
-			var scode = tmp.substring(0, j);
-			var part = tmp.substring(j + 1).split('\t');
-			var sname = part[0];
-			setname[sname] = scode;
-		}
-	}
-};
-strings.open('GET', 'https://salix5.github.io/CardEditor/strings.conf', true);
-strings.send();
 
-var cid_xhr = new XMLHttpRequest();
-cid_xhr.onload = e => {
-	cid_table = cid_xhr.response;
-};
-cid_xhr.open('GET', 'cid.json', true);	
-cid_xhr.responseType = 'json';
-cid_xhr.send();
+var config = {
+	locateFile: filename => `./dist/${filename}`
+}
 
-var name_xhr = new XMLHttpRequest();
-name_xhr.onload = e => {
-	name_table = name_xhr.response;
-};
-name_xhr.open('GET', 'name_table.json', true);	
-name_xhr.responseType = 'json';
-name_xhr.send();
-
+var db, db2;
+var ready = true;
 const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
 const url2 = 'beta.cdb';
 
@@ -172,8 +85,10 @@ initSqlJs(config).then(function(SQL){
 	xhr.onload = e => {
 		var arr1 = new Uint8Array(xhr.response);
 		var button1 = document.getElementById('button1');
+		var button2 = document.getElementById('button2');
 		db = new SQL.Database(arr1);
 		button1.disabled = false;
+		button2.disabled = false;
 	};
 	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
@@ -191,8 +106,8 @@ initSqlJs(config).then(function(SQL){
 );
 
 // require: type
-function is_virtual(result) {
-	if(result.type & TYPE_TOKEN)
+function is_virtual(card) {
+	if(card.type & TYPE_TOKEN)
 		return true;
 }
 
@@ -255,75 +170,6 @@ var id_to_marker = {
 	marker8: LINK_MARKER_BOTTOM_RIGHT
 };
 
-var attr_to_str = {
-	[ATTRIBUTE_EARTH]: '地',
-	[ATTRIBUTE_WATER]: '水',
-	[ATTRIBUTE_FIRE]: '炎',
-	[ATTRIBUTE_WIND]: '風',
-	[ATTRIBUTE_LIGHT]: '光',
-	[ATTRIBUTE_DARK]: '暗',
-	[ATTRIBUTE_DIVINE]: '神'
-};
-
-var race_to_str = {
-	[RACE_WARRIOR]: '戰士',
-	[RACE_SPELLCASTER]: '魔法使',
-	[RACE_FAIRY]: '天使',
-	[RACE_FIEND]: '惡魔',
-	[RACE_ZOMBIE]: '不死',
-	[RACE_MACHINE]: '機械',
-	[RACE_AQUA]: '水',
-	[RACE_PYRO]: '炎',
-	[RACE_ROCK]: '岩石',
-	[RACE_WINDBEAST]: '鳥獸',
-	[RACE_PLANT]: '植物',
-	[RACE_INSECT]: '昆蟲',
-	[RACE_THUNDER]: '雷',
-	[RACE_DRAGON]: '龍',
-	[RACE_BEAST]: '獸',
-	[RACE_BEASTWARRIOR]: '獸戰士',
-	[RACE_DINOSAUR]: '恐龍',
-	[RACE_FISH]: '魚',
-	[RACE_SEASERPENT]: '海龍',
-	[RACE_REPTILE]: '爬蟲類',
-	[RACE_PSYCHO]: '超能',
-	[RACE_DIVINE]: '幻神獸',
-	[RACE_CREATORGOD]: '創造神',
-	[RACE_WYRM]: '幻龍',
-	[RACE_CYBERSE]: '電子界'
-};
-
-function print_ad(x){
-	if(x == -2)
-		return '?';
-	else
-		return x;
-}
-
-function print_link(id, ot){
-	switch(id){
-		case 68811206:
-			return 'https://yugipedia.com/wiki/68811206'
-		default:
-			var url = 'https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=' + cid_table[id];
-			if(ot == 2)
-				return url + '&request_locale=en';
-			else
-				return url + '&request_locale=ja';
-	}
-}
-
-function print_limit(id){
-	if(ltable[id] == 0)
-		return '<img src="0.png" height="20" width="20">';
-	else if(ltable[id] == 1)
-		return '<img src="1.png" height="20" width="20">';
-	else if(ltable[id] == 2)
-		return '<img src="2.png" height="20" width="20">';
-	else
-		return '';
-}
-
 String.prototype.toHalfWidth = function() {
     return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)});
 };
@@ -331,244 +177,6 @@ String.prototype.toHalfWidth = function() {
 String.prototype.toFullWidth = function() {
     return this.replace(/[A-Za-z0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
 };
-
-function create_rows(result){
-	//var div_result = document.getElementById('div_result');
-	var table1 = document.getElementById('table_result');
-	table1.className = 'query';
-	if(window.innerWidth > MAX_WIDTH)
-		table1.style.width = MAX_WIDTH + 'px';
-	else
-		table1.style.width = '90%';
-	var row = table1.insertRow(-1);
-	var cell1 = row.insertCell(-1);
-	var cell2 = row.insertCell(-1);
-		
-		cell1.className = 'card_id';
-		cell2.className = 'query';
-		if(result.id <= 99999999)
-			cell1.innerHTML = '<a href="' + print_link(result.id, result.ot) + '" target="_blank">' + result.id.toString().padStart(8, '0') + '</a>';
-		else
-			cell1.innerHTML = result.id.toString();
-		
-		cell2.innerHTML = result.name + print_limit(result.id);
-		if(result.ot == 2)
-			cell2.innerHTML += '<img src="tcg.png" height="20" width="40">';
-		
-		var mtype = '';
-		var subtype = '';
-		var lvstr = '等級';
-        var marker = '';
-        var data = '';
-        var output = '';
-
-		if(result.type & TYPE_MONSTER){
-			mtype = '怪獸';
-			if(result.type & TYPE_RITUAL)
-				subtype = '/儀式';
-			else if(result.type & TYPE_FUSION)
-				subtype = '/融合';
-			else if(result.type & TYPE_SYNCHRO)
-				subtype = '/同步';
-			else if(result.type & TYPE_XYZ){
-				subtype = '/超量';
-				lvstr = '階級';
-			}
-			else if(result.type & TYPE_LINK){
-				subtype = '/連結';
-				lvstr = 'LINK-';
-			}
-			// extype
-			if(result.type & TYPE_PENDULUM){
-			           subtype += '/靈擺';
-			}
-			if(result.type & TYPE_NORMAL)
-				subtype += '/通常';
-			
-			if(result.type & TYPE_SPIRIT)
-				subtype += '/靈魂';
-			if(result.type & TYPE_UNION)
-				subtype += '/聯合';
-			if(result.type & TYPE_DUAL)
-				subtype += '/二重';
-			if(result.type & TYPE_TUNER)
-				subtype += '/協調';
-			if(result.type & TYPE_FLIP)
-				subtype += '/反轉';
-			if(result.type & TYPE_TOON)
-				subtype += '/卡通';
-			if(result.type & TYPE_SPSUMMON)
-				subtype += '/特殊召喚';
-			if(result.type & TYPE_EFFECT)
-				subtype += '/效果';
-			data = '[' + mtype + subtype + '] ';
-		}
-		else if(result.type & TYPE_SPELL){
-			mtype = '魔法';
-			if(result.type & TYPE_QUICKPLAY)
-				subtype = '速攻';
-			else if(result.type & TYPE_CONTINUOUS)
-				subtype = '永續';
-			else if(result.type & TYPE_EQUIP)
-				subtype = '裝備';
-			else if(result.type & TYPE_RITUAL)
-				subtype = '儀式';
-			else if(result.type & TYPE_FIELD)
-				subtype = '場地';
-			else
-				subtype = '通常';
-			data = '[' + subtype + mtype + '] ';
-		}
-		else if(result.type & TYPE_TRAP){
-			mtype = '陷阱';
-			if(result.type & TYPE_CONTINUOUS)
-				subtype = '永續';
-			else if(result.type & TYPE_COUNTER)
-				subtype = '反擊';
-			else
-				subtype = '通常';
-			data = '[' + subtype + mtype + '] ';
-		}
-		
-		if(result.type & TYPE_MONSTER){
-			data += lvstr + (result.level & 0xff);
-			data += '/' + attr_to_str[result.attribute];
-			data += '/' + race_to_str[result.race] + '族<br>'; 
-			data += print_ad(result.atk);
-			if(result.type & TYPE_LINK){
-				data += '/-';
-				marker = '<div class="marker">';
-				if(result.def & LINK_MARKER_TOP_LEFT)
-					marker += '<span class="ul t">▲</span>';
-				else
-					marker += '<span class="ul f">△</span>';
-				if(result.def & LINK_MARKER_TOP )
-					marker += '<span class="t">▲</span>';
-				else
-					marker += '<span class="f">△</span>';
-				if(result.def & LINK_MARKER_TOP_RIGHT)
-					marker += '<span class="ur t">▲</span>';
-				else
-					marker += '<span class="ur f">△</span>';
-
-				marker += '<br>';
-				if(result.def & LINK_MARKER_LEFT)
-					marker += '<span class="l t">▲</span>';
-				else
-					marker += '<span class="l f">△</span>';
-				marker += '<span>　</span>';
-				if(result.def & LINK_MARKER_RIGHT)
-					marker += '<span class="r t">▲</span>';
-				else
-					marker += '<span class="r f">△</span>';
-				marker = marker + '<br>';
-
-				if(result.def & LINK_MARKER_BOTTOM_LEFT)
-					marker += '<span class="dl t">▲</span>';
-				else
-					marker += '<span class="dl f">△</span>';
-				if(result.def & LINK_MARKER_BOTTOM )
-					marker += '<span class="d t">▲</span>';
-				else
-					marker += '<span class="d f">△</span>';
-				if(result.def & LINK_MARKER_BOTTOM_RIGHT)
-					marker += '<span class="dr t">▲</span>';
-				else
-					marker += '<span class="dr f">△</span>';
-				marker += '</div>';
-			}
-			else{
-				data +=  '/' + print_ad(result.def);
-			}
-			if(result.type & TYPE_PENDULUM){
-				data += '/刻度' + ((result.level >> 24) & 0xff);
-			}
-		}
-		output = '<span style="color: Blue;">' + data + '<br></span>' + marker;
-		output += result.desc.replace(/\n/g, "<br>");
-		var row_effect = table1.insertRow(-1);
-		var cell_effect = row_effect.insertCell(-1);
-		cell_effect.className = "query";
-		cell_effect.innerHTML = output;
-		cell_effect.colSpan = "2";
-		
-		/*div_result.insertBefore(table1, null);
-		var div_half = document.createElement('div');
-		div_half.className = 'half-line';
-		div_half.innerHTML = '&nbsp;';
-		div_result.insertBefore(div_half, null);*/
-}
-
-function clear_query(){
-	var text_id = document.getElementById('text_id');
-	var text_name = document.getElementById('text_name');
-	var text_effect = document.getElementById('text_effect');
-	
-	var text_lv1 = document.getElementById('text_lv1');
-	var text_lv2 = document.getElementById('text_lv2');
-	var text_sc1 = document.getElementById('text_sc1');
-	var text_sc2 = document.getElementById('text_sc2');
-	
-	var text_atk1 = document.getElementById('text_atk1');
-	var text_atk2 = document.getElementById('text_atk2');
-	var text_def1 = document.getElementById('text_def1');
-    var text_def2 = document.getElementById('text_def2');
-	
-	var select_ot  = document.getElementById('select_ot');
-	var select_type = document.getElementById('select_type');
-	var select_ao1 = document.getElementById('select_ao1');
-	var select_ao2 = document.getElementById('select_ao2');
-	
-	var dm = document.getElementById('subtype_m');
-	var ds = document.getElementById('subtype_s');
-	var dt = document.getElementById('subtype_t');
-	
-	var row_lv = document.getElementById('row_lv');
-	var row_sc = document.getElementById('row_sc');
-	var row_marker = document.getElementById('row_marker');
-	var row_attr = document.getElementById('row_attr');
-	var row_race = document.getElementById('row_race');
-	var row_atk = document.getElementById('row_atk');
-	var row_def = document.getElementById('row_def');
-	
-	var result = document.getElementById('table_result');
-	result.innerHTML = '';
-	text_id.value = '';
-	text_name.value = '';
-	text_lv1.value = '';
-	text_lv2.value = '';
-	text_sc1.value = '';
-	text_sc2.value = '';
-	
-	text_atk1.value = '';
-	text_atk2.value = '';
-	text_def1.value = '';
-	text_def2.value = '';
-	text_effect.value = '';
-	
-	select_ot.selectedIndex = 0;
-	select_type.selectedIndex = 0;
-	select_ao1.selectedIndex = 0;
-	select_ao1.style.display = 'none';
-	select_ao2.selectedIndex = 0;
-	
-	clear_cb('mtype');
-	clear_cb('stype');
-	clear_cb('ttype');
-	dm.style.display = 'none';
-	ds.style.display = 'none';
-	dt.style.display = 'none';
-	row_lv.style.display = '';
-	row_sc.style.display = '';
-	row_marker.style.display = '';
-	row_attr.style.display = '';
-	row_race.style.display = '';
-	row_atk.style.display = '';
-	row_def.style.display = '';
-	
-	clear_cb('attr');
-	clear_cb('race');
-}
 
 function query(){
 	var text_id = document.getElementById('text_id');
@@ -599,6 +207,7 @@ function query(){
 	var ttype1 = document.getElementById('ttype1');
 	var cb_attr = document.getElementsByName("cb_attr");
 	var cb_race = document.getElementsByName("cb_race");
+	var cb_marker = document.getElementsByName('cb_marker');
 	
 	var row_lv = document.getElementById('row_lv');
 	var row_sc = document.getElementById('row_sc');
@@ -608,7 +217,6 @@ function query(){
 	var row_atk = document.getElementById('row_atk');
 	var row_def = document.getElementById('row_def');
 	
-	var result = document.getElementById('table_result');
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id AND abs(datas.id - alias) >= 10';
 	var exact_qstr = '';
 	var cid = 0;
@@ -616,8 +224,9 @@ function query(){
 	var ctype = 0;
 	var cattr = 0;
 	var crace = 0;
+	var cmarker = 0;
 	
-	var atk1 = -2;
+	var atk1 = -2;	//null
 	var atk2 = -2;
 	var def1 = -2;
 	var def2 = -2;
@@ -631,7 +240,14 @@ function query(){
 	var query_monster = false;
 	var cb_list;
 	
-	button1.disabled = true;
+	var result = [];
+	
+	if(!ready){
+		event.preventDefault();
+		return;
+	}
+	
+	ready = false;
 	// id
 	if(text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
@@ -641,16 +257,16 @@ function query(){
 		valid = true;
 	}
 	
+	
 	// ot
 	switch (select_ot.value){
 		case 'o':
 		    qstr = qstr + " AND datas.ot != 2";
-		    valid = true;
-		    break;
+			break;
 		case 't':
-		    qstr = qstr + " AND datas.ot == 2";
-		    valid = true;
-		    break;
+			qstr = qstr + " AND datas.ot == 2";
+			valid = true;
+			break;
 	}
 	
 	// type
@@ -812,45 +428,43 @@ function query(){
 		
 		// attr, race
 		var tmp = ATTRIBUTE_EARTH;
-		arg.$attr = 0;
 		for(let i = 0; i < cb_attr.length; ++i){
 			if(cb_attr[i].checked)
-				arg.$attr |= tmp;
+				cattr |= tmp;
 			tmp <<= 1;
 		}
-		if(arg.$attr){
+		if(cattr){
 			qstr = qstr + " AND attribute & $attr";
+			arg.$attr = cattr;
 			valid = true;
 			query_monster = true;
 		}
 		
 		tmp = RACE_WARRIOR;
-		arg.$race = 0;
 		for(let i = 0; i < cb_race.length; ++i){
 			if(cb_race[i].checked)
-				arg.$race |= tmp;
+				crace |= tmp;
 			tmp <<= 1;
 		}
-		if(arg.$race){
+		if(crace){
 			qstr = qstr + " AND race & $race";
+			arg.$race = crace;
 			valid = true;
 			query_monster = true;
 		}
 		// marker
-		arg.$marker = 0;
-		cb_list = document.getElementsByName('cb_marker');
-		for(let i = 0; i < cb_list.length; ++i){
-			if(cb_list[i].checked){
-				arg.$marker |= id_to_marker[cb_list[i].id];
-				cb_list[i].checked = false;
+		for(let i = 0; i < cb_marker.length; ++i){
+			if(cb_marker[i].checked){
+				cmarker |= id_to_marker[cb_marker[i].id];
 			}
 		}
-		if(arg.$marker){
+		if(cmarker){
 			qstr = qstr + " AND type & " + TYPE_LINK;
 			if(select_ao2.value == 'or')
 				qstr = qstr + " AND def & $marker";
 			else
 				qstr = qstr + " AND def & $marker == $marker";
+			arg.$marker = cmarker;
 			valid = true;
 			query_monster = true;
 		}
@@ -889,24 +503,30 @@ function query(){
 		}
 		valid = true;
 	}
-	
-	// clear
-	clear_query();
-	
+
 	if(!valid){
-		button1.disabled = false;
+		event.preventDefault();
 		return;
 	}
-	
 	// released cards
 	var stmt = db.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
-		var result = stmt.getAsObject();
-		if(is_virtual(result))
+		var card = stmt.getAsObject();
+		if(is_virtual(card))
 			continue;
-		create_rows(result);			
+		card.db_id = cid_table[card.id];
+		card.jp_name = name_table[card.id];
+		if(ltable[card.id] == 0)
+			card.limit = 0;
+		else if(ltable[card.id] == 1)
+			card.limit = 1;
+		else if(ltable[card.idid] == 2)
+			card.limit = 2;
+		else
+			card.limit = 3;
+		result.push(card);
 	}
 	
 	// pre-release cards
@@ -914,10 +534,23 @@ function query(){
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
-		var result = stmt.getAsObject();
-		if(is_virtual(result))
+		var card = stmt.getAsObject();
+		if(is_virtual(card))
 			continue;
-		create_rows(result);			
-	}
-	button1.disabled = false;
+		card.db_id = cid_table[card.id];
+		card.jp_name = name_table[card.id];
+		if(ltable[card.id] == 0)
+			card.limit = 0;
+		else if(ltable[card.id] == 1)
+			card.limit = 1;
+		else if(ltable[card.idid] == 2)
+			card.limit = 2;
+		else
+			card.limit = 3;
+		result.push(card);
+	}	
+	localStorage.setItem('result', JSON.stringify(result));
+	window.open('result.html', '_blank', 'noreferrer');
+	event.preventDefault();
+	ready = true;
 }

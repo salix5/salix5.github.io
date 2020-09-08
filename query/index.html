@@ -12,63 +12,21 @@
 			border-style: none;
 			margin: 0 auto;
 		}
-		table.query{
-			border-collapse: collapse;
-			border: 1px solid black;
-			margin: 0 auto;
-		}
-		td.card_id{
-			width: 25%;
-			border: 1px solid black;
-		}
-		td.query{
-			border: 1px solid black;
-		}
 		label.clear{
 			color: Red
 		}
-		
-		.marker span{
-			padding: 5px;
-			display: inline-block;
-			font-family: sans-serif;
-		}
-		.t{
-			color: Red;
-		}
-		.f{
-			opacity: 0.4;
-		}
-		.ul{
-			transform: rotate(-45deg);
-		}
-		.ur{
-			transform: rotate(45deg);
-		}
-		.l{
-			transform: rotate(-90deg);
-		}
-		.r{
-			transform: rotate(90deg);
-		}
-		.dl{
-			transform: rotate(-135deg);
-		}
-		.d{
-			transform: rotate(180deg);
-		}
-		.dr{
-			transform: rotate(135deg);
-		}
 	</style>
 </head>
-<body bgcolor="#e6e6e6" onload="clear_query()">
-  <script src='dist/sql-wasm.js'></script>
-  <script src='query.js'></script>
-  <script src='webpage.js'></script>
+<body bgcolor="#e6e6e6" onload="init()">
+	<script src='dist/sql-wasm.js'></script>
+	<script src='constant.js'></script>
+	<script src='query.js'></script>
+	<script src='webpage.js'></script>
+
+	<form  onsubmit="query()">
 	<table class="hidden">
-	<tr><td>密碼：<input id="text_id" type="number" min="0" onkeydown="key_search()"></td></tr>
-	<tr><td>卡名：<input id="text_name" type="search" onkeydown="key_search()"></td></tr>
+	<tr><td>密碼：<input id="text_id" type="number" min="0" ></td></tr>
+	<tr><td>卡名：<input id="text_name" type="search" ></td></tr>
 	<tr><td>TCG：<select id="select_ot">
 		<option value="">包含TCG特有卡</option>
 		<option value="o">不含TCG特有卡</option>
@@ -117,13 +75,13 @@
 	</div>
 	</td></tr>
 	
-	<tr id="row_lv"><td>星數：<input id="text_lv1" type="number" min="1" max="12" style="width: 3em" onkeydown="key_search()">
+	<tr id="row_lv"><td>星數：<input id="text_lv1" type="number" min="1" max="12" style="width: 3em" >
 	～
-	<input id="text_lv2" type="number" min="1" max="12" style="width: 3em" onkeydown="key_search()">
+	<input id="text_lv2" type="number" min="1" max="12" style="width: 3em" >
 	</td></tr>
-	<tr id="row_sc"><td>刻度：<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" onkeydown="key_search()">
+	<tr id="row_sc"><td>刻度：<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" >
 	～
-	<input id="text_sc2" type="number" min="0" max="13" style="width: 3em" onkeydown="key_search()">
+	<input id="text_sc2" type="number" min="0" max="13" style="width: 3em" >
 	</td></tr>
 	<tr id="row_marker"><td>標記：<input type="checkbox" id="marker1" name="cb_marker"><input type="checkbox" id="marker2" name="cb_marker"><input type="checkbox" id="marker3" name="cb_marker">
 		<select id="select_ao2">
@@ -170,19 +128,18 @@
 	<input type="checkbox" id="race_reset" onchange="clear_cb('race')"><label for="race_reset" class="clear">✗</label>
 	</td></tr>
 	
-	<tr id="row_atk"><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
+	<tr id="row_atk"><td>攻擊力：<input id="text_atk1" type="number" min="-1" max="99999" style="width: 5em" >
 	～
-	<input id="text_atk2" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
+	<input id="text_atk2" type="number" min="-1" max="99999" style="width: 5em" >
 	(? = -1)</td></tr>
-	<tr id="row_def"><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
+	<tr id="row_def"><td>守備力：<input id="text_def1" type="number" min="-1" max="99999" style="width: 5em" >
 	～
-	<input id="text_def2" type="number" min="-1" max="99999" style="width: 5em" onkeydown="key_search()">
+	<input id="text_def2" type="number" min="-1" max="99999" style="width: 5em" >
 	</td></tr>
-	<tr><td>效果：<input id="text_effect" type="search" onkeydown="key_search()">
-    <button id="button1" disabled="true" onclick="query()">搜尋</button></td></tr>
+	<tr><td>效果：<input id="text_effect" type="search" >
+	<button id="button1" disabled="true">搜尋</button>
+	<button id="button2" type="button" disabled="true" onclick="clear_query()">清空</button></td></tr>
 	</table>
-	<div class="half-line">&nbsp;</div>
-	<table class="query" id="table_result">
-	</table>
+	<form>
 </body>
 </html>
