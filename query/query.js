@@ -73,7 +73,6 @@ var config = {
 }
 
 var db, db2;
-var ready = true;
 const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
 const url2 = 'beta.cdb';
 
@@ -217,6 +216,10 @@ function query(){
 	var row_atk = document.getElementById('row_atk');
 	var row_def = document.getElementById('row_def');
 	
+	var button1 = document.getElementById('button1');
+	var button2 = document.getElementById('button2');
+	var table_result = document.getElementById('table_result');
+	
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id AND abs(datas.id - alias) >= 10';
 	var exact_qstr = '';
 	var cid = 0;
@@ -242,12 +245,9 @@ function query(){
 	
 	var result = [];
 	
-	if(!ready){
-		event.preventDefault();
-		return;
-	}
+	button1.disabled = true;
+	button2.disabled = true;
 	
-	ready = false;
 	// id
 	if(text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
@@ -506,6 +506,8 @@ function query(){
 
 	if(!valid){
 		event.preventDefault();
+		button1.disabled = false;
+		button2.disabled = false;
 		return;
 	}
 	// released cards
@@ -516,13 +518,15 @@ function query(){
 		var card = stmt.getAsObject();
 		if(is_virtual(card))
 			continue;
-		card.db_id = cid_table[card.id];
-		card.jp_name = name_table[card.id];
+		if(card.id <= 99999999){
+			card.db_id = cid_table[card.id];
+			card.jp_name = name_table[card.id];
+		}
 		if(ltable[card.id] == 0)
 			card.limit = 0;
 		else if(ltable[card.id] == 1)
 			card.limit = 1;
-		else if(ltable[card.idid] == 2)
+		else if(ltable[card.id] == 2)
 			card.limit = 2;
 		else
 			card.limit = 3;
@@ -537,20 +541,32 @@ function query(){
 		var card = stmt.getAsObject();
 		if(is_virtual(card))
 			continue;
-		card.db_id = cid_table[card.id];
-		card.jp_name = name_table[card.id];
+		if(card.id <= 99999999){
+			card.db_id = cid_table[card.id];
+			card.jp_name = name_table[card.id];
+		}
 		if(ltable[card.id] == 0)
 			card.limit = 0;
 		else if(ltable[card.id] == 1)
 			card.limit = 1;
-		else if(ltable[card.idid] == 2)
+		else if(ltable[card.id] == 2)
 			card.limit = 2;
 		else
 			card.limit = 3;
 		result.push(card);
-	}	
-	localStorage.setItem('result', JSON.stringify(result));
-	window.open('result.html', '_blank', 'noreferrer');
+	}
+	
+	table_result.innerHTML = '';
+	if(result.length > 0){
+		result.sort(compare_card);
+		result.forEach(create_rows);
+	}
+	else{
+		var row0 = table_result.insertRow(-1);
+		var cell0 = row0.insertCell(-1);
+		cell0.innerHTML = '沒有符合搜尋的項目。';
+	}
 	event.preventDefault();
-	ready = true;
+	button1.disabled = false;
+	button2.disabled = false;
 }

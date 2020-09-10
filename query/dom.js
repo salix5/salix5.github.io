@@ -1,13 +1,4 @@
-function key_search(){
-	var button1 = document.getElementById('button1');
-	if(button1.disabled)
-		return;
-	switch (event.key) {
-		case 'Enter':
-			button1.click();
-			return;
-	}
-}
+const MAX_WIDTH = 700;	// table width
 
 function add_opt(sel, value, text){
 	var opt = document.createElement("option");
@@ -171,6 +162,11 @@ function clear_query(){
 function init(){
 	var button1 = document.getElementById('button1');
 	var button2 = document.getElementById('button2');
+	var table_result = document.getElementById('table_result');
+	if(window.innerWidth > MAX_WIDTH)
+		table_result.style.width = MAX_WIDTH + 'px';
+	else
+		table_result.style.width = '90%';
 	clear_query();
 	button1.disabled = true;
 	button2.disabled = true;

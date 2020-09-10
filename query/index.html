@@ -15,15 +15,62 @@
 		label.clear{
 			color: Red
 		}
+		
+		table.query{
+			border-collapse: collapse;
+			border: 1px solid black;
+			margin: 0 auto;
+		}
+		td.card_id{
+			width: 90px;
+			border: 1px solid black;
+		}
+		td.query{
+			border: 1px solid black;
+		}
+
+		.marker span{
+			padding: 5px;
+			display: inline-block;
+			font-family: sans-serif;
+		}
+		.t{
+			color: Red;
+		}
+		.f{
+			opacity: 0.4;
+		}
+		.ul{
+			transform: rotate(-45deg);
+		}
+		.ur{
+			transform: rotate(45deg);
+		}
+		.l{
+			transform: rotate(-90deg);
+		}
+		.r{
+			transform: rotate(90deg);
+		}
+		.dl{
+			transform: rotate(-135deg);
+		}
+		.d{
+			transform: rotate(180deg);
+		}
+		.dr{
+			transform: rotate(135deg);
+		}
 	</style>
 </head>
 <body bgcolor="#e6e6e6" onload="init()">
 	<script src='dist/sql-wasm.js'></script>
 	<script src='constant.js'></script>
+	<script src='dom.js'></script>
 	<script src='query.js'></script>
-	<script src='webpage.js'></script>
+	<script src='result.js'></script>
 
-	<form  onsubmit="query()">
+	<form onsubmit="query()">
 	<table class="hidden">
 	<tr><td>密碼：<input id="text_id" type="number" min="0" ></td></tr>
 	<tr><td>卡名：<input id="text_name" type="search" ></td></tr>
@@ -141,5 +188,8 @@
 	<button id="button2" type="button" disabled="true" onclick="clear_query()">清空</button></td></tr>
 	</table>
 	<form>
+	<div class="half-line">&nbsp;</div>
+	<table class="query" id="table_result">
+	</table>
 </body>
 </html>
