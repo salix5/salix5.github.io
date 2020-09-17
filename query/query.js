@@ -569,4 +569,5 @@ function query(){
 	event.preventDefault();
 	button1.disabled = false;
 	button2.disabled = false;
+	table_result.focus();
 }
