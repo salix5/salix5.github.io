@@ -37,14 +37,17 @@ function compare_card(a, b){
 }
 
 function create_rows(card){
-	//var div_card = document.getElementById('div_result');
 	var table1 = document.getElementById('table_result');
 	var row1 = table1.insertRow(-1);
+	var cell_pic = row1.insertCell(-1);
 	var cell1 = row1.insertCell(-1);
 	var cell2 = row1.insertCell(-1);
-
+	
+	cell_pic.rowSpan = 2;
+	cell_pic.className = 'pic';
+	cell_pic.innerHTML = '<img src="https://salix5.github.io/CardEditor/pics/'+ card.id + '.jpg">';
+	
 	cell1.className = 'card_id';
-	cell2.className = 'query';
 	if(card.id <= 99999999)
 		cell1.innerHTML = '<a href="' + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.id.toString().padStart(8, '0') + '</a>';
 	else
@@ -192,10 +195,4 @@ function create_rows(card){
 	cell_effect.className = "query";
 	cell_effect.innerHTML = output;
 	cell_effect.colSpan = "2";
-	
-	/*div_result.insertBefore(table1, null);
-	var div_half = document.createElement('div');
-	div_half.className = 'half-line';
-	div_half.innerHTML = '&nbsp;';
-	div_result.insertBefore(div_half, null);*/
 }

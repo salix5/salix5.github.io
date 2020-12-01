@@ -1,4 +1,4 @@
-const MAX_WIDTH = 700;	// table width
+const MAX_WIDTH = 900;	// table width
 
 function add_opt(sel, value, text){
 	var opt = document.createElement("option");
