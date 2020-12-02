@@ -38,33 +38,36 @@ function compare_card(a, b){
 
 function create_rows(card){
 	var table1 = document.getElementById('table_result');
-	var row1 = table1.insertRow(-1);
-	var cell_pic = row1.insertCell(-1);
-	var cell1 = row1.insertCell(-1);
-	var cell2 = row1.insertCell(-1);
+	var row_name = table1.insertRow(-1);
+	var cell_name = row_name.insertCell(-1);
 	
-	cell_pic.rowSpan = 2;
-	cell_pic.className = 'pic';
-	cell_pic.innerHTML = '<img src="https://salix5.github.io/CardEditor/pics/'+ card.id + '.jpg">';
-	
-	cell1.className = 'card_id';
-	if(card.id <= 99999999)
-		cell1.innerHTML = '<a href="' + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.id.toString().padStart(8, '0') + '</a>';
-	else
-		cell1.innerHTML = card.id.toString();
-	
-	cell2.innerHTML = card.name + print_limit(card.limit);
+	cell_name.colSpan = 2;
+	cell_name.innerHTML = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
 	if(card.ot == 2)
-		cell2.innerHTML += '<img src="tcg.png" height="20" width="40">';
+		cell_name.innerHTML += '<img src="tcg.png" height="20" width="40">';
 	if(card.id <= 99999999)
-		cell2.innerHTML += '<br>' + card.jp_name;
+		cell_name.innerHTML += '<br><a href="' + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.jp_name + '</a>';
+		
+	var row_pic = table1.insertRow(-1);
+	var cell_pic = row_pic.insertCell(-1);
+	cell_pic.className = 'pic';
+	if(card.id <= 99999999)
+		cell_pic.innerHTML = '<img src="https://salix5.github.io/CardEditor/pics/'+ card.id + '.jpg" style="max-height:100%; max-width:100%">';
+	else
+		cell_pic.innerHTML = '<img src="https://salix5.github.io/CardEditor/expansions/pics/'+ card.id + '.jpg" style="max-height:100%; max-width:100%">';
+	if(window.innerWidth > MAX_WIDTH){
+		cell_pic.rowSpan = 2;
+		cell_pic.style.borderBottom = '1px solid black';
+	}
+	var cell_data = row_pic.insertCell(-1);
+	cell_data.className = "data";
 	
 	var mtype = '';
 	var subtype = '';
 	var lvstr = '等級';
 	var marker = '';
 	var data = '';
-	var output = '';
+	var output_data = 'ID: ' + card.id + '<br><br>';
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
@@ -105,7 +108,7 @@ function create_rows(card){
 			subtype += '/特殊召喚';
 		if(card.type & TYPE_EFFECT)
 			subtype += '/效果';
-		data = '[' + mtype + subtype + '] ';
+		data = '[' + mtype + subtype + ']';
 	}
 	else if(card.type & TYPE_SPELL){
 		mtype = '魔法';
@@ -121,7 +124,7 @@ function create_rows(card){
 			subtype = '場地';
 		else
 			subtype = '通常';
-		data = '[' + subtype + mtype + '] ';
+		data = '[' + subtype + mtype + ']';
 	}
 	else if(card.type & TYPE_TRAP){
 		mtype = '陷阱';
@@ -131,14 +134,14 @@ function create_rows(card){
 			subtype = '反擊';
 		else
 			subtype = '通常';
-		data = '[' + subtype + mtype + '] ';
+		data = '[' + subtype + mtype + ']';
 	}
 	
 	if(card.type & TYPE_MONSTER){
-		data += lvstr + (card.level & 0xff);
+		data += '<br>' + lvstr + (card.level & 0xff);
 		data += '/' + attr_to_str[card.attribute];
-		data += '/' + race_to_str[card.race] + '族<br>'; 
-		data += print_ad(card.atk);
+		data += '/' + race_to_str[card.race] + '族'; 
+		data += '<br>' + print_ad(card.atk);
 		if(card.type & TYPE_LINK){
 			data += '/-';
 			marker = '<div class="marker">';
@@ -188,11 +191,18 @@ function create_rows(card){
 			data += '/刻度' + ((card.level >> 24) & 0xff);
 		}
 	}
-	output = '<span style="color: Blue;">' + data + '<br></span>' + marker;
-	output += card.desc.replace(/\n/g, "<br>");
-	var row_effect = table1.insertRow(-1);
+	output_data += '<span style="color: Blue;">' + data + '</span>';
+	if(card.type & TYPE_LINK)
+		output_data += '<br>' + marker;
+	cell_data.innerHTML = output_data;
+	
+	var row_effect = table1.insertRow(-1);	
 	var cell_effect = row_effect.insertCell(-1);
-	cell_effect.className = "query";
-	cell_effect.innerHTML = output;
-	cell_effect.colSpan = "2";
+	cell_effect.className = "effect";
+	cell_effect.innerHTML = card.desc.replace(/\n/g, "<br>");
+	if(window.innerWidth <= MAX_WIDTH){
+		cell_name.style.fontSize = '13px';
+		cell_data.style.fontSize = '13px';
+		cell_effect.colSpan = 2;
+	}
 }
