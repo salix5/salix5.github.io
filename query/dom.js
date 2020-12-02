@@ -166,7 +166,7 @@ function init(){
 	if(window.innerWidth > MAX_WIDTH)
 		table_result.style.width = MAX_WIDTH + 'px';
 	else
-		table_result.style.width = '90%';
+		table_result.style.width = '100%';
 	clear_query();
 	button1.disabled = true;
 	button2.disabled = true;
