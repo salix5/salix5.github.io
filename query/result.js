@@ -67,7 +67,7 @@ function create_rows(card){
 	var lvstr = '等級';
 	var marker = '';
 	var data = '';
-	var output_data = 'ID: ' + card.id + '<br><br>';
+	var output_data = 'ID: ' + card.id.toString().padStart(8, '0') + '<br><br>';
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
