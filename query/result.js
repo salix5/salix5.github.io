@@ -1,6 +1,5 @@
 "use strict";
 
-
 function print_ad(x){
 	if(x == -2)
 		return '?';
@@ -37,8 +36,7 @@ function compare_card(a, b){
 }
 
 function create_rows(card){
-	var table1 = document.getElementById('table_result');
-	var row_name = table1.insertRow(-1);
+	var row_name = table_result.insertRow(-1);
 	var cell_name = row_name.insertCell(-1);
 	
 	cell_name.colSpan = 2;
@@ -48,7 +46,7 @@ function create_rows(card){
 	if(card.id <= 99999999)
 		cell_name.innerHTML += '<br><a href="' + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.jp_name + '</a>';
 		
-	var row_pic = table1.insertRow(-1);
+	var row_pic = table_result.insertRow(-1);
 	var cell_pic = row_pic.insertCell(-1);
 	cell_pic.className = 'pic';
 	if(card.id <= 99999999)
@@ -196,7 +194,7 @@ function create_rows(card){
 		output_data += '<br>' + marker;
 	cell_data.innerHTML = output_data;
 	
-	var row_effect = table1.insertRow(-1);	
+	var row_effect = table_result.insertRow(-1);	
 	var cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
 	cell_effect.innerHTML = card.desc.replace(/\n/g, "<br>");

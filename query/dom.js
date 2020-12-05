@@ -1,4 +1,48 @@
+"use strict";
 const MAX_WIDTH = 900;	// table width
+
+const text_id = document.getElementById('text_id');
+const text_name = document.getElementById('text_name');
+const text_effect = document.getElementById('text_effect');
+
+const text_lv1 = document.getElementById('text_lv1');
+const text_lv2 = document.getElementById('text_lv2');
+const text_sc1 = document.getElementById('text_sc1');
+const text_sc2 = document.getElementById('text_sc2');
+
+const text_atk1 = document.getElementById('text_atk1');
+const text_atk2 = document.getElementById('text_atk2');
+const text_def1 = document.getElementById('text_def1');
+const text_def2 = document.getElementById('text_def2');
+
+const select_ot  = document.getElementById('select_ot');
+const select_type = document.getElementById('select_type');
+const select_ao1 = document.getElementById('select_ao1');
+const select_ao2 = document.getElementById('select_ao2');
+
+const subtype_m = document.getElementById('subtype_m');
+const subtype_s = document.getElementById('subtype_s');
+const subtype_t = document.getElementById('subtype_t');
+
+const mtype_deck = document.getElementById('mtype_deck');
+const stype1 = document.getElementById('stype1');
+const ttype1 = document.getElementById('ttype1');
+const cb_attr = document.getElementsByName("cb_attr");
+const cb_race = document.getElementsByName("cb_race");
+const cb_marker = document.getElementsByName('cb_marker');
+
+const row_lv = document.getElementById('row_lv');
+const row_sc = document.getElementById('row_sc');
+const row_marker = document.getElementById('row_marker');
+const row_attr = document.getElementById('row_attr');
+const row_race = document.getElementById('row_race');
+const row_atk = document.getElementById('row_atk');
+const row_def = document.getElementById('row_def');
+
+const form1 = document.getElementById('form1');
+const button1 = document.getElementById('button1');
+const button2 = document.getElementById('button2');
+const table_result = document.getElementById('table_result');
 
 function add_opt(sel, value, text){
 	var opt = document.createElement("option");
@@ -8,19 +52,6 @@ function add_opt(sel, value, text){
 }
 
 function create_subtype(){
-	var select_type = document.getElementById('select_type');
-	var select_ao1 = document.getElementById('select_ao1');
-	var subtype_m = document.getElementById('subtype_m');
-	var subtype_s = document.getElementById('subtype_s');
-	var subtype_t = document.getElementById('subtype_t');
-	var row_lv = document.getElementById('row_lv');
-	var row_sc = document.getElementById('row_sc');
-	var row_marker = document.getElementById('row_marker');
-	var row_attr = document.getElementById('row_attr');
-	var row_race = document.getElementById('row_race');
-	var row_atk = document.getElementById('row_atk');
-	var row_def = document.getElementById('row_def');
-	
 	switch(select_type.value){
 		case '':
 			subtype_m.style.display = 'none';
@@ -90,37 +121,6 @@ function clear_cb(type){
 }
 
 function clear_query(){
-	var text_id = document.getElementById('text_id');
-	var text_name = document.getElementById('text_name');
-	var text_effect = document.getElementById('text_effect');
-	
-	var text_lv1 = document.getElementById('text_lv1');
-	var text_lv2 = document.getElementById('text_lv2');
-	var text_sc1 = document.getElementById('text_sc1');
-	var text_sc2 = document.getElementById('text_sc2');
-	
-	var text_atk1 = document.getElementById('text_atk1');
-	var text_atk2 = document.getElementById('text_atk2');
-	var text_def1 = document.getElementById('text_def1');
-	var text_def2 = document.getElementById('text_def2');
-	
-	var select_ot  = document.getElementById('select_ot');
-	var select_type = document.getElementById('select_type');
-	var select_ao1 = document.getElementById('select_ao1');
-	var select_ao2 = document.getElementById('select_ao2');
-	
-	var dm = document.getElementById('subtype_m');
-	var ds = document.getElementById('subtype_s');
-	var dt = document.getElementById('subtype_t');
-	
-	var row_lv = document.getElementById('row_lv');
-	var row_sc = document.getElementById('row_sc');
-	var row_marker = document.getElementById('row_marker');
-	var row_attr = document.getElementById('row_attr');
-	var row_race = document.getElementById('row_race');
-	var row_atk = document.getElementById('row_atk');
-	var row_def = document.getElementById('row_def');
-	
 	text_id.value = '';
 	text_name.value = '';
 	text_lv1.value = '';
@@ -143,9 +143,9 @@ function clear_query(){
 	clear_cb('mtype');
 	clear_cb('stype');
 	clear_cb('ttype');
-	dm.style.display = 'none';
-	ds.style.display = 'none';
-	dt.style.display = 'none';
+	subtype_m.style.display = 'none';
+	subtype_s.style.display = 'none';
+	subtype_t.style.display = 'none';
 	row_lv.style.display = '';
 	row_sc.style.display = '';
 	row_marker.style.display = '';
@@ -160,9 +160,6 @@ function clear_query(){
 }
 
 function init(){
-	var button1 = document.getElementById('button1');
-	var button2 = document.getElementById('button2');
-	var table_result = document.getElementById('table_result');
 	if(window.innerWidth > MAX_WIDTH)
 		table_result.style.width = MAX_WIDTH + 'px';
 	else

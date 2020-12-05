@@ -68,13 +68,7 @@
 	</style>
 </head>
 <body bgcolor="#e6e6e6" onload="init()">
-	<script src='dist/sql-wasm.js'></script>
-	<script src='constant.js'></script>
-	<script src='dom.js'></script>
-	<script src='query.js'></script>
-	<script src='result.js'></script>
-
-	<form onsubmit="query()">
+	<form id="form1">
 	<table class="hidden">
 	<tr><td>密碼：<input id="text_id" type="number" min="0" ></td></tr>
 	<tr><td>卡名：<input id="text_name" type="search" ></td></tr>
@@ -195,5 +189,11 @@
 	<div class="half-line">&nbsp;</div>
 	<table class="query" id="table_result">
 	</table>
+	
+	<script src='dist/sql-wasm.js'></script>
+	<script src='constant.js'></script>
+	<script src='dom.js'></script>
+	<script src='query.js'></script>
+	<script src='result.js'></script>
 </body>
 </html>
