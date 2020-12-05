@@ -257,7 +257,6 @@ function query(){
 		valid = true;
 	}
 	
-	
 	// ot
 	switch (select_ot.value){
 		case 'o':
@@ -480,16 +479,14 @@ function query(){
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
 	// name
 	if(text_name.value.length <= 1000 && text_name.value != ''){
-		var cname = text_name.value.toHalfWidth()
+		var cname = text_name.value.toHalfWidth();
 		var nid = Object.keys(name_table).find(key => name_table[key] === cname);
-		if(nid){
-			qstr += ' AND datas.id == $nid';
-			arg.$nid = nid;
-		}
-		else if(setname[cname]){
+		if(setname[cname]){
 			var set_code = parseInt(setname[cname], 16);
 			exact_qstr = qstr + ' AND name == $exact_name';
-			qstr += " AND (name LIKE $name OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
+			qstr += " AND (name LIKE $name";
+			qstr += " OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype";
+			qstr += " OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype";
 			arg.$exact_name = cname.replace(/[%_]/, '');
 			arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
 			arg.$settype = set_code & 0xfff;
@@ -497,10 +494,16 @@ function query(){
 		}
 		else{
 			exact_qstr = qstr + ' AND name == $exact_name';
-			qstr = qstr + " AND name LIKE $name";
+			qstr = qstr + " AND (name LIKE $name";
 			arg.$exact_name = cname.replace(/[%_]/, '');
 			arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
 		}
+		if(nid){
+			qstr += " OR datas.id == $nid);";
+			arg.$nid = nid;
+		}
+		else
+			qstr += ");";
 		valid = true;
 	}
 
