@@ -83,8 +83,6 @@ initSqlJs(config).then(function(SQL){
 	var xhr = new XMLHttpRequest();
 	xhr.onload = e => {
 		var arr1 = new Uint8Array(xhr.response);
-		var button1 = document.getElementById('button1');
-		var button2 = document.getElementById('button2');
 		db = new SQL.Database(arr1);
 		button1.disabled = false;
 		button2.disabled = false;
@@ -104,7 +102,6 @@ initSqlJs(config).then(function(SQL){
 	}
 );
 
-// require: type
 function is_virtual(card) {
 	if(card.type & TYPE_TOKEN)
 		return true;
@@ -118,7 +115,7 @@ function is_atk(x){
 }
 
 function is_lv(x){
-	if(x >= 1 && x <= 12)
+	if(x >= 1 && x <= 13)
 		return true;
 	else
 		return false;
@@ -177,49 +174,7 @@ String.prototype.toFullWidth = function() {
     return this.replace(/[A-Za-z0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
 };
 
-function query(){
-	var text_id = document.getElementById('text_id');
-	var text_name = document.getElementById('text_name');
-	var text_effect = document.getElementById('text_effect');
-	
-	var text_lv1 = document.getElementById('text_lv1');
-	var text_lv2 = document.getElementById('text_lv2');
-	var text_sc1 = document.getElementById('text_sc1');
-	var text_sc2 = document.getElementById('text_sc2');
-	
-	var text_atk1 = document.getElementById('text_atk1');
-	var text_atk2 = document.getElementById('text_atk2');
-	var text_def1 = document.getElementById('text_def1');
-    var text_def2 = document.getElementById('text_def2');
-	
-	var select_ot  = document.getElementById('select_ot');
-	var select_type = document.getElementById('select_type');
-	var select_ao1 = document.getElementById('select_ao1');
-	var select_ao2 = document.getElementById('select_ao2');
-	
-	var dm = document.getElementById('subtype_m');
-	var ds = document.getElementById('subtype_s');
-	var dt = document.getElementById('subtype_t');
-	
-	var mtype_deck = document.getElementById('mtype_deck');
-	var stype1 = document.getElementById('stype1');
-	var ttype1 = document.getElementById('ttype1');
-	var cb_attr = document.getElementsByName("cb_attr");
-	var cb_race = document.getElementsByName("cb_race");
-	var cb_marker = document.getElementsByName('cb_marker');
-	
-	var row_lv = document.getElementById('row_lv');
-	var row_sc = document.getElementById('row_sc');
-	var row_marker = document.getElementById('row_marker');
-	var row_attr = document.getElementById('row_attr');
-	var row_race = document.getElementById('row_race');
-	var row_atk = document.getElementById('row_atk');
-	var row_def = document.getElementById('row_def');
-	
-	var button1 = document.getElementById('button1');
-	var button2 = document.getElementById('button2');
-	var table_result = document.getElementById('table_result');
-	
+function query(event){
 	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id AND abs(datas.id - alias) >= 10';
 	var exact_qstr = '';
 	var cid = 0;
@@ -574,3 +529,5 @@ function query(){
 	button2.disabled = false;
 	document.activeElement.blur();
 }
+
+form1.onsubmit = query;
