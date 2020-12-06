@@ -39,6 +39,7 @@ function create_rows(card){
 	var row_name = table_result.insertRow(-1);
 	var cell_name = row_name.insertCell(-1);
 	
+        cell_name.className = 'name';
 	cell_name.colSpan = 2;
 	cell_name.innerHTML = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
 	if(card.ot == 2)
