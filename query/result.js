@@ -35,6 +35,11 @@ function compare_card(a, b){
 	return a.name.localeCompare(b.name);
 }
 
+function imgError(img) {
+	this.onerror = null;
+	this.src = 'https://salix5.github.io/CardEditor/textures/unknown.jpg';
+}
+
 function create_rows(card){
 	var row_name = table_result.insertRow(-1);
 	var cell_name = row_name.insertCell(-1);
@@ -50,14 +55,19 @@ function create_rows(card){
 	var row_pic = table_result.insertRow(-1);
 	var cell_pic = row_pic.insertCell(-1);
 	cell_pic.className = 'pic';
-	if(card.id <= 99999999)
-		cell_pic.innerHTML = '<img src="https://salix5.github.io/CardEditor/pics/'+ card.id + '.jpg" style="max-height:100%; max-width:100%">';
-	else
-		cell_pic.innerHTML = '<img src="https://salix5.github.io/CardEditor/expansions/pics/'+ card.id + '.jpg" style="max-height:100%; max-width:100%">';
 	if(window.innerWidth > MAX_WIDTH){
 		cell_pic.rowSpan = 2;
 		cell_pic.style.borderBottom = '1px solid black';
 	}
+	var img_card = document.createElement('img');
+	img_card.className = 'pic';
+	if(card.id <= 99999999)
+		img_card.src = 'https://salix5.github.io/CardEditor/pics/'+ card.id + '.jpg';
+	else
+		img_card.src = 'https://salix5.github.io/CardEditor/expansions/pics/'+ card.id + '.jpg';
+	img_card.onerror = imgError;
+	cell_pic.appendChild(img_card);
+	
 	var cell_data = row_pic.insertCell(-1);
 	cell_data.className = "data";
 	
