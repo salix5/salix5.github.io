@@ -27,9 +27,13 @@ const subtype_t = document.getElementById('subtype_t');
 const mtype_deck = document.getElementById('mtype_deck');
 const stype1 = document.getElementById('stype1');
 const ttype1 = document.getElementById('ttype1');
+
+const cb_mtype = document.getElementsByName('cb_mtype');
+const cb_stype = document.getElementsByName('cb_stype');
+const cb_ttype = document.getElementsByName('cb_ttype');
+const cb_marker = document.getElementsByName('cb_marker');
 const cb_attr = document.getElementsByName("cb_attr");
 const cb_race = document.getElementsByName("cb_race");
-const cb_marker = document.getElementsByName('cb_marker');
 
 const row_lv = document.getElementById('row_lv');
 const row_sc = document.getElementById('row_sc');
@@ -43,13 +47,6 @@ const form1 = document.getElementById('form1');
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const table_result = document.getElementById('table_result');
-
-function add_opt(sel, value, text){
-	var opt = document.createElement("option");
-	opt.value = value.toString(16);
-	opt.text = text;
-	sel.add(opt);
-}
 
 function create_subtype(){
 	switch(select_type.value){
@@ -108,6 +105,7 @@ function create_subtype(){
 	}
 	
 }
+select_type.onchange = create_subtype;
 
 function clear_cb(type){
 	var cb_list = document.getElementsByName('cb_' + type);
@@ -158,6 +156,7 @@ function clear_query(){
 	clear_cb('race');
 	clear_cb('marker');
 }
+button2.onclick = clear_query;
 
 function init(){
 	if(window.innerWidth > MAX_WIDTH)
@@ -168,3 +167,4 @@ function init(){
 	button1.disabled = true;
 	button2.disabled = true;
 }
+document.body.onload = init;
