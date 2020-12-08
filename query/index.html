@@ -74,7 +74,7 @@
 		}
 	</style>
 </head>
-<body bgcolor="#e6e6e6" onload="init()">
+<body bgcolor="#e6e6e6">
 	<form id="form1">
 	<table class="hidden">
 	<tr><td>密碼：<input id="text_id" type="number" min="0" ></td></tr>
@@ -84,7 +84,7 @@
 		<option value="o">不含TCG特有卡</option>
 		<option value="t">TCG特有卡</option>
 	</select></td></tr>
-	<tr><td>種類：<select id="select_type" onchange="create_subtype()">
+	<tr><td>種類：<select id="select_type">
 		<option value=""></option>
 		<option value="m">怪獸</option>
 		<option value="s">魔法</option>
@@ -102,12 +102,12 @@
 	<input type="checkbox" id="mtype6" name="cb_mtype"><label for="mtype6">超量</label>
 	<input type="checkbox" id="mtype7" name="cb_mtype"><label for="mtype7">靈擺</label>
 	<input type="checkbox" id="mtype8" name="cb_mtype"><label for="mtype8">連結</label><br>
-	　　　<input type="checkbox" id="mtype9" name="cb_mtype"><label for="mtype9">靈魂</label>
-	<input type="checkbox" id="mtype10" name="cb_mtype"><label for="mtype10">聯合</label>
-	<input type="checkbox" id="mtype11" name="cb_mtype"><label for="mtype11">二重</label>
-	<input type="checkbox" id="mtype12" name="cb_mtype"><label for="mtype12">協調</label><br>
-	　　　<input type="checkbox" id="mtype13" name="cb_mtype"><label for="mtype13">反轉</label>
-	<input type="checkbox" id="mtype14" name="cb_mtype"><label for="mtype14">卡通</label>
+	　　　<input type="checkbox" id="mtype9" name="cb_mtype"><label for="mtype9">卡通</label>
+	<input type="checkbox" id="mtype10" name="cb_mtype"><label for="mtype10">靈魂</label>
+	<input type="checkbox" id="mtype11" name="cb_mtype"><label for="mtype11">聯合</label>
+	<input type="checkbox" id="mtype12" name="cb_mtype"><label for="mtype12">二重</label><br>
+	　　　<input type="checkbox" id="mtype13" name="cb_mtype"><label for="mtype13">協調</label>
+	<input type="checkbox" id="mtype14" name="cb_mtype"><label for="mtype14">反轉</label>
 	<input type="checkbox" id="mtype15" name="cb_mtype"><label for="mtype15">特殊召喚</label><br>
 	　　　<input type="checkbox" id="mtype_deck" name="cb_mtype"><label for="mtype_deck">置於牌組</label>
 	<input type="checkbox" id="mtype_reset" onchange="clear_cb('mtype')"><label for="mtype_reset" class="clear">✗</label>
@@ -152,30 +152,30 @@
 	<input type="checkbox" id="attr7" name="cb_attr"><label for="attr7">神</label>
 	<input type="checkbox" id="attr_reset" onchange="clear_cb('attr')"><label for="attr_reset" class="clear">✗</label>
 	</td></tr>
-	<tr id="row_race"><td>種族：<input type="checkbox" id="race1" name="cb_race"><label for="race1">戰士　</label>
-	<input type="checkbox" id="race2" name="cb_race"><label for="race2">魔法使</label>
-	<input type="checkbox" id="race3" name="cb_race"><label for="race3">天使　</label>
-	<input type="checkbox" id="race4" name="cb_race"><label for="race4">惡魔　</label><br>
-	　　　<input type="checkbox" id="race5" name="cb_race"><label for="race5">不死　</label>
-	<input type="checkbox" id="race6" name="cb_race"><label for="race6">機械　</label>
-	<input type="checkbox" id="race7" name="cb_race"><label for="race7">水　　</label>
-	<input type="checkbox" id="race8" name="cb_race"><label for="race8">炎　　</label><br>
-	　　　<input type="checkbox" id="race9" name="cb_race"><label for="race9">岩石　</label>
-	<input type="checkbox" id="race10" name="cb_race"><label for="race10">鳥獸　</label>
-	<input type="checkbox" id="race11" name="cb_race"><label for="race11">植物　</label>
-	<input type="checkbox" id="race12" name="cb_race"><label for="race12">昆蟲　</label><br>
-	　　　<input type="checkbox" id="race13" name="cb_race"><label for="race13">雷　　</label>
-	<input type="checkbox" id="race14" name="cb_race"><label for="race14">龍　　</label>
-	<input type="checkbox" id="race15" name="cb_race"><label for="race15">獸　　</label>
-	<input type="checkbox" id="race16" name="cb_race"><label for="race16">獸戰士</label><br>
-	　　　<input type="checkbox" id="race17" name="cb_race"><label for="race17">恐龍　</label>
-	<input type="checkbox" id="race18" name="cb_race"><label for="race18">魚　　</label>
-	<input type="checkbox" id="race19" name="cb_race"><label for="race19">海龍　</label>
-	<input type="checkbox" id="race20" name="cb_race"><label for="race20">爬蟲類</label><br>
-	　　　<input type="checkbox" id="race21" name="cb_race"><label for="race21">超能　</label>
-	<input type="checkbox" id="race22" name="cb_race"><label for="race22">幻神獸</label>
-	<input type="checkbox" id="race23" name="cb_race"><label for="race23">創造神</label>
-	<input type="checkbox" id="race24" name="cb_race"><label for="race24">幻龍　</label><br>
+	<tr id="row_race"><td>種族：<input type="checkbox" id="race1" name="cb_race"><label for="race1">水　　</label>
+	<input type="checkbox" id="race2" name="cb_race"><label for="race2">炎　　</label>
+	<input type="checkbox" id="race3" name="cb_race"><label for="race3">雷　　</label>
+	<input type="checkbox" id="race4" name="cb_race"><label for="race4">龍　　</label><br>
+	　　　<input type="checkbox" id="race5" name="cb_race"><label for="race5">獸　　</label>
+	<input type="checkbox" id="race6" name="cb_race"><label for="race6">魚　　</label>
+	<input type="checkbox" id="race7" name="cb_race"><label for="race7">天使　</label>
+	<input type="checkbox" id="race8" name="cb_race"><label for="race8">惡魔　</label><br>
+	　　　<input type="checkbox" id="race9" name="cb_race"><label for="race9">不死　</label>
+	<input type="checkbox" id="race10" name="cb_race"><label for="race10">戰士　</label>
+	<input type="checkbox" id="race11" name="cb_race"><label for="race11">恐龍　</label>
+	<input type="checkbox" id="race12" name="cb_race"><label for="race12">鳥獸　</label><br>
+	　　　<input type="checkbox" id="race13" name="cb_race"><label for="race13">昆蟲　</label>
+	<input type="checkbox" id="race14" name="cb_race"><label for="race14">植物　</label>
+	<input type="checkbox" id="race15" name="cb_race"><label for="race15">海龍　</label>
+	<input type="checkbox" id="race16" name="cb_race"><label for="race16">岩石　</label><br>
+	　　　<input type="checkbox" id="race17" name="cb_race"><label for="race17">機械　</label>
+	<input type="checkbox" id="race18" name="cb_race"><label for="race18">超能　</label>
+	<input type="checkbox" id="race19" name="cb_race"><label for="race19">幻龍　</label>
+	<input type="checkbox" id="race20" name="cb_race"><label for="race20">魔法使</label><br>
+	　　　<input type="checkbox" id="race21" name="cb_race"><label for="race21">獸戰士</label>
+	<input type="checkbox" id="race22" name="cb_race"><label for="race22">爬蟲類</label>
+	<input type="checkbox" id="race23" name="cb_race"><label for="race23">幻神獸</label>
+	<input type="checkbox" id="race24" name="cb_race"><label for="race24">創造神</label><br>
 	　　　<input type="checkbox" id="race25" name="cb_race"><label for="race25">電子界</label>
 	<input type="checkbox" id="race_reset" onchange="clear_cb('race')"><label for="race_reset" class="clear">✗</label>
 	</td></tr>
@@ -190,7 +190,7 @@
 	</td></tr>
 	<tr><td>效果：<input id="text_effect" type="search" >
 	<button id="button1" disabled="true">搜尋</button>
-	<button id="button2" type="button" disabled="true" onclick="clear_query()">清空</button></td></tr>
+	<button id="button2" type="button" disabled="true">清空</button></td></tr>
 	</table>
 	</form>
 	<div class="half-line">&nbsp;</div>

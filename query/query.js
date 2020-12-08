@@ -137,12 +137,13 @@ var id_to_type = {
 	mtype6: TYPE_XYZ,
 	mtype7: TYPE_PENDULUM,
 	mtype8: TYPE_LINK,
-	mtype9: TYPE_SPIRIT,
-	mtype10: TYPE_UNION,
-	mtype11: TYPE_DUAL,
-	mtype12: TYPE_TUNER,
-	mtype13: TYPE_FLIP,
-	mtype14: TYPE_TOON,
+	
+	mtype9: TYPE_TOON,
+	mtype10: TYPE_SPIRIT,
+	mtype11: TYPE_UNION,
+	mtype12: TYPE_DUAL,
+	mtype13: TYPE_TUNER,
+	mtype14: TYPE_FLIP,
 	mtype15: TYPE_SPSUMMON,
 	
 	stype2: TYPE_QUICKPLAY,
@@ -155,16 +156,54 @@ var id_to_type = {
 	ttype3: TYPE_COUNTER
 };
 
-var id_to_marker = {
-	marker1: LINK_MARKER_TOP_LEFT,
-	marker2: LINK_MARKER_TOP,
-	marker3: LINK_MARKER_TOP_RIGHT,
-	marker4: LINK_MARKER_LEFT,
-	marker5: LINK_MARKER_RIGHT,
-	marker6: LINK_MARKER_BOTTOM_LEFT,
-	marker7: LINK_MARKER_BOTTOM,
-	marker8: LINK_MARKER_BOTTOM_RIGHT
-};
+var index_to_attr = [
+	ATTRIBUTE_EARTH,
+	ATTRIBUTE_WATER,
+	ATTRIBUTE_FIRE,
+	ATTRIBUTE_WIND,
+	ATTRIBUTE_LIGHT,
+	ATTRIBUTE_DARK,
+	ATTRIBUTE_DIVINE,
+];
+
+var index_to_race = [
+	RACE_AQUA,
+	RACE_PYRO,
+	RACE_THUNDER,
+	RACE_DRAGON,
+	RACE_BEAST,
+	RACE_FISH,
+	RACE_FAIRY,
+	RACE_FIEND,
+	RACE_ZOMBIE,
+	RACE_WARRIOR,
+	RACE_DINOSAUR,
+	RACE_WINDBEAST,
+	RACE_INSECT,
+	RACE_PLANT,
+	RACE_SEASERPENT,
+	RACE_ROCK,
+	RACE_MACHINE,
+	RACE_PSYCHO,
+	RACE_WYRM,
+	RACE_SPELLCASTER,
+	RACE_BEASTWARRIOR,
+	RACE_REPTILE,
+	RACE_DIVINE,
+	RACE_CREATORGOD,
+	RACE_CYBERSE
+];
+
+var index_to_marker = [
+	LINK_MARKER_TOP_LEFT,
+	LINK_MARKER_TOP,
+	LINK_MARKER_TOP_RIGHT,
+	LINK_MARKER_LEFT,
+	LINK_MARKER_RIGHT,
+	LINK_MARKER_BOTTOM_LEFT,
+	LINK_MARKER_BOTTOM,
+	LINK_MARKER_BOTTOM_RIGHT
+];
 
 String.prototype.toHalfWidth = function() {
     return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)});
@@ -195,8 +234,7 @@ function query(event){
 	
 	var arg = new Object();
 	var valid = false;
-	var query_monster = false;
-	var cb_list;
+	var is_monster = false;
 	
 	var result = [];
 	
@@ -230,10 +268,9 @@ function query(event){
 			if(mtype_deck.checked)
 				qstr = qstr + " AND NOT type & " + TYPE_EXT;
 			
-			cb_list = document.getElementsByName('cb_mtype');
-			for(let i = 0; i < cb_list.length; ++i){
-				if(cb_list[i].checked)
-					ctype |= id_to_type[cb_list[i].id];
+			for(let i = 0; i < cb_mtype.length; ++i){
+				if(cb_mtype[i].checked)
+					ctype |= id_to_type[cb_mtype[i].id];
 			}
 			if(ctype){
 				if(select_ao1.value == 'or')
@@ -246,10 +283,9 @@ function query(event){
 			break;
 		case 's':
 			qstr = qstr + " AND type & " + TYPE_SPELL;
-			cb_list = document.getElementsByName('cb_stype');
-			for(let i = 0; i < cb_list.length; ++i){
-				if(cb_list[i].checked)
-					ctype |= id_to_type[cb_list[i].id];
+			for(let i = 0; i < cb_stype.length; ++i){
+				if(cb_stype[i].checked)
+					ctype |= id_to_type[cb_stype[i].id];
 			}
 			if(ctype){
 				if(stype1.checked)
@@ -262,10 +298,9 @@ function query(event){
 			break;
 		case 't':
 			qstr = qstr + " AND type & " + TYPE_TRAP;
-			cb_list = document.getElementsByName('cb_ttype');
-			for(let i = 0; i < cb_list.length; ++i){
-				if(cb_list[i].checked)
-					ctype |= id_to_type[cb_list[i].id];
+			for(let i = 0; i < cb_ttype.length; ++i){
+				if(cb_ttype[i].checked)
+					ctype |= id_to_type[cb_ttype[i].id];
 			}
 			if(ctype){
 				if(stype1.checked)
@@ -304,7 +339,7 @@ function query(event){
 				arg.$atk2 = atk2;
 			}
 			valid = true;
-			query_monster = true;
+			is_monster = true;
 		}
 		
 		// def, exclude link monsters
@@ -333,7 +368,7 @@ function query(event){
 				arg.$def2 = def2;
 			}
 			valid = true;
-			query_monster = true;
+			is_monster = true;
 		}
 		// lv, scale
 		if(text_lv1.value.length <= MAX_DIGIT)
@@ -359,7 +394,7 @@ function query(event){
 				arg.$lv2 = lv2;
 			}
 			valid = true;
-			query_monster = true;
+			is_monster = true;
 		}
 		if(is_scale(sc1) || is_scale(sc2)){
 			qstr = qstr + " AND type&" + TYPE_PENDULUM;
@@ -377,39 +412,35 @@ function query(event){
 				arg.$sc2 = sc2;
 			}
 			valid = true;
-			query_monster = true;
+			is_monster = true;
 		}
 		
 		// attr, race
-		var tmp = ATTRIBUTE_EARTH;
 		for(let i = 0; i < cb_attr.length; ++i){
 			if(cb_attr[i].checked)
-				cattr |= tmp;
-			tmp <<= 1;
+				cattr |= index_to_attr[i];
 		}
 		if(cattr){
 			qstr = qstr + " AND attribute & $attr";
 			arg.$attr = cattr;
 			valid = true;
-			query_monster = true;
+			is_monster = true;
 		}
 		
-		tmp = RACE_WARRIOR;
 		for(let i = 0; i < cb_race.length; ++i){
 			if(cb_race[i].checked)
-				crace |= tmp;
-			tmp <<= 1;
+				crace |= index_to_race[i];
 		}
 		if(crace){
 			qstr = qstr + " AND race & $race";
 			arg.$race = crace;
 			valid = true;
-			query_monster = true;
+			is_monster = true;
 		}
 		// marker
 		for(let i = 0; i < cb_marker.length; ++i){
 			if(cb_marker[i].checked){
-				cmarker |= id_to_marker[cb_marker[i].id];
+				cmarker |= index_to_marker[i];
 			}
 		}
 		if(cmarker){
@@ -420,7 +451,7 @@ function query(event){
 				qstr = qstr + " AND def & $marker == $marker";
 			arg.$marker = cmarker;
 			valid = true;
-			query_monster = true;
+			is_monster = true;
 		}
 	}
 	//effect
@@ -430,7 +461,7 @@ function query(event){
 		valid = true;
 	}
 	// avoid trap monsters
-	if(select_type.value == '' && query_monster)
+	if(select_type.value == '' && is_monster)
 		qstr = qstr + " AND type & " + TYPE_MONSTER;
 	// name
 	if(text_name.value.length <= 1000 && text_name.value != ''){
@@ -529,5 +560,4 @@ function query(event){
 	button2.disabled = false;
 	document.activeElement.blur();
 }
-
 form1.onsubmit = query;
