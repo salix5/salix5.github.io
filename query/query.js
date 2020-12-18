@@ -7,7 +7,7 @@ var cid_xhr = new XMLHttpRequest();
 cid_xhr.onload = e => {
 	cid_table = cid_xhr.response;
 };
-cid_xhr.open('GET', 'cid.json', true);	
+cid_xhr.open('GET', 'text/cid.json', true);	
 cid_xhr.responseType = 'json';
 cid_xhr.send();
 
@@ -16,7 +16,7 @@ var name_xhr = new XMLHttpRequest();
 name_xhr.onload = e => {
 	name_table = name_xhr.response;
 };
-name_xhr.open('GET', 'name_table.json', true);	
+name_xhr.open('GET', 'text/name_table.json', true);	
 name_xhr.responseType = 'json';
 name_xhr.send();
 

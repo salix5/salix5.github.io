@@ -22,11 +22,11 @@ function print_link(id, ot, db_id){
 
 function print_limit(limit){
 	if(limit == 0)
-		return '<img src="0.png" height="20" width="20">';
+		return '<img src="icon/0.png" height="20" width="20">';
 	else if(limit == 1)
-		return '<img src="1.png" height="20" width="20">';
+		return '<img src="icon/1.png" height="20" width="20">';
 	else if(limit == 2)
-		return '<img src="2.png" height="20" width="20">';
+		return '<img src="icon/2.png" height="20" width="20">';
 	else
 		return '';
 }
@@ -48,7 +48,7 @@ function create_rows(card){
 	cell_name.colSpan = 2;
 	cell_name.innerHTML = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
 	if(card.ot == 2)
-		cell_name.innerHTML += '<img src="tcg.png" height="20" width="40">';
+		cell_name.innerHTML += '<img src="icon/tcg.png" height="20" width="40">';
 	if(card.id <= 99999999)
 		cell_name.innerHTML += '<br><a href="' + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.jp_name + '</a>';
 		
