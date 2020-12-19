@@ -64,7 +64,7 @@ lflist.onload = e => {
 		}
 	}
 };
-lflist.open('GET', 'https://raw.githubusercontent.com/Fluorohydride/ygopro/master/lflist.conf', true);
+lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);
 lflist.send();
 
 
