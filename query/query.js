@@ -2,6 +2,39 @@
 // MAX_SAFE_INTEGER in JS: 16 digit
 const MAX_DIGIT = 15;
 
+var config = {
+	locateFile: filename => `./dist/${filename}`
+}
+var db, db2;
+const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
+const url2 = 'beta.cdb';
+
+// The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
+// We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
+initSqlJs(config).then(function(SQL){
+
+	var xhr = new XMLHttpRequest();
+	xhr.onload = e => {
+		var arr1 = new Uint8Array(xhr.response);
+		db = new SQL.Database(arr1);
+		button1.disabled = false;
+		button2.disabled = false;
+	};
+	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
+	xhr.responseType = 'arraybuffer';
+	xhr.send();
+	
+	var xhr2 = new XMLHttpRequest();
+	xhr2.onload = e => {
+		var arr1 = new Uint8Array(xhr2.response);
+		db2 = new SQL.Database(arr1);
+	};
+	xhr2.open('GET', url1, true);
+	xhr2.responseType = 'arraybuffer';	
+	xhr2.send();
+	}
+);
+
 var cid_table;
 var cid_xhr = new XMLHttpRequest();
 cid_xhr.onload = e => {
@@ -66,41 +99,6 @@ lflist.onload = e => {
 };
 lflist.open('GET', 'https://salix5.github.io/CardEditor/lflist.conf', true);
 lflist.send();
-
-
-var config = {
-	locateFile: filename => `./dist/${filename}`
-}
-
-var db, db2;
-const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
-const url2 = 'beta.cdb';
-
-// The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
-// We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
-initSqlJs(config).then(function(SQL){   
-
-	var xhr = new XMLHttpRequest();
-	xhr.onload = e => {
-		var arr1 = new Uint8Array(xhr.response);
-		db = new SQL.Database(arr1);
-		button1.disabled = false;
-		button2.disabled = false;
-	};
-	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
-	xhr.responseType = 'arraybuffer';
-	xhr.send();
-	
-	var xhr2 = new XMLHttpRequest();
-	xhr2.onload = e => {
-		var arr1 = new Uint8Array(xhr2.response);
-		db2 = new SQL.Database(arr1);
-	};
-	xhr2.open('GET', url2, true);
-	xhr2.responseType = 'arraybuffer';	
-	xhr2.send();
-	}
-);
 
 function is_virtual(card) {
 	if(card.type & TYPE_TOKEN)
