@@ -452,44 +452,77 @@ function query(event){
 			is_monster = true;
 		}
 	}
-	//effect
-	if(text_effect.value.length <= 1000 && text_effect.value != ''){
-		qstr = qstr + " AND desc LIKE $desc";
-		arg.$desc = '%' + text_effect.value.replace(/[%_]/, '') + '%';
-		valid = true;
-	}
-	// avoid trap monsters
-	if(select_type.value == '' && is_monster)
-		qstr = qstr + " AND type & " + TYPE_MONSTER;
-	// name
-	if(text_name.value.length <= 1000 && text_name.value != ''){
-		var cname = text_name.value.toHalfWidth();
-		var nid = Object.keys(name_table).find(key => name_table[key] === cname);
-		if(setname[cname]){
-			var set_code = parseInt(setname[cname], 16);
-			exact_qstr = qstr + ' AND name == $exact_name';
+	
+	//mutiple
+	if(text_multi.value.length <= 1000 && text_multi.value != ''){
+		var cmulti = text_multi.value.toHalfWidth();
+		var nid = Object.keys(name_table).find(key => name_table[key] === cmulti);
+		if(setname[cmulti]){
+			var set_code = parseInt(setname[cmulti], 16);
 			qstr += " AND (name LIKE $name";
 			qstr += " OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype";
 			qstr += " OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype";
-			arg.$exact_name = cname.replace(/[%_]/, '');
-			arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
+			arg.$name = '%' + cmulti.replace(/[%_]/, '') + '%';
 			arg.$settype = set_code & 0xfff;
 			arg.$setsubtype = set_code & 0xf000;
 		}
 		else{
-			exact_qstr = qstr + ' AND name == $exact_name';
 			qstr = qstr + " AND (name LIKE $name";
-			arg.$exact_name = cname.replace(/[%_]/, '');
-			arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
+			arg.$name = '%' + cmulti.replace(/[%_]/, '') + '%';
 		}
+		
 		if(nid){
-			qstr += " OR datas.id == $nid);";
+			qstr += " OR datas.id == $nid";
 			arg.$nid = nid;
 		}
-		else
-			qstr += ");";
+		qstr += " OR desc LIKE $desc)";
+		arg.$desc = '%' + cmulti.replace(/[%_]/, '') + '%';
 		valid = true;
 	}
+	else{
+		//effect
+		if(text_effect.value.length <= 1000 && text_effect.value != ''){
+			qstr += " AND desc LIKE $desc";
+			arg.$desc = '%' + text_effect.value.replace(/[%_]/, '') + '%';
+			valid = true;
+		}
+		
+		// name
+		if(text_name.value.length <= 1000 && text_name.value != ''){
+			var cname = text_name.value.toHalfWidth();
+			var nid = Object.keys(name_table).find(key => name_table[key] === cname);
+			if(setname[cname]){
+				var set_code = parseInt(setname[cname], 16);
+				exact_qstr = qstr + ' AND name == $exact_name';
+				qstr += " AND (name LIKE $name";
+				qstr += " OR setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype";
+				qstr += " OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype";
+				arg.$exact_name = cname.replace(/[%_]/, '');
+				arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
+				arg.$settype = set_code & 0xfff;
+				arg.$setsubtype = set_code & 0xf000;
+			}
+			else{
+				exact_qstr = qstr + ' AND name == $exact_name';
+				qstr = qstr + " AND (name LIKE $name";
+				arg.$exact_name = cname.replace(/[%_]/, '');
+				arg.$name = '%' + cname.replace(/[%_]/, '') + '%';
+			}
+			if(nid){
+				qstr = qstr + " OR datas.id == $nid)";
+				arg.$nid = nid;
+			}
+			else
+				qstr = qstr + ")";
+			valid = true;
+		}
+	}
+	
+	// avoid trap monsters and finalize
+	if(select_type.value == '' && is_monster)
+		qstr = qstr + " AND type & " + TYPE_MONSTER + ";";
+	else
+		qstr = qstr + ";";
 
 	if(!valid){
 		event.preventDefault();
