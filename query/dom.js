@@ -36,6 +36,12 @@ const cb_marker = document.getElementsByName('cb_marker');
 const cb_attr = document.getElementsByName("cb_attr");
 const cb_race = document.getElementsByName("cb_race");
 
+const cb_mtype_reset  = document.getElementById('cb_mtype_reset');
+const cb_stype_reset  = document.getElementById('cb_stype_reset');
+const cb_ttype_reset  = document.getElementById('cb_ttype_reset');
+const cb_attr_reset  = document.getElementById('cb_attr_reset');
+const cb_race_reset  = document.getElementById('cb_race_reset');
+
 const row_lv = document.getElementById('row_lv');
 const row_sc = document.getElementById('row_sc');
 const row_marker = document.getElementById('row_marker');
@@ -108,16 +114,21 @@ function create_subtype(){
 }
 select_type.onchange = create_subtype;
 
-function clear_cb(type){
-	var cb_list = document.getElementsByName('cb_' + type);
+function clear_cb(name){
+	var cb_list = document.getElementsByName(name);
 	for(let i = 0; i < cb_list.length; ++i){
 		cb_list[i].checked = false;
 	}
-	if(type != 'marker'){
-		var rst = document.getElementById(type + '_reset');
+	if(name != 'cb_marker'){
+		var rst = document.getElementById(name + '_reset');
 		rst.checked = false;
 	}
 }
+cb_mtype_reset.onchange = function(){clear_cb('cb_mtype')};
+cb_stype_reset.onchange = function(){clear_cb('cb_stype')};
+cb_ttype_reset.onchange = function(){clear_cb('cb_ttype')};
+cb_attr_reset.onchange = function(){clear_cb('cb_attr')};
+cb_race_reset.onchange = function(){clear_cb('cb_race')};
 
 function clear_query(){
 	text_id.value = '';
@@ -132,6 +143,7 @@ function clear_query(){
 	text_def1.value = '';
 	text_def2.value = '';
 	text_effect.value = '';
+	text_multi.value = '';
 	
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
@@ -139,9 +151,9 @@ function clear_query(){
 	select_ao1.style.display = 'none';
 	select_ao2.selectedIndex = 0;
 	
-	clear_cb('mtype');
-	clear_cb('stype');
-	clear_cb('ttype');
+	clear_cb('cb_mtype');
+	clear_cb('cb_stype');
+	clear_cb('cb_ttype');
 	subtype_m.style.display = 'none';
 	subtype_s.style.display = 'none';
 	subtype_t.style.display = 'none';
@@ -153,9 +165,9 @@ function clear_query(){
 	row_atk.style.display = '';
 	row_def.style.display = '';
 	
-	clear_cb('attr');
-	clear_cb('race');
-	clear_cb('marker');
+	clear_cb('cb_attr');
+	clear_cb('cb_race');
+	clear_cb('cb_marker');
 }
 button2.onclick = clear_query;
 
