@@ -1,5 +1,13 @@
 "use strict";
 
+function print_id(id){
+	var pre_id = id % 1000;
+	if(id >= 101104001 && id<=101104999)
+		return 'LIOV-JP' + pre_id.padStart(3, '0');
+	else
+		return id.toString().padStart(8, '0')
+}
+
 function print_ad(x){
 	if(x == -2)
 		return '?';
@@ -31,7 +39,11 @@ function print_limit(limit){
 		return '';
 }
 
-function compare_card(a, b){
+function compare_id(a, b){
+	return a.id - b.id;
+}
+
+function compare_name(a, b){
 	return a.name.localeCompare(b.name);
 }
 
@@ -76,7 +88,8 @@ function create_rows(card){
 	var lvstr = '等級';
 	var marker = '';
 	var data = '';
-	var output_data = 'ID: ' + card.id.toString().padStart(8, '0') + '<br><br>';
+	var output_data = '';
+	output_data = output_data + 'ID: ' + print_id(card.id) + '<br><br>';
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
