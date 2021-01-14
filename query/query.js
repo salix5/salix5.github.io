@@ -233,6 +233,7 @@ function query(event){
 	var arg = new Object();
 	var valid = false;
 	var is_monster = false;
+	var pre_release = false;
 	
 	var result = [];
 	
@@ -256,6 +257,11 @@ function query(event){
 		case 't':
 			qstr = qstr + " AND datas.ot == 2";
 			valid = true;
+			break;
+		case 'pre_1104':
+			qstr = qstr + " AND datas.id >= 101104001 AND datas.id <= 101104999";
+			valid = true;
+			pre_release = true;
 			break;
 	}
 	
@@ -578,7 +584,10 @@ function query(event){
 	
 	table_result.innerHTML = '';
 	if(result.length > 0){
-		result.sort(compare_card);
+		if(pre_release)
+			result.sort(compare_id);
+		else
+			result.sort(compare_name);
 		result.forEach(create_rows);
 	}
 	else{
