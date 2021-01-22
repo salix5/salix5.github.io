@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>時代的印記</title>
+	<meta charset="utf8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>時代的印記</title>
+	<style>
+		
+	</style>
 </head>
 <body>
+【期間限定】2021新年PICK UP！<br>
 <input type="text" id="text1" size="30" readonly>
 <button type="button" onclick="mark_of_time()">複製</button>
 <button type="button" onclick="until_dawn()">直到黎明</button>
 <div id="dawn"></div>
 <script>
 'use strict';
-var layer = getRandomIntInclusive(1, 1000);
-var r = 0;
-var text = '';
+var layer = 0;
 
 var pu_quotes = [
-'那還是人嗎',
 '那還是人嗎（2021的碎片）'
+];
+
+var ssr_quotes = [
+'那還是人嗎'
 ];
 
 var normal_quotes = [
@@ -34,18 +40,27 @@ var normal_quotes = [
 '(躺'
 ];
 
-if(layer <= 8){ 
-	// pick up
-	r = getRandomIntInclusive(0, pu_quotes.length - 1);
-	text = pu_quotes[r];
-}
-else{
-	r = getRandomIntInclusive(0, normal_quotes.length - 1);
-	text = normal_quotes[r];
-}
-
 var text1 = document.getElementById('text1');
-text1.value = text;
+var div_dawn = document.getElementById("dawn");
+
+function get_text(layer){
+	var r = 0;
+	var text = '';
+	if(1<= layer && layer <= 8){ 
+		// pick up
+		r = getRandomIntInclusive(0, pu_quotes.length - 1);
+		text = pu_quotes[r];
+	}
+	else if(9 <= layer && layer <= 10){
+		r = getRandomIntInclusive(0, ssr_quotes.length - 1);
+		text = ssr_quotes[r];
+	}
+	else{
+		r = getRandomIntInclusive(0, normal_quotes.length - 1);
+		text = normal_quotes[r];
+	}
+	return text;
+}
 
 function getRandomIntInclusive(min, max) {
     const randomBuffer = new Uint32Array(1);
@@ -66,16 +81,20 @@ function mark_of_time(){
 }
 
 function until_dawn(){
-	var stone = 0;
+	var times = 0;
+	
 	do{
-		++stone;
+		++times;
 		layer = getRandomIntInclusive(1, 1000);
 	}while(layer > 8);
 	
-	r = getRandomIntInclusive(0, pu_quotes.length - 1);
-	text1.value = pu_quotes[0];
-	document.getElementById("dawn").innerHTML = document.getElementById("dawn").innerHTML + '總共抽了' + stone + '次！<br>';
+	text1.value = get_text(layer);
+	div_dawn.innerHTML = div_dawn.innerHTML + '總共抽了' + times + '次！<br>';
 }
+
+layer = getRandomIntInclusive(1, 1000);
+text1.value = get_text(layer);
+
 </script>
 </body>
 </html>
