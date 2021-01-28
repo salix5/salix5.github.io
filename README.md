@@ -1,7 +1,14 @@
 # salix5.github.io
-## [卡片查詢](query/index.html)
-## [字段對照表](query/setcode.html)
+## 卡片查詢
+<https://salix5.github.io/query/>
+
+## 字段對照表
+<https://salix5.github.io/query/setcode.html>
+
 ## 更新紀錄
+21/1/29
+更新DBAG先行卡（北極天熊）
+
 21/1/22  
 新增卡包：LIOV (1104)
 
