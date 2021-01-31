@@ -2,8 +2,8 @@
 
 function print_id(id){
 	var pre_id = id % 1000;
-	if(id >= 101104001 && id<=101104999)
-		return 'LIOV-JP' + pre_id.toString().padStart(3, '0');
+	if(id >= 100416001 && id <= 100416999)
+		return 'DBAG-JP' + pre_id.toString().padStart(3, '0');
 	else
 		return id.toString().padStart(8, '0')
 }

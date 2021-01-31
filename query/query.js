@@ -348,8 +348,12 @@ function query(event){
 			qstr = qstr + " AND datas.ot == 2";
 			valid = true;
 			break;
-		case 'pre_1104':
+		case '1104':
 			qstr = qstr + liov_str;
+			valid = true;
+			break;
+		case 'DBAG':
+			qstr = qstr + " AND datas.id >= 100416001 AND datas.id <= 100416999";
 			valid = true;
 			break;
 	}
