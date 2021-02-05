@@ -55,21 +55,32 @@ function imgError(img) {
 function create_rows(card){
 	var row_name = table_result.insertRow(-1);
 	var cell_name = row_name.insertCell(-1);
+	var out_name = '';
 	
 	cell_name.className = 'name';
 	cell_name.colSpan = 2;
-	cell_name.innerHTML = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
+	out_name = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
 	if(card.ot == 2)
-		cell_name.innerHTML += '<img src="icon/tcg.png" height="20" width="40">';
-	if(card.id <= 99999999)
-		cell_name.innerHTML += '<br><a href="' + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.jp_name + '</a>';
-		
+		out_name = out_name + '<img src="icon/tcg.png" height="20" width="40">';
+	if(card.id <= 99999999){
+		if(window.innerWidth > MAX_WIDTH)
+			out_name = out_name + '<br><a href="';
+		else
+			out_name = out_name + '<br><a class="mobile" href="';
+		out_name = out_name + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.jp_name + '</a>';
+	}
+	cell_name.innerHTML = out_name;
+	
 	var row_pic = table_result.insertRow(-1);
 	var cell_pic = row_pic.insertCell(-1);
 	cell_pic.className = 'pic';
 	if(window.innerWidth > MAX_WIDTH){
+		cell_pic.style.width = '30%';
 		cell_pic.rowSpan = 2;
 		cell_pic.style.borderBottom = '1px solid black';
+	}
+	else{
+		cell_pic.style.width = '50%';
 	}
 	var img_card = document.createElement('img');
 	img_card.className = 'pic';
@@ -223,8 +234,6 @@ function create_rows(card){
 	cell_effect.className = "effect";
 	cell_effect.innerHTML = card.desc.replace(/\n/g, "<br>");
 	if(window.innerWidth <= MAX_WIDTH){
-		cell_name.style.fontSize = '13px';
-		cell_data.style.fontSize = '13px';
 		cell_effect.colSpan = 2;
 	}
 }
