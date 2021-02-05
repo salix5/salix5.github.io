@@ -354,6 +354,7 @@ function query(event){
 			break;
 		case 'DBAG':
 			qstr = qstr + " AND datas.id >= 100416001 AND datas.id <= 100416999";
+			pre_release =true;
 			valid = true;
 			break;
 	}
@@ -681,11 +682,14 @@ function query(event){
 			result.sort(compare_id);
 		else
 			result.sort(compare_name);
+		if(window.innerWidth > MAX_WIDTH)
+			table_result.style.border = '1px solid black';
 		result.forEach(create_rows);
 	}
 	else{
 		var row0 = table_result.insertRow(-1);
 		var cell0 = row0.insertCell(-1);
+		table_result.style.border = '1px solid black';
 		cell0.innerHTML = '沒有符合搜尋的項目。';
 	}
 	event.preventDefault();
