@@ -6,6 +6,9 @@
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/2/6   
+復刻更新：PAC1
+
 21/1/29  
 更新DBAG先行卡（北極天熊）
 
