@@ -9,7 +9,6 @@
 	</style>
 </head>
 <body>
-【期間限定】2021新年PICK UP！<br>
 <input type="text" id="text1" size="30" readonly>
 <button type="button" onclick="mark_of_time()">複製</button>
 <button type="button" onclick="until_dawn()">直到黎明</button>
@@ -19,7 +18,7 @@
 var layer = 0;
 
 var pu_quotes = [
-'那還是人嗎（2021的碎片）'
+'那還是人嗎'
 ];
 
 var ssr_quotes = [
@@ -42,6 +41,7 @@ var normal_quotes = [
 
 var text1 = document.getElementById('text1');
 var div_dawn = document.getElementById("dawn");
+var is_pu =false;
 
 function get_text(layer){
 	var r = 0;
@@ -51,7 +51,7 @@ function get_text(layer){
 		r = getRandomIntInclusive(0, pu_quotes.length - 1);
 		text = pu_quotes[r];
 	}
-	else if(9 <= layer && layer <= 10){
+	else if(is_pu && 9 <= layer && layer <= 10){
 		r = getRandomIntInclusive(0, ssr_quotes.length - 1);
 		text = ssr_quotes[r];
 	}
