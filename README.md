@@ -6,6 +6,9 @@
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/2/11  
+卡名統一採用「姊」
+
 21/2/6   
 復刻更新：PAC1
 
