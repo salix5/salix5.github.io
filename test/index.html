@@ -9,6 +9,7 @@
 	</style>
 </head>
 <body>
+【期間限定】2021新年特別活動！<br>
 <input type="text" id="text1" size="30" readonly>
 <button type="button" onclick="mark_of_time()">複製</button>
 <button type="button" onclick="until_dawn()">直到黎明</button>
@@ -38,6 +39,14 @@ var normal_quotes = [
 '那根本就不可能！',
 '(躺'
 ];
+	
+var new_year_quotes = [
+	'年終獎金幾個月啊？',
+	'現在薪水夠用嗎？',
+	'在哪裡上班啊？',
+	'打算什麼時候結婚？',
+	'有沒有正在交往的對象啊？'
+];
 
 var text1 = document.getElementById('text1');
 var div_dawn = document.getElementById("dawn");
@@ -56,8 +65,8 @@ function get_text(layer){
 		text = ssr_quotes[r];
 	}
 	else{
-		r = getRandomIntInclusive(0, normal_quotes.length - 1);
-		text = normal_quotes[r];
+		r = getRandomIntInclusive(0, new_year_quotes.length - 1);
+		text = new_year_quotes[r];
 	}
 	return text;
 }
