@@ -362,7 +362,7 @@ function query(event){
 	// type
 	switch(select_type.value){
 		case 'm':
-			qstr = qstr + " AND type & " + TYPE_MONSTER;
+                        ctype = TYPE_MONSTER;
 			if(mtype_deck.checked)
 				qstr = qstr + " AND NOT type & " + TYPE_EXT;
 			
@@ -380,33 +380,31 @@ function query(event){
 			valid = true;
 			break;
 		case 's':
-			qstr = qstr + " AND type & " + TYPE_SPELL;
-			for(let i = 0; i < cb_stype.length; ++i){
+                        ctype = TYPE_SPELL;
+			for(let i = 1; i < cb_stype.length; ++i){
 				if(cb_stype[i].checked)
 					ctype |= id_to_type[cb_stype[i].id];
 			}
-			if(ctype){
+                        qstr = qstr + ' AND (type & $type';
 				if(stype1.checked)
-					qstr = qstr + " AND (type & $type OR type == " + TYPE_SPELL + ")";
+					qstr = qstr + ' OR type == ' + TYPE_SPELL + ')';
 				else
-					qstr = qstr + " AND type & $type";
-				arg.$type = ctype;
-			}
+					qstr = qstr + ')';
+			arg.$type = ctype;
 			valid = true;
 			break;
 		case 't':
-			qstr = qstr + " AND type & " + TYPE_TRAP;
-			for(let i = 0; i < cb_ttype.length; ++i){
+			ctype = TYPE_TRAP;
+			for(let i = 1; i < cb_ttype.length; ++i){
 				if(cb_ttype[i].checked)
 					ctype |= id_to_type[cb_ttype[i].id];
 			}
-			if(ctype){
-				if(stype1.checked)
-					qstr = qstr + " AND (type & $type OR type == " + TYPE_TRAP + ")";
+                        qstr = qstr + ' AND (type & $type';
+				if(ttype1.checked)
+					qstr = qstr + ' OR type == ' + TYPE_TRAP + ')';
 				else
-					qstr = qstr + " AND type & $type";
-				arg.$type = ctype;
-			}
+					qstr = qstr + ')';
+			arg.$type = ctype
 			valid = true;
 			break;
 	}
