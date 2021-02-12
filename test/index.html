@@ -9,7 +9,6 @@
 	</style>
 </head>
 <body>
-【期間限定】2021新年特別活動！<br>
 <input type="text" id="text1" size="30" readonly>
 <button type="button" onclick="mark_of_time()">複製</button>
 <button type="button" onclick="until_dawn()">直到黎明</button>
@@ -65,8 +64,8 @@ function get_text(layer){
 		text = ssr_quotes[r];
 	}
 	else{
-		r = getRandomIntInclusive(0, new_year_quotes.length - 1);
-		text = new_year_quotes[r];
+		r = getRandomIntInclusive(0, normal_quotes.length - 1);
+		text = normal_quotes[r];
 	}
 	return text;
 }
