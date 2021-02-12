@@ -385,11 +385,14 @@ function query(event){
 				if(cb_stype[i].checked)
 					ctype |= id_to_type[cb_stype[i].id];
 			}
-                        qstr = qstr + ' AND (type & $type';
-				if(stype1.checked)
-					qstr = qstr + ' OR type == ' + TYPE_SPELL + ')';
+			if(stype1.checked){
+				if(ctype == TYPE_SPELL)
+				    qstr = qstr + ' AND type == ' + TYPE_SPELL;
 				else
-					qstr = qstr + ')';
+				    qstr = qstr + ' AND (type == ' + TYPE_SPELL + ' OR type & $type)';
+			}
+			else
+				qstr = qstr + ' AND type & $type';
 			arg.$type = ctype;
 			valid = true;
 			break;
@@ -399,11 +402,14 @@ function query(event){
 				if(cb_ttype[i].checked)
 					ctype |= id_to_type[cb_ttype[i].id];
 			}
-                        qstr = qstr + ' AND (type & $type';
-				if(ttype1.checked)
-					qstr = qstr + ' OR type == ' + TYPE_TRAP + ')';
+			if(ttype1.checked){
+				if(ctype == TYPE_TRAP)
+				    qstr = qstr + ' AND type == ' + TYPE_TRAP;
 				else
-					qstr = qstr + ')';
+				    qstr = qstr + ' AND (type == ' + TYPE_TRAP + ' OR type & $type)';
+			}
+			else
+				qstr = qstr + ' AND type & $type';
 			arg.$type = ctype
 			valid = true;
 			break;
