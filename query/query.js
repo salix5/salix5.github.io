@@ -390,7 +390,7 @@ function query(event){
 				else
 				    qstr = qstr + ' AND (type == ' + TYPE_SPELL + ' OR type & $type)';
 			}
-			else
+			else if(ctype)
 				qstr = qstr + ' AND type & $type';
 			arg.$type = ctype;
 			valid = true;
@@ -407,7 +407,7 @@ function query(event){
 				else
 				    qstr = qstr + ' AND (type == ' + TYPE_TRAP + ' OR type & $type)';
 			}
-			else
+			else if(ctype)
 				qstr = qstr + ' AND type & $type';
 			arg.$type = ctype
 			valid = true;
