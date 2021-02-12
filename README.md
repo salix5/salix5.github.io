@@ -6,6 +6,9 @@
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/2/12  
+種類查詢修正
+
 21/2/11  
 卡名統一採用「姊妹」
 
