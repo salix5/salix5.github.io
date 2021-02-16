@@ -6,6 +6,9 @@
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/2/16  
+搜尋特殊字元修正
+
 21/2/12  
 種類查詢修正
 
