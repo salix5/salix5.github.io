@@ -563,76 +563,84 @@ function query(event){
 	}
 	
 	//text
-	var setcode_str = "setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype";
-	setcode_str += " OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype";
-	var name_str = "name LIKE $name ESCAPE '^'";
-	var desc_str = "desc LIKE $desc ESCAPE '^'";
+	const setcode_str = "(setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
+	const name_str = "name LIKE $name ESCAPE '$'";
+	const desc_str = "desc LIKE $desc ESCAPE '$'";
+	const re_wildcard = /(?<!\$)[%_]/;
+	const re_all = /^%+$/;
 	
-	if(text_multi.value.length <= 1000 && text_multi.value != ''){
-		let ctext = text_multi.value.toHalfWidth();
-		let nid = Object.keys(name_table).find(key => name_table[key] === ctext);
-		let tmp_str = ctext.replace(/%/g, '^%');
-		tmp_str = tmp_str.replace(/_/g, '^_');
+	if(text_multi.value.length <= 1000 && text_multi.value != '' && !re_all.test(text_multi.value)){
+		let search_str = text_multi.value.toHalfWidth();
+		//name
+		qstr = qstr + " AND (" + name_str;
 		
-		if(setname[ctext]){
-			let set_code = parseInt(setname[ctext], 16);
-			qstr = qstr + " AND (" + name_str + " OR " + setcode_str;
-			arg.$name = "%" + tmp_str + "%";
-			arg.$settype = set_code & 0xfff;
-			arg.$setsubtype = set_code & 0xf000;
-		}
-		else{
-			qstr = qstr + " AND (" + name_str;
-			arg.$name = "%" + tmp_str + "%";
+		if(!re_wildcard.test(search_str)){
+			let real_str = search_str.replaceAll('$%', '%');
+			real_str = real_str.replaceAll('$_', '_');
+			
+			let nid = Object.keys(name_table).find(key => name_table[key] === real_str);
+			if(setname[real_str]){
+				let set_code = parseInt(setname[real_str], 16);
+				qstr = qstr + " OR " + setcode_str;
+				arg.$settype = set_code & 0x0fff;
+				arg.$setsubtype = set_code & 0xf000;
+			}
+			
+			if(nid){
+				qstr += " OR datas.id == $nid";
+				arg.$nid = nid;
+			}
+			search_str = '%' + search_str + '%';
 		}
 		
-		if(nid > 0){
-			qstr += " OR datas.id == $nid";
-			arg.$nid = nid;
-		}
+		//effect
 		qstr = qstr + " OR " + desc_str + ")";
-		arg.$desc = "%" + tmp_str + "%";
+		arg.$name = search_str;
+		arg.$desc = search_str;
 		valid = true;
 	}
 	else{
 		//effect
-		if(text_effect.value.length <= 1000 && text_effect.value != ''){
-			let ctext = text_effect.value.toHalfWidth();
-			let tmp_str = ctext.replace(/%/g, '^%');
-			tmp_str = tmp_str.replace(/_/g, '^_');
+		if(text_effect.value.length <= 1000 && text_effect.value != '' && !re_all.test(text_effect.value)){
+			let search_str = text_effect.value.toHalfWidth();
+			if(!re_wildcard.test(search_str)){
+				search_str = '%' + search_str + '%';
+			}
 			qstr = qstr + " AND " + desc_str;
-			arg.$desc = "%" + tmp_str + "%";
+			arg.$desc = search_str;
 			valid = true;
 		}
 		
 		// name
-		if(text_name.value.length <= 1000 && text_name.value != ''){
-			let ctext = text_name.value.toHalfWidth();
-			let nid = Object.keys(name_table).find(key => name_table[key] === ctext);
-			let tmp_str = ctext.replace(/%/g, '^%');
-			tmp_str = tmp_str.replace(/_/g, '^_');
-			if(setname[ctext]){
-				let set_code = parseInt(setname[ctext], 16);
-				qstr = qstr + " AND (" + name_str + " OR " + setcode_str;
-				arg.$name = "%" + tmp_str + "%";
-				arg.$settype = set_code & 0xfff;
-				arg.$setsubtype = set_code & 0xf000;
-			}
-			else{
-				qstr = qstr + " AND (" + name_str;
-				arg.$name = "%" + tmp_str + "%";
+		if(text_name.value.length <= 1000 && text_name.value != '' && !re_all.test(text_name.value)){
+			let search_str = text_name.value.toHalfWidth();
+			//name
+			qstr = qstr + " AND (" + name_str;
+			
+			if(!re_wildcard.test(search_str)){
+				let real_str = search_str.replaceAll('$%', '%');
+				real_str = real_str.replaceAll('$_', '_');
+				
+				let nid = Object.keys(name_table).find(key => name_table[key] === real_str);
+				if(setname[real_str]){
+					let set_code = parseInt(setname[real_str], 16);
+					qstr = qstr + " OR " + setcode_str;
+					arg.$settype = set_code & 0x0fff;
+					arg.$setsubtype = set_code & 0xf000;
+				}
+				
+				if(nid){
+					qstr += " OR datas.id == $nid";
+					arg.$nid = nid;
+				}
+				search_str = '%' + search_str + '%';
 			}
 			
-			if(nid){
-				qstr = qstr + " OR datas.id == $nid)";
-				arg.$nid = nid;
-			}
-			else
-				qstr = qstr + ")";
+			qstr = qstr + ")";
+			arg.$name = search_str;
 			valid = true;
 		}
 	}
-	
 	// avoid trap monsters and finalize
 	if(select_type.value == '' && is_monster)
 		qstr = qstr + " AND type & " + TYPE_MONSTER + ";";
