@@ -2,10 +2,14 @@
 
 function print_id(id){
 	var pre_id = id % 1000;
-	if(id >= 100416001 && id <= 100416999)
+	var output_id = id.toString().padStart(8, '0');
+	if(id <= 99999999){
+		return '<a href="https://salix5.github.io/query/index.html?id=' + output_id + '">' + output_id + '</a>';
+	}
+	else if(id >= 100416001 && id <= 100416999)
 		return 'DBAG-JP' + pre_id.toString().padStart(3, '0');
 	else
-		return id.toString().padStart(8, '0')
+		return '';
 }
 
 function print_ad(x){
@@ -47,7 +51,7 @@ function compare_name(a, b){
 	return a.name.localeCompare(b.name);
 }
 
-function imgError(img) {
+function imgError(event) {
 	this.onerror = null;
 	this.src = 'https://salix5.github.io/CardEditor/textures/unknown.jpg';
 }
@@ -235,5 +239,24 @@ function create_rows(card){
 	cell_effect.innerHTML = card.desc.replace(/\n/g, "<br>");
 	if(window.innerWidth <= MAX_WIDTH){
 		cell_effect.colSpan = 2;
+	}
+}
+
+function show_result(pre_release){
+	table_result.innerHTML = '';
+	if(result.length > 0){
+		if(pre_release)
+			result.sort(compare_id);
+		else
+			result.sort(compare_name);
+		if(window.innerWidth > MAX_WIDTH)
+			table_result.style.border = '1px solid black';
+		result.forEach(create_rows);
+	}
+	else{
+		var row0 = table_result.insertRow(-1);
+		var cell0 = row0.insertCell(-1);
+		table_result.style.border = '1px solid black';
+		cell0.innerHTML = '沒有符合搜尋的項目。';
 	}
 }
