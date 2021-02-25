@@ -6,19 +6,20 @@ var config = {
 	locateFile: filename => `./dist/${filename}`
 }
 var db, db2;
+var result = [];
 const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
 const url2 = 'beta.cdb';
 
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
 // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
 initSqlJs(config).then(function(SQL){
-
 	var xhr = new XMLHttpRequest();
 	xhr.onload = e => {
 		var arr1 = new Uint8Array(xhr.response);
 		db = new SQL.Database(arr1);
 		button1.disabled = false;
 		button2.disabled = false;
+		url_query();
 	};
 	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
@@ -295,7 +296,7 @@ String.prototype.toFullWidth = function() {
 };
 
 function query(event){
-	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id==texts.id AND abs(datas.id - alias) >= 10';
+	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ' + TYPE_TOKEN;
 	var exact_qstr = '';
 	var cid = 0;
 	var ot = 0;
@@ -317,8 +318,6 @@ function query(event){
 	var valid = false;
 	var is_monster = false;
 	var pre_release = false;
-	
-	var result = [];
 	
 	button1.disabled = true;
 	button2.disabled = true;
@@ -643,9 +642,8 @@ function query(event){
 	}
 	// avoid trap monsters and finalize
 	if(select_type.value == '' && is_monster)
-		qstr = qstr + " AND type & " + TYPE_MONSTER + ";";
-	else
-		qstr = qstr + ";";
+		qstr = qstr + " AND type & " + TYPE_MONSTER;
+	qstr = qstr + ";";
 
 	if(!valid){
 		event.preventDefault();
@@ -653,14 +651,14 @@ function query(event){
 		button2.disabled = false;
 		return;
 	}
+	
+	result.length = 0;
 	// released cards
 	var stmt = db.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
 		var card = stmt.getAsObject();
-		if(is_virtual(card))
-			continue;
 		if(card.id <= 99999999){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
@@ -682,8 +680,6 @@ function query(event){
 	while(stmt.step()) {
 		// execute
 		var card = stmt.getAsObject();
-		if(is_virtual(card))
-			continue;
 		if(card.id <= 99999999){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
@@ -698,26 +694,46 @@ function query(event){
 			card.limit = 3;
 		result.push(card);
 	}
+	show_result(pre_release);
 	
-	table_result.innerHTML = '';
-	if(result.length > 0){
-		if(pre_release)
-			result.sort(compare_id);
-		else
-			result.sort(compare_name);
-		if(window.innerWidth > MAX_WIDTH)
-			table_result.style.border = '1px solid black';
-		result.forEach(create_rows);
-	}
-	else{
-		var row0 = table_result.insertRow(-1);
-		var cell0 = row0.insertCell(-1);
-		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '沒有符合搜尋的項目。';
-	}
 	event.preventDefault();
 	button1.disabled = false;
 	button2.disabled = false;
 	document.activeElement.blur();
 }
 form1.onsubmit = query;
+
+function url_query(){
+	//parse search string
+	var params = new URLSearchParams(window.location.search.substring(1));
+	var id = params.get("id");
+	var url_id = 0;
+	
+	if(id && id.length <= MAX_DIGIT)
+		url_id = parseInt(id, 10);
+	if(url_id <= 0)
+		return;
+	
+	var qstr = 'SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ' + TYPE_TOKEN + ' AND datas.id == ' + url_id;
+	var stmt = db.prepare(qstr);
+	
+	result.length = 0;
+	while(stmt.step()) {
+		// execute
+		var card = stmt.getAsObject();
+		if(card.id <= 99999999){
+			card.db_id = cid_table[card.id];
+			card.jp_name = name_table[card.id];
+		}
+		if(ltable[card.id] == 0)
+			card.limit = 0;
+		else if(ltable[card.id] == 1)
+			card.limit = 1;
+		else if(ltable[card.id] == 2)
+			card.limit = 2;
+		else
+			card.limit = 3;
+		result.push(card);
+	}
+	show_result(false);
+}

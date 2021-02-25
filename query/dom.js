@@ -55,7 +55,7 @@ const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const table_result = document.getElementById('table_result');
 
-function create_subtype(){
+function create_subtype(event){
 	switch(select_type.value){
 		case '':
 			subtype_m.style.display = 'none';
@@ -124,13 +124,13 @@ function clear_cb(name){
 		rst.checked = false;
 	}
 }
-cb_mtype_reset.onchange = function(){clear_cb('cb_mtype')};
-cb_stype_reset.onchange = function(){clear_cb('cb_stype')};
-cb_ttype_reset.onchange = function(){clear_cb('cb_ttype')};
-cb_attr_reset.onchange = function(){clear_cb('cb_attr')};
-cb_race_reset.onchange = function(){clear_cb('cb_race')};
+cb_mtype_reset.onchange = function(event){clear_cb('cb_mtype')};
+cb_stype_reset.onchange = function(event){clear_cb('cb_stype')};
+cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype')};
+cb_attr_reset.onchange = function(event){clear_cb('cb_attr')};
+cb_race_reset.onchange = function(event){clear_cb('cb_race')};
 
-function clear_query(){
+function clear_query(event){
 	text_id.value = '';
 	text_name.value = '';
 	text_lv1.value = '';
@@ -171,12 +171,12 @@ function clear_query(){
 }
 button2.onclick = clear_query;
 
-function init(){
+function init(event){
 	if(window.innerWidth > MAX_WIDTH)
 		table_result.style.width = MAX_WIDTH + 'px';
 	else
 		table_result.style.width = '100%';
-	clear_query();
+	clear_query(null);
 	button1.disabled = true;
 	button2.disabled = true;
 }
