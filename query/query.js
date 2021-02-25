@@ -565,7 +565,8 @@ function query(event){
 	const setcode_str = "(setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
 	const name_str = "name LIKE $name ESCAPE '$'";
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
-	const re_wildcard = /(?<!\$)[%_]/;
+	//const re_wildcard = /(?<!\$)[%_]/;
+	const re_wildcard = /(^|[^\$])[%_]/;
 	const re_all = /^%+$/;
 	
 	if(text_multi.value.length <= 1000 && text_multi.value != '' && !re_all.test(text_multi.value)){
