@@ -4,7 +4,7 @@ function print_id(id){
 	var pre_id = id % 1000;
 	var output_id = id.toString().padStart(8, '0');
 	if(id <= 99999999){
-		return '<a href="https://salix5.github.io/query/index.html?id=' + output_id + '">' + output_id + '</a>';
+		return '<a href="https://salix5.github.io/query/index.html?id=' + output_id + '" target="_blank" rel="noreferrer">' + output_id + '</a>';
 	}
 	else if(id >= 100416001 && id <= 100416999)
 		return 'DBAG-JP' + pre_id.toString().padStart(3, '0');
