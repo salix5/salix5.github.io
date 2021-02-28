@@ -124,13 +124,13 @@ function clear_cb(name){
 		rst.checked = false;
 	}
 }
-cb_mtype_reset.onchange = function(event){clear_cb('cb_mtype')};
-cb_stype_reset.onchange = function(event){clear_cb('cb_stype')};
-cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype')};
-cb_attr_reset.onchange = function(event){clear_cb('cb_attr')};
-cb_race_reset.onchange = function(event){clear_cb('cb_race')};
+cb_mtype_reset.onchange = function(event){clear_cb('cb_mtype');};
+cb_stype_reset.onchange = function(event){clear_cb('cb_stype');};
+cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype');};
+cb_attr_reset.onchange = function(event){clear_cb('cb_attr');};
+cb_race_reset.onchange = function(event){clear_cb('cb_race');};
 
-function clear_query(event){
+function clear_query(){
 	text_id.value = '';
 	text_name.value = '';
 	text_lv1.value = '';
@@ -169,14 +169,18 @@ function clear_query(event){
 	clear_cb('cb_race');
 	clear_cb('cb_marker');
 }
-button2.onclick = clear_query;
+button2.onclick = function(event){
+	clear_query();
+	if(window.location.search.substring(1))
+		window.location.search = '';
+};
 
 function init(event){
 	if(window.innerWidth > MAX_WIDTH)
 		table_result.style.width = MAX_WIDTH + 'px';
 	else
 		table_result.style.width = '100%';
-	clear_query(null);
+	clear_query();
 	button1.disabled = true;
 	button2.disabled = true;
 }

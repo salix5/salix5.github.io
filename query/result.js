@@ -1,13 +1,18 @@
 "use strict";
 
-function print_id(id){
+function print_id(id, type){
 	var pre_id = id % 1000;
 	var output_id = id.toString().padStart(8, '0');
-	if(id <= 99999999){
-		return '<a href="https://salix5.github.io/query/index.html?id=' + output_id + '" target="_blank" rel="noreferrer">' + output_id + '</a>';
+	var params = new URLSearchParams();
+	params.set('id', output_id);
+	if(type & TYPE_TOKEN){
+		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'null' + '</a>';
+	}
+	else if(id <= 99999999){
+		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + output_id + '</a>';
 	}
 	else if(id >= 100416001 && id <= 100416999)
-		return 'DBAG-JP' + pre_id.toString().padStart(3, '0');
+		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'DBAG-JP' + pre_id.toString().padStart(3, '0') + '</a>';
 	else
 		return '';
 }
@@ -66,7 +71,7 @@ function create_rows(card){
 	out_name = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
 	if(card.ot == 2)
 		out_name = out_name + '<img src="icon/tcg.png" height="20" width="40">';
-	if(card.id <= 99999999){
+	if(card.id <= 99999999 && !is_virtual(card)){
 		if(window.innerWidth > MAX_WIDTH)
 			out_name = out_name + '<br><a href="';
 		else
@@ -104,7 +109,7 @@ function create_rows(card){
 	var marker = '';
 	var data = '';
 	var output_data = '';
-	output_data = output_data + 'ID: ' + print_id(card.id) + '<br><br>';
+	output_data = output_data + 'ID: ' + print_id(card.id, card.type) + '<br><br>';
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
@@ -122,13 +127,13 @@ function create_rows(card){
 			subtype = '/連結';
 			lvstr = 'LINK-';
 		}
-		// extype
 		if(card.type & TYPE_PENDULUM){
-		           subtype += '/靈擺';
+			subtype += '/靈擺';
 		}
+		
+		// extype
 		if(card.type & TYPE_NORMAL)
 			subtype += '/通常';
-		
 		if(card.type & TYPE_SPIRIT)
 			subtype += '/靈魂';
 		if(card.type & TYPE_UNION)
@@ -175,9 +180,13 @@ function create_rows(card){
 	}
 	
 	if(card.type & TYPE_MONSTER){
-		data += '<br>' + lvstr + (card.level & 0xff);
-		data += '/' + attr_to_str[card.attribute];
-		data += '/' + race_to_str[card.race] + '族'; 
+		data += '<br>';
+		if(card.level & 0xff)
+			data += lvstr + (card.level & 0xff);
+		if(card.attribute)
+			data += '/' + attr_to_str[card.attribute];
+		if(card.race)
+			data += '/' + race_to_str[card.race] + '族'; 
 		data += '<br>' + print_ad(card.atk);
 		if(card.type & TYPE_LINK){
 			data += '/-';
