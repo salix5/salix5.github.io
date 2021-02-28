@@ -124,7 +124,7 @@ function clear_cb(name){
 		rst.checked = false;
 	}
 }
-cb_mtype_reset.onchange = function(event){clear_cb('cb_mtype');};
+cb_mtype_reset.onchange = function(event){clear_cb('cb_mtype'); select_ao1.selectedIndex = 0;};
 cb_stype_reset.onchange = function(event){clear_cb('cb_stype');};
 cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype');};
 cb_attr_reset.onchange = function(event){clear_cb('cb_attr');};
