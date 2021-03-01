@@ -804,8 +804,8 @@ function server_analyze(params){
 		let name_cmd = name_str;
 		
 		if(!re_wildcard.test(search_str)){
-			let real_str = search_str.replaceAll('$%', '%');
-			real_str = real_str.replaceAll('$_', '_');
+			let real_str = search_str.replace(/\$%/g, '%');
+			real_str = real_str.replace(/\$_/g, '_');
 			
 			let nid = Object.keys(name_table).find(key => name_table[key] === real_str);
 			if(setname[real_str]){
@@ -846,6 +846,9 @@ function server_analyze(params){
 	if(cid == 0 && !(subtype & TYPE_TOKEN))
 		qstr += " AND NOT type & $token";
 	qstr += ";";
+	
+	//console.log(qstr);
+	//console.log(arg);
 	
 	if(!valid){
 		return;
