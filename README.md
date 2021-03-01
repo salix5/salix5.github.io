@@ -13,6 +13,9 @@
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/3/1  
+新增搜尋衍生物功能
+
 21/2/20  
 新增搜尋萬用字元功能
 
