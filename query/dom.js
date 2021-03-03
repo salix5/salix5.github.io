@@ -124,7 +124,10 @@ function clear_cb(name){
 		rst.checked = false;
 	}
 }
-cb_mtype_reset.onchange = function(event){clear_cb('cb_mtype'); select_ao1.selectedIndex = 0;};
+cb_mtype_reset.onchange = function(event){
+	clear_cb('cb_mtype');
+	select_ao1.selectedIndex = 0;
+};
 cb_stype_reset.onchange = function(event){clear_cb('cb_stype');};
 cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype');};
 cb_attr_reset.onchange = function(event){clear_cb('cb_attr');};
@@ -171,8 +174,6 @@ function clear_query(){
 }
 button2.onclick = function(event){
 	clear_query();
-	if(window.location.search.substring(1))
-		window.location.search = '';
 };
 
 function init(event){

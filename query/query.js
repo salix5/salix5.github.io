@@ -18,27 +18,26 @@ const re_all = /^%+$/;
 // The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
 // We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
 initSqlJs(config).then(function(SQL){
-	var xhr_pre = new XMLHttpRequest();
-	xhr_pre.onload = e => {
-		var arr1 = new Uint8Array(xhr_pre.response);
-		db2 = new SQL.Database(arr1);
-	};
-	xhr_pre.open('GET', url1, true);
-	xhr_pre.responseType = 'arraybuffer';	
-	xhr_pre.send();
-	
-	var xhr = new XMLHttpRequest();
+	let xhr = new XMLHttpRequest();
 	xhr.onload = e => {
-		var arr1 = new Uint8Array(xhr.response);
+		let xhr_pre = new XMLHttpRequest();
+		xhr_pre.onload = e => {
+			let arr1 = new Uint8Array(xhr_pre.response);
+			db2 = new SQL.Database(arr1);
+			button1.disabled = false;
+			button2.disabled = false;
+			url_query();
+		};
+		xhr_pre.open('GET', url1, true);
+		xhr_pre.responseType = 'arraybuffer';	
+		xhr_pre.send();
+		let arr1 = new Uint8Array(xhr.response);
 		db = new SQL.Database(arr1);
-		button1.disabled = false;
-		button2.disabled = false;
-		url_query();
 	};
 	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
 	xhr.responseType = 'arraybuffer';
 	xhr.send();
-	}
+}
 );
 
 var cid_table;
@@ -160,88 +159,14 @@ function check_int(params, key){
 		return null;
 }
 
-var LIOV = [
-32164201,
-68258355,
-4647954,
-31042659,
-67436768,
-94821366,
-30829071,
-67314110,
-93708824,
-29107423,
-66192538,
-92586237,
-29981935,
-65479980,
-91864689,
-28868394,
-54257392,
-91642007,
-27036706,
-53535814,
-80529459,
-26914168,
-53318263,
-89707961,
-15792576,
-52296675,
-88685329,
-15079028,
-51474037,
-87468732,
-14957440,
-40352445,
-87746184,
-13735899,
-40139997,
-76524506,
-12018201,
-49407319,
-75402014,
-2896663,
-48285768,
-74689476,
-1174075,
-47163170,
-74567889,
-952523,
-36346532,
-73345237,
-9839945,
-36224040,
-62623659,
-4017398,
-31002402,
-7496001,
-34995106,
-70389815,
-6374519,
-33773528,
-69167267,
-6552971,
-32056070,
-68045685,
-5439384,
-31834488,
-68223137,
-94317736,
-31712840,
-67100549,
-93595154,
-20989253,
-66984907,
-93473606,
-29867611,
-55262310,
-92650018,
-28645123,
-55049722,
-91534476,
-27923575,
-54927180
-];
+function pack_cmd(pack){
+	var cmd = '';
+	cmd = ' AND (datas.id==' + pack[0];
+	for(let i = 1; i < pack.length; ++i)
+		cmd = cmd + ' OR datas.id==' + pack[i];
+	cmd += ')';
+	return cmd;
+}
 
 var id_to_type = {
 	mtype1: TYPE_NORMAL,
@@ -435,7 +360,6 @@ function query(event){
 		if(text_def2.value.length <= MAX_DIGIT)
 			def2 = parseInt(text_def2.value, 10);
 		if(is_atk(def1) || is_atk(def2)){
-			
 			if(def1 == -1 || def2 == -1){
 				params.set('def1', -1);
 			}
@@ -534,12 +458,13 @@ function query(event){
 			params.set('desc', search_str);
 		}
 	}	
-	if(params.toString() != '')
-		server_analyze(params);
 	event.preventDefault();
 	button1.disabled = false;
 	button2.disabled = false;
 	document.activeElement.blur();
+	if(params.toString() != ''){
+		window.location.search = '?' + params.toString();
+	}
 }
 form1.onsubmit = query;
 
@@ -552,11 +477,7 @@ function server_analyze(params){
 	var pre_release = false;
 	
 	//LIOV string
-	var liov_str = '';
-	liov_str = ' AND (datas.id==' + LIOV[0];
-	for(let i = 1; i < LIOV.length; ++i)
-		liov_str = liov_str + ' OR datas.id==' + LIOV[i];
-	liov_str = liov_str + ')';
+	var liov_cmd = pack_cmd(LIOV);
 	
 	arg.$monster = TYPE_MONSTER;
 	arg.$spell = TYPE_SPELL;
@@ -568,6 +489,7 @@ function server_analyze(params){
 	// id
 	let cid = check_int(params, 'id');
 	if(cid && cid > 0){
+		text_id.value = cid;
 		qstr = qstr + " AND datas.id == $id";
 		arg.$id = cid;
 		valid = true;
@@ -577,19 +499,23 @@ function server_analyze(params){
 	
 	// ot
 	let str_pack = params.get('pack');
-	switch (str_pack){
+	switch(str_pack){
 		case 'o':
+			select_ot.value = str_pack;
 		    qstr = qstr + " AND datas.ot != 2";
 			break;
 		case 't':
+			select_ot.value = str_pack;
 			qstr = qstr + " AND datas.ot == 2";
 			valid = true;
 			break;
 		case '1104':
-			qstr = qstr + liov_str;
+			select_ot.value = str_pack;
+			qstr = qstr + liov_cmd;
 			valid = true;
 			break;
 		case 'DBAG':
+			select_ot.value = str_pack;
 			qstr = qstr + " AND datas.id >= 100416001 AND datas.id <= 100416999";
 			pre_release = true;
 			valid = true;
@@ -605,9 +531,17 @@ function server_analyze(params){
 		qstr = qstr + " AND type & $ctype";
 		arg.$ctype = ctype;
 	}
+	else
+		ctype = 0;
+	
 	switch(ctype){
 		case TYPE_MONSTER:
+			select_type.value = 'm';
 			if(subtype !== null && subtype > 0){
+				for(let i = 0; i < cb_mtype.length; ++i){
+					if(subtype & id_to_type[cb_mtype[i].id])
+						cb_mtype[i].checked = true;
+				}
 				if(sub_op)
 					qstr += " AND type & $stype == $stype";
 				else
@@ -616,13 +550,20 @@ function server_analyze(params){
 			}
 			else
 				subtype = 0;
+			
 			if(is_deck !== null && is_deck > 0){
+				mtype_deck.checked = true;
 				qstr += " AND NOT type & $ext";
 			}
 			valid = true;
 			break;
 		case TYPE_SPELL:
-			if(subtype && subtype > 0){
+			select_type.value = 's';
+			if(subtype !== null && subtype > 0){
+				for(let i = 0; i < cb_stype.length; ++i){
+					if(subtype & id_to_type[cb_stype[i].id])
+						cb_stype[i].checked = true;
+				}
 				if(subtype & TYPE_NORMAL){
 					if(subtype == TYPE_NORMAL){
 						qstr += ' AND type == $spell';
@@ -642,7 +583,12 @@ function server_analyze(params){
 			valid = true;
 			break;
 		case TYPE_TRAP:
-			if(subtype && subtype > 0){
+			select_type.value = 't';
+			if(subtype !== null && subtype > 0){
+				for(let i = 0; i < cb_ttype.length; ++i){
+					if(subtype & id_to_type[cb_ttype[i].id])
+						cb_ttype[i].checked = true;
+				}
 				if(subtype & TYPE_NORMAL){
 					if(subtype == TYPE_NORMAL){
 						qstr += ' AND type == $trap';
@@ -665,23 +611,27 @@ function server_analyze(params){
 			subtype = 0;
 	}
 	
-	if(ctype === null || ctype == TYPE_MONSTER){
+	if(ctype == 0 || ctype == TYPE_MONSTER){
 		// atk
 		let atk1 = check_int(params, 'atk1');
 		let atk2 = check_int(params, 'atk2');
 		if(is_atk(atk1)){
 			if(is_atk(atk2)){
 				if(atk1 == -1 || atk2 == -1){
+					text_atk1.value = -1;
 					qstr += " AND atk == $atk1";
 					arg.$atk1 = -2;
 				}
 				else{
+					text_atk1.value = atk1;
+					text_atk2.value = atk2;
 					qstr += " AND atk >= $atk1 AND atk <= $atk2";
 					arg.$atk1 = atk1;
 					arg.$atk2 = atk2;
 				}
 			}
 			else{
+				text_atk1.value = atk1;
 				qstr += " AND atk == $atk1";
 				if(atk1 == -1)
 					arg.$atk1 = -2;
@@ -699,16 +649,20 @@ function server_analyze(params){
 			qstr += " AND NOT type & $link";
 			if(is_atk(def2)){
 				if(def1 == -1 || def2 == -1){
+					text_def1.value = -1;
 					qstr = qstr + " AND def == $def1";
 					arg.$def1 = -2;
 				}
 				else{
+					text_def1.value = def1;
+					text_def2.value = def2;
 					qstr = qstr + " AND def >= $def1 AND def <= $def2";
 					arg.$def1 = def1;
 					arg.$def2 = def2;
 				}
 			}
 			else{
+				text_def1.value = def1;
 				qstr = qstr + " AND def == $def1";
 				if(def1 == -1)
 					arg.$def1 = -2;
@@ -725,7 +679,9 @@ function server_analyze(params){
 		let sc1 = check_int(params, 'sc1');
 		let sc2 = check_int(params, 'sc2');
 		if(is_lv(lv1)){
+			text_lv1.value = lv1;
 			if(is_lv(lv2)){
+				text_lv2.value = lv2;
 				qstr = qstr + " AND level & 0xff >= $lv1 AND level & 0xff <= $lv2";
 				arg.$lv1 = lv1;
 				arg.$lv2 = lv2;
@@ -738,7 +694,9 @@ function server_analyze(params){
 			is_monster = true;
 		}
 		if(is_scale(sc1)){
+			text_sc1.value = sc1;
 			if(is_scale(sc2)){
+				text_sc2.value = sc2;
 				qstr = qstr + " AND (level >> 24) & 0xff >= $sc1 AND (level >> 24) & 0xff <= $sc2";
 				arg.$sc1 = sc1;
 				arg.$sc2 = sc2;
@@ -755,12 +713,20 @@ function server_analyze(params){
 		let cattr = check_int(params, 'attr');
 		let crace = check_int(params, 'race');
 		if(cattr !== null && cattr > 0){
+			for(let i = 0; i < cb_attr.length; ++i){
+				if(cattr & index_to_attr[i])
+					cb_attr[i].checked = true;
+			}
 			qstr = qstr + " AND attribute & $attr";
 			arg.$attr = cattr;
 			valid = true;
 			is_monster = true;
 		}
 		if(crace !== null && crace > 0){
+			for(let i = 0; i < cb_race.length; ++i){
+				if(crace & index_to_race[i])
+					cb_race[i].checked = true;
+			}
 			qstr = qstr + " AND race & $race";
 			arg.$race = crace;
 			valid = true;
@@ -770,6 +736,10 @@ function server_analyze(params){
 		let cmarker = check_int(params, 'marker');
 		let marker_op = check_int(params, 'marker_op');
 		if(cmarker !== null && cmarker > 0){
+			for(let i = 0; i < cb_marker.length; ++i){
+				if(cmarker & index_to_marker[i])
+					cb_marker[i].checked = true;
+			}
 			qstr = qstr + " AND type & $link";
 			if(marker_op)
 				qstr = qstr + " AND def & $marker == $marker";
@@ -802,6 +772,10 @@ function server_analyze(params){
 	if(is_str(cname) && !re_all.test(cname)){
 		let search_str = cname.toHalfWidth();
 		let name_cmd = name_str;
+		if(cmulti)
+			text_multi.value = search_str;
+		else
+			text_name.value = search_str;
 		
 		if(!re_wildcard.test(search_str)){
 			let real_str = search_str.replace(/\$%/g, '%');
@@ -832,6 +806,7 @@ function server_analyze(params){
 	//effect
 	if(is_str(cdesc) && !re_all.test(cdesc)){
 		let search_str = cdesc.toHalfWidth();
+		text_effect.value = search_str;
 		if(!re_wildcard.test(search_str)){
 			search_str = '%' + search_str + '%';
 		}
@@ -841,7 +816,7 @@ function server_analyze(params){
 	}
 	
 	// avoid trap monsters and tokens
-	if(ctype === null && is_monster)
+	if(ctype == 0 && is_monster)
 		qstr += " AND type & $monster";
 	if(cid == 0 && !(subtype & TYPE_TOKEN))
 		qstr += " AND NOT type & $token";
