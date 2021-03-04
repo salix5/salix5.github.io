@@ -15,8 +15,6 @@ const url2 = 'beta.cdb';
 const re_wildcard = /(^|[^\$])[%_]/;
 const re_all = /^%+$/;
 
-// The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.   
-// We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.   
 initSqlJs(config).then(function(SQL){
 	let xhr = new XMLHttpRequest();
 	xhr.onload = e => {
@@ -105,11 +103,6 @@ lflist.onload = e => {
 lflist.open('GET', 'https://raw.githubusercontent.com/Fluorohydride/ygopro/master/lflist.conf', true);
 lflist.send();
 
-function is_virtual(card) {
-	if(card.type & TYPE_TOKEN)
-		return true;
-}
-
 function is_atk(x){
 	if(x === null)
 		return false;
@@ -161,10 +154,10 @@ function check_int(params, key){
 
 function pack_cmd(pack){
 	var cmd = '';
-	cmd = ' AND (datas.id==' + pack[0];
+	cmd = ` AND (datas.id==${pack[0]}`;
 	for(let i = 1; i < pack.length; ++i)
-		cmd = cmd + ' OR datas.id==' + pack[i];
-	cmd += ')';
+		cmd += ` OR datas.id==${pack[i]}`;
+	cmd += `)`;
 	return cmd;
 }
 
@@ -793,13 +786,13 @@ function server_analyze(params){
 				name_cmd += " OR datas.id == $nid";
 				arg.$nid = nid;
 			}
-			search_str = '%' + search_str + '%';
+			search_str = `%${search_str}%`;
 		}
 		arg.$name = search_str;
 		
 		if(cmulti)
-			name_cmd = name_cmd + ' OR ' + desc_str;
-		qstr = qstr + " AND (" + name_cmd + ")";
+			name_cmd += ` OR ${desc_str}`;
+		qstr += ` AND (${name_cmd})`;
 		valid = true;
 	}
 	
@@ -810,7 +803,7 @@ function server_analyze(params){
 		if(!re_wildcard.test(search_str)){
 			search_str = '%' + search_str + '%';
 		}
-		qstr = qstr + " AND " + desc_str;
+		qstr +=  ` AND ${desc_str}`;
 		arg.$desc = search_str;
 		valid = true;
 	}

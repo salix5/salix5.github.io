@@ -71,11 +71,11 @@ function create_rows(card){
 	out_name = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
 	if(card.ot == 2)
 		out_name = out_name + '<img src="icon/tcg.png" height="20" width="40">';
-	if(card.id <= 99999999 && !is_virtual(card)){
+	if(card.id <= 99999999 && !(card.type & TYPE_TOKEN)){
 		if(window.innerWidth > MAX_WIDTH)
-			out_name = out_name + '<br><a href="';
+			out_name += '<br><a href="';
 		else
-			out_name = out_name + '<br><a class="mobile" href="';
+			out_name += '<br><a class="mobile" href="';
 		out_name = out_name + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.jp_name + '</a>';
 	}
 	cell_name.innerHTML = out_name;
@@ -109,7 +109,7 @@ function create_rows(card){
 	var marker = '';
 	var data = '';
 	var output_data = '';
-	output_data = output_data + 'ID: ' + print_id(card.id, card.type) + '<br><br>';
+	output_data += `ID: ${print_id(card.id, card.type)}<br><br>`;
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
@@ -237,9 +237,9 @@ function create_rows(card){
 			data += '/刻度' + ((card.level >> 24) & 0xff);
 		}
 	}
-	output_data += '<span style="color: Blue;">' + data + '</span>';
+	output_data += `<span style="color: Blue;">${data}</span>`;
 	if(card.type & TYPE_LINK)
-		output_data += '<br>' + marker;
+		output_data += `<br>${marker}`;
 	cell_data.innerHTML = output_data;
 	
 	var row_effect = table_result.insertRow(-1);	
