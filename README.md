@@ -13,6 +13,10 @@
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/3/5  
+新增保留搜尋結果功能  
+2/20臨時禁止卡更新
+
 21/3/1  
 新增搜尋衍生物功能
 
