@@ -133,7 +133,7 @@ function is_scale(x){
 function is_str(x){
 	if(x === null)
 		return false;
-	else if(x.length <= MAX_STRLEN && x != '')
+	else if(x != '' && x.length <= MAX_STRLEN)
 		return true;
 	else
 		return false;
@@ -790,8 +790,10 @@ function server_analyze(params){
 		}
 		arg.$name = search_str;
 		
-		if(cmulti)
+		if(cmulti){
 			name_cmd += ` OR ${desc_str}`;
+			arg.$desc = search_str;
+		}
 		qstr += ` AND (${name_cmd})`;
 		valid = true;
 	}
@@ -801,7 +803,7 @@ function server_analyze(params){
 		let search_str = cdesc.toHalfWidth();
 		text_effect.value = search_str;
 		if(!re_wildcard.test(search_str)){
-			search_str = '%' + search_str + '%';
+			search_str = `%${search_str}%`;
 		}
 		qstr +=  ` AND ${desc_str}`;
 		arg.$desc = search_str;
