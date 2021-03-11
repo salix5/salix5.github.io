@@ -13,6 +13,9 @@
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/3/11  
+サイバネティック -> 智能科技
+
 21/3/5  
 新增保留搜尋結果功能  
 新增卡包：BLVO(TCG特有卡)  
