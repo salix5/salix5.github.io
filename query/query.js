@@ -276,14 +276,8 @@ function query(event){
 	}
 	
 	// ot
-	switch (select_ot.value){
-		case 'o':
-		case 't':
-		case '1104':
-		case 'DBAG':
-			params.set('pack', select_ot.value);
-			break;
-	}
+	if(is_str(select_ot.value))
+		params.set('pack', select_ot.value);
 	
 	// type
 	switch(select_type.value){
@@ -469,9 +463,6 @@ function server_analyze(params){
 	var is_monster = false;
 	var pre_release = false;
 	
-	//LIOV string
-	var liov_cmd = pack_cmd(LIOV);
-	
 	arg.$monster = TYPE_MONSTER;
 	arg.$spell = TYPE_SPELL;
 	arg.$trap = TYPE_TRAP;
@@ -492,25 +483,27 @@ function server_analyze(params){
 	
 	// ot
 	let str_pack = params.get('pack');
+	if(is_str(str_pack))
+		select_ot.value = str_pack;
 	switch(str_pack){
 		case 'o':
-			select_ot.value = str_pack;
 		    qstr = qstr + " AND datas.ot != 2";
 			break;
 		case 't':
-			select_ot.value = str_pack;
 			qstr = qstr + " AND datas.ot == 2";
 			valid = true;
 			break;
 		case '1104':
-			select_ot.value = str_pack;
-			qstr = qstr + liov_cmd;
+			qstr = qstr + pack_cmd(LIOV);
+			valid = true;
+			break;
+		case '1105':
+			qstr = qstr + " AND datas.id>=101105001 AND datas.id<=101105999";
+			pre_release = true;
 			valid = true;
 			break;
 		case 'DBAG':
-			select_ot.value = str_pack;
-			qstr = qstr + " AND datas.id >= 100416001 AND datas.id <= 100416999";
-			pre_release = true;
+			qstr = qstr + pack_cmd(DBAG);
 			valid = true;
 			break;
 	}

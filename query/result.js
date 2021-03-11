@@ -11,8 +11,8 @@ function print_id(id, type){
 	else if(id <= 99999999){
 		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + output_id + '</a>';
 	}
-	else if(id >= 100416001 && id <= 100416999)
-		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'DBAG-JP' + pre_id.toString().padStart(3, '0') + '</a>';
+	else if(id >= 101105001 && id <= 101105999)
+		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'DAMA-JP' + pre_id.toString().padStart(3, '0') + '</a>';
 	else
 		return '';
 }
