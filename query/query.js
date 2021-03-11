@@ -26,7 +26,7 @@ initSqlJs(config).then(function(SQL){
 			button2.disabled = false;
 			url_query();
 		};
-		xhr_pre.open('GET', url1, true);
+		xhr_pre.open('GET', url2, true);
 		xhr_pre.responseType = 'arraybuffer';	
 		xhr_pre.send();
 		let arr1 = new Uint8Array(xhr.response);
