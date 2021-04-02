@@ -467,6 +467,7 @@ function server_analyze(params){
 	arg.$spell = TYPE_SPELL;
 	arg.$trap = TYPE_TRAP;
 	arg.$link = TYPE_LINK;
+	arg.$pendulum = TYPE_PENDULUM;
 	arg.$ext = TYPE_EXT;
 	arg.$token = TYPE_TOKEN;
 	
@@ -506,6 +507,8 @@ function server_analyze(params){
 			qstr = qstr + pack_cmd(DBAG);
 			valid = true;
 			break;
+		default:
+			break;
 	}
 	
 	// type
@@ -528,10 +531,14 @@ function server_analyze(params){
 					if(subtype & id_to_type[cb_mtype[i].id])
 						cb_mtype[i].checked = true;
 				}
-				if(sub_op)
+				if(sub_op){
+					select_ao1.value = 'and';
 					qstr += " AND type & $stype == $stype";
-				else
+				}
+				else{
+					select_ao1.value = 'or';
 					qstr += " AND type & $stype";
+				}
 				arg.$stype = subtype;
 			}
 			else
@@ -542,6 +549,7 @@ function server_analyze(params){
 				qstr += " AND NOT type & $ext";
 			}
 			valid = true;
+			show_subtype('m');
 			break;
 		case TYPE_SPELL:
 			select_type.value = 's';
@@ -567,6 +575,7 @@ function server_analyze(params){
 			else
 				subtype = 0;
 			valid = true;
+			show_subtype('s');
 			break;
 		case TYPE_TRAP:
 			select_type.value = 't';
@@ -592,9 +601,12 @@ function server_analyze(params){
 			else
 				subtype = 0;
 			valid = true;
+			show_subtype('t');
 			break;
 		default:
 			subtype = 0;
+			show_subtype('');
+			break;
 	}
 	
 	if(ctype == 0 || ctype == TYPE_MONSTER){
@@ -659,11 +671,9 @@ function server_analyze(params){
 			is_monster = true;
 		}
 	
-		// lv, scale
+		// lv, rank, link
 		let lv1 = check_int(params, 'lv1');
 		let lv2 = check_int(params, 'lv2');
-		let sc1 = check_int(params, 'sc1');
-		let sc2 = check_int(params, 'sc2');
 		if(is_lv(lv1)){
 			text_lv1.value = lv1;
 			if(is_lv(lv2)){
@@ -679,8 +689,13 @@ function server_analyze(params){
 			valid = true;
 			is_monster = true;
 		}
+		
+		// scale, pendulum monster only
+		let sc1 = check_int(params, 'sc1');
+		let sc2 = check_int(params, 'sc2');
 		if(is_scale(sc1)){
 			text_sc1.value = sc1;
+			qstr += " AND type & $pendulum";
 			if(is_scale(sc2)){
 				text_sc2.value = sc2;
 				qstr = qstr + " AND (level >> 24) & 0xff >= $sc1 AND (level >> 24) & 0xff <= $sc2";
@@ -727,10 +742,14 @@ function server_analyze(params){
 					cb_marker[i].checked = true;
 			}
 			qstr = qstr + " AND type & $link";
-			if(marker_op)
+			if(marker_op){
+				select_ao2.value = 'and';
 				qstr = qstr + " AND def & $marker == $marker";
-			else
+			}
+			else{
+				select_ao2.value = 'or';
 				qstr = qstr + " AND def & $marker";
+			}
 			arg.$marker = cmarker;
 			valid = true;
 			is_monster = true;
