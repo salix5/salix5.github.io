@@ -55,21 +55,8 @@ const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const table_result = document.getElementById('table_result');
 
-function create_subtype(event){
-	switch(select_type.value){
-		case '':
-			subtype_m.style.display = 'none';
-			subtype_s.style.display = 'none';
-			subtype_t.style.display = 'none';
-			select_ao1.style.display = 'none';
-			row_lv.style.display = '';
-			row_sc.style.display = '';
-			row_marker.style.display = '';
-			row_attr.style.display = '';
-			row_race.style.display = '';
-			row_atk.style.display = '';
-			row_def.style.display = '';
-			break;
+function show_subtype(type){
+	switch(type){
 		case 'm':
 			subtype_m.style.display = '';
 			subtype_s.style.display = 'none';
@@ -109,10 +96,24 @@ function create_subtype(event){
 			row_atk.style.display = 'none';
 			row_def.style.display = 'none';
 			break;
+		default:
+			subtype_m.style.display = 'none';
+			subtype_s.style.display = 'none';
+			subtype_t.style.display = 'none';
+			select_ao1.style.display = 'none';
+			row_lv.style.display = '';
+			row_sc.style.display = '';
+			row_marker.style.display = '';
+			row_attr.style.display = '';
+			row_race.style.display = '';
+			row_atk.style.display = '';
+			row_def.style.display = '';
+			break;
 	}
-	
 }
-select_type.onchange = create_subtype;
+select_type.onchange = function(event){
+	show_subtype(select_type.value);
+};
 
 function clear_cb(name){
 	var cb_list = document.getElementsByName(name);
