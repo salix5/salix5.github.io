@@ -112,6 +112,15 @@ function is_atk(x){
 	    return false;
 }
 
+function is_def(x){
+	if(x === null)
+		return false;
+	else if(x == -2 || x == -1 || x >= 0)
+	    return true;
+	else
+	    return false;
+}
+
 function is_lv(x){
 	if(x === null)
 		return false;
@@ -346,14 +355,17 @@ function query(event){
 			def1 = parseInt(text_def1.value, 10);
 		if(text_def2.value.length <= MAX_DIGIT)
 			def2 = parseInt(text_def2.value, 10);
-		if(is_atk(def1) || is_atk(def2)){
+		if(is_def(def1) || is_def(def2)){
 			if(def1 == -1 || def2 == -1){
 				params.set('def1', -1);
 			}
-			else if(!is_atk(def2)){
+			else if(def1 == -2 || def2 == -2){
+				params.set('def1', -2);
+			}
+			else if(!is_def(def2)){
 				params.set('def1', def1);
 			}
-			else if(!is_atk(def1)){
+			else if(!is_def(def1)){
 				params.set('def1', def2);
 			}
 			else {
@@ -643,13 +655,17 @@ function server_analyze(params){
 		// def, exclude link monsters
 		let def1 = check_int(params, 'def1');
 		let def2 = check_int(params, 'def2');
-		if(is_atk(def1)){
+		if(is_def(def1)){
 			qstr += " AND NOT type & $link";
-			if(is_atk(def2)){
+			if(is_def(def2)){
 				if(def1 == -1 || def2 == -1){
 					text_def1.value = -1;
 					qstr = qstr + " AND def == $def1";
 					arg.$def1 = -2;
+				}
+				else if(def1 == -2 || def2 == -2){
+					text_def1.value = -2;
+					qstr = qstr + " AND def == atk";
 				}
 				else{
 					text_def1.value = def1;
@@ -661,11 +677,17 @@ function server_analyze(params){
 			}
 			else{
 				text_def1.value = def1;
-				qstr = qstr + " AND def == $def1";
-				if(def1 == -1)
+				if(def1 == -1){
+					qstr = qstr + " AND def == $def1";
 					arg.$def1 = -2;
-				else
+				}
+				else if(def1 == -2){
+					qstr = qstr + " AND def == atk";
+				}
+				else{
+					qstr = qstr + " AND def == $def1";
 					arg.$def1 = def1;
+				}
 			}
 			valid = true;
 			is_monster = true;
