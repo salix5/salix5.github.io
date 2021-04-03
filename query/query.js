@@ -678,12 +678,12 @@ function server_analyze(params){
 			text_lv1.value = lv1;
 			if(is_lv(lv2)){
 				text_lv2.value = lv2;
-				qstr = qstr + " AND level & 0xff >= $lv1 AND level & 0xff <= $lv2";
+				qstr = qstr + " AND (level & 0xff) >= $lv1 AND (level & 0xff) <= $lv2";
 				arg.$lv1 = lv1;
 				arg.$lv2 = lv2;
 			}
 			else{
-				qstr = qstr + " AND level & 0xff == $lv1";
+				qstr = qstr + " AND (level & 0xff) == $lv1";
 				arg.$lv1 = lv1;
 			}
 			valid = true;
@@ -698,12 +698,12 @@ function server_analyze(params){
 			qstr += " AND type & $pendulum";
 			if(is_scale(sc2)){
 				text_sc2.value = sc2;
-				qstr = qstr + " AND (level >> 24) & 0xff >= $sc1 AND (level >> 24) & 0xff <= $sc2";
+				qstr = qstr + " AND (level >> 24 & 0xff) >= $sc1 AND (level >> 24 & 0xff) <= $sc2";
 				arg.$sc1 = sc1;
 				arg.$sc2 = sc2;
 			}
 			else{
-				qstr = qstr + " AND (level >> 24) & 0xff == $sc1";
+				qstr = qstr + " AND (level >> 24 & 0xff) == $sc1";
 				arg.$sc1 = sc1;
 			}
 			valid = true;
@@ -757,7 +757,11 @@ function server_analyze(params){
 	}
 	
 	//text
-	const setcode_str = " OR (setcode & 0xfff == $settype AND setcode & 0xf000 & $setsubtype == $setsubtype OR setcode >> 16 & 0xfff == $settype AND setcode >> 16 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 32 & 0xfff == $settype AND setcode >> 32 & 0xf000 & $setsubtype == $setsubtype OR setcode >> 48 & 0xfff == $settype AND setcode >> 48 & 0xf000 & $setsubtype == $setsubtype)";
+	const setcode_str1 = '(setcode & 0xfff) == $settype AND (setcode & 0xf000 & $setsubtype) == $setsubtype';
+	const setcode_str2 = '(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & 0xf000 & $setsubtype) == $setsubtype';
+	const setcode_str3 = '(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & 0xf000 & $setsubtype) == $setsubtype';
+	const setcode_str4 = '(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & 0xf000 & $setsubtype) == $setsubtype';
+	const setcode_str = ` OR (${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4})`;
 	const name_str = "name LIKE $name ESCAPE '$'";
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
 	
