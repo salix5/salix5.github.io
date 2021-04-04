@@ -274,10 +274,10 @@ function query(event){
 	// id
 	if(text_id.value && text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
-	if(cid > 0){
+	if(cid && cid > 0){
 		params.set('id', cid.toString().padStart(8, '0'));
 	}
-	
+	else{
 	// ot
 	if(is_str(select_ot.value))
 		params.set('pack', select_ot.value);
@@ -450,7 +450,8 @@ function query(event){
 			let search_str = text_effect.value.toHalfWidth();
 			params.set('desc', search_str);
 		}
-	}	
+	}
+}
 	event.preventDefault();
 	button1.disabled = false;
 	button2.disabled = false;
@@ -485,7 +486,7 @@ function server_analyze(params){
 		arg.$id = cid;
 		valid = true;
 	}
-	else
+	else{
 		cid = 0;
 	
 	// ot
@@ -845,8 +846,9 @@ function server_analyze(params){
 	// avoid trap monsters and tokens
 	if(ctype == 0 && is_monster)
 		qstr += " AND type & $monster";
-	if(cid == 0 && !(subtype & TYPE_TOKEN))
+	if(!(subtype & TYPE_TOKEN))
 		qstr += " AND NOT type & $token";
+}
 	qstr += ";";
 	
 	//console.log(qstr);
