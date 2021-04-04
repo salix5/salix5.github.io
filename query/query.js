@@ -104,25 +104,25 @@ lflist.open('GET', 'https://raw.githubusercontent.com/Fluorohydride/ygopro/maste
 lflist.send();
 
 function is_atk(x){
-	if(x === null)
+	if(Number.isNaN(x))
 		return false;
-	else if(x == -1 || x >= 0)
+	else if(x >= -1)
 	    return true;
 	else
 	    return false;
 }
 
 function is_def(x){
-	if(x === null)
+	if(Number.isNaN(x))
 		return false;
-	else if(x == -2 || x == -1 || x >= 0)
+	else if(x >= -2)
 	    return true;
 	else
 	    return false;
 }
 
 function is_lv(x){
-	if(x === null)
+	if(Number.isNaN(x))
 		return false;
 	else if(x >= 1 && x <= 13)
 		return true;
@@ -131,7 +131,7 @@ function is_lv(x){
 }
 
 function is_scale(x){
-	if(x === null)
+	if(Number.isNaN(x))
 		return false;
 	else if(x >= 0 && x <= 13)
 		return true;
@@ -140,9 +140,7 @@ function is_scale(x){
 }
 
 function is_str(x){
-	if(x === null)
-		return false;
-	else if(x != '' && x.length <= MAX_STRLEN)
+	if(x && x.length <= MAX_STRLEN)
 		return true;
 	else
 		return false;
@@ -152,13 +150,10 @@ function check_int(params, key){
 	let val = params.get(key);
 	if(val && val.length <= MAX_DIGIT){
 		let x = parseInt(val, 10);
-		if(!Number.isNaN(x))
-			return x;
-		else
-			return null;
+		return x;
 	}
 	else
-		return null;
+		return Number.NaN;
 }
 
 function pack_cmd(pack){
@@ -262,23 +257,22 @@ String.prototype.toFullWidth = function() {
 function query(event){
 	var params = new URLSearchParams();
 	var cid = 0;
-	var ot = 0;
 	var subtype = 0;
 	var cattr = 0;
 	var crace = 0;
 	var cmarker = 0;
 	
-	var atk1 = -2;	//null
-	var atk2 = -2;
-	var def1 = -2;
-	var def2 = -2;
+	var atk1 = -10;
+	var atk2 = -10;
+	var def1 = -10;
+	var def2 = -10;
 	var lv1 = 0;
 	var lv2 = 0;
 	var sc1 = -1;
 	var sc2 = -1;
 	
 	// id
-	if(text_id.value.length <= MAX_DIGIT)
+	if(text_id.value && text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
 	if(cid > 0){
 		params.set('id', cid.toString().padStart(8, '0'));
@@ -329,9 +323,9 @@ function query(event){
 	
 	if(select_type.value == '' || select_type.value == 'm'){
 		// atk
-		if(text_atk1.value.length <= MAX_DIGIT)
+		if(text_atk1.value && text_atk1.value.length <= MAX_DIGIT)
 			atk1 = parseInt(text_atk1.value, 10);
-		if(text_atk2.value.length <= MAX_DIGIT)
+		if(text_atk2.value && text_atk2.value.length <= MAX_DIGIT)
 			atk2 = parseInt(text_atk2.value, 10);
 	
 		if(is_atk(atk1) || is_atk(atk2)){
@@ -351,9 +345,9 @@ function query(event){
 		}
 		
 		// def, exclude link monsters
-		if(text_def1.value.length <= MAX_DIGIT)
+		if(text_def1.value && text_def1.value.length <= MAX_DIGIT)
 			def1 = parseInt(text_def1.value, 10);
-		if(text_def2.value.length <= MAX_DIGIT)
+		if(text_def2.value && text_def2.value.length <= MAX_DIGIT)
 			def2 = parseInt(text_def2.value, 10);
 		if(is_def(def1) || is_def(def2)){
 			if(def1 == -1 || def2 == -1){
@@ -375,13 +369,13 @@ function query(event){
 		}
 		
 		// lv, scale
-		if(text_lv1.value.length <= MAX_DIGIT)
+		if(text_lv1.value && text_lv1.value.length <= MAX_DIGIT)
 			lv1 = parseInt(text_lv1.value, 10);
-		if(text_lv2.value.length <= MAX_DIGIT)
+		if(text_lv2.value && text_lv2.value.length <= MAX_DIGIT)
 			lv2 = parseInt(text_lv2.value, 10);
-		if(text_sc1.value.length <= MAX_DIGIT)
+		if(text_sc1.value && text_sc1.value.length <= MAX_DIGIT)
 			sc1 = parseInt(text_sc1.value, 10);
-		if(text_sc2.value.length <= MAX_DIGIT)
+		if(text_sc2.value && text_sc2.value.length <= MAX_DIGIT)
 			sc2 = parseInt(text_sc2.value, 10);
 		if(is_lv(lv1) || is_lv(lv2)){
 			if(!is_lv(lv2)){
@@ -528,7 +522,7 @@ function server_analyze(params){
 	let subtype = check_int(params, 'subtype');
 	let sub_op = check_int(params, 'sub_op');
 	let is_deck = check_int(params, 'is_deck');
-	if(ctype !== null && ctype > 0){
+	if(ctype && ctype > 0){
 		qstr = qstr + " AND type & $ctype";
 		arg.$ctype = ctype;
 	}
@@ -538,7 +532,7 @@ function server_analyze(params){
 	switch(ctype){
 		case TYPE_MONSTER:
 			select_type.value = 'm';
-			if(subtype !== null && subtype > 0){
+			if(subtype && subtype > 0){
 				for(let i = 0; i < cb_mtype.length; ++i){
 					if(subtype & id_to_type[cb_mtype[i].id])
 						cb_mtype[i].checked = true;
@@ -556,7 +550,7 @@ function server_analyze(params){
 			else
 				subtype = 0;
 			
-			if(is_deck !== null && is_deck > 0){
+			if(is_deck && is_deck > 0){
 				mtype_deck.checked = true;
 				qstr += " AND NOT type & $ext";
 			}
@@ -565,7 +559,7 @@ function server_analyze(params){
 			break;
 		case TYPE_SPELL:
 			select_type.value = 's';
-			if(subtype !== null && subtype > 0){
+			if(subtype && subtype > 0){
 				for(let i = 0; i < cb_stype.length; ++i){
 					if(subtype & id_to_type[cb_stype[i].id])
 						cb_stype[i].checked = true;
@@ -591,7 +585,7 @@ function server_analyze(params){
 			break;
 		case TYPE_TRAP:
 			select_type.value = 't';
-			if(subtype !== null && subtype > 0){
+			if(subtype && subtype > 0){
 				for(let i = 0; i < cb_ttype.length; ++i){
 					if(subtype & id_to_type[cb_ttype[i].id])
 						cb_ttype[i].checked = true;
@@ -735,7 +729,7 @@ function server_analyze(params){
 		// attr, race
 		let cattr = check_int(params, 'attr');
 		let crace = check_int(params, 'race');
-		if(cattr !== null && cattr > 0){
+		if(cattr && cattr > 0){
 			for(let i = 0; i < cb_attr.length; ++i){
 				if(cattr & index_to_attr[i])
 					cb_attr[i].checked = true;
@@ -745,7 +739,7 @@ function server_analyze(params){
 			valid = true;
 			is_monster = true;
 		}
-		if(crace !== null && crace > 0){
+		if(crace && crace > 0){
 			for(let i = 0; i < cb_race.length; ++i){
 				if(crace & index_to_race[i])
 					cb_race[i].checked = true;
@@ -758,7 +752,7 @@ function server_analyze(params){
 		// marker
 		let cmarker = check_int(params, 'marker');
 		let marker_op = check_int(params, 'marker_op');
-		if(cmarker !== null && cmarker > 0){
+		if(cmarker && cmarker > 0){
 			for(let i = 0; i < cb_marker.length; ++i){
 				if(cmarker & index_to_marker[i])
 					cb_marker[i].checked = true;
