@@ -467,7 +467,7 @@ function server_analyze(params){
 	var arg = new Object();
 	var valid = false;
 	var is_monster = false;
-	var pre_release = false;
+	var is_pack = false;
 	
 	arg.$monster = TYPE_MONSTER;
 	arg.$spell = TYPE_SPELL;
@@ -506,7 +506,7 @@ function server_analyze(params){
 			break;
 		case '1105':
 			qstr = qstr + " AND datas.id>=101105001 AND datas.id<=101105999";
-			pre_release = true;
+			is_pack = true;
 			valid = true;
 			break;
 		case 'DBAG':
@@ -898,7 +898,7 @@ function server_analyze(params){
 			card.limit = 3;
 		result.push(card);
 	}
-	show_result(pre_release);
+	show_result(is_pack);
 }
 
 function url_query(){
