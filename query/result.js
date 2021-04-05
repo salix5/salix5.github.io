@@ -235,7 +235,7 @@ function create_rows(card){
 			marker += '</div>';
 		}
 		else{
-			data +=  '/' + print_ad(card.def);
+			data += '/' + print_ad(card.def);
 		}
 		if(card.type & TYPE_PENDULUM){
 			data += '/刻度' + ((card.level >> 24) & 0xff);

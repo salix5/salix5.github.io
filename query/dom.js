@@ -16,7 +16,7 @@ const text_atk2 = document.getElementById('text_atk2');
 const text_def1 = document.getElementById('text_def1');
 const text_def2 = document.getElementById('text_def2');
 
-const select_ot  = document.getElementById('select_ot');
+const select_ot = document.getElementById('select_ot');
 const select_type = document.getElementById('select_type');
 const select_ao1 = document.getElementById('select_ao1');
 const select_ao2 = document.getElementById('select_ao2');
@@ -36,11 +36,11 @@ const cb_marker = document.getElementsByName('cb_marker');
 const cb_attr = document.getElementsByName("cb_attr");
 const cb_race = document.getElementsByName("cb_race");
 
-const cb_mtype_reset  = document.getElementById('cb_mtype_reset');
-const cb_stype_reset  = document.getElementById('cb_stype_reset');
-const cb_ttype_reset  = document.getElementById('cb_ttype_reset');
-const cb_attr_reset  = document.getElementById('cb_attr_reset');
-const cb_race_reset  = document.getElementById('cb_race_reset');
+const cb_mtype_reset = document.getElementById('cb_mtype_reset');
+const cb_stype_reset = document.getElementById('cb_stype_reset');
+const cb_ttype_reset = document.getElementById('cb_ttype_reset');
+const cb_attr_reset = document.getElementById('cb_attr_reset');
+const cb_race_reset = document.getElementById('cb_race_reset');
 
 const row_lv = document.getElementById('row_lv');
 const row_sc = document.getElementById('row_sc');
