@@ -152,26 +152,16 @@ function clear_query(){
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
 	select_ao1.selectedIndex = 0;
-	select_ao1.style.display = 'none';
 	select_ao2.selectedIndex = 0;
 	
 	clear_cb('cb_mtype');
 	clear_cb('cb_stype');
 	clear_cb('cb_ttype');
-	subtype_m.style.display = 'none';
-	subtype_s.style.display = 'none';
-	subtype_t.style.display = 'none';
-	row_lv.style.display = '';
-	row_sc.style.display = '';
-	row_marker.style.display = '';
-	row_attr.style.display = '';
-	row_race.style.display = '';
-	row_atk.style.display = '';
-	row_def.style.display = '';
-	
 	clear_cb('cb_attr');
 	clear_cb('cb_race');
 	clear_cb('cb_marker');
+	
+	show_subtype('');
 }
 button2.onclick = function(event){
 	clear_query();

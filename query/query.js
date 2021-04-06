@@ -15,6 +15,14 @@ const url2 = 'beta.cdb';
 const re_wildcard = /(^|[^\$])[%_]/;
 const re_all = /^%+$/;
 
+String.prototype.toHalfWidth = function() {
+	return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)});
+};
+
+String.prototype.toFullWidth = function() {
+	return this.replace(/[A-Za-z0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
+};
+
 initSqlJs(config).then(function(SQL){
 	let xhr = new XMLHttpRequest();
 	xhr.onload = e => {
@@ -22,9 +30,9 @@ initSqlJs(config).then(function(SQL){
 		xhr_pre.onload = e => {
 			let arr1 = new Uint8Array(xhr_pre.response);
 			db2 = new SQL.Database(arr1);
+			url_query();
 			button1.disabled = false;
 			button2.disabled = false;
-			url_query();
 		};
 		xhr_pre.open('GET', url2, true);
 		xhr_pre.responseType = 'arraybuffer';	
@@ -140,20 +148,34 @@ function is_scale(x){
 }
 
 function is_str(x){
-	if(x && x.length <= MAX_STRLEN)
-		return true;
+	if(x && x.length <= MAX_STRLEN){
+		if(re_all.test(x))
+			return false;
+		else
+			return true;
+	}
 	else
 		return false;
 }
 
-function check_int(params, key){
-	let val = params.get(key);
+function check_int(val){
 	if(val && val.length <= MAX_DIGIT){
 		let x = parseInt(val, 10);
 		return x;
 	}
 	else
 		return Number.NaN;
+}
+
+function check_str(val){
+	if(!val)
+		return '';
+	let half_val = val.toHalfWidth()
+	if(is_str(half_val)){
+		return val;
+	}
+	else
+		return '';
 }
 
 function pack_cmd(pack){
@@ -246,31 +268,13 @@ var index_to_marker = [
 	LINK_MARKER_BOTTOM_RIGHT
 ];
 
-String.prototype.toHalfWidth = function() {
-	return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)});
-};
-
-String.prototype.toFullWidth = function() {
-	return this.replace(/[A-Za-z0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
-};
 
 function query(event){
 	var params = new URLSearchParams();
 	var cid = 0;
-	var subtype = 0;
-	var cattr = 0;
-	var crace = 0;
-	var cmarker = 0;
 	
-	var atk1 = -10;
-	var atk2 = -10;
-	var def1 = -10;
-	var def2 = -10;
-	var lv1 = 0;
-	var lv2 = 0;
-	var sc1 = -1;
-	var sc2 = -1;
-	
+	button1.disabled = true;
+	button2.disabled = true;
 	// id
 	if(text_id.value && text_id.value.length <= MAX_DIGIT)
 		cid = parseInt(text_id.value, 10);
@@ -279,10 +283,12 @@ function query(event){
 	}
 	else{
 		// pack
-		if(is_str(select_ot.value))
-			params.set('pack', select_ot.value);
+		let pack = select_ot.value.toHalfWidth();
+		if(is_str(pack))
+			params.set('pack', pack);
 		
 		// type
+		let subtype = 0;
 		switch(select_type.value){
 			case 'm':
 				params.set('type', TYPE_MONSTER);
@@ -319,10 +325,14 @@ function query(event){
 				if(subtype)
 					params.set('subtype', subtype.toString(10));
 				break;
+			default:
+				break;
 		}
 		
-		if(select_type.value == '' || select_type.value == 'm'){
+		if(select_type.value === '' || select_type.value === 'm'){
 			// atk
+			let atk1 = -10;
+			let atk2 = -10;
 			if(text_atk1.value && text_atk1.value.length <= MAX_DIGIT)
 				atk1 = parseInt(text_atk1.value, 10);
 			if(text_atk2.value && text_atk2.value.length <= MAX_DIGIT)
@@ -345,6 +355,8 @@ function query(event){
 			}
 			
 			// def, exclude link monsters
+			let def1 = -10;
+			let def2 = -10;
 			if(text_def1.value && text_def1.value.length <= MAX_DIGIT)
 				def1 = parseInt(text_def1.value, 10);
 			if(text_def2.value && text_def2.value.length <= MAX_DIGIT)
@@ -369,6 +381,10 @@ function query(event){
 			}
 			
 			// lv, scale
+			let lv1 = -10;
+			let lv2 = -10;
+			let sc1 = -10;
+			let sc2 = -10;
 			if(text_lv1.value && text_lv1.value.length <= MAX_DIGIT)
 				lv1 = parseInt(text_lv1.value, 10);
 			if(text_lv2.value && text_lv2.value.length <= MAX_DIGIT)
@@ -403,6 +419,7 @@ function query(event){
 			}
 			
 			// attr, race
+			let cattr = 0;
 			for(let i = 0; i < cb_attr.length; ++i){
 				if(cb_attr[i].checked)
 					cattr |= index_to_attr[i];
@@ -411,6 +428,7 @@ function query(event){
 				params.set('attr', cattr.toString(10));
 			}
 			
+			let crace = 0;
 			for(let i = 0; i < cb_race.length; ++i){
 				if(cb_race[i].checked)
 					crace |= index_to_race[i];
@@ -418,7 +436,9 @@ function query(event){
 			if(crace){
 				params.set('race', crace.toString(10));
 			}
+			
 			// marker
+			let cmarker = 0;
 			for(let i = 0; i < cb_marker.length; ++i){
 				if(cb_marker[i].checked){
 					cmarker |= index_to_marker[i];
@@ -426,7 +446,7 @@ function query(event){
 			}
 			if(cmarker){
 				params.set('marker', cmarker.toString(10));
-				if(select_ao2.value == 'and')
+				if(select_ao2.value === 'and')
 					params.set('marker_op', 1);
 				else
 					params.set('marker_op', 0);
@@ -434,30 +454,29 @@ function query(event){
 		}
 		
 		//multi
-		if(is_str(text_multi.value) && !re_all.test(text_multi.value)){
-			let search_str = text_multi.value.toHalfWidth();
-			params.set('multi', search_str);
-		}
+		let cmulti = text_multi.value.toHalfWidth();
+		if(is_str(cmulti))
+			params.set('multi', cmulti);
 		else{
 			// name
-			if(is_str(text_name.value) && !re_all.test(text_name.value)){
-				let search_str = text_name.value.toHalfWidth();
-				params.set('name', search_str);
-			}
+			let cname = text_name.value.toHalfWidth();
+			if(is_str(cname))
+				params.set('name', cname);
 			
 			//effect
-			if(is_str(text_effect.value) && !re_all.test(text_effect.value)){
-				let search_str = text_effect.value.toHalfWidth();
-				params.set('desc', search_str);
-			}
+			let cdesc = text_effect.value.toHalfWidth();
+			if(is_str(cdesc))
+				params.set('desc', cdesc);
 		}
 	}
-	event.preventDefault();
-	button1.disabled = false;
-	button2.disabled = false;
 	document.activeElement.blur();
+	event.preventDefault();
 	if(params.toString() != ''){
 		window.location.search = '?' + params.toString();
+	}
+	else{
+		button1.disabled = false;
+		button2.disabled = false;
 	}
 }
 form1.onsubmit = query;
@@ -470,6 +489,7 @@ function server_analyze(params){
 	var valid = false;
 	var is_monster = false;
 	var is_pack = false;
+	var cid = 0;
 	
 	arg.$monster = TYPE_MONSTER;
 	arg.$spell = TYPE_SPELL;
@@ -479,8 +499,8 @@ function server_analyze(params){
 	arg.$ext = TYPE_EXT;
 	arg.$token = TYPE_TOKEN;
 	
-	// id
-	let cid = check_int(params, 'id');
+	// id, primary key
+	cid = check_int(params.get("id"));
 	if(cid && cid > 0){
 		text_id.value = cid;
 		qstr = qstr + " AND datas.id == $id";
@@ -489,10 +509,9 @@ function server_analyze(params){
 	}
 	else{
 		cid = 0;
-	
 		// pack
-		let str_pack = params.get('pack');
-		if(is_str(str_pack))
+		let str_pack = check_str(params.get("pack"));
+		if(str_pack)
 			select_ot.value = str_pack;
 		switch(str_pack){
 			case 'o':
@@ -520,10 +539,10 @@ function server_analyze(params){
 		}
 		
 		// type
-		let ctype = check_int(params, 'type');
-		let subtype = check_int(params, 'subtype');
-		let sub_op = check_int(params, 'sub_op');
-		let is_deck = check_int(params, 'is_deck');
+		let ctype = check_int(params.get("type"));
+		let subtype = check_int(params.get("subtype"));
+		let sub_op = check_int(params.get("sub_op"));
+		let is_deck = check_int(params.get("is_deck"));
 		if(ctype && ctype > 0){
 			qstr = qstr + " AND type & $ctype";
 			arg.$ctype = ctype;
@@ -617,10 +636,10 @@ function server_analyze(params){
 				break;
 		}
 		
-		if(ctype == 0 || ctype == TYPE_MONSTER){
+		if(ctype === 0 || ctype === TYPE_MONSTER){
 			// atk
-			let atk1 = check_int(params, 'atk1');
-			let atk2 = check_int(params, 'atk2');
+			let atk1 = check_int(params.get("atk1"));
+			let atk2 = check_int(params.get("atk2"));
 			if(is_atk(atk1)){
 				if(is_atk(atk2)){
 					if(atk1 == -1 || atk2 == -1){
@@ -649,8 +668,8 @@ function server_analyze(params){
 			}
 			
 			// def, exclude link monsters
-			let def1 = check_int(params, 'def1');
-			let def2 = check_int(params, 'def2');
+			let def1 = check_int(params.get("def1"));
+			let def2 = check_int(params.get("def2"));
 			if(is_def(def1)){
 				qstr += " AND NOT type & $link";
 				if(is_def(def2)){
@@ -690,8 +709,8 @@ function server_analyze(params){
 			}
 		
 			// lv, rank, link
-			let lv1 = check_int(params, 'lv1');
-			let lv2 = check_int(params, 'lv2');
+			let lv1 = check_int(params.get("lv1"));
+			let lv2 = check_int(params.get("lv2"));
 			if(is_lv(lv1)){
 				text_lv1.value = lv1;
 				if(is_lv(lv2)){
@@ -709,8 +728,8 @@ function server_analyze(params){
 			}
 			
 			// scale, pendulum monster only
-			let sc1 = check_int(params, 'sc1');
-			let sc2 = check_int(params, 'sc2');
+			let sc1 = check_int(params.get("sc1"));
+			let sc2 = check_int(params.get("sc2"));
 			if(is_scale(sc1)){
 				text_sc1.value = sc1;
 				qstr += " AND type & $pendulum";
@@ -729,8 +748,8 @@ function server_analyze(params){
 			}
 			
 			// attr, race
-			let cattr = check_int(params, 'attr');
-			let crace = check_int(params, 'race');
+			let cattr = check_int(params.get("attr"));
+			let crace = check_int(params.get("race"));
 			if(cattr && cattr > 0){
 				for(let i = 0; i < cb_attr.length; ++i){
 					if(cattr & index_to_attr[i])
@@ -752,8 +771,8 @@ function server_analyze(params){
 				is_monster = true;
 			}
 			// marker
-			let cmarker = check_int(params, 'marker');
-			let marker_op = check_int(params, 'marker_op');
+			let cmarker = check_int(params.get("marker"));
+			let marker_op = check_int(params.get("marker_op"));
 			if(cmarker && cmarker > 0){
 				for(let i = 0; i < cb_marker.length; ++i){
 					if(cmarker & index_to_marker[i])
@@ -783,7 +802,7 @@ function server_analyze(params){
 		const name_str = "name LIKE $name ESCAPE '$'";
 		const desc_str = "desc LIKE $desc ESCAPE '$'";
 		
-		let cmulti = params.get('multi');
+		let cmulti = check_str(params.get("multi"));
 		let cname = '';
 		let cdesc = '';
 		if(cmulti){
@@ -791,13 +810,13 @@ function server_analyze(params){
 			cdesc = '';
 		}
 		else{
-			cname = params.get('name');
-			cdesc = params.get('desc');
+			cname = check_str(params.get("name"));
+			cdesc = check_str(params.get("desc"));
 		}
 		
 		// name
-		if(is_str(cname) && !re_all.test(cname)){
-			let search_str = cname.toHalfWidth();
+		if(cname){
+			let search_str = cname;
 			let name_cmd = name_str;
 			if(cmulti)
 				text_multi.value = search_str;
@@ -833,8 +852,8 @@ function server_analyze(params){
 		}
 		
 		//effect
-		if(is_str(cdesc) && !re_all.test(cdesc)){
-			let search_str = cdesc.toHalfWidth();
+		if(cdesc){
+			let search_str = cdesc;
 			text_effect.value = search_str;
 			if(!re_wildcard.test(search_str)){
 				search_str = `%${search_str}%`;
