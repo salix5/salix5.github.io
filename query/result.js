@@ -8,17 +8,21 @@ function print_id(id, type){
 	if(type & TYPE_TOKEN){
 		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'null' + '</a>';
 	}
-	else if(id <= 99999999){
-		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + output_id + '</a>';
-	}
 	else if(id >= 101105001 && id <= 101105999){
 		if(pre_id <= 100)
 			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'DAMA-JP' + pre_id.toString().padStart(3, '0') + '</a>';
 		else
 			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'DAMA-JP???</a>';
 	}
-	else
-		return '';
+	else if(id >= 100341001 && id <= 100341999){
+		if(pre_id <= 100)
+			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'SD41-JP' + pre_id.toString().padStart(3, '0') + '</a>';
+		else
+			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'SD41-JP???</a>';
+	}
+	else{
+		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + output_id + '</a>';
+	}
 }
 
 function print_ad(x){

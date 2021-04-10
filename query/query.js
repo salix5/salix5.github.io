@@ -534,6 +534,11 @@ function server_analyze(params){
 				qstr = qstr + pack_cmd(DBAG);
 				valid = true;
 				break;
+			case 'SD41':
+				qstr = qstr + " AND datas.id>=100341001 AND datas.id<=100341999";
+				is_pack = true;
+				valid = true;
+				break;
 			default:
 				break;
 		}
