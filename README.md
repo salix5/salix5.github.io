@@ -19,6 +19,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/4/10  
+更新：DAMA先行卡（死獄鄉）
+
 21/4/2  
 搜尋刻度修正
 
