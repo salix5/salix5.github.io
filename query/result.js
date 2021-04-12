@@ -1,27 +1,38 @@
 "use strict";
 
 function print_id(id, type){
-	var pre_id = id % 1000;
-	var output_id = id.toString().padStart(8, '0');
-	var params = new URLSearchParams();
-	params.set('id', output_id);
+	let pre_id = id % 1000;
+	let str_id = id.toString().padStart(8, '0');
+	let params = new URLSearchParams();
+	params.set('id', str_id);
+	
+	let url = `https://salix5.github.io/query/?${params.toString()}`;
+	let link_text = '';
+	let pack_name = '';
+	let pack_id = '';
+	
+	if(pre_id <= 100)
+		pack_id = pre_id.toString().padStart(3, '0');
+	else
+		pack_id = '???';
+	
 	if(type & TYPE_TOKEN){
-		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'null' + '</a>';
+		link_text = 'null';
+		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 	}
 	else if(id >= 101105001 && id <= 101105999){
-		if(pre_id <= 100)
-			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'DAMA-JP' + pre_id.toString().padStart(3, '0') + '</a>';
-		else
-			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'DAMA-JP???</a>';
+		pack_name = 'DAMA-JP';
+		link_text = `${pack_name}${pack_id}`;
+		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 	}
 	else if(id >= 100341001 && id <= 100341999){
-		if(pre_id <= 100)
-			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'SD41-JP' + pre_id.toString().padStart(3, '0') + '</a>';
-		else
-			return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + 'SD41-JP???</a>';
+		pack_name = 'SD41-JP';
+		link_text = `${pack_name}${pack_id}`;
+		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 	}
 	else{
-		return '<a href="https://salix5.github.io/query/?' + params.toString() + '" target="_blank" rel="noreferrer">' + output_id + '</a>';
+		link_text = str_id;
+		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 	}
 }
 
@@ -35,13 +46,18 @@ function print_ad(x){
 function print_link(id, ot, db_id){
 	switch(id){
 		case 68811206:
-			return 'https://yugipedia.com/wiki/68811206'
+			return 'https://yugipedia.com/wiki/68811206';
 		default:
-			var url = 'https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=' + db_id;
-			if(ot == 2)
-				return url + '&request_locale=en';
-			else
-				return url + '&request_locale=ja';
+			let url = `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${db_id}`
+			let locale = '';
+			if(ot == 2){
+				locale = 'en';
+				return url + `&request_locale=${locale}`;
+			}
+			else{
+				locale = 'ja';
+				return url + `&request_locale=${locale}`;
+			}
 	}
 }
 
@@ -76,15 +92,16 @@ function create_rows(card){
 	
 	cell_name.className = 'name';
 	cell_name.colSpan = 2;
-	out_name = '<strong>' + card.name + '</strong>' + print_limit(card.limit);
+	out_name = `<strong>${card.name}</strong>${print_limit(card.limit)}`;
 	if(card.ot == 2)
-		out_name = out_name + '<img src="icon/tcg.png" height="20" width="40">';
+		out_name += '<img src="icon/tcg.png" height="20" width="40">';
 	if(card.id <= 99999999 && !(card.type & TYPE_TOKEN)){
+		let str_class ='';
 		if(window.innerWidth > MAX_WIDTH)
-			out_name += '<br><a href="';
+			str_class = '';
 		else
-			out_name += '<br><a class="mobile" href="';
-		out_name = out_name + print_link(card.id, card.ot, card.db_id) + '" target="_blank" rel="noreferrer">' + card.jp_name + '</a>';
+			str_class = ` class="mobile"`;
+		out_name += `<br><a${str_class} href="${print_link(card.id, card.ot, card.db_id)}" target="_blank" rel="noreferrer">${card.jp_name}</a>`;
 	}
 	cell_name.innerHTML = out_name;
 	
@@ -102,9 +119,9 @@ function create_rows(card){
 	var img_card = document.createElement('img');
 	img_card.className = 'pic';
 	if(card.id <= 99999999)
-		img_card.src = 'https://salix5.github.io/CardEditor/pics/'+ card.id + '.jpg';
+		img_card.src = `https://salix5.github.io/CardEditor/pics/${card.id}.jpg`;
 	else
-		img_card.src = 'https://salix5.github.io/CardEditor/expansions/pics/'+ card.id + '.jpg';
+		img_card.src = `https://salix5.github.io/CardEditor/expansions/pics/${card.id}.jpg`;
 	img_card.onerror = imgError;
 	cell_pic.appendChild(img_card);
 	
@@ -159,6 +176,7 @@ function create_rows(card){
 		if(card.type & TYPE_EFFECT)
 			subtype += '/效果';
 		data = '[' + mtype + subtype + ']';
+		data = `[${mtype}${subtype}]`;
 	}
 	else if(card.type & TYPE_SPELL){
 		mtype = '魔法';
@@ -174,7 +192,7 @@ function create_rows(card){
 			subtype = '場地';
 		else
 			subtype = '通常';
-		data = '[' + subtype + mtype + ']';
+		data = `[${subtype}${mtype}]`;
 	}
 	else if(card.type & TYPE_TRAP){
 		mtype = '陷阱';
@@ -184,7 +202,7 @@ function create_rows(card){
 			subtype = '反擊';
 		else
 			subtype = '通常';
-		data = '[' + subtype + mtype + ']';
+		data = `[${subtype}${mtype}]`;
 	}
 	
 	if(card.type & TYPE_MONSTER){
