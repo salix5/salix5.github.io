@@ -205,7 +205,6 @@ var id_to_type = {
 	mtype14: TYPE_FLIP,
 	mtype15: TYPE_SPSUMMON,
 	mtype16: TYPE_TOKEN,
-	mtype_deck: 0,
 	
 	stype1: TYPE_NORMAL,
 	stype2: TYPE_QUICKPLAY,
@@ -304,8 +303,15 @@ function query(event){
 					else
 						params.set('sub_op', 0);
 				}
-				if(mtype_deck.checked)
-					params.set('is_deck', 1);
+				// exclude has the same checkboxes
+				let exc = 0;
+				for(let i = 0; i < cb_exclude.length; ++i){
+					if(cb_exclude[i].checked)
+						exc |= id_to_type[cb_mtype[i].id];
+				}
+				if(exc) {
+					params.set('exc', exc.toString(10));
+				}
 				break;
 			case 's':
 				params.set('type', TYPE_SPELL);
@@ -496,7 +502,6 @@ function server_analyze(params){
 	arg.$trap = TYPE_TRAP;
 	arg.$link = TYPE_LINK;
 	arg.$pendulum = TYPE_PENDULUM;
-	arg.$ext = TYPE_EXT;
 	arg.$token = TYPE_TOKEN;
 	
 	// id, primary key
@@ -547,7 +552,7 @@ function server_analyze(params){
 		let ctype = check_int(params.get("type"));
 		let subtype = check_int(params.get("subtype"));
 		let sub_op = check_int(params.get("sub_op"));
-		let is_deck = check_int(params.get("is_deck"));
+		let exc = check_int(params.get("exc"));
 		if(ctype && ctype > 0){
 			qstr = qstr + " AND type & $ctype";
 			arg.$ctype = ctype;
@@ -576,10 +581,16 @@ function server_analyze(params){
 				else
 					subtype = 0;
 				
-				if(is_deck && is_deck > 0){
-					mtype_deck.checked = true;
-					qstr += " AND NOT type & $ext";
+				if(exc && exc > 0){
+					for(let i = 0; i < cb_exclude.length; ++i){
+						if(exc & id_to_type[cb_mtype[i].id])
+							cb_exclude[i].checked = true;
+					}
+					qstr += " AND NOT type & $exc";
+					arg.$exc = exc;
 				}
+				else
+					exc = 0;
 				valid = true;
 				show_subtype('m');
 				break;

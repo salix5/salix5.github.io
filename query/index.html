@@ -207,47 +207,67 @@
 	</td>
 	</tr>
 	
-	<tr id="row_subtype"><td >類別</td>
+	<tr id="row_subtype" style="display: none"><td >類型</td>
 	<td>
 	<select id="select_subtype" >
 		<option value="or">OR</option>
 		<option value="and">AND</option>
 	</select>
 	<div id="subtype_m" style="display: none">
-	<input type="checkbox" id="mtype1" name="cb_mtype"><label for="mtype1">通常　</label>
-	<input type="checkbox" id="mtype2" name="cb_mtype"><label for="mtype2">效果　</label>
-	<input type="checkbox" id="mtype3" name="cb_mtype"><label for="mtype3">儀式　</label>
-	<input type="checkbox" id="mtype4" name="cb_mtype"><label for="mtype4">融合　</label><br>
-	<input type="checkbox" id="mtype5" name="cb_mtype"><label for="mtype5">同步　</label>
-	<input type="checkbox" id="mtype6" name="cb_mtype"><label for="mtype6">超量　</label>
-	<input type="checkbox" id="mtype7" name="cb_mtype"><label for="mtype7">靈擺　</label>
-	<input type="checkbox" id="mtype8" name="cb_mtype"><label for="mtype8">連結　</label><br>
-	<input type="checkbox" id="mtype9" name="cb_mtype"><label for="mtype9">卡通　</label>
-	<input type="checkbox" id="mtype10" name="cb_mtype"><label for="mtype10">靈魂　</label>
-	<input type="checkbox" id="mtype11" name="cb_mtype"><label for="mtype11">聯合　</label>
-	<input type="checkbox" id="mtype12" name="cb_mtype"><label for="mtype12">二重　</label><br>
-	<input type="checkbox" id="mtype13" name="cb_mtype"><label for="mtype13">協調　</label>
-	<input type="checkbox" id="mtype14" name="cb_mtype"><label for="mtype14">反轉　</label>
-	<input type="checkbox" id="mtype15" name="cb_mtype"><label for="mtype15">特殊召喚</label><br>
-	<input type="checkbox" id="mtype16" name="cb_mtype"><label for="mtype16">衍生物</label>
-	<input type="checkbox" id="mtype_deck" name="cb_mtype"><label for="mtype_deck">置於牌組</label>
-	<input type="checkbox" id="cb_mtype_reset"><label for="cb_mtype_reset" class="clear">✗</label>
+		<input type="checkbox" id="mtype1" name="cb_mtype"><label for="mtype1">通常</label>
+		<input type="checkbox" id="mtype2" name="cb_mtype"><label for="mtype2">效果</label>
+		<input type="checkbox" id="mtype3" name="cb_mtype"><label for="mtype3">儀式　　</label>
+		<input type="checkbox" id="mtype4" name="cb_mtype"><label for="mtype4">融合</label><br>
+		<input type="checkbox" id="mtype5" name="cb_mtype"><label for="mtype5">同步</label>
+		<input type="checkbox" id="mtype6" name="cb_mtype"><label for="mtype6">超量</label>
+		<input type="checkbox" id="mtype7" name="cb_mtype"><label for="mtype7">靈擺　　</label>
+		<input type="checkbox" id="mtype8" name="cb_mtype"><label for="mtype8">連結</label><br>
+		<input type="checkbox" id="mtype9" name="cb_mtype"><label for="mtype9">卡通</label>
+		<input type="checkbox" id="mtype10" name="cb_mtype"><label for="mtype10">靈魂</label>
+		<input type="checkbox" id="mtype11" name="cb_mtype"><label for="mtype11">聯合　　</label>
+		<input type="checkbox" id="mtype12" name="cb_mtype"><label for="mtype12">二重</label><br>
+		<input type="checkbox" id="mtype13" name="cb_mtype"><label for="mtype13">協調</label>
+		<input type="checkbox" id="mtype14" name="cb_mtype"><label for="mtype14">反轉</label>
+		<input type="checkbox" id="mtype15" name="cb_mtype"><label for="mtype15">特殊召喚</label>
+		<input type="checkbox" id="mtype16" name="cb_mtype"><label for="mtype16">衍生物</label><br>
+		<input type="checkbox" id="cb_mtype_reset"><label for="cb_mtype_reset" class="clear">✗</label>
 	</div>
 	<div id="subtype_s" style="display: none">
-	<input type="checkbox" id="stype1" name="cb_stype"><label for="stype1">通常　</label>
-	<input type="checkbox" id="stype2" name="cb_stype"><label for="stype2">速攻　</label>
-	<input type="checkbox" id="stype3" name="cb_stype"><label for="stype3">永續　</label>
-	<input type="checkbox" id="stype4" name="cb_stype"><label for="stype4">裝備　</label><br>
-	<input type="checkbox" id="stype5" name="cb_stype"><label for="stype5">儀式　</label>
-	<input type="checkbox" id="stype6" name="cb_stype"><label for="stype6">場地　</label>
-	<input type="checkbox" id="cb_stype_reset"><label for="cb_stype_reset" class="clear">✗</label>
+		<input type="checkbox" id="stype1" name="cb_stype"><label for="stype1">通常　</label>
+		<input type="checkbox" id="stype2" name="cb_stype"><label for="stype2">速攻　</label>
+		<input type="checkbox" id="stype3" name="cb_stype"><label for="stype3">永續　</label>
+		<input type="checkbox" id="stype4" name="cb_stype"><label for="stype4">裝備　</label><br>
+		<input type="checkbox" id="stype5" name="cb_stype"><label for="stype5">儀式　</label>
+		<input type="checkbox" id="stype6" name="cb_stype"><label for="stype6">場地　</label>
+		<input type="checkbox" id="cb_stype_reset"><label for="cb_stype_reset" class="clear">✗</label>
 	</div>
 	<div id="subtype_t" style="display: none">
-	<input type="checkbox" id="ttype1" name="cb_ttype"><label for="ttype1">通常　</label>
-	<input type="checkbox" id="ttype2" name="cb_ttype"><label for="ttype2">永續　</label>
-	<input type="checkbox" id="ttype3" name="cb_ttype"><label for="ttype3">反擊　</label>
-	<input type="checkbox" id="cb_ttype_reset"><label for="cb_ttype_reset" class="clear">✗　　</label><br>
+		<input type="checkbox" id="ttype1" name="cb_ttype"><label for="ttype1">通常　</label>
+		<input type="checkbox" id="ttype2" name="cb_ttype"><label for="ttype2">永續　</label>
+		<input type="checkbox" id="ttype3" name="cb_ttype"><label for="ttype3">反擊　</label>
+		<input type="checkbox" id="cb_ttype_reset"><label for="cb_ttype_reset" class="clear">✗　　</label><br>
 	</div>
+	</td>
+	</tr>
+	
+	<tr id="row_exclude" style="display: none"><td >排除</td>
+	<td>
+		<input type="checkbox" id="exclude_type1" name="cb_exclude"><label for="exclude_type1">通常</label>
+		<input type="checkbox" id="exclude_type2" name="cb_exclude"><label for="exclude_type2">效果</label>
+		<input type="checkbox" id="exclude_type3" name="cb_exclude"><label for="exclude_type3">儀式　　</label>
+		<input type="checkbox" id="exclude_type4" name="cb_exclude"><label for="exclude_type4">融合</label><br>
+		<input type="checkbox" id="exclude_type5" name="cb_exclude"><label for="exclude_type5">同步</label>
+		<input type="checkbox" id="exclude_type6" name="cb_exclude"><label for="exclude_type6">超量</label>
+		<input type="checkbox" id="exclude_type7" name="cb_exclude"><label for="exclude_type7">靈擺　　</label>
+		<input type="checkbox" id="exclude_type8" name="cb_exclude"><label for="exclude_type8">連結</label><br>
+		<input type="checkbox" id="exclude_type9" name="cb_exclude"><label for="exclude_type9">卡通</label>
+		<input type="checkbox" id="exclude_type10" name="cb_exclude"><label for="exclude_type10">靈魂</label>
+		<input type="checkbox" id="exclude_type11" name="cb_exclude"><label for="exclude_type11">聯合　　</label>
+		<input type="checkbox" id="exclude_type12" name="cb_exclude"><label for="exclude_type12">二重</label><br>
+		<input type="checkbox" id="exclude_type13" name="cb_exclude"><label for="exclude_type13">協調</label>
+		<input type="checkbox" id="exclude_type14" name="cb_exclude"><label for="exclude_type14">反轉</label>
+		<input type="checkbox" id="exclude_type15" name="cb_exclude"><label for="exclude_type15">特殊召喚</label>
+		<input type="checkbox" id="cb_exclude_reset"><label for="cb_exclude_reset" class="clear">✗</label>
 	</td>
 	</tr>
 	
