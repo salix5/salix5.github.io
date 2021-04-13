@@ -18,8 +18,8 @@ const text_def2 = document.getElementById('text_def2');
 
 const select_ot = document.getElementById('select_ot');
 const select_type = document.getElementById('select_type');
-const select_ao1 = document.getElementById('select_ao1');
-const select_ao2 = document.getElementById('select_ao2');
+const select_subtype = document.getElementById('select_subtype');
+const select_marker = document.getElementById('select_marker');
 
 const subtype_m = document.getElementById('subtype_m');
 const subtype_s = document.getElementById('subtype_s');
@@ -49,6 +49,8 @@ const row_attr = document.getElementById('row_attr');
 const row_race = document.getElementById('row_race');
 const row_atk = document.getElementById('row_atk');
 const row_def = document.getElementById('row_def');
+const row_subtype = document.getElementById('row_subtype');
+const row_button = document.getElementById('row_button');
 
 const form1 = document.getElementById('form1');
 const button1 = document.getElementById('button1');
@@ -61,7 +63,9 @@ function show_subtype(type){
 			subtype_m.style.display = '';
 			subtype_s.style.display = 'none';
 			subtype_t.style.display = 'none';
-			select_ao1.style.display = '';
+			select_subtype.disabled = false;
+			row_subtype.style.display = '';
+			
 			row_lv.style.display = '';
 			row_sc.style.display = '';
 			row_marker.style.display = '';
@@ -74,7 +78,10 @@ function show_subtype(type){
 			subtype_m.style.display = 'none';
 			subtype_s.style.display = '';
 			subtype_t.style.display = 'none';
-			select_ao1.style.display = 'none';
+			select_subtype.selectedIndex = 0;
+			select_subtype.disabled = true;
+			row_subtype.style.display = '';
+			
 			row_lv.style.display = 'none';
 			row_sc.style.display = 'none';
 			row_marker.style.display = 'none';
@@ -87,7 +94,10 @@ function show_subtype(type){
 			subtype_m.style.display = 'none';
 			subtype_s.style.display = 'none';
 			subtype_t.style.display = '';
-			select_ao1.style.display = 'none';
+			select_subtype.selectedIndex = 0;
+			select_subtype.disabled = true;
+			row_subtype.style.display = '';
+			
 			row_lv.style.display = 'none';
 			row_sc.style.display = 'none';
 			row_marker.style.display = 'none';
@@ -100,7 +110,10 @@ function show_subtype(type){
 			subtype_m.style.display = 'none';
 			subtype_s.style.display = 'none';
 			subtype_t.style.display = 'none';
-			select_ao1.style.display = 'none';
+			select_subtype.selectedIndex = 0;
+			select_subtype.disabled = true;
+			row_subtype.style.display = 'none';
+			
 			row_lv.style.display = '';
 			row_sc.style.display = '';
 			row_marker.style.display = '';
@@ -127,7 +140,7 @@ function clear_cb(name){
 }
 cb_mtype_reset.onchange = function(event){
 	clear_cb('cb_mtype');
-	select_ao1.selectedIndex = 0;
+	select_subtype.selectedIndex = 0;
 };
 cb_stype_reset.onchange = function(event){clear_cb('cb_stype');};
 cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype');};
@@ -151,8 +164,8 @@ function clear_query(){
 	
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
-	select_ao1.selectedIndex = 0;
-	select_ao2.selectedIndex = 0;
+	select_subtype.selectedIndex = 0;
+	select_marker.selectedIndex = 0;
 	
 	clear_cb('cb_mtype');
 	clear_cb('cb_stype');
