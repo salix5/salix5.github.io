@@ -8,6 +8,8 @@ var config = {
 }
 var db, db2;
 var result = [];
+var pack_name = '';	// the pack name of released cards
+
 const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
 const url2 = 'beta.cdb';
 
@@ -494,7 +496,7 @@ function server_analyze(params){
 	var arg = new Object();
 	var valid = false;
 	var is_monster = false;
-	var is_pack = false;
+	var pack_table = null;
 	var cid = 0;
 	
 	arg.$monster = TYPE_MONSTER;
@@ -515,38 +517,45 @@ function server_analyze(params){
 	else{
 		cid = 0;
 		// pack
-		let str_pack = check_str(params.get("pack"));
-		if(str_pack)
-			select_ot.value = str_pack;
-		switch(str_pack){
+		let tmps = check_str(params.get("pack"));
+		switch(tmps){
 			case 'o':
 				qstr = qstr + " AND datas.ot != 2";
+				pack_name = '';
 				break;
 			case 't':
 				qstr = qstr + " AND datas.ot == 2";
+				pack_name = '';
 				valid = true;
 				break;
 			case '1104':
 				qstr = qstr + pack_cmd(LIOV);
+				pack_name = 'LIOV';
+				pack_table = LIOV;
 				valid = true;
 				break;
 			case '1105':
 				qstr = qstr + " AND datas.id>=101105001 AND datas.id<=101105999";
-				is_pack = true;
+				pack_name = '';
 				valid = true;
 				break;
 			case 'DBAG':
 				qstr = qstr + pack_cmd(DBAG);
+				pack_name = 'DBAG';
+				pack_table = DBAG;
 				valid = true;
 				break;
 			case 'SD41':
 				qstr = qstr + " AND datas.id>=100341001 AND datas.id<=100341999";
-				is_pack = true;
+				pack_name = '';
 				valid = true;
 				break;
 			default:
+				tmps = '';
+				pack_name = '';
 				break;
 		}
+		select_ot.value = tmps;
 		
 		// type
 		let ctype = check_int(params.get("type"));
@@ -900,11 +909,12 @@ function server_analyze(params){
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
-		var card = stmt.getAsObject();
+		let card = stmt.getAsObject();
 		if(card.id <= 99999999){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
 		}
+		// limit
 		if(ltable[card.id] == 0)
 			card.limit = 0;
 		else if(ltable[card.id] == 1)
@@ -913,6 +923,17 @@ function server_analyze(params){
 			card.limit = 2;
 		else
 			card.limit = 3;
+		
+		// pack_id
+		if(card.id <= 99999999){
+			if(pack_table)
+				card.pack_id = pack_table.findIndex(x => x == card.id) + 1;
+			else
+				card.pack_id = 0;
+		}
+		else{
+			card.pack_id = card.id % 1000;
+		}
 		result.push(card);
 	}
 	
@@ -921,11 +942,12 @@ function server_analyze(params){
 	stmt.bind(arg);
 	while(stmt.step()) {
 		// execute
-		var card = stmt.getAsObject();
+		let card = stmt.getAsObject();
 		if(card.id <= 99999999){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
 		}
+		// limit
 		if(ltable[card.id] == 0)
 			card.limit = 0;
 		else if(ltable[card.id] == 1)
@@ -934,9 +956,20 @@ function server_analyze(params){
 			card.limit = 2;
 		else
 			card.limit = 3;
+		
+		// pack_id
+		if(card.id <= 99999999){
+			if(pack_table)
+				card.pack_id = pack_table.findIndex(x => x == card.id) + 1;
+			else
+				card.pack_id = 0;
+		}
+		else{
+			card.pack_id = card.id % 1000;
+		}
 		result.push(card);
 	}
-	show_result(is_pack);
+	show_result();
 }
 
 function url_query(){

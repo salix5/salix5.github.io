@@ -1,39 +1,30 @@
 "use strict";
 
-function print_id(id, type){
-	let pre_id = id % 1000;
+function print_id(id, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');
+	let str_pid = pack_id.toString().padStart(3, '0');
 	let params = new URLSearchParams();
 	params.set('id', str_id);
 	
 	let url = `https://salix5.github.io/query/?${params.toString()}`;
 	let link_text = '';
-	let pack_name = '';
-	let pack_id = '';
-	
-	if(pre_id <= 100)
-		pack_id = pre_id.toString().padStart(3, '0');
-	else
-		pack_id = '???';
 	
 	if(type & TYPE_TOKEN){
 		link_text = 'null';
-		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 	}
 	else if(id >= 101105001 && id <= 101105999){
-		pack_name = 'DAMA-JP';
-		link_text = `${pack_name}${pack_id}`;
-		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
+		link_text = `DAMA-JP${str_pid}`;
 	}
 	else if(id >= 100341001 && id <= 100341999){
-		pack_name = 'SD41-JP';
-		link_text = `${pack_name}${pack_id}`;
-		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
+		link_text = `SD41-JP${str_pid}`;
+	}
+	else if(pack_name){
+		link_text = `${pack_name}-JP${str_pid}`;
 	}
 	else{
 		link_text = str_id;
-		return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 	}
+	return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 }
 
 function print_ad(x){
@@ -73,7 +64,7 @@ function print_limit(limit){
 }
 
 function compare_id(a, b){
-	return a.id - b.id;
+	return a.pack_id - b.pack_id;
 }
 
 function compare_name(a, b){
@@ -134,7 +125,7 @@ function create_rows(card){
 	var marker = '';
 	var data = '';
 	var output_data = '';
-	output_data += `ID: ${print_id(card.id, card.type)}<br><br>`;
+	output_data += `ID: ${print_id(card.id, card.type, card.pack_id)}<br><br>`;
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
@@ -277,10 +268,10 @@ function create_rows(card){
 	}
 }
 
-function show_result(pre_release){
+function show_result(){
 	table_result.innerHTML = '';
 	if(result.length > 0){
-		if(pre_release)
+		if(pack_name)
 			result.sort(compare_id);
 		else
 			result.sort(compare_name);
