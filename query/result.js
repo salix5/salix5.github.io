@@ -18,6 +18,12 @@ function print_id(id, type, pack_id){
 	else if(id >= 100341001 && id <= 100341999){
 		link_text = `SD41-JP${str_pid}`;
 	}
+	else if(id >= 100278001 && id <= 100278999){
+		link_text = `AC01-JP${str_pid}`;
+	}
+	else if(id >= 100425001 && id <= 100425999){
+		link_text = `DP25-JP${str_pid}`;
+	}
 	else if(pack_name){
 		link_text = `${pack_name}-JP${str_pid}`;
 	}
