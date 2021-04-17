@@ -528,41 +528,31 @@ function server_analyze(params){
 				pack_name = '';
 				valid = true;
 				break;
-			case '1104':
-				qstr = qstr + pack_cmd(LIOV);
-				pack_name = 'LIOV';
-				pack_table = LIOV;
-				valid = true;
-				break;
-			case '1105':
-				qstr = qstr + " AND datas.id>=101105001 AND datas.id<=101105999";
-				pack_name = 'DAMA';
-				valid = true;
-				break;
+			// deck builder
 			case 'DBAG':
-				qstr = qstr + pack_cmd(DBAG);
-				pack_name = 'DBAG';
 				pack_table = DBAG;
+				qstr += pack_cmd(pack_table);
+				pack_name = tmps;
 				valid = true;
 				break;
-			case 'SD41':
-				qstr = qstr + " AND datas.id>=100341001 AND datas.id<=100341999";
-				pack_name = 'SD41';
-				valid = true;
-				break;
-			case 'DP25':
-				qstr = qstr + " AND datas.id>=100425001 AND datas.id<=100425999";
-				pack_name = 'DP25';
-				valid = true;
-				break;
-			case 'AC01':
-				qstr = qstr + " AND datas.id>=100278001 AND datas.id<=100278999";
-				pack_name = 'AC01';
+			// booster pack
+			case 'LIOV':
+				pack_table = LIOV;
+				qstr += pack_cmd(pack_table);
+				pack_name = tmps;
 				valid = true;
 				break;
 			default:
-				tmps = '';
-				pack_name = '';
+				for(const prop in pre_release){
+					if(tmps === prop){
+						qstr += ` AND datas.id>=${pre_release[prop]} AND datas.id<=${pre_release[prop] + 998}`;
+						pack_name = prop;
+						valid = true;
+						break;
+					}
+				}
+				if(!valid)
+					pack_name = '';
 				break;
 		}
 		select_ot.value = tmps;

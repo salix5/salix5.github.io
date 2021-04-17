@@ -2,9 +2,14 @@
 
 function print_id(id, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');
-	let str_pid = pack_id.toString().padStart(3, '0');
+	let str_pid = '';
 	let params = new URLSearchParams();
 	params.set('id', str_id);
+	
+	if(pack_id <= 200)
+		str_pid = pack_id.toString().padStart(3, '0');
+	else
+		str_pid = '???';
 	
 	let url = `https://salix5.github.io/query/?${params.toString()}`;
 	let link_text = '';
@@ -12,23 +17,22 @@ function print_id(id, type, pack_id){
 	if(type & TYPE_TOKEN){
 		link_text = 'null';
 	}
-	else if(id >= 101105001 && id <= 101105999){
-		link_text = `DAMA-JP${str_pid}`;
-	}
-	else if(id >= 100341001 && id <= 100341999){
-		link_text = `SD41-JP${str_pid}`;
-	}
-	else if(id >= 100278001 && id <= 100278999){
-		link_text = `AC01-JP${str_pid}`;
-	}
-	else if(id >= 100425001 && id <= 100425999){
-		link_text = `DP25-JP${str_pid}`;
-	}
-	else if(pack_name){
-		link_text = `${pack_name}-JP${str_pid}`;
+	else if(id <= 99999999){
+		if(pack_name)
+			link_text = `${pack_name}-JP${str_pid}`;
+		else
+			link_text = str_id;
 	}
 	else{
-		link_text = str_id;
+		for(const prop in pre_release){
+			if(id >= pre_release[prop] && id <= pre_release[prop] + 998){
+				link_text = `${prop}-JP${str_pid}`;
+				break;
+			}
+		}
+		if(link_text === ''){
+			link_text = str_id;
+		}
 	}
 	return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 }
