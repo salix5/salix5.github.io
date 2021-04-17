@@ -536,7 +536,7 @@ function server_analyze(params){
 				break;
 			case '1105':
 				qstr = qstr + " AND datas.id>=101105001 AND datas.id<=101105999";
-				pack_name = '';
+				pack_name = 'DAMA';
 				valid = true;
 				break;
 			case 'DBAG':
@@ -547,7 +547,17 @@ function server_analyze(params){
 				break;
 			case 'SD41':
 				qstr = qstr + " AND datas.id>=100341001 AND datas.id<=100341999";
-				pack_name = '';
+				pack_name = 'SD41';
+				valid = true;
+				break;
+			case 'DP25':
+				qstr = qstr + " AND datas.id>=100425001 AND datas.id<=100425999";
+				pack_name = 'DP25';
+				valid = true;
+				break;
+			case 'AC01':
+				qstr = qstr + " AND datas.id>=100278001 AND datas.id<=100278999";
+				pack_name = 'AC01';
 				valid = true;
 				break;
 			default:
