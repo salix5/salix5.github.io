@@ -542,6 +542,12 @@ function server_analyze(params){
 				pack_name = tmps;
 				valid = true;
 				break;
+			case 'DAMA':
+				pack_table = DAMA;
+				qstr += pack_cmd(pack_table);
+				pack_name = tmps;
+				valid = true;
+				break;
 			default:
 				for(const prop in pre_release){
 					if(tmps === prop){
