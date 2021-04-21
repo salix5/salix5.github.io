@@ -4,6 +4,12 @@ const pre_release={
 	AC01: 100278001
 };
 
+const wiki_link = {
+	SD41: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%A5%B5%A5%A4%A5%D0%A1%BC%CE%AE%A4%CE%B8%E5%B7%D1%BC%D4%A1%DD",
+	DP25: "https://yugioh-wiki.net/index.php?%A5%C7%A5%E5%A5%A8%A5%EA%A5%B9%A5%C8%A5%D1%A5%C3%A5%AF%A1%DD%BC%C0%C9%F7%A4%CE%A5%C7%A5%E5%A5%A8%A5%EA%A5%B9%A5%C8%CA%D4%A1%DD",
+	AC01: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202021"
+}
+
 const LIOV = [
 32164201,
 68258355,
