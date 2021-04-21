@@ -19,6 +19,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/4/21  
+新增功能：未發售卡包加入Wiki連結
+
 21/4/18  
 更新：DAMA全卡、DP25先行卡、AC01先行卡  
 スプリガンズ：「護寶砲妖」→「守寶妖精」  
