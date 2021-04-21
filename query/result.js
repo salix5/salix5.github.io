@@ -24,15 +24,11 @@ function print_id(id, type, pack_id){
 			link_text = str_id;
 	}
 	else{
-		for(const prop in pre_release){
-			if(id >= pre_release[prop] && id <= pre_release[prop] + 998){
-				link_text = `${prop}-JP${str_pid}`;
-				break;
-			}
-		}
-		if(link_text === ''){
+		let pre_pack = pre_id_to_pack(id);
+		if(pre_pack)
+			link_text = `${pre_pack}-JP${str_pid}`;
+		else
 			link_text = str_id;
-		}
 	}
 	return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 }
@@ -50,15 +46,10 @@ function print_link(id, ot, db_id){
 			return 'https://yugipedia.com/wiki/68811206';
 		default:
 			let url = `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${db_id}`
-			let locale = '';
-			if(ot == 2){
+			let locale = 'ja';
+			if(ot == 2)
 				locale = 'en';
-				return url + `&request_locale=${locale}`;
-			}
-			else{
-				locale = 'ja';
-				return url + `&request_locale=${locale}`;
-			}
+			return url + `&request_locale=${locale}`;
 	}
 }
 
@@ -86,6 +77,14 @@ function imgError(event) {
 	this.src = 'https://salix5.github.io/CardEditor/textures/unknown.jpg';
 }
 
+function pre_id_to_pack(id){
+	for(const prop in pre_release){
+		if(id >= pre_release[prop] && id <= pre_release[prop] + 998)
+			return prop;
+	}
+	return '';
+}
+
 function create_rows(card){
 	var row_name = table_result.insertRow(-1);
 	var cell_name = row_name.insertCell(-1);
@@ -96,13 +95,29 @@ function create_rows(card){
 	out_name = `<strong>${card.name}</strong>${print_limit(card.limit)}`;
 	if(card.ot == 2)
 		out_name += '<img src="icon/tcg.png" height="20" width="40">';
-	if(card.id <= 99999999 && !(card.type & TYPE_TOKEN)){
+	
+	// db link
+	if(!(card.type & TYPE_TOKEN)){
 		let str_class ='';
+		let link_text = '';
+		let url = '';
+		let pre_pack = '';
+		
 		if(window.innerWidth > MAX_WIDTH)
 			str_class = '';
 		else
 			str_class = ` class="mobile"`;
-		out_name += `<br><a${str_class} href="${print_link(card.id, card.ot, card.db_id)}" target="_blank" rel="noreferrer">${card.jp_name}</a>`;
+		
+		if(card.id <= 99999999){
+			link_text = card.jp_name;
+			url = print_link(card.id, card.ot, card.db_id);
+		}
+		else if(pre_pack = pre_id_to_pack(card.id)){
+			link_text = `Wiki: ${pre_pack}`;
+			url = wiki_link[pre_pack];
+		}
+		if(link_text)
+			out_name += `<br><a${str_class} href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 	}
 	cell_name.innerHTML = out_name;
 	
