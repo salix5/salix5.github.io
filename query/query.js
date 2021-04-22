@@ -846,6 +846,7 @@ function server_analyze(params){
 		if(cname){
 			let search_str = cname;
 			let name_cmd = name_str;
+			search_str = search_str.replace(/\$(?![%_])/g, '');
 			if(cmulti)
 				text_multi.value = search_str;
 			else
@@ -854,7 +855,6 @@ function server_analyze(params){
 			if(!re_wildcard.test(search_str)){
 				let real_str = search_str.replace(/\$%/g, '%');
 				real_str = real_str.replace(/\$_/g, '_');
-				real_str = real_str.replace(/\$/g, '#####');
 				
 				let nid = Object.keys(name_table).find(key => name_table[key] === real_str);
 				if(setname[real_str]){
@@ -868,7 +868,9 @@ function server_analyze(params){
 					name_cmd += " OR datas.id == $nid";
 					arg.$nid = nid;
 				}
-				search_str = `%${search_str}%`;
+				
+				if(search_str)
+					search_str = `%${search_str}%`;
 			}
 			arg.$name = search_str;
 			
@@ -883,9 +885,11 @@ function server_analyze(params){
 		//effect
 		if(cdesc){
 			let search_str = cdesc;
+			search_str = search_str.replace(/\$(?![%_])/g, '');
 			text_effect.value = search_str;
 			if(!re_wildcard.test(search_str)){
-				search_str = `%${search_str}%`;
+				if(search_str)
+					search_str = `%${search_str}%`;
 			}
 			qstr += ` AND ${desc_str}`;
 			arg.$desc = search_str;
