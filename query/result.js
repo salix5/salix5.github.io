@@ -302,7 +302,12 @@ function show_result(){
 			result.sort(compare_name);
 		if(window.innerWidth > MAX_WIDTH)
 			table_result.style.border = '1px solid black';
-		result.forEach(create_rows);
+		//result.forEach(create_rows);
+		for(let i = 0; i < result.length; ++i){
+			if(i >= 100)
+				break;
+			create_rows(result[i]);
+		}
 	}
 	else{
 		var row0 = table_result.insertRow(-1);

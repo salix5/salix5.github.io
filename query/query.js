@@ -110,7 +110,7 @@ lflist.onload = e => {
 		}
 	}
 };
-lflist.open('GET', 'https://raw.githubusercontent.com/Fluorohydride/ygopro/master/lflist.conf', true);
+lflist.open('GET', 'text/lflist.conf', true);
 lflist.send();
 
 function is_atk(x){
@@ -151,10 +151,7 @@ function is_scale(x){
 
 function is_str(x){
 	if(x && x.length <= MAX_STRLEN){
-		if(re_all.test(x))
-			return false;
-		else
-			return true;
+		return true;
 	}
 	else
 		return false;
@@ -857,6 +854,7 @@ function server_analyze(params){
 			if(!re_wildcard.test(search_str)){
 				let real_str = search_str.replace(/\$%/g, '%');
 				real_str = real_str.replace(/\$_/g, '_');
+				real_str = real_str.replace(/\$/g, '#####');
 				
 				let nid = Object.keys(name_table).find(key => name_table[key] === real_str);
 				if(setname[real_str]){
