@@ -7,6 +7,9 @@ var config = {
 	locateFile: filename => `./dist/${filename}`
 }
 var db, db2;
+var cid_table, name_table;
+var setname = new Object();
+var ltable = new Object();
 var result = [];
 var pack_name = '';	// the pack name of released cards
 
@@ -25,93 +28,69 @@ String.prototype.toFullWidth = function() {
 	return this.replace(/[A-Za-z0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
 };
 
-initSqlJs(config).then(function(SQL){
-	let xhr = new XMLHttpRequest();
-	xhr.onload = e => {
-		let xhr_pre = new XMLHttpRequest();
-		xhr_pre.onload = e => {
-			let arr1 = new Uint8Array(xhr_pre.response);
-			db2 = new SQL.Database(arr1);
-			url_query();
-			button1.disabled = false;
-			button2.disabled = false;
-		};
-		xhr_pre.open('GET', url2, true);
-		xhr_pre.responseType = 'arraybuffer';	
-		xhr_pre.send();
-		let arr1 = new Uint8Array(xhr.response);
-		db = new SQL.Database(arr1);
-	};
-	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
-	xhr.responseType = 'arraybuffer';
-	xhr.send();
+function process_buffer(buf){
+	let arr = new Uint8Array(buf);
+	return arr;
 }
-);
 
-var cid_table;
-var cid_xhr = new XMLHttpRequest();
-cid_xhr.onload = e => {
-	cid_table = cid_xhr.response;
-};
-cid_xhr.open('GET', 'text/cid.json', true);	
-cid_xhr.responseType = 'json';
-cid_xhr.send();
+const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
+const promise_db2 = fetch(url2).then(response => response.arrayBuffer()).then(process_buffer);
+const promise_sql = initSqlJs(config);
 
-var name_table;
-var name_xhr = new XMLHttpRequest();
-name_xhr.onload = e => {
-	name_table = name_xhr.response;
-};
-name_xhr.open('GET', 'text/name_table.json', true);	
-name_xhr.responseType = 'json';
-name_xhr.send();
+const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => {cid_table = data;});
+const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => {name_table = data;});
 
-var setname = new Object();
-var strings = new XMLHttpRequest();
-strings.onload = e => {
-	var ldata = strings.responseText.replace(/\r\n/g, '\n');
-	var line = ldata.split('\n');
-	var count = 0;
-	for(var i = 0; i < line.length; ++i){
-		var init = line[i].substring(0, 8);
+const promise_strings = fetch("https://salix5.github.io/CardEditor/strings.conf").then(response => response.text()).then(function(data){
+	let ldata = data.replace(/\r\n/g, '\n');
+	let line = ldata.split('\n');
+	for(let i = 0; i < line.length; ++i){
+		let init = line[i].substring(0, 8);
 		if(init == '!setname'){
-			var tmp = line[i].substring(9);  // code + name
-			var j = tmp.indexOf(' ');
-			var scode = tmp.substring(0, j);
-			var part = tmp.substring(j + 1).split('\t');
-			var sname = part[0];
+			let tmp = line[i].substring(9);  // code + name
+			let j = tmp.indexOf(' ');
+			let scode = tmp.substring(0, j);
+			let part = tmp.substring(j + 1).split('\t');
+			let sname = part[0];
 			setname[sname] = scode;
 		}
 	}
-};
-strings.open('GET', 'https://salix5.github.io/CardEditor/strings.conf', true);
-strings.send();
+}
+);
 
-var ltable = new Object();
-var lflist = new XMLHttpRequest();
-lflist.onload = e => {
-	var ldata = lflist.responseText.replace(/\r\n/g, '\n');
-	var line = ldata.split('\n');
-	var count = 0;
-	for(var i = 0; i < line.length; ++i){
-		var init = line[i].substring(0, 1);
+const promise_lflist = fetch("text/lflist.conf").then(response => response.text()).then(function(data){
+	let ldata = data.replace(/\r\n/g, '\n');
+	let line = ldata.split('\n');
+	let count = 0;
+	for(let i = 0; i < line.length; ++i){
+		let init = line[i].substring(0, 1);
 		if(init == '!'){
 			++count;
 			// only take the first banlist
 			if(count == 2)
 				break;
 		}
-		else if(init == '#'){}
+		else if(init == '#'){
+			continue;
+		}
 		else{
-			var part = line[i].split(' ');
-			var id = parseInt(part[0], 10);
-			var limit = parseInt(part[1], 10);
+			let part = line[i].split(' ');
+			let id = parseInt(part[0], 10);
+			let limit = parseInt(part[1], 10);
 			ltable[id] = limit;
 		}
 	}
-};
-lflist.open('GET', 'text/lflist.conf', true);
-lflist.send();
+}
+);
+
+Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_strings, promise_lflist]).then(function(values){
+	let SQL = values[0];
+	db = new SQL.Database(values[1]);
+	db2 = new SQL.Database(values[2]);
+	url_query();
+	button1.disabled = false;
+	button2.disabled = false;
+}
+);
 
 function is_atk(x){
 	if(Number.isNaN(x))
