@@ -41,11 +41,11 @@ var config = {
 }   
 
 var db;
-var id_list = [];
-var script_list = [];
+var equip_list = [];
+var ss_list = [];
 
-// known exceptions
-var exc = [
+// excluded cards
+var equip_exc = [
 303660,
 6203182,
 6556178,
@@ -71,38 +71,59 @@ var exc = [
 98552723
 ];
 
-/*
-Check the scripts of all equip cards, and list scripts without EFFECT_FLAG_CONTINUOUS_TARGET.
-Equip cards like Premature Burial are exceptions.
-*/
-initSqlJs(config).then(function(SQL){
-	var xhr = new XMLHttpRequest();
-	
-	xhr.onload = e => {
-		var arr1 = new Uint8Array(xhr.response);
-		db = new SQL.Database(arr1);
-		var qstr = 'SELECT id FROM datas WHERE type & ' + TYPE_EQUIP;
-		var stmt = db.prepare(qstr);
+var ss_exc = [
+5489987,
+7634581,
+12206212,
+39711336,
+50702124,
+63162310,
+92377303
+];
 
-		while(stmt.step()) {
-			var row = stmt.getAsObject();
-			id_list.push(row.id);
-		}
-		for(let i=0; i < id_list.length; ++i){
-			let xhr_script = new XMLHttpRequest();
-			xhr_script.onload = e => {
-				let creg = /EFFECT_FLAG_CONTINUOUS_TARGET/
-				if(!creg.test(xhr_script.responseText) && !exc.includes(id_list[i])){
-					script_list.push(id_list[i]);
-					document.write(id_list[i] + '<br>');
-				}
-			};
-			xhr_script.open('GET', 'https://raw.githubusercontent.com/Fluorohydride/ygopro-scripts/master/c' + id_list[i] + '.lua', true);
-			xhr_script.send();
-		}
-	};
-	xhr.open('GET', 'https://salix5.github.io/CardEditor/cards.cdb', true);
-	xhr.responseType = 'arraybuffer';
-	xhr.send();
+
+function process_buffer(buf){
+	let arr = new Uint8Array(buf);
+	return arr;
+}
+
+// Print the id of the scripts in list which does not match regex (except cards in exc_list)
+function process_id_list(list, regex, exc_list, str){
+	document.write(`${str}<br>`);
+	var promise_list = [];
+	for(let i=0; i < list.length; ++i){
+		const pr = fetch(`https://raw.githubusercontent.com/Fluorohydride/ygopro-scripts/master/c${list[i]}.lua`).then(response => response.text()).then(function(data){
+			if(!regex.test(data) && !exc_list.includes(list[i]))
+				document.write(`${list[i]}<br>`);
+		});
+		promise_list.push(pr);
 	}
-);
+	return Promise.all(promise_list).then(function(values){
+		document.write('done<br><br>');
+	});
+}
+
+const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
+const promise_sql = initSqlJs(config);
+
+Promise.all([promise_sql, promise_db]).then(function(values){
+	var SQL = values[0];
+	db = new SQL.Database(values[1]);
+	
+	var qstr = `SELECT id FROM datas WHERE type & ${TYPE_EQUIP} AND abs(id - alias) >= 10`;
+	var stmt = db.prepare(qstr);
+	while(stmt.step()) {
+		let row = stmt.getAsObject();
+		equip_list.push(row.id);
+	}
+	qstr = `SELECT id FROM datas WHERE type & ${TYPE_SPSUMMON} AND abs(id - alias) >= 10`;
+	stmt = db.prepare(qstr);
+	while(stmt.step()) {
+		let row = stmt.getAsObject();
+		ss_list.push(row.id);
+	}
+	
+	process_id_list(equip_list, /EFFECT_FLAG_CONTINUOUS_TARGET/, equip_exc, 'Equip Spell: ').then(function(values){
+		process_id_list(ss_list, /EFFECT_FLAG_CANNOT_DISABLE\+EFFECT_FLAG_UNCOPYABLE/, ss_exc, 'Special Summon Monsters: ');
+	});
+});
