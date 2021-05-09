@@ -19,6 +19,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/5/9  
+復刻更新：NCF1(No. Complete File)
+
 21/4/21  
 新增功能：未發售卡包加入Wiki連結
 
