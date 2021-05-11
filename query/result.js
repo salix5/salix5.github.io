@@ -1,5 +1,7 @@
 "use strict";
 
+const MAX_RESULT_LEN = 150;
+
 function print_id(id, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');
 	let str_pid = '';
@@ -224,11 +226,11 @@ function create_rows(card){
 	if(card.type & TYPE_MONSTER){
 		data += '<br>';
 		if(card.level & 0xff)
-			data += lvstr + (card.level & 0xff);
+			data += `${lvstr}${card.level & 0xff}`;
 		if(card.attribute)
-			data += '/' + attr_to_str[card.attribute];
+			data += `/${attr_to_str[card.attribute]}`;
 		if(card.race)
-			data += '/' + race_to_str[card.race] + '族'; 
+			data += `/${race_to_str[card.race]}族`; 
 		data += '<br>' + print_ad(card.atk);
 		if(card.type & TYPE_LINK){
 			data += '/-';
@@ -273,10 +275,10 @@ function create_rows(card){
 			marker += '</div>';
 		}
 		else{
-			data += '/' + print_ad(card.def);
+			data += `/${print_ad(card.def)}`;
 		}
 		if(card.type & TYPE_PENDULUM){
-			data += '/刻度' + ((card.level >> 24) & 0xff);
+			data += `/刻度${(card.level >> 24) & 0xff}`;
 		}
 	}
 	output_data += `<span style="color: Blue;">${data}</span>`;
@@ -304,7 +306,7 @@ function show_result(){
 			table_result.style.border = '1px solid black';
 		//result.forEach(create_rows);
 		for(let i = 0; i < result.length; ++i){
-			if(i >= 100)
+			if(i >= MAX_RESULT_LEN)
 				break;
 			create_rows(result[i]);
 		}
