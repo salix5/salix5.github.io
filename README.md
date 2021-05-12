@@ -19,6 +19,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/5/12  
+更新：DP25（HSR）、AC01（栗子球五兄弟）  
+
 21/5/9  
 復刻更新：NCF1(No. Complete File)
 
