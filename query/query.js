@@ -527,6 +527,13 @@ function server_analyze(params){
 				pack_name = tmps;
 				valid = true;
 				break;
+			// SD
+			case 'SD41':
+				pack_table = SD41;
+				qstr += pack_cmd(pack_table);
+				pack_name = tmps;
+				valid = true;
+				break;
 			default:
 				for(const prop in pre_release){
 					if(tmps === prop){
