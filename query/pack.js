@@ -7,6 +7,8 @@ const pre_release={
 	SD42: 100342001,
 	
 	DP25: 100425001,
+	
+	BUDE: 101106001,
 };
 
 const wiki_link = {
@@ -15,6 +17,7 @@ const wiki_link = {
 	DP25: "https://yugioh-wiki.net/index.php?%A5%C7%A5%E5%A5%A8%A5%EA%A5%B9%A5%C8%A5%D1%A5%C3%A5%AF%A1%DD%BC%C0%C9%F7%A4%CE%A5%C7%A5%E5%A5%A8%A5%EA%A5%B9%A5%C8%CA%D4%A1%DD",
 	AC01: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202021",
 	VP21: "https://yugioh-wiki.net/index.php?V%20JUMP%20EDITION#VP21A",
+	BUDE: "https://yugioh-wiki.net/index.php?BURST%20OF%20DESTINY",
 }
 
 const LIOV = [
