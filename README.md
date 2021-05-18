@@ -19,8 +19,8 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
-21/5/17  
-新增卡包：SD41  
+21/5/18  
+新增卡包：SD41、BUDE(1106)先行卡  
 復刻更新：SD41
 
 21/5/12  
