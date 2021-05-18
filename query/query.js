@@ -534,6 +534,7 @@ function server_analyze(params){
 				pack_name = tmps;
 				valid = true;
 				break;
+			// pre-release
 			default:
 				for(const prop in pre_release){
 					if(tmps === prop){
