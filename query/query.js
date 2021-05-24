@@ -510,29 +510,21 @@ function server_analyze(params){
 			// deck builder
 			case 'DBAG':
 				pack_table = DBAG;
-				qstr += pack_cmd(pack_table);
-				pack_name = tmps;
-				valid = true;
 				break;
 			// booster pack
 			case 'LIOV':
 				pack_table = LIOV;
-				qstr += pack_cmd(pack_table);
-				pack_name = tmps;
-				valid = true;
 				break;
 			case 'DAMA':
 				pack_table = DAMA;
-				qstr += pack_cmd(pack_table);
-				pack_name = tmps;
-				valid = true;
 				break;
 			// SD
 			case 'SD41':
 				pack_table = SD41;
-				qstr += pack_cmd(pack_table);
-				pack_name = tmps;
-				valid = true;
+				break;
+			// DP
+			case 'DP25':
+				pack_table = DP25;
 				break;
 			// pre-release
 			default:
@@ -549,6 +541,11 @@ function server_analyze(params){
 				break;
 		}
 		select_ot.value = tmps;
+		if(pack_table){
+			qstr += pack_cmd(pack_table);
+			pack_name = tmps;
+			valid = true;
+		}
 		
 		// type
 		let ctype = check_int(params.get("type"));
