@@ -29,6 +29,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/5/26  
+新增卡包：NCF1(No. Complete File)
+
 21/5/24  
 新增卡包：DP25  
 復刻更新：DP25  
