@@ -2,11 +2,17 @@
 
 const MAX_RESULT_LEN = 150;
 
-function print_id(id, type, pack_id){
+function print_id(id, ot, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');
 	let str_pid = '';
+	let str_ot = '';
 	let params = new URLSearchParams();
+	
 	params.set('id', str_id);
+	if(ot == 2)
+		str_ot = 'EN';
+	else
+		str_ot = 'JP';
 	
 	if(pack_id <= 200)
 		str_pid = pack_id.toString().padStart(3, '0');
@@ -21,14 +27,14 @@ function print_id(id, type, pack_id){
 	}
 	else if(id <= 99999999){
 		if(pack_name)
-			link_text = `${pack_name}-JP${str_pid}`;
+			link_text = `${pack_name}-${str_ot}${str_pid}`;
 		else
 			link_text = str_id;
 	}
 	else{
 		let pre_pack = pre_id_to_pack(id);
 		if(pre_pack)
-			link_text = `${pre_pack}-JP${str_pid}`;
+			link_text = `${pre_pack}-${str_ot}${str_pid}`;
 		else
 			link_text = str_id;
 	}
@@ -152,7 +158,7 @@ function create_rows(card){
 	var marker = '';
 	var data = '';
 	var output_data = '';
-	output_data += `ID: ${print_id(card.id, card.type, card.pack_id)}<br><br>`;
+	output_data += `ID: ${print_id(card.id, card.ot, card.type, card.pack_id)}<br><br>`;
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';

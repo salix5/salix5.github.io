@@ -7,15 +7,23 @@ const pre_release={
 	SD42: 100342001,
 	
 	BUDE: 101106001,
+	
+	//TCG
+	LIOV: 101104001,
 };
 
 const wiki_link = {
 	VJMP: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#VJ2021",
-	SD42: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%A5%AA%A1%BC%A5%D0%A1%BC%A5%EC%A5%A4%A1%A6%A5%E6%A5%CB%A5%D0%A1%BC%A5%B9%A1%DD",
+	
 	AC01: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202021",
 	VP21: "https://yugioh-wiki.net/index.php?V%20JUMP%20EDITION#VP21A",
+	
+	SD42: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%A5%AA%A1%BC%A5%D0%A1%BC%A5%EC%A5%A4%A1%A6%A5%E6%A5%CB%A5%D0%A1%BC%A5%B9%A1%DD",
+	
 	BUDE: "https://yugioh-wiki.net/index.php?BURST%20OF%20DESTINY",
-}
+	
+	LIOV: "https://yugipedia.com/wiki/Lightning_Overdrive",
+};
 
 const LIOV = [
 32164201,
