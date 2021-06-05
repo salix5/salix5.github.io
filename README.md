@@ -38,6 +38,10 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/6/5  
+新增卡包：LIOV(TCG特有卡)  
+先行卡更新：AC01  
+
 21/5/26  
 新增卡包：NCF1(No. Complete File)
 
