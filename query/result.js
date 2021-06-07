@@ -9,15 +9,11 @@ function print_id(id, ot, type, pack_id){
 	let params = new URLSearchParams();
 	
 	params.set('id', str_id);
+	str_pid = pack_id.toString().padStart(3, '0');
 	if(ot == 2)
 		str_ot = 'EN';
 	else
 		str_ot = 'JP';
-	
-	if(pack_id <= 200)
-		str_pid = pack_id.toString().padStart(3, '0');
-	else
-		str_pid = '???';
 	
 	let url = `https://salix5.github.io/query/?${params.toString()}`;
 	let link_text = '';
@@ -33,6 +29,8 @@ function print_id(id, ot, type, pack_id){
 	}
 	else{
 		let pre_pack = pre_id_to_pack(id);
+		if(pack_id > 200 && pre_pack != 'VJMP')
+			str_pid = '???';
 		if(pre_pack)
 			link_text = `${pre_pack}-${str_ot}${str_pid}`;
 		else
