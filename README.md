@@ -38,6 +38,10 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/6/8  
+SD42：ZS-霍普賢者、命運的契約、編號防護  
+AC01：LL-鳥鳴衝擊
+
 21/6/5  
 新增卡包：LIOV(TCG特有卡)  
 復刻更新：21TP Vol.2  
