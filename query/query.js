@@ -507,6 +507,7 @@ function server_analyze(params){
 				pack_name = '';
 				valid = true;
 				break;
+
 			// deck builder
 			case 'DBAG':
 				pack_table = DBAG;
@@ -526,6 +527,11 @@ function server_analyze(params){
 			case 'DP25':
 				pack_table = DP25;
 				break;
+			// special
+			case 'AC01':
+				pack_table = AC01;
+				break;
+			
 			// pre-release
 			default:
 				for(const prop in pre_release){
