@@ -89,7 +89,7 @@ const attr_to_str = {
 	[ATTRIBUTE_FIRE]: '炎',
 	[ATTRIBUTE_WIND]: '風',
 	[ATTRIBUTE_LIGHT]: '光',
-	[ATTRIBUTE_DARK]: '暗',
+	[ATTRIBUTE_DARK]: '闇',
 	[ATTRIBUTE_DIVINE]: '神'
 };
 
