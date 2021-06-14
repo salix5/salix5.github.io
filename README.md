@@ -38,6 +38,10 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/6/14  
+更新：7月禁卡表  
+先行卡更新：SR12  
+
 21/6/12  
 新增卡包：AC01  
 復刻更新：AC01  
