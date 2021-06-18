@@ -13,8 +13,7 @@ var ltable = new Object();
 var result = [];
 var pack_name = '';	// the pack name of released cards
 
-const url1 = 'https://salix5.github.io/CardEditor/expansions/beta.cdb';
-const url2 = 'beta.cdb';
+const url = 'beta.cdb';
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
@@ -34,7 +33,7 @@ function process_buffer(buf){
 }
 
 const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
-const promise_db2 = fetch(url2).then(response => response.arrayBuffer()).then(process_buffer);
+const promise_db2 = fetch(url).then(response => response.arrayBuffer()).then(process_buffer);
 const promise_sql = initSqlJs(config);
 
 const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => {cid_table = data;});
