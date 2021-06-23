@@ -38,6 +38,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/6/23  
+ジャンク：「垃圾」→「廢品」  
+
 21/6/17  
 先行卡更新：VJMP  
 
