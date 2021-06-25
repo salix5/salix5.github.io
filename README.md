@@ -38,6 +38,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/6/25  
+TCG特有卡：King's Court  
+
 21/6/23  
 更新：星光栗子球  
 SD42：希望皇 星光霍普  
