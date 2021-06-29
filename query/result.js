@@ -1,6 +1,6 @@
 "use strict";
 
-const MAX_RESULT_LEN = 300;
+const MAX_RESULT_LEN = 200;
 
 function print_id(id, ot, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');

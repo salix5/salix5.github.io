@@ -1,3 +1,5 @@
+const tag = "8de9c928a6ba20c8c9b8e16d8acf401165a16df9";
+
 const pre_release={
 	VJMP: 100200001,
 	
