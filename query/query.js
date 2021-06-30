@@ -11,7 +11,7 @@ var cid_table, name_table;
 var setname = new Object();
 var ltable = new Object();
 var result = [];
-var pack_name = '';	// the pack name of released cards
+var pack_name = '';
 
 const url = 'beta.cdb';
 
@@ -474,7 +474,6 @@ function server_analyze(params){
 	var arg = new Object();
 	var valid = false;
 	var is_monster = false;
-	var pack_table = null;
 	var cid = 0;
 	
 	arg.$monster = TYPE_MONSTER;
@@ -507,38 +506,23 @@ function server_analyze(params){
 				valid = true;
 				break;
 
-			// deck builder
-			case 'DBAG':
-				pack_table = DBAG;
-				break;
-			// booster pack
-			case 'LIOV':
-				pack_table = LIOV;
-				break;
-			case 'DAMA':
-				pack_table = DAMA;
-				break;
-			// SD
-			case 'SD41':
-				pack_table = SD41;
-				break;
-			// DP
-			case 'DP25':
-				pack_table = DP25;
-				break;
-			// special
-			case 'AC01':
-				pack_table = AC01;
-				break;
-			
-			// pre-release
 			default:
-				for(const prop in pre_release){
+				for(const prop in pack_list){
 					if(tmps === prop){
-						qstr += ` AND datas.id>=${pre_release[prop]} AND datas.id<=${pre_release[prop] + 998}`;
+						qstr += pack_cmd(pack_list[prop]);
 						pack_name = prop;
 						valid = true;
 						break;
+					}
+				}
+				if(!valid){
+					for(const prop in pre_release){
+						if(tmps === prop){
+							qstr += ` AND datas.id>=${pre_release[prop]} AND datas.id<=${pre_release[prop] + 998}`;
+							pack_name = prop;
+							valid = true;
+							break;
+						}
 					}
 				}
 				if(!valid)
@@ -546,11 +530,6 @@ function server_analyze(params){
 				break;
 		}
 		select_ot.value = tmps;
-		if(pack_table){
-			qstr += pack_cmd(pack_table);
-			pack_name = tmps;
-			valid = true;
-		}
 		
 		// type
 		let ctype = check_int(params.get("type"));
@@ -926,8 +905,8 @@ function server_analyze(params){
 		
 		// pack_id
 		if(card.id <= 99999999){
-			if(pack_table)
-				card.pack_id = pack_table.findIndex(x => x == card.id) + 1;
+			if(pack_list[pack_name])
+				card.pack_id = pack_list[pack_name].findIndex(x => x == card.id) + 1;
 			else
 				card.pack_id = 0;
 		}
@@ -959,8 +938,8 @@ function server_analyze(params){
 		
 		// pack_id
 		if(card.id <= 99999999){
-			if(pack_table)
-				card.pack_id = pack_table.findIndex(x => x == card.id) + 1;
+			if(pack_list[pack_name])
+				card.pack_id = pack_list[pack_name].findIndex(x => x == card.id) + 1;
 			else
 				card.pack_id = 0;
 		}
