@@ -7,7 +7,8 @@ var pre_release={
 	
 	BODE: 101106001,
 	
-	//TCG
+	// TCG
+	KICO: 100280001,
 };
 
 var wiki_link = {
@@ -16,6 +17,9 @@ var wiki_link = {
 	SR12: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%ADR%A1%DD%A5%ED%A5%B9%A5%C8%A1%A6%A5%B5%A5%F3%A5%AF%A5%C1%A5%E5%A5%A2%A5%EA%A1%DD",
 	
 	BODE: "https://yugioh-wiki.net/index.php?BURST%20OF%20DESTINY",
+	
+	// TCG
+	KICO: "https://yugipedia.com/wiki/King%27s_Court",
 };
 
 var pack_list={
