@@ -80,7 +80,7 @@ function compare_name(a, b){
 
 function imgError(event) {
 	this.onerror = null;
-	this.src = 'https://salix5.github.io/CardEditor/textures/unknown.jpg';
+	this.src = "icon/unknown.jpg";
 }
 
 function pre_id_to_pack(id){
