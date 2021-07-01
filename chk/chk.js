@@ -104,7 +104,7 @@ function process_id_list(list, regex, exc_list, str){
 	});
 }
 
-const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
+const promise_db = fetch("https://raw.githubusercontent.com/salix5/CardEditor/gh-pages/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
 const promise_sql = initSqlJs(config);
 
 Promise.all([promise_sql, promise_db]).then(function(values){
