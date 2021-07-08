@@ -38,6 +38,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/7/8  
+BODE：相劍  
+
 21/7/7  
 BODE：死獄鄉、冰水、北極天熊  
 
