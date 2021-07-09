@@ -38,6 +38,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/7/9  
+BODE：D-HERO、槍管、彈丸  
+
 21/7/8  
 BODE：相劍  
 
