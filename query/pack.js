@@ -1,5 +1,3 @@
-const tag = "3ff4de3682be0d17d733e4de09623695f9deea4b";
-
 var pre_release={
 	VJMP: 100200001,
 	
