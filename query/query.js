@@ -13,7 +13,7 @@ var ltable = new Object();
 var result = [];
 var pack_name = '';
 
-const url = '../pre/pre-release.cdb';
+const url = '../cdb/pre-release.cdb';
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
