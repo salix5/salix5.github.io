@@ -130,6 +130,7 @@ function show_subtype(type){
 			break;
 	}
 }
+
 select_type.onchange = function(event){
 	show_subtype(select_type.value);
 };
@@ -144,6 +145,7 @@ function clear_cb(name){
 		rst.checked = false;
 	}
 }
+
 cb_mtype_reset.onchange = function(event){
 	clear_cb('cb_mtype');
 	select_subtype.selectedIndex = 0;
@@ -183,6 +185,7 @@ function clear_query(){
 	
 	show_subtype('');
 }
+
 button2.onclick = function(event){
 	clear_query();
 };
