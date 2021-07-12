@@ -948,6 +948,8 @@ function server_analyze(params){
 		}
 		result.push(card);
 	}
+	if(result.length == 1)
+		document.title = result[0].name;
 	show_result();
 }
 
