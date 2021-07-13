@@ -278,7 +278,7 @@ function query(event){
 				if(subtype){
 					params.set('subtype', subtype.toString(10));
 					// default: or
-					if(select_subtype.value == 'and')
+					if(select_subtype_op.value == 'and')
 						params.set('sub_op', 1);
 					else
 						params.set('sub_op', 0);
@@ -432,7 +432,7 @@ function query(event){
 			}
 			if(cmarker){
 				params.set('marker', cmarker.toString(10));
-				if(select_marker.value === 'and')
+				if(select_marker_op.value === 'and')
 					params.set('marker_op', 1);
 				else
 					params.set('marker_op', 0);
@@ -552,11 +552,11 @@ function server_analyze(params){
 							cb_mtype[i].checked = true;
 					}
 					if(sub_op){
-						select_subtype.value = 'and';
+						select_subtype_op.value = 'and';
 						qstr += " AND type & $stype == $stype";
 					}
 					else{
-						select_subtype.value = 'or';
+						select_subtype_op.value = 'or';
 						qstr += " AND type & $stype";
 					}
 					arg.$stype = subtype;
@@ -779,11 +779,11 @@ function server_analyze(params){
 				}
 				qstr = qstr + " AND type & $link";
 				if(marker_op){
-					select_marker.value = 'and';
+					select_marker_op.value = 'and';
 					qstr = qstr + " AND def & $marker == $marker";
 				}
 				else{
-					select_marker.value = 'or';
+					select_marker_op.value = 'or';
 					qstr = qstr + " AND def & $marker";
 				}
 				arg.$marker = cmarker;
