@@ -18,9 +18,10 @@ const text_def2 = document.getElementById('text_def2');
 
 const select_ot = document.getElementById('select_ot');
 const select_type = document.getElementById('select_type');
-const select_subtype = document.getElementById('select_subtype');
-const select_marker = document.getElementById('select_marker');
+const select_subtype_op = document.getElementById('select_subtype_op');
+const select_marker_op = document.getElementById('select_marker_op');
 
+// 3 div for different type
 const subtype_m = document.getElementById('subtype_m');
 const subtype_s = document.getElementById('subtype_s');
 const subtype_t = document.getElementById('subtype_t');
@@ -29,13 +30,15 @@ const stype1 = document.getElementById('stype1');
 const ttype1 = document.getElementById('ttype1');
 
 const cb_mtype = document.getElementsByName('cb_mtype');
-const cb_exclude = document.getElementsByName("cb_exclude");
+const cb_exclude = document.getElementsByName('cb_exclude');
 const cb_stype = document.getElementsByName('cb_stype');
 const cb_ttype = document.getElementsByName('cb_ttype');
 const cb_marker = document.getElementsByName('cb_marker');
-const cb_attr = document.getElementsByName("cb_attr");
-const cb_race = document.getElementsByName("cb_race");
+const cb_attr = document.getElementsByName('cb_attr');
+const cb_race = document.getElementsByName('cb_race');
+const list_cb = ['cb_mtype', 'cb_exclude', 'cb_stype', 'cb_ttype', 'cb_marker', 'cb_attr', 'cb_race'];
 
+// reset combobox, excluding cb_marker
 const cb_mtype_reset = document.getElementById('cb_mtype_reset');
 const cb_exclude_reset = document.getElementById('cb_exclude_reset');
 const cb_stype_reset = document.getElementById('cb_stype_reset');
@@ -65,7 +68,7 @@ function show_subtype(type){
 			subtype_m.style.display = '';
 			subtype_s.style.display = 'none';
 			subtype_t.style.display = 'none';
-			select_subtype.disabled = false;
+			select_subtype_op.disabled = false;
 			row_subtype.style.display = '';
 			row_exclude.style.display = '';
 			
@@ -81,8 +84,8 @@ function show_subtype(type){
 			subtype_m.style.display = 'none';
 			subtype_s.style.display = '';
 			subtype_t.style.display = 'none';
-			select_subtype.disabled = true;
-			select_subtype.selectedIndex = 0;
+			select_subtype_op.disabled = true;
+			select_subtype_op.selectedIndex = 0;
 			row_subtype.style.display = '';
 			row_exclude.style.display = 'none';
 			
@@ -98,8 +101,8 @@ function show_subtype(type){
 			subtype_m.style.display = 'none';
 			subtype_s.style.display = 'none';
 			subtype_t.style.display = '';
-			select_subtype.disabled = true;
-			select_subtype.selectedIndex = 0;
+			select_subtype_op.disabled = true;
+			select_subtype_op.selectedIndex = 0;
 			row_subtype.style.display = '';
 			row_exclude.style.display = 'none';
 			
@@ -115,8 +118,8 @@ function show_subtype(type){
 			subtype_m.style.display = 'none';
 			subtype_s.style.display = 'none';
 			subtype_t.style.display = 'none';
-			select_subtype.disabled = true;
-			select_subtype.selectedIndex = 0;
+			select_subtype_op.disabled = true;
+			select_subtype_op.selectedIndex = 0;
 			row_subtype.style.display = 'none';
 			row_exclude.style.display = 'none';
 			
@@ -148,7 +151,7 @@ function clear_cb(name){
 
 cb_mtype_reset.onchange = function(event){
 	clear_cb('cb_mtype');
-	select_subtype.selectedIndex = 0;
+	select_subtype_op.selectedIndex = 0;
 };
 cb_exclude_reset.onchange = function(event){clear_cb('cb_exclude');};
 cb_stype_reset.onchange = function(event){clear_cb('cb_stype');};
@@ -173,15 +176,9 @@ function clear_query(){
 	
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
-	select_subtype.selectedIndex = 0;
-	select_marker.selectedIndex = 0;
-	
-	clear_cb('cb_mtype');
-	clear_cb('cb_stype');
-	clear_cb('cb_ttype');
-	clear_cb('cb_attr');
-	clear_cb('cb_race');
-	clear_cb('cb_marker');
+	select_subtype_op.selectedIndex = 0;
+	select_marker_op.selectedIndex = 0;
+	list_cb.forEach(element => clear_cb(element));
 	
 	show_subtype('');
 }
