@@ -38,6 +38,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/7/15  
+先行卡更新：DBGC  
+
 21/7/12  
 先行卡更新：SR12  
 
