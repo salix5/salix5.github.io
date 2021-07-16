@@ -38,6 +38,10 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/7/16  
+ナチュル：「自然」→「大植然」  
+先行卡更新：BODE  
+
 21/7/15  
 先行卡更新：DBGC  
 
