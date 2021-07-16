@@ -1,8 +1,13 @@
 # salix5.github.io
+
 ## 卡片查詢
 <https://salix5.github.io/query/>
 
+## 小世界跳板查詢
+<https://salix5.github.io/query/small_world.html>
+
 ## 使用說明
+
 ### 卡名欄位支援完整的日文卡名  
 日文卡名：  
 英文與數字輸入全形、半形皆可  
@@ -39,6 +44,7 @@ Ex.
 
 ## 更新紀錄
 21/7/16  
+新增功能：小世界跳板查詢  
 ナチュル：「自然」→「大植然」  
 先行卡更新：BODE  
 
