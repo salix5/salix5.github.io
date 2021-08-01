@@ -6,7 +6,6 @@ var pre_release={
 	DBGC: 100417001,
 	
 	// TCG
-	_KICO: 100280001,
 	_DAMA: 101105001,
 };
 
@@ -18,7 +17,6 @@ var wiki_link = {
 	DBGC: "https://yugioh-wiki.net/index.php?%A5%C7%A5%C3%A5%AD%A5%D3%A5%EB%A5%C9%A5%D1%A5%C3%A5%AF%20%A5%B0%A5%E9%A5%F3%A5%C9%A1%A6%A5%AF%A5%EA%A5%A8%A5%A4%A5%BF%A1%BC%A5%BA",
 	
 	// TCG
-	_KICO: "https://yugipedia.com/wiki/King%27s_Court",
 	_DAMA: "https://yugipedia.com/wiki/Dawn_of_Majesty",
 };
 
@@ -531,5 +529,19 @@ AC01: [
 59934749,
 24842059,
 32003338,
+],
+
+// TCG
+_KICO: [
+93880808,
+29284413,
+56673112,
+92067220,
+29062925,
+55557574,
+81945678,
+28340377,
+54734082,
+21723081,
 ],
 };
