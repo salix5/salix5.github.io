@@ -4,16 +4,13 @@ const MAX_RESULT_LEN = 200;
 
 function print_id(id, ot, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');
+	let str_pack = '';
 	let str_pid = '';
 	let str_ot = '';
 	let params = new URLSearchParams();
 	
 	params.set('id', str_id);
 	str_pid = pack_id.toString().padStart(3, '0');
-	if(ot == 2)
-		str_ot = 'EN';
-	else
-		str_ot = 'JP';
 	
 	let url = `https://salix5.github.io/query/?${params.toString()}`;
 	let link_text = '';
@@ -22,8 +19,17 @@ function print_id(id, ot, type, pack_id){
 		link_text = 'null';
 	}
 	else if(id <= 99999999){
-		if(pack_name)
-			link_text = `${pack_name}-${str_ot}${str_pid}`;
+		if(pack_name){
+			if(pack_name.charAt(0) == '_'){
+				str_pack = pack_name.substring(1);
+				str_ot = 'EN';
+			}
+			else{
+				str_pack = pack_name;
+				str_ot = 'JP';
+			}
+			link_text = `${str_pack}-${str_ot}${str_pid}`;
+		}
 		else
 			link_text = str_id;
 	}
@@ -31,8 +37,17 @@ function print_id(id, ot, type, pack_id){
 		let pre_pack = pre_id_to_pack(id);
 		if(pack_id > 200 && pre_pack != 'VJMP')
 			str_pid = '???';
-		if(pre_pack)
-			link_text = `${pre_pack}-${str_ot}${str_pid}`;
+		if(pre_pack){
+			if(pre_pack.charAt(0) == '_'){
+				str_pack = pre_pack.substring(1);
+				str_ot = 'EN';
+			}
+			else{
+				str_pack = pre_pack;
+				str_ot = 'JP';
+			}
+			link_text = `${str_pack}-${str_ot}${str_pid}`;
+		}
 		else
 			link_text = str_id;
 	}
