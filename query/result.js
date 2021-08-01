@@ -2,7 +2,7 @@
 
 const MAX_RESULT_LEN = 200;
 
-function print_id(id, ot, type, pack_id){
+function print_id(id, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');
 	let str_pack = '';
 	let str_pid = '';
@@ -134,7 +134,17 @@ function create_rows(card){
 			url = print_link(card.id, card.ot, card.db_id);
 		}
 		else if(pre_pack = pre_id_to_pack(card.id)){
-			link_text = `Wiki: ${pre_pack}`;
+			let str_site = '';
+			let str_pack = '';
+			if(pre_pack.charAt(0) == '_'){
+				str_site = 'Yugipedia';
+				str_pack = pre_pack.substring(1);
+			}
+			else{
+				str_site = 'Wiki';
+				str_pack = pre_pack;
+			}
+			link_text = `${str_site}: ${str_pack}`;
 			url = wiki_link[pre_pack];
 		}
 		if(link_text)
@@ -171,7 +181,7 @@ function create_rows(card){
 	var marker = '';
 	var data = '';
 	var output_data = '';
-	output_data += `ID: ${print_id(card.id, card.ot, card.type, card.pack_id)}<br><br>`;
+	output_data += `ID: ${print_id(card.id, card.type, card.pack_id)}<br><br>`;
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
