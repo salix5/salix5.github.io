@@ -519,7 +519,7 @@ function server_analyze(params){
 					for(const prop in pre_release){
 						if(tmps === prop){
 							qstr += ` AND datas.id>=${pre_release[prop]} AND datas.id<=${pre_release[prop] + 998}`;
-							pack_name = prop;
+							pack_name = '';
 							valid = true;
 							break;
 						}
