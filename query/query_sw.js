@@ -508,14 +508,13 @@ function server_analyze(params){
 		
 	// pack
 	let tmps = check_str(params.get("pack"));
+	pack_name = '';
 	switch(tmps){
 		case 'o':
 			qstr = qstr + " AND datas.ot != 2";
-			pack_name = '';
 			break;
 		case 't':
 			qstr = qstr + " AND datas.ot == 2";
-			pack_name = '';
 			break;
 
 		default:
@@ -537,8 +536,6 @@ function server_analyze(params){
 					}
 				}
 			}
-			if(!valid)
-				pack_name = '';
 			break;
 	}
 	select_ot.value = tmps;
@@ -804,7 +801,7 @@ function server_analyze(params){
 		
 		// pack_id
 		if(card.id <= 99999999){
-			if(pack_list[pack_name])
+			if(pack_name && pack_list[pack_name])
 				card.pack_id = pack_list[pack_name].findIndex(x => x == card.id) + 1;
 			else
 				card.pack_id = 0;
@@ -837,7 +834,7 @@ function server_analyze(params){
 		
 		// pack_id
 		if(card.id <= 99999999){
-			if(pack_list[pack_name])
+			if(pack_name && pack_list[pack_name])
 				card.pack_id = pack_list[pack_name].findIndex(x => x == card.id) + 1;
 			else
 				card.pack_id = 0;
