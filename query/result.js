@@ -2,15 +2,41 @@
 
 const MAX_RESULT_LEN = 200;
 
+function print_card_number(pack, index){
+	let str_pack = '';
+	let str_ot = '';
+	let str_index = '';
+	let cat = pack.substr(0,2); 
+	
+	// ot
+	if(pack.charAt(0) == '_'){
+		str_pack = pack.substring(1);
+		str_ot = 'EN';
+	}
+	else{
+		str_pack = pack;
+		str_ot = 'JP';
+	}
+	
+	// index
+	if(pack !== 'VJMP' && index > 200){
+		str_index = '???';
+	}
+	else if((cat === 'SD' || cat === 'SR') && index > 50){
+		let sub_index = index - 50;
+		str_index = `P${sub_index.toString().padStart(2, '0')}`;
+	}
+	else{
+		str_index = index.toString().padStart(3, '0');
+	}
+	
+	return `${str_pack}-${str_ot}${str_index}`;
+}
+
 function print_id(id, type, pack_id){
 	let str_id = id.toString().padStart(8, '0');
-	let str_pack = '';
-	let str_pid = '';
-	let str_ot = '';
 	let params = new URLSearchParams();
-	
 	params.set('id', str_id);
-	str_pid = pack_id.toString().padStart(3, '0');
 	
 	let url = `https://salix5.github.io/query/?${params.toString()}`;
 	let link_text = '';
@@ -18,38 +44,14 @@ function print_id(id, type, pack_id){
 	if(type & TYPE_TOKEN){
 		link_text = 'null';
 	}
-	else if(id <= 99999999){
-		if(pack_name){
-			if(pack_name.charAt(0) == '_'){
-				str_pack = pack_name.substring(1);
-				str_ot = 'EN';
-			}
-			else{
-				str_pack = pack_name;
-				str_ot = 'JP';
-			}
-			link_text = `${str_pack}-${str_ot}${str_pid}`;
-		}
-		else
-			link_text = str_id;
+	else if(pack_name){
+		link_text = print_card_number(pack_name, pack_id);
+	}
+	else if(id > 99999999){
+		link_text = print_card_number(pre_id_to_pack(id), pack_id);
 	}
 	else{
-		let pre_pack = pre_id_to_pack(id);
-		if(pack_id > 200 && pre_pack != 'VJMP')
-			str_pid = '???';
-		if(pre_pack){
-			if(pre_pack.charAt(0) == '_'){
-				str_pack = pre_pack.substring(1);
-				str_ot = 'EN';
-			}
-			else{
-				str_pack = pre_pack;
-				str_ot = 'JP';
-			}
-			link_text = `${str_pack}-${str_ot}${str_pid}`;
-		}
-		else
-			link_text = str_id;
+		link_text = str_id;
 	}
 	return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
 }
@@ -61,7 +63,7 @@ function print_ad(x){
 		return x;
 }
 
-function print_link(id, ot, db_id){
+function print_db_link(id, ot, db_id){
 	switch(id){
 		case 68811206:
 			return 'https://yugipedia.com/wiki/68811206';
@@ -103,7 +105,7 @@ function pre_id_to_pack(id){
 		if(id >= pre_release[prop] && id <= pre_release[prop] + 998)
 			return prop;
 	}
-	return '';
+	return 'XXXX';
 }
 
 function create_rows(card){
@@ -131,7 +133,7 @@ function create_rows(card){
 		
 		if(card.id <= 99999999){
 			link_text = card.jp_name;
-			url = print_link(card.id, card.ot, card.db_id);
+			url = print_db_link(card.id, card.ot, card.db_id);
 		}
 		else if(pre_pack = pre_id_to_pack(card.id)){
 			let str_site = '';
