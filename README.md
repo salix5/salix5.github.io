@@ -43,6 +43,9 @@ Ex.
 <https://salix5.github.io/query/setcode.html>
 
 ## 更新紀錄
+21/8/6  
+復刻更新：SR12  
+
 21/8/2  
 新增卡包：King's Court (TCG)  
 先行卡更新：DAMA-EN (TCG)
