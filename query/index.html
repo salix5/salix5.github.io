@@ -93,10 +93,12 @@
 <body bgcolor="#e0e0e0">
 	<form id="form1">
 	<table class="hidden">
-	<tr><td >密碼</td><td><input id="text_id" type="number" min="1" ></td></tr>
-	<tr><td >卡名</td><td><input id="text_name" type="search" ></td></tr>
-	<tr><td >關鍵字</td><td><input id="text_multi" type="search" ></td></tr>
-	<tr><td >卡包</td>
+	<tr><td>密碼</td><td><input id="text_id" type="number" min="1" ></td></tr>
+	<tr><td>卡名</td><td><input id="text_name" type="search" ></td></tr>
+	<tr><td>效果</td><td><input id="text_effect" type="search" ></td></tr>
+	<tr><td>關鍵字</td><td><input id="text_multi" type="search" ></td></tr>
+	
+	<tr><td>卡包</td>
 	<td>
 		<select id="select_ot">
 			<option value=""></option>
@@ -135,7 +137,7 @@
 	</td>
 	</tr>
 	
-	<tr><td >種類</td>
+	<tr><td>種類</td>
 	<td>
 		<select id="select_type">
 			<option value=""></option>
@@ -146,7 +148,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_lv"><td >星數</td>
+	<tr id="row_lv"><td>星數</td>
 	<td>
 	<input id="text_lv1" type="number" min="1" max="13" style="width: 3em" >
 	～
@@ -154,7 +156,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_sc"><td >刻度</td>
+	<tr id="row_sc"><td>刻度</td>
 	<td>
 	<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" >
 	～
@@ -162,7 +164,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_marker"><td >標記</td>
+	<tr id="row_marker"><td>標記</td>
 	<td>
 	<input type="checkbox" id="marker1" name="cb_marker"> <input type="checkbox" id="marker2" name="cb_marker"> <input type="checkbox" id="marker3" name="cb_marker">
 		<select id="select_marker_op">
@@ -174,7 +176,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_atk"><td >攻擊力</td>
+	<tr id="row_atk"><td>攻擊力</td>
 	<td>
 	<input id="text_atk1" type="number" min="-1" max="100000" style="width: 5em" >
 	～
@@ -182,7 +184,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_def"><td >守備力</td>
+	<tr id="row_def"><td>守備力</td>
 	<td>
 	<input id="text_def1" type="number" min="-2" max="100000" style="width: 5em" >
 	～
@@ -190,7 +192,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_attr"><td >屬性</td>
+	<tr id="row_attr"><td>屬性</td>
 	<td>
 	<input type="checkbox" id="attr1" name="cb_attr"><label for="attr1">地</label>
 	<input type="checkbox" id="attr2" name="cb_attr"><label for="attr2">水</label>
@@ -203,7 +205,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_race"><td >種族</td>
+	<tr id="row_race"><td>種族</td>
 	<td>
 	<input type="checkbox" id="race1" name="cb_race"><label for="race1">水　　</label>
 	<input type="checkbox" id="race2" name="cb_race"><label for="race2">炎　　</label>
@@ -234,7 +236,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_subtype" style="display: none"><td >類型</td>
+	<tr id="row_subtype" style="display: none"><td>類型</td>
 	<td>
 	<select id="select_subtype_op" >
 		<option value="or">OR</option>
@@ -277,7 +279,7 @@
 	</td>
 	</tr>
 	
-	<tr id="row_exclude" style="display: none"><td >排除</td>
+	<tr id="row_exclude" style="display: none"><td>排除</td>
 	<td>
 		<input type="checkbox" id="exclude_type1" name="cb_exclude"><label for="exclude_type1">通常</label>
 		<input type="checkbox" id="exclude_type2" name="cb_exclude"><label for="exclude_type2">效果</label>
@@ -297,8 +299,6 @@
 		<input type="checkbox" id="cb_exclude_reset"><label for="cb_exclude_reset" class="clear">✗</label>
 	</td>
 	</tr>
-	
-	<tr><td >效果</td><td><input id="text_effect" type="search" ></td></tr>
 	
 	<tr class="row_button">
 		<td colspan="2">
