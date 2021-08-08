@@ -40,7 +40,7 @@ Ex.
 排除：融合、同步、超量、連結  
 
 ## 字段對照表
-<https://salix5.github.io/query/setcode.html>
+<https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
 21/8/8  
