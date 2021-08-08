@@ -676,7 +676,7 @@ function server_analyze(params){
 					}
 					else if(def1 == -2 || def2 == -2){
 						text_def1.value = -2;
-						qstr = qstr + " AND def == atk";
+						qstr = qstr + " AND def == atk AND def != -2";
 					}
 					else{
 						text_def1.value = def1;
@@ -693,7 +693,7 @@ function server_analyze(params){
 						arg.$def1 = -2;
 					}
 					else if(def1 == -2){
-						qstr = qstr + " AND def == atk";
+						qstr = qstr + " AND def == atk AND def != -2";
 					}
 					else{
 						qstr = qstr + " AND def == $def1";
