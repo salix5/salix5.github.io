@@ -4,6 +4,8 @@ var pre_release={
 	DBGC: 100417001,
 	
 	BACH: 101107001,
+	
+	WPP2: 100281001,
 
 	// TCG
 	_DAMA: 101105001,
@@ -15,6 +17,8 @@ var wiki_link = {
 	DBGC: "https://yugioh-wiki.net/index.php?%A5%C7%A5%C3%A5%AD%A5%D3%A5%EB%A5%C9%A5%D1%A5%C3%A5%AF%20%A5%B0%A5%E9%A5%F3%A5%C9%A1%A6%A5%AF%A5%EA%A5%A8%A5%A4%A5%BF%A1%BC%A5%BA",
 
 	BACH: "https://yugioh-wiki.net/index.php?BATTLE%20OF%20CHAOS",
+	
+	WPP2: "https://yugioh-wiki.net/index.php?WORLD%20PREMIERE%20PACK%202021",
 	
 	// TCG
 	_DAMA: "https://yugipedia.com/wiki/Dawn_of_Majesty",
