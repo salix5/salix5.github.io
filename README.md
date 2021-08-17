@@ -43,6 +43,9 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/8/17  
+先行卡更新：WPP2、DBGC、BACH(1107)  
+
 21/8/8  
 新增卡包：SR12  
 復刻更新：SR12  
