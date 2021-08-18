@@ -8,7 +8,7 @@ var pre_release={
 	WPP2: 100281001,
 
 	// TCG
-	_DAMA: 101105001,
+	
 };
 
 var wiki_link = {
@@ -21,7 +21,7 @@ var wiki_link = {
 	WPP2: "https://yugioh-wiki.net/index.php?WORLD%20PREMIERE%20PACK%202021",
 	
 	// TCG
-	_DAMA: "https://yugipedia.com/wiki/Dawn_of_Majesty",
+	
 };
 
 var pack_list={
