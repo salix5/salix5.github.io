@@ -43,6 +43,9 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/8/20  
+新增卡包：DAMA-EN  
+
 21/8/17  
 先行卡更新：WPP2、DBGC、BACH(1107)  
 
@@ -52,7 +55,6 @@ Ex.
 
 21/8/2  
 新增卡包：King's Court (TCG)  
-先行卡更新：DAMA-EN (TCG)  
 
 21/7/18  
 新增卡包：BODE  
@@ -64,9 +66,11 @@ Ex.
 21/7/15  
 先行卡更新：DBGC  
 
+21/7/1  
+新增卡包：SD42  
+復刻更新：SD42  
+
 21/6/23  
-更新：星光栗子球  
-SD42：希望皇 星光霍普  
 ジャンク：「垃圾」→「廢品」  
 
 21/6/17  
@@ -80,11 +84,8 @@ SD42：希望皇 星光霍普
 復刻更新：AC01  
 
 21/6/10  
-新增卡包：VP21、LIOV(TCG特有卡)  
+新增卡包：VP21、LIOV-EN  
 アロマ：「芳香」→「芬芳」  
-
-21/6/8  
-SD42：ZS-霍普賢者、命運的契約、編號防護  
 
 21/6/5  
 復刻更新：21TP Vol.2  
