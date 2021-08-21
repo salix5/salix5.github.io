@@ -229,6 +229,15 @@ var index_to_marker = [
 	LINK_MARKER_BOTTOM_RIGHT
 ];
 
+function get_sw_str(x){
+	let sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str3 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level == $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str4 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk == $atk_${x} AND def != $def_${x}`;
+	let sw_str5 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def == $def_${x}`;
+	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
+}
+
 function server_analyze1(params){
 	let qstr = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts"
 	qstr += " WHERE datas.id == texts.id AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
@@ -248,110 +257,84 @@ function server_analyze1(params){
 		qstr += " AND datas.id == $id;";
 		arg.$id = cid;
 		query(qstr, arg);
+		if(result.length === 1)
+			document.title = result[0].name;
+		show_result();
 	}
 	else {
-		// type
-		let ctype = check_int(params.get("type"));
-		let subtype = check_int(params.get("subtype"));
-		let sub_op = check_int(params.get("sub_op"));
-		let exc = check_int(params.get("exc"));
-		
-		arg.$ctype = 0;
-		arg.$stype = 0;
-		if(ctype && ctype > 0){
-			qstr = qstr + " AND type & $ctype";
-			arg.$ctype = ctype;
-		}
-		
-		switch(ctype){
-			case TYPE_MONSTER:
-				select_type.value = 'm';
-				if(subtype && subtype > 0){
-					for(let i = 0; i < cb_mtype.length; ++i){
-						if(subtype & id_to_type[cb_mtype[i].id])
-							cb_mtype[i].checked = true;
-					}
-					if(sub_op){
-						select_subtype_op.value = 'and';
-						qstr += " AND type & $stype == $stype";
-					}
-					else{
-						select_subtype_op.value = 'or';
-						qstr += " AND type & $stype";
-					}
-					arg.$stype = subtype;
-				}
-				
-				if(exc && exc > 0){
-					for(let i = 0; i < cb_exclude.length; ++i){
-						if(exc & id_to_type[cb_mtype[i].id])
-							cb_exclude[i].checked = true;
-					}
-					qstr += " AND NOT type & $exc";
-					arg.$exc = exc;
-				}
-				arg.valid = true;
-				show_subtype('m');
-				break;
-			case TYPE_SPELL:
-				select_type.value = 's';
-				if(subtype && subtype > 0){
-					for(let i = 0; i < cb_stype.length; ++i){
-						if(subtype & id_to_type[cb_stype[i].id])
-							cb_stype[i].checked = true;
-					}
-					if(subtype & TYPE_NORMAL){
-						if(subtype === TYPE_NORMAL){
-							qstr += " AND type == $spell";
-						}
-						else{
-							qstr += " AND (type == $spell OR type & $stype)";
-							arg.$stype = subtype & ~TYPE_NORMAL;
-						}
-					}
-					else{
-						qstr += " AND type & $stype";
-						arg.$stype = subtype;
-					}
-				}
-				arg.valid = true;
-				show_subtype('s');
-				break;
-			case TYPE_TRAP:
-				select_type.value = 't';
-				if(subtype && subtype > 0){
-					for(let i = 0; i < cb_ttype.length; ++i){
-						if(subtype & id_to_type[cb_ttype[i].id])
-							cb_ttype[i].checked = true;
-					}
-					if(subtype & TYPE_NORMAL){
-						if(subtype === TYPE_NORMAL){
-							qstr += " AND type == $trap";
-						}
-						else{
-							qstr += " AND (type == $trap OR type & $stype)";
-							arg.$stype = subtype & ~TYPE_NORMAL;
-						}
-					}
-					else{
-						qstr += " AND type & $stype";
-						arg.$stype = subtype;
-					}
-				}
-				arg.valid = true;
-				show_subtype('t');
-				break;
-			default:
-				show_subtype('');
-				break;
-		}
 		server_analyze_data(params, qstr, arg);
 	}
 }
 
+function server_analyze2(params){
+	// id, primary key
+	let cid1 = check_int(params.get("id1"));
+	let cid2 = check_int(params.get("id2"));
+	let card_begin = null;
+	let card_end = null;
+	
+	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
+	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND type & $monster AND NOT type & ($token | $ext)";
+	
+	
+	let qstr_id = `${qstr0} AND datas.id == $id;`
+	
+	let arg = new Object();
+	arg.$monster = TYPE_MONSTER;
+	arg.$spell = TYPE_SPELL;
+	arg.$trap = TYPE_TRAP;
+	arg.$link = TYPE_LINK;
+	arg.$pendulum = TYPE_PENDULUM;
+	arg.$token = TYPE_TOKEN;
+	arg.$ext = TYPE_EXT;
+	
+	if(cid1 && cid1 > 0){
+		text_id1.value = cid1;
+		arg.$id = cid1;
+		console.log(qstr_id);
+		console.log(arg);
+		query(qstr_id, arg);
+		card_begin = result[0];
+	}
+	if(cid2 && cid2 > 0){
+		text_id2.value = cid2;
+		arg.$id = cid2;
+		query(qstr_id, arg);
+		card_end = result[0];
+	}
+	
+	if(!card_begin){
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = '1px solid black';
+		cell0.innerHTML = '找不到起點。';
+		return;
+	}
+	if(!card_end){
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = '1px solid black';
+		cell0.innerHTML = '找不到終點。';
+		return;
+	}
+	let qstr_final = `${qstr0} AND ${get_sw_str('begin')} AND ${get_sw_str('end')}`;
+	arg.$id = 0;
+	arg.$race_begin = card_begin.race;
+	arg.$attr_begin = card_begin.attribute;
+	arg.$lv_begin = card_begin.level;
+	arg.$atk_begin = card_begin.atk;
+	arg.$def_begin = card_begin.def;
+	
+	arg.$race_end = card_end.race;
+	arg.$attr_end = card_end.attribute;
+	arg.$lv_end = card_end.level;
+	arg.$atk_end = card_end.atk;
+	arg.$def_end = card_end.def;
+	server_analyze_data(params, qstr_final, arg);
+}
+
 function server_analyze_data(params, qstr, arg){
 	let is_monster = false;
-	
 	// pack
 	let tmps = check_str(params.get("pack"));
 	pack_name = '';
@@ -385,6 +368,111 @@ function server_analyze_data(params, qstr, arg){
 			break;
 	}
 	select_ot.value = tmps;
+	
+	// type
+	let ctype = check_int(params.get("type"));
+	let subtype = check_int(params.get("subtype"));
+	let sub_op = check_int(params.get("sub_op"));
+	let exc = check_int(params.get("exc"));
+	
+	arg.$ctype = 0;
+	arg.$stype = 0;
+	if(ctype && ctype > 0){
+		qstr = qstr + " AND type & $ctype";
+		arg.$ctype = ctype;
+	}
+	
+	switch(ctype){
+		case TYPE_MONSTER:
+			if(subtype && subtype > 0){
+				for(let i = 0; i < cb_mtype.length; ++i){
+					if(subtype & id_to_type[cb_mtype[i].id])
+						cb_mtype[i].checked = true;
+				}
+				if(sub_op){
+					select_subtype_op.value = 'and';
+					qstr += " AND type & $stype == $stype";
+				}
+				else{
+					select_subtype_op.value = 'or';
+					qstr += " AND type & $stype";
+				}
+				arg.$stype = subtype;
+			}
+			if(exc && exc > 0){
+				for(let i = 0; i < cb_exclude.length; ++i){
+					if(exc & id_to_type[cb_mtype[i].id])
+						cb_exclude[i].checked = true;
+				}
+				qstr += " AND NOT type & $exc";
+				arg.$exc = exc;
+			}
+			arg.valid = true;
+			if(select_type){
+				select_type.value = 'm';
+				show_subtype('m');
+			}
+			break;
+		case TYPE_SPELL:
+			if(subtype && subtype > 0){
+				for(let i = 0; i < cb_stype.length; ++i){
+					if(subtype & id_to_type[cb_stype[i].id])
+						cb_stype[i].checked = true;
+				}
+				if(subtype & TYPE_NORMAL){
+					if(subtype === TYPE_NORMAL){
+						qstr += " AND type == $spell";
+					}
+					else{
+						qstr += " AND (type == $spell OR type & $stype)";
+						arg.$stype = subtype & ~TYPE_NORMAL;
+					}
+				}
+				else{
+					qstr += " AND type & $stype";
+					arg.$stype = subtype;
+				}
+			}
+			arg.valid = true;
+			if(select_type){
+				select_type.value = 's';
+				show_subtype('s');
+			}
+			break;
+		case TYPE_TRAP:
+			
+			if(subtype && subtype > 0){
+				for(let i = 0; i < cb_ttype.length; ++i){
+					if(subtype & id_to_type[cb_ttype[i].id])
+						cb_ttype[i].checked = true;
+				}
+				if(subtype & TYPE_NORMAL){
+					if(subtype === TYPE_NORMAL){
+						qstr += " AND type == $trap";
+					}
+					else{
+						qstr += " AND (type == $trap OR type & $stype)";
+						arg.$stype = subtype & ~TYPE_NORMAL;
+					}
+				}
+				else{
+					qstr += " AND type & $stype";
+					arg.$stype = subtype;
+				}
+			}
+			arg.valid = true;
+			if(select_type){
+				select_type.value = 't';
+				show_subtype('t');
+			}
+			break;
+		default:
+			if(select_type){
+				select_type.value = '';
+				show_subtype('');
+			}
+			break;
+	}
 	
 	if(arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER){
 		// atk
@@ -629,6 +717,9 @@ function server_analyze_data(params, qstr, arg){
 		return;
 	}
 	query(qstr, arg);
+	if(result.length === 1)
+		document.title = result[0].name;
+	show_result();
 }
 
 function query(qstr, arg){
@@ -698,7 +789,4 @@ function query(qstr, arg){
 		}
 		result.push(card);
 	}
-	if(result.length === 1)
-		document.title = result[0].name;
-	show_result();
 }
