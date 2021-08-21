@@ -18,6 +18,7 @@ const text_def1 = document.getElementById('text_def1');
 const text_def2 = document.getElementById('text_def2');
 
 const select_ot = document.getElementById('select_ot');
+const select_type = null;
 const select_subtype_op = document.getElementById('select_subtype_op');
 
 const subtype_m = document.getElementById('subtype_m');
