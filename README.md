@@ -43,6 +43,9 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/8/25  
+先行卡更新：DBGC(驅魔修女、勇者)  
+
 21/8/20  
 新增卡包：DAMA-EN  
 
