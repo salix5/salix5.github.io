@@ -1,5 +1,6 @@
 "use strict";
 
+const MAX_WIDTH = 900;
 const MAX_RESULT_LEN = 200;
 
 function print_card_number(pack, index){
@@ -109,9 +110,9 @@ function pre_id_to_pack(id){
 }
 
 function create_rows(card){
-	var row_name = table_result.insertRow(-1);
-	var cell_name = row_name.insertCell(-1);
-	var out_name = '';
+	let row_name = table_result.insertRow(-1);
+	let cell_name = row_name.insertCell(-1);
+	let out_name = '';
 	
 	cell_name.className = 'name';
 	cell_name.colSpan = 2;
@@ -154,8 +155,8 @@ function create_rows(card){
 	}
 	cell_name.innerHTML = out_name;
 	
-	var row_pic = table_result.insertRow(-1);
-	var cell_pic = row_pic.insertCell(-1);
+	let row_pic = table_result.insertRow(-1);
+	let cell_pic = row_pic.insertCell(-1);
 	cell_pic.className = 'pic';
 	if(window.innerWidth > MAX_WIDTH){
 		cell_pic.style.width = '30%';
@@ -163,9 +164,9 @@ function create_rows(card){
 		cell_pic.style.borderBottom = '1px solid black';
 	}
 	else{
-		cell_pic.style.width = '50%';
+		cell_pic.style.width = '40%';
 	}
-	var img_card = document.createElement('img');
+	let img_card = document.createElement('img');
 	img_card.className = 'pic';
 	if(card.id <= 99999999)
 		img_card.src = `https://salix5.github.io/CardEditor/pics/${card.id}.jpg`;
@@ -174,16 +175,18 @@ function create_rows(card){
 	img_card.onerror = imgError;
 	cell_pic.appendChild(img_card);
 	
-	var cell_data = row_pic.insertCell(-1);
+	let cell_data = row_pic.insertCell(-1);
 	cell_data.className = "data";
 	
-	var mtype = '';
-	var subtype = '';
-	var lvstr = '等級';
-	var marker = '';
-	var data = '';
-	var output_data = '';
-	output_data += `ID: ${print_id(card.id, card.type, card.pack_id)}<br><br>`;
+	let mtype = '';
+	let subtype = '';
+	let lvstr = `\u2605`;
+	let marker = '';
+	let data = '';
+	cell_data.innerHTML = `ID: ${print_id(card.id, card.type, card.pack_id)}<br><br>`;
+	
+	let card_data = document.createElement("div");
+	card_data.className = "data_text";
 	
 	if(card.type & TYPE_MONSTER){
 		mtype = '怪獸';
@@ -195,7 +198,7 @@ function create_rows(card){
 			subtype = '/同步';
 		else if(card.type & TYPE_XYZ){
 			subtype = '/超量';
-			lvstr = '階級';
+			lvstr = `\u2606`;
 		}
 		else if(card.type & TYPE_LINK){
 			subtype = '/連結';
@@ -225,7 +228,21 @@ function create_rows(card){
 		if(card.type & TYPE_EFFECT)
 			subtype += '/效果';
 		data = '[' + mtype + subtype + ']';
-		data = `[${mtype}${subtype}]`;
+		data = `[${mtype}${subtype}]<br>`;
+		
+		if(card.level & 0xff)
+			data += `${lvstr}${card.level & 0xff}`;
+		if(card.attribute)
+			data += `/${attr_to_str[card.attribute]}`;
+		if(card.race)
+			data += `/${race_to_str[card.race]}族`; 
+		data += `/攻${print_ad(card.atk)}`;
+		if(!(card.type & TYPE_LINK)){
+			data += `/守${print_ad(card.def)}`;
+		}
+		if(card.type & TYPE_PENDULUM){
+			data += `<br>【靈擺刻度：${(card.level >> 24) & 0xff}】`;
+		}
 	}
 	else if(card.type & TYPE_SPELL){
 		mtype = '魔法';
@@ -253,72 +270,55 @@ function create_rows(card){
 			subtype = '通常';
 		data = `[${subtype}${mtype}]`;
 	}
+	card_data.innerHTML = data;
+	cell_data.appendChild(card_data);
 	
-	if(card.type & TYPE_MONSTER){
-		data += '<br>';
-		if(card.level & 0xff)
-			data += `${lvstr}${card.level & 0xff}`;
-		if(card.attribute)
-			data += `/${attr_to_str[card.attribute]}`;
-		if(card.race)
-			data += `/${race_to_str[card.race]}族`; 
-		data += '<br>' + print_ad(card.atk);
-		if(card.type & TYPE_LINK){
-			data += '/-';
-			marker = '<div class="marker">';
-			if(card.def & LINK_MARKER_TOP_LEFT)
-				marker += '<span class="ul t">▲</span>';
-			else
-				marker += '<span class="ul f">△</span>';
-			if(card.def & LINK_MARKER_TOP )
-				marker += '<span class="t">▲</span>';
-			else
-				marker += '<span class="f">△</span>';
-			if(card.def & LINK_MARKER_TOP_RIGHT)
-				marker += '<span class="ur t">▲</span>';
-			else
-				marker += '<span class="ur f">△</span>';
-	
-			marker += '<br>';
-			if(card.def & LINK_MARKER_LEFT)
-				marker += '<span class="l t">▲</span>';
-			else
-				marker += '<span class="l f">△</span>';
-			marker += '<span>　</span>';
-			if(card.def & LINK_MARKER_RIGHT)
-				marker += '<span class="r t">▲</span>';
-			else
-				marker += '<span class="r f">△</span>';
-			marker = marker + '<br>';
-	
-			if(card.def & LINK_MARKER_BOTTOM_LEFT)
-				marker += '<span class="dl t">▲</span>';
-			else
-				marker += '<span class="dl f">△</span>';
-			if(card.def & LINK_MARKER_BOTTOM )
-				marker += '<span class="d t">▲</span>';
-			else
-				marker += '<span class="d f">△</span>';
-			if(card.def & LINK_MARKER_BOTTOM_RIGHT)
-				marker += '<span class="dr t">▲</span>';
-			else
-				marker += '<span class="dr f">△</span>';
-			marker += '</div>';
-		}
-		else{
-			data += `/${print_ad(card.def)}`;
-		}
-		if(card.type & TYPE_PENDULUM){
-			data += `/刻度${(card.level >> 24) & 0xff}`;
-		}
+	if(card.type & TYPE_LINK){
+		let card_marker = document.createElement("div");
+		card_marker.className = "marker";
+		if(card.def & LINK_MARKER_TOP_LEFT)
+			marker += '<span class="ul t">▲</span>';
+		else
+			marker += '<span class="ul f">△</span>';
+		if(card.def & LINK_MARKER_TOP )
+			marker += '<span class="t">▲</span>';
+		else
+			marker += '<span class="f">△</span>';
+		if(card.def & LINK_MARKER_TOP_RIGHT)
+			marker += '<span class="ur t">▲</span>';
+		else
+			marker += '<span class="ur f">△</span>';
+		
+		marker += '<br>';
+		if(card.def & LINK_MARKER_LEFT)
+			marker += '<span class="l t">▲</span>';
+		else
+			marker += '<span class="l f">△</span>';
+		marker += '<span class="transparent">△</span>';
+		if(card.def & LINK_MARKER_RIGHT)
+			marker += '<span class="r t">▲</span>';
+		else
+			marker += '<span class="r f">△</span>';
+		marker += '<br>';
+		
+		if(card.def & LINK_MARKER_BOTTOM_LEFT)
+			marker += '<span class="dl t">▲</span>';
+		else
+			marker += '<span class="dl f">△</span>';
+		if(card.def & LINK_MARKER_BOTTOM )
+			marker += '<span class="d t">▲</span>';
+		else
+			marker += '<span class="d f">△</span>';
+		if(card.def & LINK_MARKER_BOTTOM_RIGHT)
+			marker += '<span class="dr t">▲</span>';
+		else
+			marker += '<span class="dr f">△</span>';
+		card_marker.innerHTML = marker;
+		cell_data.appendChild(card_marker);
 	}
-	output_data += `<span style="color: Blue;">${data}</span>`;
-	if(card.type & TYPE_LINK)
-		output_data += `<br>${marker}`;
-	cell_data.innerHTML = output_data;
 	
-	var row_effect = table_result.insertRow(-1);	
-	var cell_effect = row_effect.insertCell(-1);
+	let row_effect = table_result.insertRow(-1);	
+	let cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
 	cell_effect.innerHTML = card.desc.replace(/\n/g, "<br>");
 	if(window.innerWidth <= MAX_WIDTH){
