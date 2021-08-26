@@ -1,6 +1,4 @@
 "use strict";
-const MAX_WIDTH = 900;	// table width
-
 const text_id1 = document.getElementById('text_id1');
 const text_id2 = document.getElementById('text_id2');
 const text_name = document.getElementById('text_name');

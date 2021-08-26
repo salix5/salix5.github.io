@@ -1,0 +1,94 @@
+body{
+	font-family: "Microsoft JhengHei", sans-serif;
+}
+.half_line{
+	line-height: 0.6;
+}
+table.hidden{
+	border-style: none;
+	margin: 0 auto;
+}
+table.hidden td{
+	padding: 5px;
+}
+tr.row_button{
+	text-align: center;
+}
+label.clear{
+	color: Red
+}
+
+table.result{
+	border-collapse: collapse;
+	margin: 0 auto;
+	border-top: 1px solid black;
+}
+td.name{
+	text-align: center;
+	padding: 1%;
+}
+td.pic{
+	vertical-align: top;
+}
+img.pic{
+	max-height:100%;
+	max-width:100%;
+}
+td.data{
+	vertical-align: top;
+	padding: 2%;
+}
+td.effect{
+	border-bottom: 1px solid black;
+	vertical-align: top;
+	padding: 2%;
+}
+a.mobile{
+	font-size: 14px;
+}
+.data_text{
+	color: Blue;
+}
+
+.marker span{
+	padding: 5px;
+	display: inline-block;
+	font-family: sans-serif;
+}
+.t{
+	color: Red;
+}
+.f{
+	opacity: 0.4;
+}
+.ul{
+	transform: rotate(-45deg);
+}
+.ur{
+	transform: rotate(45deg);
+}
+.l{
+	transform: rotate(-90deg);
+}
+.r{
+	transform: rotate(90deg);
+}
+.dl{
+	transform: rotate(-135deg);
+}
+.d{
+	transform: rotate(180deg);
+}
+.dr{
+	transform: rotate(135deg);
+}
+
+button{
+	padding: 5px 20px;
+}
+.invisible{
+	visibility: hidden;
+}
+.transparent{
+	opacity: 0;
+}
