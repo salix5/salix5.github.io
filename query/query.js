@@ -37,7 +37,7 @@ function process_buffer(buf){
 	return arr;
 }
 
-const promise_db = fetch(`https://raw.githubusercontent.com/salix5/CardEditor/${tag}/cards.cdb`).then(response => response.arrayBuffer()).then(process_buffer);
+const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
 const promise_db2 = fetch(url).then(response => response.arrayBuffer()).then(process_buffer);
 const promise_sql = initSqlJs(config);
 
@@ -45,7 +45,7 @@ const promise_cid = fetch("text/cid.json").then(response => response.json()).the
 const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => {name_table = data;});
 const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => {pack_list = data;});
 
-const promise_strings = fetch(`https://raw.githubusercontent.com/salix5/CardEditor/${tag}/strings.conf`).then(response => response.text()).then(function(data){
+const promise_strings = fetch("https://salix5.github.io/CardEditor/strings.conf").then(response => response.text()).then(function(data){
 	let ldata = data.replace(/\r\n/g, '\n');
 	let line = ldata.split('\n');
 	for(let i = 0; i < line.length; ++i){
