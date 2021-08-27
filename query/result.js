@@ -230,18 +230,19 @@ function create_rows(card){
 		data = '[' + mtype + subtype + ']';
 		data = `[${mtype}${subtype}]<br>`;
 		
-		if(card.level & 0xff)
-			data += `${lvstr}${card.level & 0xff}`;
+		let lv = card.level & 0xff;
+		let scale = (card.level >> 24) & 0xff;
+		data += `${lvstr}${lv == 0 ? "?" : lv}`;
 		if(card.attribute)
-			data += `/${attr_to_str[card.attribute]}`;
+			data += `/${attr_to_str[card.attribute]}屬性`;
 		if(card.race)
 			data += `/${race_to_str[card.race]}族`; 
-		data += `/攻${print_ad(card.atk)}`;
+		data += `<br>攻${print_ad(card.atk)}`;
 		if(!(card.type & TYPE_LINK)){
 			data += `/守${print_ad(card.def)}`;
 		}
 		if(card.type & TYPE_PENDULUM){
-			data += `<br>【靈擺刻度：${(card.level >> 24) & 0xff}】`;
+			data += `<br>【靈擺刻度：${scale}】`;
 		}
 	}
 	else if(card.type & TYPE_SPELL){
