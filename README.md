@@ -3,7 +3,7 @@
 ## 卡片查詢
 <https://salix5.github.io/query/>
 
-## 小世界跳板查詢
+## 微小世界跳板搜尋
 <https://salix5.github.io/query/small_world.html>
 
 ## 使用說明
