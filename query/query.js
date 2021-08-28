@@ -1,18 +1,18 @@
 "use strict";
 // max of int32: 10 digit
 const MAX_DIGIT = 10;
-const MAX_STRLEN = 600;
+const MAX_STRLEN = 200;
 
 var config = {
 	locateFile: filename => `./dist/${filename}`
 }
 var db, db2;
 
-// conf
+// from strings.conf, lflist.conf
 var setname = new Object();
 var ltable = new Object();
 
-// json
+// from json
 var cid_table, name_table, pack_list;
 
 var result = [];
@@ -22,7 +22,8 @@ const url = '../cdb/pre-release.cdb';
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
-const re_all = /^%+$/;
+const re_illegal = /\$(?![%_])/g;
+const re_all_digit = /^\d+$/;
 
 String.prototype.toHalfWidth = function() {
 	return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)});
@@ -56,7 +57,7 @@ const promise_strings = fetch("https://salix5.github.io/CardEditor/strings.conf"
 			let scode = tmp.substring(0, j);
 			let part = tmp.substring(j + 1).split('\t');
 			let sname = part[0];
-			setname[sname] = scode;
+			setname[sname] = parseInt(scode, 16) ? parseInt(scode, 16) : 0;
 		}
 	}
 }
@@ -80,8 +81,8 @@ const promise_lflist = fetch("text/lflist.conf").then(response => response.text(
 		else{
 			let part = line[i].split(' ');
 			let id = parseInt(part[0], 10);
-			let limit = parseInt(part[1], 10);
-			ltable[id] = limit;
+			if(id)
+				ltable[id] = parseInt(part[1], 10) ? parseInt(part[1], 10) : 0;
 		}
 	}
 }
@@ -131,7 +132,7 @@ function check_str(val){
 		return '';
 	let half_val = val.toHalfWidth()
 	if(is_str(half_val)){
-		return val;
+		return half_val;
 	}
 	else
 		return '';
@@ -229,13 +230,44 @@ var index_to_marker = [
 	LINK_MARKER_BOTTOM_RIGHT
 ];
 
-function get_sw_str(x){
-	let sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str3 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level == $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str4 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk == $atk_${x} AND def != $def_${x}`;
-	let sw_str5 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def == $def_${x}`;
-	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
+// legal string -> sqlite literal
+function string_to_literal(str) {
+	return re_wildcard.test(str) ? str : `%${str}%`;
+}
+
+// return: name_cmd
+// It does not accept "$...$".
+function process_name(text_name, arg){
+	const setcode_str1 = "(setcode & 0xfff) == $settype AND (setcode & 0xf000 & $setsubtype) == $setsubtype";
+	const setcode_str2 = "(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & 0xf000 & $setsubtype) == $setsubtype";
+	const setcode_str3 = "(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & 0xf000 & $setsubtype) == $setsubtype";
+	const setcode_str4 = "(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & 0xf000 & $setsubtype) == $setsubtype";
+	const setcode_str = ` OR ${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4}`;
+
+	let str_name = text_name.replace(re_illegal, '');
+	if (!str_name)
+		return "";
+	let name_cmd = "name LIKE $name ESCAPE '$'";
+	arg.$name = string_to_literal(str_name);
+
+	// jp name
+	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === text_name);
+	if(nid){
+		name_cmd += " OR datas.id == $nid";
+		arg.$nid = nid;
+	}
+
+	// setcode
+	if (!re_wildcard.test(str_name)){
+		let real_str = str_name.replace(/\$%/g, '%');
+		real_str = real_str.replace(/\$_/g, '_');
+		if (setname[real_str]) {
+			name_cmd += setcode_str;
+			arg.$settype = setname[real_str] & 0x0fff;
+			arg.$setsubtype = setname[real_str] & 0xf000;
+		}
+	}
+	return name_cmd;
 }
 
 function server_analyze1(params){
@@ -266,12 +298,23 @@ function server_analyze1(params){
 	}
 }
 
+function get_sw_str(x) {
+	let sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str3 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level == $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str4 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk == $atk_${x} AND def != $def_${x}`;
+	let sw_str5 = ` OR race != $race_${x} AND attribute != $attr_${x} AND level != $lv_${x} AND atk != $atk_${x} AND def == $def_${x}`;
+	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
+}
+
+// small world
 function server_analyze2(params){
 	// id, primary key
-	let cid1 = check_int(params.get("id1"));
-	let cid2 = check_int(params.get("id2"));
 	let card_begin = null;
 	let card_end = null;
+
+	let cdata1 = check_str(params.get("id1"));
+	let cdata2 = check_str(params.get("id2"));
 	
 	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
 	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND type & $monster AND NOT type & ($token | $ext)";
@@ -440,7 +483,6 @@ function server_analyze_data(params, qstr, arg){
 			}
 			break;
 		case TYPE_TRAP:
-			
 			if(subtype && subtype > 0){
 				for(let i = 0; i < cb_ttype.length; ++i){
 					if(subtype & id_to_type[cb_ttype[i].id])
@@ -631,80 +673,35 @@ function server_analyze_data(params, qstr, arg){
 		}
 	}
 	
-	//text
-	const setcode_str1 = '(setcode & 0xfff) == $settype AND (setcode & 0xf000 & $setsubtype) == $setsubtype';
-	const setcode_str2 = '(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & 0xf000 & $setsubtype) == $setsubtype';
-	const setcode_str3 = '(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & 0xf000 & $setsubtype) == $setsubtype';
-	const setcode_str4 = '(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & 0xf000 & $setsubtype) == $setsubtype';
-	const setcode_str = ` OR (${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4})`;
-	const name_str = "name LIKE $name ESCAPE '$'";
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
-	
 	let cmulti = check_str(params.get("multi"));
-	let cname = '';
-	let cdesc = '';
-	if(cmulti){
-		cname = cmulti;
-		cdesc = '';
-	}
-	else{
-		cname = check_str(params.get("name"));
-		cdesc = check_str(params.get("desc"));
-	}
-	
-	// name
-	if(cname){
-		let search_str = cname;
-		let name_cmd = name_str;
-		search_str = search_str.replace(/\$(?![%_])/g, '');
-		if(cmulti)
-			text_multi.value = search_str;
-		else
-			text_name.value = search_str;
-		
-		if(!re_wildcard.test(search_str)){
-			let real_str = search_str.replace(/\$%/g, '%');
-			real_str = real_str.replace(/\$_/g, '_');
-			
-			let nid = Object.keys(name_table).find(key => name_table[key] === real_str);
-			if(setname[real_str]){
-				let set_code = parseInt(setname[real_str], 16);
-				name_cmd += setcode_str;
-				arg.$settype = set_code & 0x0fff;
-				arg.$setsubtype = set_code & 0xf000;
-			}
-			
-			if(nid){
-				name_cmd += " OR datas.id == $nid";
-				arg.$nid = nid;
-			}
-			
-			if(search_str)
-				search_str = `%${search_str}%`;
-		}
-		arg.$name = search_str;
-		
-		if(cmulti){
-			name_cmd += ` OR ${desc_str}`;
-			arg.$desc = search_str;
-		}
-		qstr += ` AND (${name_cmd})`;
+	let name_cmd = process_name(cmulti, arg);
+
+	if (name_cmd) {
+		// multi, might be raw data
+		text_multi.value = cmulti;
+		qstr += ` AND (${name_cmd} OR ${desc_str})`;
+		arg.$desc = string_to_literal(cmulti.replace(re_illegal, ''));
 		arg.valid = true;
 	}
-	
-	//effect
-	if(cdesc){
-		let search_str = cdesc;
-		search_str = search_str.replace(/\$(?![%_])/g, '');
-		text_effect.value = search_str;
-		if(!re_wildcard.test(search_str)){
-			if(search_str)
-				search_str = `%${search_str}%`;
+	else {
+		// name, might be raw data
+		let cname = check_str(params.get("name"));
+		name_cmd = process_name(cname, arg);
+		if (name_cmd) {
+			text_name.value = cname;
+			qstr += ` AND (${name_cmd})`;
+			arg.valid = true;
 		}
-		qstr += ` AND ${desc_str}`;
-		arg.$desc = search_str;
-		arg.valid = true;
-	}
+		// desc, mut be literal
+		let str_desc = check_str(params.get("desc")).replace(re_illegal, '');
+		if (str_desc) {
+			text_effect.value = str_desc;
+			qstr += ` AND ${desc_str}`;
+			arg.$desc = string_to_literal(str_desc);
+			arg.valid = true;
+        }
+    }
 	
 	// avoid trap monsters and tokens
 	if(arg.$ctype === 0 && is_monster)
