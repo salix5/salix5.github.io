@@ -7,17 +7,13 @@ function submit_query(event){
 	
 	button1.disabled = true;
 	button2.disabled = true;
-	// id
-	if(text_id1.value && text_id1.value.length <= MAX_DIGIT)
-		cid1 = parseInt(text_id1.value, 10);
-	if(cid1 && cid1 > 0){
-		params.set('id1', cid1.toString().padStart(8, '0'));
-	}
-	if(text_id2.value && text_id2.value.length <= MAX_DIGIT)
-		cid2 = parseInt(text_id2.value, 10);
-	if(cid2 && cid2 > 0){
-		params.set('id2', cid2.toString().padStart(8, '0'));
-	}
+	// id or name of the 2 cards
+	let cdata1 = text_id1.value.toHalfWidth();
+	if (is_str(cdata1))
+		params.set('id1', cdata1);
+	let cdata2 = text_id2.value.toHalfWidth();
+	if (is_str(cdata2))
+		params.set('id2', cdata2);
 	
 	// pack
 	let pack = select_ot.value.toHalfWidth();
@@ -157,21 +153,21 @@ function submit_query(event){
 	}
 			
 		
-		//multi
-		let cmulti = text_multi.value.toHalfWidth();
-		if(is_str(cmulti))
-			params.set('multi', cmulti);
-		else{
-			// name
-			let cname = text_name.value.toHalfWidth();
-			if(is_str(cname))
-				params.set('name', cname);
-			
-			//effect
-			let cdesc = text_effect.value.toHalfWidth();
-			if(is_str(cdesc))
-				params.set('desc', cdesc);
-		}
+	//multi
+	let cmulti = text_multi.value.toHalfWidth();
+	if(is_str(cmulti))
+		params.set('multi', cmulti);
+	else{
+		// name
+		let cname = text_name.value.toHalfWidth();
+		if(is_str(cname))
+			params.set('name', cname);
+		
+		//effect
+		let cdesc = text_effect.value.toHalfWidth();
+		if(is_str(cdesc))
+			params.set('desc', cdesc);
+	}
 	
 	document.activeElement.blur();
 	event.preventDefault();

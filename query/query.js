@@ -252,7 +252,7 @@ function process_name(text_name, arg){
 
 	// jp name
 	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === text_name);
-	if(nid){
+	if(nid && nid > 0){
 		name_cmd += " OR datas.id == $nid";
 		arg.$nid = nid;
 	}
@@ -307,21 +307,10 @@ function get_sw_str(x) {
 	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
 }
 
-// small world
-function server_analyze2(params){
-	// id, primary key
-	let card_begin = null;
-	let card_end = null;
-
-	let cdata1 = check_str(params.get("id1"));
-	let cdata2 = check_str(params.get("id2"));
-	
+function get_single_card(cdata) {
 	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
 	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND type & $monster AND NOT type & ($token | $ext)";
-	
-	
-	let qstr_id = `${qstr0} AND datas.id == $id;`
-	
+
 	let arg = new Object();
 	arg.$monster = TYPE_MONSTER;
 	arg.$spell = TYPE_SPELL;
@@ -330,38 +319,105 @@ function server_analyze2(params){
 	arg.$pendulum = TYPE_PENDULUM;
 	arg.$token = TYPE_TOKEN;
 	arg.$ext = TYPE_EXT;
-	
-	if(cid1 && cid1 > 0){
-		text_id1.value = cid1;
-		arg.$id = cid1;
-		console.log(qstr_id);
-		console.log(arg);
-		query(qstr_id, arg);
-		card_begin = result[0];
-	}
-	if(cid2 && cid2 > 0){
-		text_id2.value = cid2;
-		arg.$id = cid2;
-		query(qstr_id, arg);
-		card_end = result[0];
-	}
-	
-	if(!card_begin){
+
+	result.length = 0;
+	let cid = check_int(cdata);
+	if (cid && cid > 0) {
+		let qstr = `${qstr0} AND datas.id == $id;`;
+		arg.$id = cid;
+		query(qstr, arg);
+		if (result.length === 1)
+			return result[0];
+    }
+
+	let str_name = cdata.replace(re_illegal, '');
+	let real_str = str_name.replace(/\$%/g, '%');
+	real_str = real_str.replace(/\$_/g, '_');
+	if (real_str) {
+		let qstr = `${qstr0} AND name == $exact;`;
+		arg.$exact = real_str;
+		query(qstr, arg);
+		if (result.length === 1)
+			return result[0];
+    }
+
+	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === cdata);
+	if (nid && nid > 0) {
+		let qstr = `${qstr0} AND datas.id == $nid;`;
+		arg.$nid = nid;
+		query(qstr, arg);
+		if (result.length === 1)
+			return result[0];
+    }
+
+	let fuzzy_literal = string_to_literal(str_name);
+	if (fuzzy_literal) {
+		let qstr = `${qstr0} AND name LIKE $fuzzy ESCAPE '$';`;
+		arg.$fuzzy = fuzzy_literal;
+		query(qstr, arg);
+		if (result.length === 1)
+			return result[0];
+    }
+	return null;
+}
+
+// small world
+function server_analyze2(params) {
+	// id or name
+	let cdata1 = check_str(params.get("id1"));
+	if (cdata1)
+		text_id1.value = cdata1;
+	let cdata2 = check_str(params.get("id2"));
+	if (cdata2)
+		text_id2.value = cdata2;
+
+	let card_begin = get_single_card(cdata1);
+	let result_len1 = result.length;
+	let card_end = get_single_card(cdata2);
+	let result_len2 = result.length;
+
+	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
+	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND type & $monster AND NOT type & ($token | $ext)";
+	let arg = new Object();
+	arg.$monster = TYPE_MONSTER;
+	arg.$spell = TYPE_SPELL;
+	arg.$trap = TYPE_TRAP;
+	arg.$link = TYPE_LINK;
+	arg.$pendulum = TYPE_PENDULUM;
+	arg.$token = TYPE_TOKEN;
+	arg.$ext = TYPE_EXT;
+
+	if (result_len1 > 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '找不到起點。';
+		cell0.innerHTML = '起點數量太多。';
 		return;
 	}
-	if(!card_end){
+	else if (result_len1 < 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '找不到終點。';
+		cell0.innerHTML = '沒有起點。';
 		return;
 	}
+	
+	if (result_len2 > 1) {
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = '1px solid black';
+		cell0.innerHTML = '終點數量太多。';
+		return;
+	}
+	else if (result_len2 < 1) {
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = '1px solid black';
+		cell0.innerHTML = '沒有終點。';
+		return;
+	}
+	
 	let qstr_final = `${qstr0} AND ${get_sw_str('begin')} AND ${get_sw_str('end')}`;
-	arg.$id = 0;
 	arg.$race_begin = card_begin.race;
 	arg.$attr_begin = card_begin.attribute;
 	arg.$lv_begin = card_begin.level;
@@ -676,7 +732,6 @@ function server_analyze_data(params, qstr, arg){
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
 	let cmulti = check_str(params.get("multi"));
 	let name_cmd = process_name(cmulti, arg);
-
 	if (name_cmd) {
 		// multi, might be raw data
 		text_multi.value = cmulti;
