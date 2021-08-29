@@ -398,7 +398,7 @@ function server_analyze2(params) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '沒有起點。';
+		cell0.innerHTML = '找不到起點。';
 		return;
 	}
 	
@@ -413,7 +413,7 @@ function server_analyze2(params) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '沒有終點。';
+		cell0.innerHTML = '找不到終點。';
 		return;
 	}
 	
