@@ -6,6 +6,9 @@
 ## 微小世界跳板搜尋
 <https://salix5.github.io/query/small_world.html>
 
+### 起點及終點
+可用ID、中文卡名、日文卡名、萬用字元搜尋
+
 ## 使用說明
 
 ### 卡名欄位支援完整的日文卡名  
@@ -43,14 +46,15 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
-21/8/25  
-先行卡更新：DBGC(驅魔修女、勇者)  
+21/8/29  
+新增卡包：DGBC  
+ネオス：「新生人」→「新宇俠」  
 
 21/8/20  
 新增卡包：DAMA-EN  
 
 21/8/17  
-先行卡更新：WPP2、DBGC、BACH(1107)  
+先行卡更新：WPP2、BACH(1107)  
 
 21/8/8  
 新增卡包：SR12  
@@ -65,9 +69,6 @@ Ex.
 21/7/16  
 新增功能：小世界跳板查詢  
 ナチュル：「自然」→「大植然」  
-
-21/7/15  
-先行卡更新：DBGC  
 
 21/7/1  
 新增卡包：SD42  
