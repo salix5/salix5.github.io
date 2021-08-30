@@ -43,6 +43,7 @@ var config = {
 var db;
 var equip_list = [];
 var ss_list = [];
+var id_list = [];
 
 // excluded cards
 var equip_exc = [
@@ -104,27 +105,52 @@ function process_id_list(list, regex, exc_list, str){
 	});
 }
 
-const promise_db = fetch("https://raw.githubusercontent.com/salix5/CardEditor/gh-pages/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
+const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
 const promise_sql = initSqlJs(config);
 
 Promise.all([promise_sql, promise_db]).then(function(values){
 	var SQL = values[0];
 	db = new SQL.Database(values[1]);
 	
-	var qstr = `SELECT id FROM datas WHERE type & ${TYPE_EQUIP} AND abs(id - alias) >= 10`;
+	var qstr0 = `SELECT id FROM datas WHERE abs(id - alias) >= 10`;
+	var qstr = `${qstr0} AND type & ${TYPE_EQUIP};`
 	var stmt = db.prepare(qstr);
 	while(stmt.step()) {
 		let row = stmt.getAsObject();
 		equip_list.push(row.id);
 	}
-	qstr = `SELECT id FROM datas WHERE type & ${TYPE_SPSUMMON} AND abs(id - alias) >= 10`;
+	qstr = `${qstr0} AND type & ${TYPE_SPSUMMON};`;
 	stmt = db.prepare(qstr);
 	while(stmt.step()) {
 		let row = stmt.getAsObject();
 		ss_list.push(row.id);
 	}
-	
-	process_id_list(equip_list, /EFFECT_FLAG_CONTINUOUS_TARGET/, equip_exc, 'Equip Spell: ').then(function(values){
+	qstr = `${qstr0} AND NOT type & ${TYPE_TOKEN} AND type != ${TYPE_MONSTER | TYPE_NORMAL};`;
+	stmt = db.prepare(qstr);
+	while(stmt.step()) {
+		let row = stmt.getAsObject();
+		id_list.push(row.id);
+	}
+	var re_equip = /EFFECT_FLAG_CONTINUOUS_TARGET/;
+	var re_ss = /EFFECT_FLAG_CANNOT_DISABLE\+EFFECT_FLAG_UNCOPYABLE/;
+	/*process_id_list(equip_list, /EFFECT_FLAG_CONTINUOUS_TARGET/, equip_exc, 'Equip Spell: ').then(function(values){
 		process_id_list(ss_list, /EFFECT_FLAG_CANNOT_DISABLE\+EFFECT_FLAG_UNCOPYABLE/, ss_exc, 'Special Summon Monsters: ');
+	});*/
+	var promise_list = [];
+	for(let i=0; i < id_list.length; ++i){
+		const pr = fetch(`https://raw.githubusercontent.com/Fluorohydride/ygopro-scripts/master/c${id_list[i]}.lua`).then(response => response.text()).then(function(data){
+			if(equip_list.includes(id_list[i])){
+				if(!equip_exc.includes(id_list[i]) && !re_equip.test(data))
+					document.write(`${id_list[i]}, equip<br>`);
+			}
+			else if(ss_list.includes(id_list[i])){
+				if(!ss_exc.includes(id_list[i]) && !re_ss.test(data))
+					document.write(`${id_list[i]}, ss<br>`);
+			}
+		});
+		promise_list.push(pr);
+	}
+	Promise.all(promise_list).then(function(values){
+		document.write('done<br>');
 	});
 });
