@@ -59,31 +59,33 @@ function get_text(layer){
 	var text = '';
 	if(1<= layer && layer <= 8){ 
 		// pick up
-		r = getRandomIntInclusive(0, pu_quotes.length - 1);
+		r = getRandomInt(0, pu_quotes.length - 1);
 		text = pu_quotes[r];
 	}
 	else if(is_pu && 9 <= layer && layer <= 10){
-		r = getRandomIntInclusive(0, ssr_quotes.length - 1);
+		r = getRandomInt(0, ssr_quotes.length - 1);
 		text = ssr_quotes[r];
 	}
 	else{
-		r = getRandomIntInclusive(0, normal_quotes.length - 1);
+		r = getRandomInt(0, normal_quotes.length - 1);
 		text = normal_quotes[r];
 	}
 	return text;
 }
 
-function getRandomIntInclusive(min, max) {
-    const randomBuffer = new Uint32Array(1);
+function getRandomInt(min, max) {
 	min = Math.ceil(min);
 	max = Math.floor(max);
-	
 	if(min == max)
 		return min;
 	
-	window.crypto.getRandomValues(randomBuffer);
-	let randomNumber = randomBuffer[0] / (0xffffffff + 1);
-	return Math.floor(randomNumber * (max - min + 1)) + min;
+	let range = max - min + 1;
+	let secureMax = 0xffffffff - 0xffffffff % range;
+	let randomBuffer = new Uint32Array(1);
+	do {
+		window.crypto.getRandomValues(randomBuffer);
+	} while (randomBuffer[0] >= secureMax);
+	return min + randomBuffer[0] % range;
 }
 
 function mark_of_time(){
@@ -96,14 +98,14 @@ function until_dawn(){
 	
 	do{
 		++times;
-		layer = getRandomIntInclusive(1, 1000);
+		layer = getRandomInt(1, 1000);
 	}while(layer > 8);
 	
 	text1.value = get_text(layer);
 	div_dawn.innerHTML +=  `總共抽了${times}次！<br>`;
 }
 
-layer = getRandomIntInclusive(1, 1000);
+layer = getRandomInt(1, 1000);
 text1.value = get_text(layer);
 
 </script>
