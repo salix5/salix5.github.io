@@ -1,5 +1,20 @@
+@font-face {
+  font-family: '新微軟正黑體';
+  unicode-range: U+7DB0, U+78A7, U+7B75;
+  font-style: normal;
+  font-weight: bold;
+  src: local(Yu Gothic), local(MS Gothic);
+}
+@font-face {
+  font-family: '新微軟正黑體';
+  unicode-range: U+7DB0, U+78A7, U+7B75;
+  font-style: normal;
+  font-weight: normal;
+  src: local(Microsoft JhengHei);
+}
+
 body{
-	font-family: "Microsoft JhengHei", sans-serif;
+	font-family: '新微軟正黑體', 'Microsoft JhengHei', sans-serif;
 }
 .half_line{
 	line-height: 0.6;
@@ -15,7 +30,19 @@ tr.row_button{
 	text-align: center;
 }
 label.clear{
-	color: Red
+	color: Red;
+}
+label.F{
+	color: Purple;
+}
+label.S{
+	color: #606060;
+}
+label.X{
+	color: Black;
+}
+label.L{
+	color: Blue;
 }
 
 table.result{
