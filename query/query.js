@@ -786,6 +786,15 @@ function query(qstr, arg){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
 		}
+		
+		// spell & trap reset data
+		if(card.type & (TYPE_SPELL | TYPE_TRAP)){
+			card.atk = 0;
+			card.def = 0;
+			card.lv = 0;
+			card.race = 0;
+			card.attr = 0;
+		}
 		// limit
 		if(ltable[card.id] === 0)
 			card.limit = 0;
@@ -818,6 +827,15 @@ function query(qstr, arg){
 		if(card.id <= 99999999){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
+		}
+		
+		// spell & trap reset data
+		if(card.type & (TYPE_SPELL | TYPE_TRAP)){
+			card.atk = 0;
+			card.def = 0;
+			card.lv = 0;
+			card.race = 0;
+			card.attr = 0;
 		}
 		// limit
 		if(ltable[card.id] === 0)
