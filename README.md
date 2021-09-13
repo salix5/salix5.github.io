@@ -46,6 +46,11 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/9/13  
+更新：10月禁卡表  
+マギストス：「大賢者」→「偉魔」  
+キスキル：「姬絲基勒」→「姬絲吉爾」
+
 21/9/10  
 先行卡更新：BACH(1107)  
 
