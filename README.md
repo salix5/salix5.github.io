@@ -46,6 +46,9 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/9/18  
+先行卡更新：YO04(OCG構築第4卷)、KC01(海馬手提箱)
+
 21/9/13  
 更新：10月禁卡表  
 マギストス：「大賢者」→「偉魔」  
@@ -97,7 +100,6 @@ Ex.
 復刻更新：AC01  
 
 21/6/10  
-新增卡包：VP21、LIOV-EN  
 アロマ：「芳香」→「芬芳」  
 
 21/6/5  
@@ -105,6 +107,7 @@ Ex.
 
 21/5/26  
 新增卡包：NCF1(No. Complete File)
+復刻更新：NCF1(No. Complete File)
 
 21/5/24  
 新增卡包：DP25  
@@ -113,9 +116,6 @@ Ex.
 21/5/18  
 新增卡包：SD41  
 復刻更新：SD41  
-
-21/5/9  
-復刻更新：NCF1(No. Complete File)
 
 21/4/21  
 新增功能：未發售卡包加入Wiki連結
@@ -147,7 +147,6 @@ Ex.
 
 21/3/5  
 新增保留搜尋結果功能  
-新增卡包：BLVO(TCG特有卡)  
 更新：2/20臨時禁止卡  
 更新：DBAG先行卡
 
