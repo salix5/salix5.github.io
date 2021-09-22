@@ -23,6 +23,7 @@ text2.value = '';
 button1.onclick = change_locale;
 function change_locale(e){
 	text2.value = `${text1.value}&request_locale=ja`;
+	text1.value = '';
 	text2.select();
 	document.execCommand("copy");
 }
