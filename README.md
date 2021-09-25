@@ -46,6 +46,10 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/9/25  
+新增卡包：WPP2  
+復刻更新：WPP2  
+
 21/9/18  
 先行卡更新：YO04(OCG構築第4卷)、KC01(海馬手提箱)
 
@@ -66,14 +70,11 @@ Ex.
 新增卡包：DAMA-EN  
 
 21/8/17  
-先行卡更新：WPP2、BACH(1107)  
+先行卡更新：BACH(1107)  
 
 21/8/8  
 新增卡包：SR12  
 復刻更新：SR12  
-
-21/8/2  
-新增卡包：King's Court (TCG)  
 
 21/7/18  
 新增卡包：BODE  
@@ -148,7 +149,6 @@ Ex.
 21/3/5  
 新增保留搜尋結果功能  
 更新：2/20臨時禁止卡  
-更新：DBAG先行卡
 
 21/3/1  
 新增功能：搜尋衍生物
