@@ -27,10 +27,13 @@ function print_card_number(pack, index){
 		let sub_index = index - 50;
 		str_index = `P${sub_index.toString().padStart(2, '0')}`;
 	}
+	else if(cat === 'WP' && index > 70){
+		let sub_index = index - 70;
+		str_index = `S${sub_index.toString().padStart(2, '0')}`;
+	}
 	else{
 		str_index = index.toString().padStart(3, '0');
 	}
-	
 	return `${str_pack}-${str_ot}${str_index}`;
 }
 
