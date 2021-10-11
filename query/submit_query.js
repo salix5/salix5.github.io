@@ -118,6 +118,13 @@ function submit_query(event){
 				}
 			}
 			
+			// sum
+			let sum = -10;
+			if(text_sum.value && text_sum.value.length <= MAX_DIGIT)
+				sum = parseInt(text_sum.value, 10);
+			if(is_sum(sum))
+				params.set('sum', sum);
+			
 			// lv, scale
 			let lv1 = -10;
 			let lv2 = -10;
