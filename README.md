@@ -1,5 +1,8 @@
 # salix5.github.io
 
+## 新卡情報
+<https://yu-gi-oh.jp/index.php>
+
 ## 卡片查詢
 <https://salix5.github.io/query/>
 
@@ -46,9 +49,17 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
-21/9/25  
+21/10/7  
+先行卡更新：BACH(1107)、DP26  
+
+21/10/6  
+先行卡更新：BACH(1107)  
+復刻更新：DR01  
+
+21/10/2  
+先行卡更新：BACH(1107)  
 新增卡包：WPP2  
-復刻更新：WPP2  
+復刻更新：WPP2、21TP Vol.4  
 
 21/9/18  
 先行卡更新：YO04(OCG構築第4卷)、KC01(海馬手提箱)
