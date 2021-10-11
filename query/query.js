@@ -106,6 +106,10 @@ function is_def(x){
 	return (x >= -2);
 }
 
+function is_sum(x){
+	return (x >= 0);
+}
+
 function is_lv(x){
 	return (x >= 1 && x <= 13);
 }
@@ -270,6 +274,8 @@ function process_name(text_name, arg){
 	return name_cmd;
 }
 
+
+// entrance of query
 function server_analyze1(params){
 	let qstr = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts"
 	qstr += " WHERE datas.id == texts.id AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
@@ -361,7 +367,7 @@ function get_single_card(cdata) {
 	return null;
 }
 
-// small world
+// entrance of small world
 function server_analyze2(params) {
 	// id or name
 	let cdata1 = check_str(params.get("id1"));
@@ -606,8 +612,10 @@ function server_analyze_data(params, qstr, arg){
 		// def, exclude link monsters
 		let def1 = check_int(params.get("def1"));
 		let def2 = check_int(params.get("def2"));
-		if(is_def(def1)){
+		let sum = check_int(params.get("sum"));
+		if(is_def(def1) || is_def(def2) || is_sum(sum))
 			qstr += " AND NOT type & $link";
+		if(is_def(def1)){
 			if(is_def(def2)){
 				if(def1 === -1 || def2 === -1){
 					text_def1.value = -1;
@@ -642,6 +650,13 @@ function server_analyze_data(params, qstr, arg){
 			}
 			arg.valid = true;
 			is_monster = true;
+		}
+		
+		// sum
+		if(is_sum(sum)){
+			text_sum.value = sum;
+			qstr += " AND atk != -2 AND def != -2 AND atk + def == $sum";
+			arg.$sum = sum;
 		}
 	
 		// lv, rank, link
