@@ -69,6 +69,9 @@ function get_text(layer){
 	else{
 		r = getRandomInt(0, normal_quotes.length - 1);
 		text = normal_quotes[r];
+		if(r == 8){
+			div_dawn.innerHTML = 'Absent friend.<br>';
+		}
 	}
 	return text;
 }
