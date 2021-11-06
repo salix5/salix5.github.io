@@ -331,18 +331,18 @@ function create_rows(card){
 }
 
 function show_result(){
+	var result_per_page = (result.length > MAX_RESULT_LEN) ? MAX_RESULT_LEN : result.length;
 	table_result.innerHTML = '';
 	if(result.length > 0){
 		if(pack_name)
 			result.sort(compare_id);
 		else
 			result.sort(compare_name);
+		text_count.innerHTML = `搜尋結果共${result.length}筆，此為${1}~${result_per_page}筆。`;
 		if(window.innerWidth > MAX_WIDTH)
 			table_result.style.border = '1px solid black';
 		//result.forEach(create_rows);
-		for(let i = 0; i < result.length; ++i){
-			if(i >= MAX_RESULT_LEN)
-				break;
+		for(let i = 0; i < result_per_page; ++i){
 			create_rows(result[i]);
 		}
 	}

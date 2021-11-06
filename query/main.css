@@ -24,7 +24,7 @@ table.hidden{
 	margin: 0 auto;
 }
 table.hidden td{
-	padding: 5px;
+	padding: 5px 0px;
 }
 tr.row_button{
 	text-align: center;
@@ -47,6 +47,14 @@ label.X{
 label.L{
 	background: Blue;
 	color: White;
+}
+
+table.count{
+	border-style: none;
+	margin: 0 auto;
+}
+table.count td{
+	padding: 10px;
 }
 
 table.result{
