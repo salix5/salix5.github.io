@@ -129,7 +129,7 @@ Promise.all([promise_sql, promise_db]).then(function(values){
 		let row = stmt.getAsObject();
 		ss_list.push(row.id);
 	}
-	qstr = `${qstr0} AND NOT type & ${TYPE_TOKEN} AND type != ${TYPE_MONSTER | TYPE_NORMAL};`;
+	qstr = `${qstr0} AND NOT type & ${TYPE_TOKEN} AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM});`;
 	stmt = db.prepare(qstr);
 	while(stmt.step()) {
 		let row = stmt.getAsObject();
