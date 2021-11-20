@@ -23,13 +23,13 @@ function print_card_number(pack, index){
 	if(pack !== 'VJMP' && index > 200){
 		str_index = '???';
 	}
+	else if(pack === 'WPP2' && index > 70){
+		let sub_index = index - 70;
+		str_index = `S${sub_index.toString().padStart(2, '0')}`;
+	}
 	else if((cat === 'SD' || cat === 'SR') && index > 50){
 		let sub_index = index - 50;
 		str_index = `P${sub_index.toString().padStart(2, '0')}`;
-	}
-	else if(cat === 'WP' && index > 70){
-		let sub_index = index - 70;
-		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
 	else{
 		str_index = index.toString().padStart(3, '0');
