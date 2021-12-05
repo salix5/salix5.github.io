@@ -241,21 +241,21 @@ function string_to_literal(str) {
 
 // return: name_cmd
 // It does not accept "$...$".
-function process_name(text_name, arg){
+function process_name(raw_name, arg){
 	const setcode_str1 = "(setcode & 0xfff) == $settype AND (setcode & 0xf000 & $setsubtype) == $setsubtype";
 	const setcode_str2 = "(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & 0xf000 & $setsubtype) == $setsubtype";
 	const setcode_str3 = "(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & 0xf000 & $setsubtype) == $setsubtype";
 	const setcode_str4 = "(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & 0xf000 & $setsubtype) == $setsubtype";
 	const setcode_str = ` OR ${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4}`;
 
-	let str_name = text_name.replace(re_illegal, '');
+	let str_name = raw_name.replace(re_illegal, '');
 	if (!str_name)
 		return "";
 	let name_cmd = "name LIKE $name ESCAPE '$'";
 	arg.$name = string_to_literal(str_name);
 
 	// jp name
-	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === text_name);
+	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === raw_name);
 	if(nid && nid > 0){
 		name_cmd += " OR datas.id == $nid";
 		arg.$nid = nid;
@@ -439,7 +439,6 @@ function server_analyze2(params) {
 }
 
 function server_analyze_data(params, qstr, arg){
-	let is_monster = false;
 	// pack
 	let tmps = check_str(params.get("pack"));
 	pack_name = '';
@@ -579,6 +578,18 @@ function server_analyze_data(params, qstr, arg){
 	}
 	
 	if(arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER){
+		let is_monster = false;
+		// mat
+		let mat = check_str(params.get("mat")).replace(/(^|[^\$])[%_]/g, "");
+		if(mat){
+			text_mat.value = mat;
+			qstr += " AND (desc LIKE $mat1 ESCAPE '$' OR desc LIKE $mat2 ESCAPE '$')";
+			arg.$mat1 = `%「${mat}」+%`;
+			arg.$mat2 = `%+「${mat}」%`;
+			arg.valid = true;
+			is_monster = true;
+		}
+		
 		// atk
 		let atk1 = check_int(params.get("atk1"));
 		let atk2 = check_int(params.get("atk2"));
@@ -657,6 +668,8 @@ function server_analyze_data(params, qstr, arg){
 			text_sum.value = sum;
 			qstr += " AND atk != -2 AND def != -2 AND atk + def == $sum";
 			arg.$sum = sum;
+			arg.valid = true;
+			is_monster = true;
 		}
 	
 		// lv, rank, link
@@ -742,6 +755,8 @@ function server_analyze_data(params, qstr, arg){
 			arg.valid = true;
 			is_monster = true;
 		}
+		if(arg.$ctype === 0 && is_monster)
+			qstr += " AND type & $monster";
 	}
 	
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
@@ -763,7 +778,7 @@ function server_analyze_data(params, qstr, arg){
 			qstr += ` AND (${name_cmd})`;
 			arg.valid = true;
 		}
-		// desc, mut be literal
+		// desc, must be literal
 		let str_desc = check_str(params.get("desc")).replace(re_illegal, '');
 		if (str_desc) {
 			text_effect.value = str_desc;
@@ -773,9 +788,7 @@ function server_analyze_data(params, qstr, arg){
         }
     }
 	
-	// avoid trap monsters and tokens
-	if(arg.$ctype === 0 && is_monster)
-		qstr += " AND type & $monster";
+	// avoid token
 	if(!(arg.$stype & TYPE_TOKEN))
 		qstr += " AND NOT type & $token";
 	qstr += ";";
