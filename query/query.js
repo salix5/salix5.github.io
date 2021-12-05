@@ -144,9 +144,9 @@ function check_str(val){
 
 function pack_cmd(pack){
 	var cmd = '';
-	cmd = ` AND (datas.id==${pack[0]}`;
+	cmd = ` AND (datas.id=${pack[0]}`;
 	for(let i = 1; i < pack.length; ++i)
-		cmd += ` OR datas.id==${pack[i]}`;
+		cmd += ` OR datas.id=${pack[i]}`;
 	cmd += `)`;
 	return cmd;
 }
