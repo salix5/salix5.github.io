@@ -7,8 +7,6 @@ var pre_release={
 	
 	"22PP": 100286001,
 	
-	SD43: 100343001,
-	
 	DIFO: 101108001,
 
 	// TCG
@@ -22,8 +20,6 @@ var wiki_link = {
 	SSB1: "https://yugioh-wiki.net/index.php?SECRET%20SHINY%20BOX",
 	
 	"22PP": "https://yugioh-wiki.net/index.php?PREMIUM%20PACK#PP2022",
-	
-	SD43: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DDALBA%20STRIKE%A1%DD",
 	
 	DIFO: "https://yugioh-wiki.net/index.php?DIMENSION%20FORCE",
 	
