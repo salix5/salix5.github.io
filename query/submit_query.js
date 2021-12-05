@@ -68,6 +68,11 @@ function submit_query(event){
 		}
 		
 		if(select_type.value === '' || select_type.value === 'm'){
+			// mat
+			let mat = text_mat.value.toHalfWidth();
+			if(is_str(mat))
+				params.set('mat', mat);
+			
 			// atk
 			let atk1 = -10;
 			let atk2 = -10;
