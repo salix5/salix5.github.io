@@ -49,8 +49,11 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
-21/11/28  
-先行卡更新：SD43  
+21/12/5  
+新增卡包：SD43  
+復刻更新：SD43  
+YO04：天翔的騎士  
+VJMP：海神的依代  
 
 21/11/26  
 シムルグ：「希摩格」→「西摩格」  
@@ -78,9 +81,6 @@ TCG特有卡：BODE-EN
 新增卡包：BACH  
 復刻更新：BACH  
 先行卡更新：SSB1  
-
-21/10/14  
-先行卡更新：SD43  
 
 21/10/12  
 バルバロス：「巴爾巴洛斯」→「巴巴羅斯」  
