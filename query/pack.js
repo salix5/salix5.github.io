@@ -8,6 +8,8 @@ var pre_release={
 	"22PP": 100286001,
 	
 	DIFO: 101108001,
+	
+	HC01: 100287001,
 
 	// TCG
 };
@@ -22,6 +24,8 @@ var wiki_link = {
 	"22PP": "https://yugioh-wiki.net/index.php?PREMIUM%20PACK#PP2022",
 	
 	DIFO: "https://yugioh-wiki.net/index.php?DIMENSION%20FORCE",
+	
+	HC01: "https://yugioh-wiki.net/index.php?HISTORY%20ARCHIVE%20COLLECTION",
 	
 	// TCG
 };
