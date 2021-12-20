@@ -49,6 +49,9 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/12/20  
+先行卡更新：DIFO  
+
 21/12/16  
 先行卡更新：HC01  
 
