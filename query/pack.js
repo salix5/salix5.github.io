@@ -5,8 +5,6 @@ var pre_release={
 	
 	SSB1: 100285001,
 	
-	"22PP": 100286001,
-	
 	DIFO: 101108001,
 	
 	HC01: 100287001,
@@ -20,8 +18,6 @@ var wiki_link = {
 	KC01: "https://yugioh-wiki.net/index.php?%CD%B7%B5%BA%B2%A6OCG%A5%C7%A5%E5%A5%A8%A5%EB%A5%E2%A5%F3%A5%B9%A5%BF%A1%BC%A5%BA%2025th%20ANNIVERSARY%20ULTIMATE%20KAIBA%20SET",
 	
 	SSB1: "https://yugioh-wiki.net/index.php?SECRET%20SHINY%20BOX",
-	
-	"22PP": "https://yugioh-wiki.net/index.php?PREMIUM%20PACK#PP2022",
 	
 	DIFO: "https://yugioh-wiki.net/index.php?DIMENSION%20FORCE",
 	

@@ -49,6 +49,10 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/12/24  
+新增卡包：22PP  
+復刻更新：22PP  
+
 21/12/20  
 先行卡更新：DIFO  
 
@@ -62,7 +66,7 @@ Ex.
 先行卡更新：DIFO(1108)  
 
 21/12/8  
-先行卡更新：22PP、SSB1  
+先行卡更新：SSB1  
 
 21/12/6  
 先行卡更新：VJMP  
@@ -82,7 +86,6 @@ VJMP：海神的依代
 21/11/20  
 新增卡包：DP26  
 復刻更新：DP26  
-先行卡更新：22PP  
 
 21/11/16  
 先行卡更新：DIFO(1108)  
