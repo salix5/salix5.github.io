@@ -49,6 +49,10 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/12/25  
+新增卡包：SSB1  
+復刻更新：SSB1  
+
 21/12/24  
 新增卡包：22PP  
 復刻更新：22PP  
@@ -64,9 +68,6 @@ Ex.
 
 21/12/10  
 先行卡更新：DIFO(1108)  
-
-21/12/8  
-先行卡更新：SSB1  
 
 21/12/6  
 先行卡更新：VJMP  
@@ -92,12 +93,10 @@ VJMP：海神的依代
 
 21/11/14  
 TCG特有卡：BODE-EN  
-先行卡更新：SSB1  
 
 21/10/16  
 新增卡包：BACH  
 復刻更新：BACH  
-先行卡更新：SSB1  
 
 21/10/12  
 バルバロス：「巴爾巴洛斯」→「巴巴羅斯」  
