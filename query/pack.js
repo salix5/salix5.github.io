@@ -8,6 +8,7 @@ var pre_release={
 	HC01: 100287001,
 
 	// TCG
+	GRCR: 100282001,
 };
 
 var wiki_link = {
@@ -20,4 +21,5 @@ var wiki_link = {
 	HC01: "https://yugioh-wiki.net/index.php?HISTORY%20ARCHIVE%20COLLECTION",
 	
 	// TCG
+	GRCR: "https://yugipedia.com/wiki/The_Grand_Creators",
 };
