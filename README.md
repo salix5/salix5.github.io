@@ -49,6 +49,9 @@ Ex.
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
 
 ## 更新紀錄
+21/12/30  
+先行卡更新：DIFO、Grand Creators(TCG)  
+
 21/12/25  
 新增卡包：SSB1  
 復刻更新：SSB1  
