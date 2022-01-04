@@ -51,6 +51,7 @@ Ex.
 ## 更新紀錄
 21/12/31  
 先行卡更新：DIFO、Grand Creators(TCG)  
+復刻更新：22TP Vol.1  
 VJMP：八雷天神  
 
 21/12/25  

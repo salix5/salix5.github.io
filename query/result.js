@@ -3,6 +3,23 @@
 const MAX_WIDTH = 900;
 const MAX_RESULT_LEN = 200;
 
+function is_booster(pack){
+	switch(pack){
+		case 'ROTD':
+		case 'PHRA':
+		case 'BLVO':
+		case 'LIOV':
+		case 'DAMA':
+		case 'BODE':
+		case 'BACH':
+			return true;
+			break;
+		default:
+			return false;
+			break;
+	}
+}
+
 function print_card_number(pack, index){
 	let str_pack = '';
 	let str_ot = '';
@@ -30,6 +47,10 @@ function print_card_number(pack, index){
 	else if((cat === 'SD' || cat === 'SR') && index > 50){
 		let sub_index = index - 50;
 		str_index = `P${sub_index.toString().padStart(2, '0')}`;
+	}
+	else if(is_booster(pack) && index > 80){
+		let sub_index = index - 80;
+		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
 	else{
 		str_index = index.toString().padStart(3, '0');
