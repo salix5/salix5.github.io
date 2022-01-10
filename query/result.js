@@ -12,6 +12,7 @@ function is_booster(pack){
 		case 'DAMA':
 		case 'BODE':
 		case 'BACH':
+		case 'DIFO':
 			return true;
 			break;
 		default:
