@@ -177,6 +177,7 @@ function clear_query(){
 	text_sum.value = '';
 	text_effect.value = '';
 	text_multi.value = '';
+	text_mat.value = '';
 	
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
