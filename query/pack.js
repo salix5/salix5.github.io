@@ -8,6 +8,8 @@ var pre_release={
 	HC01: 100287001,
 	
 	DBTM: 100418001,
+	
+	PPC1: 100281001,
 
 	// TCG
 	GRCR: 100282001,
@@ -23,6 +25,8 @@ var wiki_link = {
 	HC01: "https://yugioh-wiki.net/index.php?HISTORY%20ARCHIVE%20COLLECTION",
 	
 	DBTM: "https://yugioh-wiki.net/index.php?%A5%C7%A5%C3%A5%AD%A5%D3%A5%EB%A5%C9%A5%D1%A5%C3%A5%AF%20%A5%BF%A5%AF%A5%C6%A5%A3%A5%AB%A5%EB%A1%A6%A5%DE%A5%B9%A5%BF%A1%BC%A5%BA",
+	
+	PPC1: "https://yugioh-wiki.net/index.php?%A1%D4%A5%D1%A5%EF%A5%D7%A5%ED%A1%A6%A5%EC%A5%C7%A5%A3%BB%B0%BB%D0%CB%E5%A1%D5",
 	
 	// TCG
 	GRCR: "https://yugipedia.com/wiki/The_Grand_Creators",
