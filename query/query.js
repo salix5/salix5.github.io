@@ -13,7 +13,7 @@ var setname = new Object();
 var ltable = new Object();
 
 // from json
-var cid_table, name_table, pack_list;
+var cid_table, name_table, name_table_en, pack_list;
 
 var result = [];
 var pack_name = '';
@@ -45,6 +45,7 @@ const promise_sql = initSqlJs(config);
 const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => {cid_table = data;});
 const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => {name_table = data;});
 const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => {pack_list = data;});
+const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => {name_table_en = data;});
 
 const promise_strings = fetch("https://salix5.github.io/CardEditor/strings.conf").then(response => response.text()).then(function(data){
 	let ldata = data.replace(/\r\n/g, '\n');
@@ -259,6 +260,13 @@ function process_name(raw_name, arg){
 	if(nid && nid > 0){
 		name_cmd += " OR datas.id == $nid";
 		arg.$nid = nid;
+	}
+	else{
+		nid = Object.keys(name_table_en).find(key => name_table_en[key] ? (name_table_en[key].toLowerCase() === raw_name.toLowerCase()) : false);
+		if(nid && nid > 0){
+			name_cmd += " OR datas.id == $nid";
+			arg.$nid = nid;
+		}
 	}
 
 	// setcode
