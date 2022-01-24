@@ -175,6 +175,9 @@ function submit_query(event){
 		if(is_str(cdesc))
 			params.set('desc', cdesc);
 	}
+	let clocale = select_locale.value;
+	if(is_str(clocale))
+		params.set('locale', clocale);
 	
 	document.activeElement.blur();
 	event.preventDefault();
