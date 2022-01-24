@@ -242,7 +242,7 @@ function string_to_literal(str) {
 
 // return: name_cmd
 // It does not accept "$...$".
-function process_name(raw_name, arg){
+function process_name(locale, raw_name, arg){
 	const setcode_str1 = "(setcode & 0xfff) == $settype AND (setcode & 0xf000 & $setsubtype) == $setsubtype";
 	const setcode_str2 = "(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & 0xf000 & $setsubtype) == $setsubtype";
 	const setcode_str3 = "(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & 0xf000 & $setsubtype) == $setsubtype";
@@ -252,32 +252,47 @@ function process_name(raw_name, arg){
 	let str_name = raw_name.replace(re_illegal, '');
 	if (!str_name)
 		return "";
-	let name_cmd = "name LIKE $name ESCAPE '$'";
-	arg.$name = string_to_literal(str_name);
-
-	// jp name
-	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === raw_name);
-	if(nid && nid > 0){
-		name_cmd += " OR datas.id == $nid";
-		arg.$nid = nid;
-	}
-	else{
-		nid = Object.keys(name_table_en).find(key => name_table_en[key] ? (name_table_en[key].toLowerCase() === raw_name.toLowerCase()) : false);
-		if(nid && nid > 0){
-			name_cmd += " OR datas.id == $nid";
-			arg.$nid = nid;
-		}
-	}
-
-	// setcode
-	if (!re_wildcard.test(str_name)){
-		let real_str = str_name.replace(/\$%/g, '%');
-		real_str = real_str.replace(/\$_/g, '_');
-		if (setname[real_str]) {
-			name_cmd += setcode_str;
-			arg.$settype = setname[real_str] & 0x0fff;
-			arg.$setsubtype = setname[real_str] & 0xf000;
-		}
+	
+	let name_cmd = "";
+	switch(locale){
+		case "ja":
+			let jp_list = [];
+			for(const key in name_table){
+				if(name_table[key].toHalfWidth().indexOf(raw_name) !== -1)
+					jp_list.push(key);
+			}
+			name_cmd = "0";
+			if(jp_list.length <= MAX_RESULT_LEN){
+				for(let i = 0; i < jp_list.length; ++i)
+					name_cmd += ` OR datas.id=${jp_list[i]}`;
+			}
+			break;
+		case "en":
+			let en_list = [];
+			for(const key in name_table_en){
+				if(name_table_en[key] && name_table_en[key].toLowerCase().indexOf(raw_name.toLowerCase()) !== -1)
+					en_list.push(key);
+			}
+			name_cmd = "0";
+			if(en_list.length <= MAX_RESULT_LEN){
+				for(let i = 0; i < en_list.length; ++i)
+					name_cmd += ` OR datas.id=${en_list[i]}`;
+			}
+			break;
+		default:
+			name_cmd = "name LIKE $name ESCAPE '$'";
+			arg.$name = string_to_literal(str_name);
+			// setcode
+			if (!re_wildcard.test(str_name)){
+				let real_str = str_name.replace(/\$%/g, '%');
+				real_str = real_str.replace(/\$_/g, '_');
+				if (setname[real_str]) {
+					name_cmd += setcode_str;
+					arg.$settype = setname[real_str] & 0x0fff;
+					arg.$setsubtype = setname[real_str] & 0xf000;
+				}
+			}
+			break;
 	}
 	return name_cmd;
 }
@@ -769,7 +784,17 @@ function server_analyze_data(params, qstr, arg){
 	
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
 	let cmulti = check_str(params.get("multi"));
-	let name_cmd = process_name(cmulti, arg);
+	let clocale = check_str(params.get("locale"));
+	switch(clocale){
+		case "ja":
+		case "en":
+			select_locale.value = clocale;
+			break;
+		default:
+			select_locale.value = "";
+			break;
+	}
+	let name_cmd = process_name(clocale, cmulti, arg);
 	if (name_cmd) {
 		// multi, might be raw data
 		text_multi.value = cmulti;
@@ -780,7 +805,7 @@ function server_analyze_data(params, qstr, arg){
 	else {
 		// name, might be raw data
 		let cname = check_str(params.get("name"));
-		name_cmd = process_name(cname, arg);
+		name_cmd = process_name(clocale, cname, arg);
 		if (name_cmd) {
 			text_name.value = cname;
 			qstr += ` AND (${name_cmd})`;
