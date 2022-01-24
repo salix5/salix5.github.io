@@ -16,6 +16,7 @@ const text_def1 = document.getElementById('text_def1');
 const text_def2 = document.getElementById('text_def2');
 const text_sum = document.getElementById('text_sum');
 
+const select_locale = document.getElementById('select_locale');
 const select_ot = document.getElementById('select_ot');
 const select_type = document.getElementById('select_type');
 const select_subtype_op = document.getElementById('select_subtype_op');
@@ -179,6 +180,7 @@ function clear_query(){
 	text_multi.value = '';
 	text_mat.value = '';
 	
+	select_locale.selectedIndex = 0;
 	select_ot.selectedIndex = 0;
 	select_type.selectedIndex = 0;
 	select_subtype_op.selectedIndex = 0;
