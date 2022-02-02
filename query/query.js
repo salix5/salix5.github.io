@@ -255,18 +255,6 @@ function process_name(locale, raw_name, arg){
 	
 	let name_cmd = "";
 	switch(locale){
-		case "ja":
-			let jp_list = [];
-			for(const key in name_table){
-				if(name_table[key].toHalfWidth().indexOf(raw_name) !== -1)
-					jp_list.push(key);
-			}
-			name_cmd = "0";
-			if(jp_list.length <= MAX_RESULT_LEN){
-				for(let i = 0; i < jp_list.length; ++i)
-					name_cmd += ` OR datas.id=${jp_list[i]}`;
-			}
-			break;
 		case "en":
 			let en_list = [];
 			for(const key in name_table_en){
@@ -291,6 +279,15 @@ function process_name(locale, raw_name, arg){
 					arg.$settype = setname[real_str] & 0x0fff;
 					arg.$setsubtype = setname[real_str] & 0xf000;
 				}
+			}
+			let jp_list = [];
+			for(const key in name_table){
+				if(name_table[key].toHalfWidth().indexOf(raw_name) !== -1)
+					jp_list.push(key);
+			}
+			if(jp_list.length <= MAX_RESULT_LEN){
+				for(let i = 0; i < jp_list.length; ++i)
+					name_cmd += ` OR datas.id=${jp_list[i]}`;
 			}
 			break;
 	}
@@ -786,7 +783,6 @@ function server_analyze_data(params, qstr, arg){
 	let cmulti = check_str(params.get("multi"));
 	let clocale = check_str(params.get("locale"));
 	switch(clocale){
-		case "ja":
 		case "en":
 			select_locale.value = clocale;
 			break;
