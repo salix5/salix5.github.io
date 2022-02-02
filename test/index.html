@@ -6,10 +6,10 @@
 	<meta name="author" content="salix5">
 	<title>時代的印記</title>
 	<style>
-		
 	</style>
 </head>
 <body>
+虎年Pick Up活動進行中！<br>
 <input type="text" id="text1" size="30" readonly>
 <button type="button" onclick="mark_of_time()">複製</button>
 <button type="button" onclick="until_dawn()">直到黎明</button>
@@ -19,7 +19,7 @@
 var layer = 0;
 
 var pu_quotes = [
-'那還是人嗎'
+'那還是🐯嗎'
 ];
 
 var ssr_quotes = [
@@ -52,7 +52,7 @@ var new_year_quotes = [
 
 var text1 = document.getElementById('text1');
 var div_dawn = document.getElementById('dawn');
-var is_pu =false;
+var is_pu =true;
 
 function get_text(layer){
 	var r = 0;
@@ -70,7 +70,7 @@ function get_text(layer){
 		r = getRandomInt(0, normal_quotes.length - 1);
 		text = normal_quotes[r];
 		if(r == 8){
-			div_dawn.innerHTML = 'Absent friend.<br>';
+			div_dawn.innerHTML = 'To absent friend.<br>';
 		}
 	}
 	return text;
