@@ -52,14 +52,18 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
-21/1/29  
+22/2/3  
+マテリアクトル：「物質爐」→「原質」  
+@イグニスター：「@火靈天星」→「@伊格尼斯者」  
+
+22/1/29  
 VJMP：靈道士 殭屍  
 PPC1：實況野球女郎三姊妹
 
-21/1/22  
+22/1/22  
 新增功能：搜尋英文卡名
 
-21/1/16  
+22/1/16  
 新增卡包：DIFO (1108)
 
 22/1/11  
