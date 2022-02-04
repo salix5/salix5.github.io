@@ -68,7 +68,7 @@ function print_id(id, type, pack_id){
 	let link_text = '';
 	
 	if(type & TYPE_TOKEN){
-		link_text = 'null';
+		link_text = '(null)';
 	}
 	else if(pack_name){
 		link_text = print_card_number(pack_name, pack_id);
@@ -135,27 +135,16 @@ function pre_id_to_pack(id){
 }
 
 function create_rows(card){
-	let row_name = table_result.insertRow(-1);
-	let cell_name = row_name.insertCell(-1);
-	let out_name = '';
-	
-	cell_name.className = 'name';
-	cell_name.colSpan = 2;
-	out_name = `<strong>${card.name}</strong>${print_limit(card.limit)}`;
+	let card_name = '';
+	let card_alias = '';
+	card_name = `<strong>${card.name}</strong>${print_limit(card.limit)}`;
 	if(card.ot == 2)
-		out_name += '<img src="icon/tcg.png" height="20" width="40">';
-	
+		card_name += '<img src="icon/tcg.png" height="20" width="40">';
 	// db link
 	if(!(card.type & TYPE_TOKEN)){
-		let str_class ='';
 		let link_text = '';
 		let url = '';
 		let pre_pack = '';
-		
-		if(window.innerWidth > MAX_WIDTH)
-			str_class = '';
-		else
-			str_class = ` class="mobile"`;
 		
 		if(card.id <= 99999999){
 			link_text = card.jp_name;
@@ -176,9 +165,11 @@ function create_rows(card){
 			url = wiki_link[pre_pack];
 		}
 		if(link_text)
-			out_name += `<br><a${str_class} href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
+			card_alias = `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a><br>`;
+		if(card.en_name)
+			card_alias += `${card.en_name}<br>`;
 	}
-	cell_name.innerHTML = out_name;
+	card_alias += `${print_id(card.id, card.type, card.pack_id)}<br>`;
 	
 	let row_pic = table_result.insertRow(-1);
 	let cell_pic = row_pic.insertCell(-1);
@@ -189,7 +180,7 @@ function create_rows(card){
 		cell_pic.style.borderBottom = '1px solid black';
 	}
 	else{
-		cell_pic.style.width = '40%';
+		cell_pic.style.width = '35%';
 	}
 	let img_card = document.createElement('img');
 	img_card.className = 'pic';
@@ -208,96 +199,12 @@ function create_rows(card){
 	let lvstr = `\u2605`;
 	let marker = '';
 	let data = '';
-	cell_data.innerHTML = `ID: ${print_id(card.id, card.type, card.pack_id)}<br><br>`;
 	
-	let card_data = document.createElement("div");
-	card_data.className = "data_text";
-	
-	if(card.type & TYPE_MONSTER){
-		mtype = '怪獸';
-		if(card.type & TYPE_RITUAL)
-			subtype = '/儀式';
-		else if(card.type & TYPE_FUSION)
-			subtype = '/融合';
-		else if(card.type & TYPE_SYNCHRO)
-			subtype = '/同步';
-		else if(card.type & TYPE_XYZ){
-			subtype = '/超量';
-			lvstr = `\u2606`;
-		}
-		else if(card.type & TYPE_LINK){
-			subtype = '/連結';
-			lvstr = 'LINK-';
-		}
-		if(card.type & TYPE_PENDULUM){
-			subtype += '/靈擺';
-		}
-		
-		// extype
-		if(card.type & TYPE_NORMAL)
-			subtype += '/通常';
-		if(card.type & TYPE_SPIRIT)
-			subtype += '/靈魂';
-		if(card.type & TYPE_UNION)
-			subtype += '/聯合';
-		if(card.type & TYPE_DUAL)
-			subtype += '/二重';
-		if(card.type & TYPE_TUNER)
-			subtype += '/協調';
-		if(card.type & TYPE_FLIP)
-			subtype += '/反轉';
-		if(card.type & TYPE_TOON)
-			subtype += '/卡通';
-		if(card.type & TYPE_SPSUMMON)
-			subtype += '/特殊召喚';
-		if(card.type & TYPE_EFFECT)
-			subtype += '/效果';
-		data = '[' + mtype + subtype + ']';
-		data = `[${mtype}${subtype}]<br>`;
-		
-		let lv = card.level & 0xff;
-		let scale = (card.level >> 24) & 0xff;
-		data += `${lvstr}${lv == 0 ? "?" : lv}`;
-		if(card.attribute)
-			data += `/${attr_to_str[card.attribute]}屬性`;
-		if(card.race)
-			data += `/${race_to_str[card.race]}族`; 
-		data += `<br>攻${print_ad(card.atk)}`;
-		if(!(card.type & TYPE_LINK)){
-			data += `/守${print_ad(card.def)}`;
-		}
-		if(card.type & TYPE_PENDULUM){
-			data += `<br>【靈擺刻度：${scale}】`;
-		}
-	}
-	else if(card.type & TYPE_SPELL){
-		mtype = '魔法';
-		if(card.type & TYPE_QUICKPLAY)
-			subtype = '速攻';
-		else if(card.type & TYPE_CONTINUOUS)
-			subtype = '永續';
-		else if(card.type & TYPE_EQUIP)
-			subtype = '裝備';
-		else if(card.type & TYPE_RITUAL)
-			subtype = '儀式';
-		else if(card.type & TYPE_FIELD)
-			subtype = '場地';
-		else
-			subtype = '通常';
-		data = `[${subtype}${mtype}]`;
-	}
-	else if(card.type & TYPE_TRAP){
-		mtype = '陷阱';
-		if(card.type & TYPE_CONTINUOUS)
-			subtype = '永續';
-		else if(card.type & TYPE_COUNTER)
-			subtype = '反擊';
-		else
-			subtype = '通常';
-		data = `[${subtype}${mtype}]`;
-	}
-	card_data.innerHTML = data;
-	cell_data.appendChild(card_data);
+	cell_data.innerHTML = card_name;
+	let div_alias = document.createElement('div');
+	div_alias.className = 'minor';
+	div_alias.innerHTML = card_alias;
+	cell_data.appendChild(div_alias);
 	
 	if(card.type & TYPE_LINK){
 		let card_marker = document.createElement("div");
@@ -343,10 +250,111 @@ function create_rows(card){
 		cell_data.appendChild(card_marker);
 	}
 	
+	let div_stat = document.createElement('div');
+	div_stat.className = 'stat';
+	
+	if(card.type & TYPE_MONSTER){
+		mtype = '怪獸';
+		if(card.type & TYPE_RITUAL)
+			subtype = '/儀式';
+		else if(card.type & TYPE_FUSION)
+			subtype = '/融合';
+		else if(card.type & TYPE_SYNCHRO)
+			subtype = '/同步';
+		else if(card.type & TYPE_XYZ){
+			subtype = '/超量';
+			lvstr = `\u2606`;
+		}
+		else if(card.type & TYPE_LINK){
+			subtype = '/連結';
+			lvstr = 'LINK-';
+		}
+		if(card.type & TYPE_PENDULUM){
+			subtype += '/靈擺';
+		}
+		
+		// extype
+		if(card.type & TYPE_NORMAL)
+			subtype += '/通常';
+		if(card.type & TYPE_SPIRIT)
+			subtype += '/靈魂';
+		if(card.type & TYPE_UNION)
+			subtype += '/聯合';
+		if(card.type & TYPE_DUAL)
+			subtype += '/二重';
+		if(card.type & TYPE_TUNER)
+			subtype += '/協調';
+		if(card.type & TYPE_FLIP)
+			subtype += '/反轉';
+		if(card.type & TYPE_TOON)
+			subtype += '/卡通';
+		if(card.type & TYPE_SPSUMMON)
+			subtype += '/特殊召喚';
+		if(card.type & TYPE_EFFECT)
+			subtype += '/效果';
+		data = '[' + mtype + subtype + ']';
+		data = `[${mtype}${subtype}]<br>`;
+		
+		let lv = card.level & 0xff;
+		let scale = (card.level >> 24) & 0xff;
+		data += `[${lvstr}${lv == 0 ? "?" : lv}] `;
+		if(card.attribute)
+			data += `${attr_to_str[card.attribute]}`;
+		else
+			data += '？';
+		if(card.race)
+			data += `/${race_to_str[card.race]}族`;
+		else
+			data += '/？族';
+		data += '<br>';
+		
+		data += `攻${print_ad(card.atk)}`;
+		if(!(card.type & TYPE_LINK)){
+			data += `/守${print_ad(card.def)}`;
+		}
+		data += '<br>';
+		
+		if(card.type & TYPE_PENDULUM){
+			data += `【靈擺刻度：${scale}】<br>`;
+		}
+	}
+	else if(card.type & TYPE_SPELL){
+		mtype = '魔法';
+		if(card.type & TYPE_QUICKPLAY)
+			subtype = '速攻';
+		else if(card.type & TYPE_CONTINUOUS)
+			subtype = '永續';
+		else if(card.type & TYPE_EQUIP)
+			subtype = '裝備';
+		else if(card.type & TYPE_RITUAL)
+			subtype = '儀式';
+		else if(card.type & TYPE_FIELD)
+			subtype = '場地';
+		else
+			subtype = '通常';
+		data = `[${subtype}${mtype}]<br>`;
+	}
+	else if(card.type & TYPE_TRAP){
+		mtype = '陷阱';
+		if(card.type & TYPE_CONTINUOUS)
+			subtype = '永續';
+		else if(card.type & TYPE_COUNTER)
+			subtype = '反擊';
+		else
+			subtype = '通常';
+		data = `[${subtype}${mtype}]<br>`;
+	}
+	
 	let row_effect = table_result.insertRow(-1);	
 	let cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
-	cell_effect.innerHTML = card.desc.replace(/\n/g, "<br>");
+	div_stat.innerHTML = `${data}<hr>`;
+	cell_effect.appendChild(div_stat);
+	
+	let div_desc = document.createElement('div');
+	div_desc.innerHTML = card.desc.replace(/\n/g, "<br>");
+	cell_effect.appendChild(div_desc);
+	
 	if(window.innerWidth <= MAX_WIDTH){
 		cell_effect.colSpan = 2;
 	}

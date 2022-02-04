@@ -68,6 +68,7 @@ td.name{
 }
 td.pic{
 	vertical-align: top;
+	padding: 2%;
 }
 img.pic{
 	max-height:100%;
@@ -82,11 +83,15 @@ td.effect{
 	vertical-align: top;
 	padding: 2%;
 }
-a.mobile{
+
+.minor{
 	font-size: 14px;
 }
-.data_text{
+.stat{
 	color: Blue;
+}
+hr{
+	opacity: 0.4;
 }
 
 .marker span{
