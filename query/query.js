@@ -842,6 +842,7 @@ function query(qstr, arg){
 		if(card.id <= 99999999){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
+			card.en_name = name_table_en[card.id];
 		}
 		
 		// spell & trap reset data
@@ -884,6 +885,7 @@ function query(qstr, arg){
 		if(card.id <= 99999999){
 			card.db_id = cid_table[card.id];
 			card.jp_name = name_table[card.id];
+			card.en_name = name_table_en[card.id];
 		}
 		
 		// spell & trap reset data
