@@ -297,11 +297,11 @@ function create_rows(card){
 		
 		let lv = card.level & 0xff;
 		let scale = (card.level >> 24) & 0xff;
-		data += `[${lvstr}${lv == 0 ? "?" : lv}] `;
+		data += `${lvstr}${lv == 0 ? "?" : lv}`;
 		if(card.attribute)
-			data += `${attr_to_str[card.attribute]}`;
+			data += `/${attr_to_str[card.attribute]}`;
 		else
-			data += '？';
+			data += '/？';
 		if(card.race)
 			data += `/${race_to_str[card.race]}族`;
 		else
