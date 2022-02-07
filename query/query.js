@@ -6,6 +6,7 @@ const MAX_STRLEN = 200;
 var config = {
 	locateFile: filename => `./dist/${filename}`
 }
+var SQL;
 var db, db2;
 
 // from strings.conf, lflist.conf
@@ -38,9 +39,54 @@ function process_buffer(buf){
 	return arr;
 }
 
+function query_card(db, qstr, arg){
+	var stmt = db.prepare(qstr);
+	stmt.bind(arg);
+	while(stmt.step()) {
+		// execute
+		let card = stmt.getAsObject();
+		if(card.id <= 99999999){
+			card.db_id = cid_table[card.id];
+			card.jp_name = name_table[card.id];
+			card.en_name = name_table_en[card.id];
+		}
+		
+		// spell & trap reset data
+		if(card.type & (TYPE_SPELL | TYPE_TRAP)){
+			card.atk = 0;
+			card.def = 0;
+			card.lv = 0;
+			card.race = 0;
+			card.attr = 0;
+		}
+		// limit
+		if(ltable[card.id] === 0)
+			card.limit = 0;
+		else if(ltable[card.id] === 1)
+			card.limit = 1;
+		else if(ltable[card.id] === 2)
+			card.limit = 2;
+		else
+			card.limit = 3;
+		
+		// pack_id
+		if(card.id <= 99999999){
+			if(pack_name && pack_list[pack_name])
+				card.pack_id = pack_list[pack_name].findIndex(x => x === card.id);
+			else
+				card.pack_id = 0;
+		}
+		else{
+			card.pack_id = card.id % 1000;
+		}
+		result.push(card);
+	}
+	stmt.free();
+}
+
 const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
 const promise_db2 = fetch(url).then(response => response.arrayBuffer()).then(process_buffer);
-const promise_sql = initSqlJs(config);
+const promise_sql = initSqlJs(config).then(response => {SQL = response;});
 
 const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => {cid_table = data;});
 const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => {name_table = data;});
@@ -90,7 +136,6 @@ const promise_lflist = fetch("text/lflist.conf").then(response => response.text(
 );
 
 Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_strings, promise_lflist]).then(function(values){
-	let SQL = values[0];
 	db = new SQL.Database(values[1]);
 	db2 = new SQL.Database(values[2]);
 	url_query();
@@ -833,89 +878,6 @@ function server_analyze_data(params, qstr, arg){
 
 function query(qstr, arg){
 	result.length = 0;
-	// released cards
-	var stmt = db.prepare(qstr);
-	stmt.bind(arg);
-	while(stmt.step()) {
-		// execute
-		let card = stmt.getAsObject();
-		if(card.id <= 99999999){
-			card.db_id = cid_table[card.id];
-			card.jp_name = name_table[card.id];
-			card.en_name = name_table_en[card.id];
-		}
-		
-		// spell & trap reset data
-		if(card.type & (TYPE_SPELL | TYPE_TRAP)){
-			card.atk = 0;
-			card.def = 0;
-			card.lv = 0;
-			card.race = 0;
-			card.attr = 0;
-		}
-		// limit
-		if(ltable[card.id] === 0)
-			card.limit = 0;
-		else if(ltable[card.id] === 1)
-			card.limit = 1;
-		else if(ltable[card.id] === 2)
-			card.limit = 2;
-		else
-			card.limit = 3;
-		
-		// pack_id
-		if(card.id <= 99999999){
-			if(pack_name && pack_list[pack_name])
-				card.pack_id = pack_list[pack_name].findIndex(x => x === card.id);
-			else
-				card.pack_id = 0;
-		}
-		else{
-			card.pack_id = card.id % 1000;
-		}
-		result.push(card);
-	}
-	
-	// pre-release cards
-	stmt = db2.prepare(qstr);
-	stmt.bind(arg);
-	while(stmt.step()) {
-		// execute
-		let card = stmt.getAsObject();
-		if(card.id <= 99999999){
-			card.db_id = cid_table[card.id];
-			card.jp_name = name_table[card.id];
-			card.en_name = name_table_en[card.id];
-		}
-		
-		// spell & trap reset data
-		if(card.type & (TYPE_SPELL | TYPE_TRAP)){
-			card.atk = 0;
-			card.def = 0;
-			card.lv = 0;
-			card.race = 0;
-			card.attr = 0;
-		}
-		// limit
-		if(ltable[card.id] === 0)
-			card.limit = 0;
-		else if(ltable[card.id] === 1)
-			card.limit = 1;
-		else if(ltable[card.id] === 2)
-			card.limit = 2;
-		else
-			card.limit = 3;
-		
-		// pack_id
-		if(card.id <= 99999999){
-			if(pack_name && pack_list[pack_name])
-				card.pack_id = pack_list[pack_name].findIndex(x => x === card.id);
-			else
-				card.pack_id = 0;
-		}
-		else{
-			card.pack_id = card.id % 1000;
-		}
-		result.push(card);
-	}
+	query_card(db, qstr, arg);
+	query_card(db2, qstr, arg);
 }
