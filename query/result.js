@@ -348,7 +348,7 @@ function create_rows(card){
 	let row_effect = table_result.insertRow(-1);	
 	let cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
-	div_stat.innerHTML = `${data}<hr>`;
+	div_stat.innerHTML = `${data}<br>`;
 	cell_effect.appendChild(div_stat);
 	
 	let div_desc = document.createElement('div');
