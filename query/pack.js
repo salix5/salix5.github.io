@@ -5,9 +5,12 @@ var pre_release={
 	
 	HC01: 100287001,
 	
+	VX02: 100288001,
+	
 	DBTM: 100418001,
 
 	// TCG
+	_BACH: 101107000,
 };
 
 var wiki_link = {
@@ -17,7 +20,10 @@ var wiki_link = {
 	
 	HC01: "https://yugioh-wiki.net/index.php?HISTORY%20ARCHIVE%20COLLECTION",
 	
+	VX02: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#VX02",
+	
 	DBTM: "https://yugioh-wiki.net/index.php?%A5%C7%A5%C3%A5%AD%A5%D3%A5%EB%A5%C9%A5%D1%A5%C3%A5%AF%20%A5%BF%A5%AF%A5%C6%A5%A3%A5%AB%A5%EB%A1%A6%A5%DE%A5%B9%A5%BF%A1%BC%A5%BA",
 	
 	// TCG
+	_BACH: "https://yugipedia.com/wiki/Battle_of_Chaos",
 };
