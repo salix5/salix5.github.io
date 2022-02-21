@@ -1,4 +1,7 @@
 "use strict";
+const zip_tag = '0222';
+const extra_url = '../cdb/pre-release.cdb';
+
 // max of int32: 10 digit
 const MAX_DIGIT = 10;
 const MAX_STRLEN = 200;
@@ -18,8 +21,6 @@ var cid_table, name_table, name_table_en, pack_list;
 
 var result = [];
 var pack_name = '';
-
-const url = '../cdb/pre-release.cdb';
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
@@ -84,8 +85,8 @@ function query_card(db, qstr, arg){
 	stmt.free();
 }
 
-const promise_db = fetch("https://salix5.github.io/CardEditor/cards.cdb").then(response => response.arrayBuffer()).then(process_buffer);
-const promise_db2 = fetch(url).then(response => response.arrayBuffer()).then(process_buffer);
+const promise_db = fetch(`https://salix5.github.io/CardEditor/${zip_tag}.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
+const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(process_buffer);
 const promise_sql = initSqlJs(config).then(response => {SQL = response;});
 
 const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => {cid_table = data;});
