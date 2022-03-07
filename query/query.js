@@ -1,6 +1,5 @@
 "use strict";
-const zip_tag = '0222';
-const extra_url = '../cdb/pre-release.cdb';
+const extra_url = "../cdb/pre-release.cdb";
 
 // max of int32: 10 digit
 const MAX_DIGIT = 10;
