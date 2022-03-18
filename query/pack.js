@@ -10,6 +10,8 @@ var pre_release={
 	DBTM: 100418001,
 	
 	POTE: 101109001,
+	
+	YO05: 100289001,
 
 	// TCG
 };
@@ -24,6 +26,8 @@ var wiki_link = {
 	DBTM: "https://yugioh-wiki.net/index.php?%A5%C7%A5%C3%A5%AD%A5%D3%A5%EB%A5%C9%A5%D1%A5%C3%A5%AF%20%A5%BF%A5%AF%A5%C6%A5%A3%A5%AB%A5%EB%A1%A6%A5%DE%A5%B9%A5%BF%A1%BC%A5%BA",
 	
 	POTE: "https://yugioh-wiki.net/index.php?POWER%20OF%20THE%20ELEMENTS",
+	
+	YO05: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 	
 	// TCG
 };
