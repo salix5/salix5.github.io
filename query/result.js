@@ -144,7 +144,7 @@ function create_rows(card){
 	let card_name = '';
 	let card_alias = '';
 	card_name = `<strong>${card.name}</strong>${print_limit(card.limit)}`;
-	if(card.ot == 2)
+	if(card.ot === 2)
 		card_name += '<img src="icon/tcg.png" height="20" width="40">';
 	// db link
 	if(!(card.type & TYPE_TOKEN)){
@@ -172,7 +172,7 @@ function create_rows(card){
 		}
 		if(link_text)
 			card_alias = `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a><br>`;
-		if(card.en_name)
+		if(card.ot !== 2 && card.en_name)
 			card_alias += `${card.en_name}<br>`;
 	}
 	card_alias += `${print_id(card.id, card.type, card.pack_id)}<br>`;
