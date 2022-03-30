@@ -94,16 +94,10 @@ function print_db_link(id, ot, db_id){
 		case 68811206:
 			return 'https://yugipedia.com/wiki/68811206';
 		default:
-			let url = '';
-			let locale = '';
-			if(ot == 2){
-				url = `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${db_id}`;
+			let url = `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${db_id}`
+			let locale = 'ja';
+			if(ot == 2)
 				locale = 'en';
-			}
-			else{
-				url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${db_id}`;
-				locale = 'ja';
-			}
 			return url + `&request_locale=${locale}`;
 	}
 }
