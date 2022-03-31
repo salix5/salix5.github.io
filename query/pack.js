@@ -1,5 +1,3 @@
-const zip_tag = "0330";
-
 var pre_release={
 	VJMP: 100200001,
 	
