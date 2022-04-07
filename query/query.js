@@ -294,7 +294,7 @@ function process_name(locale, raw_name, arg){
 	const setcode_str4 = "(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & 0xf000 & $setsubtype) == $setsubtype";
 	const setcode_str = ` OR ${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4}`;
 
-	let str_name = raw_name.replace(re_illegal, '');
+	let str_name = raw_name.replace(re_illegal, "");
 	if (!str_name)
 		return "";
 	
@@ -313,7 +313,7 @@ function process_name(locale, raw_name, arg){
 			}
 			break;
 		default:
-			name_cmd = "name LIKE $name ESCAPE '$'";
+			name_cmd = "name LIKE $name ESCAPE '$' OR alias IN (SELECT texts.id FROM texts WHERE name LIKE $name ESCAPE '$')";
 			arg.$name = string_to_literal(str_name);
 			// setcode
 			if (!re_wildcard.test(str_name)){
@@ -832,6 +832,7 @@ function server_analyze_data(params, qstr, arg){
 			select_locale.value = clocale;
 			break;
 		default:
+			clocale = "";
 			select_locale.value = "";
 			break;
 	}
