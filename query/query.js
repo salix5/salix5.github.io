@@ -23,7 +23,7 @@ var pack_name = '';
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
-const re_illegal = /\$(?![%_])/g;
+const re_bad_escape = /\$(?![%_])/g;
 const re_all_digit = /^\d+$/;
 
 String.prototype.toHalfWidth = function() {
@@ -286,15 +286,15 @@ function string_to_literal(str) {
 }
 
 // return: name_cmd
-// It does not accept "$...$".
+// en: table, ja: table, zh: query
 function process_name(locale, raw_name, arg){
-	const setcode_str1 = "(setcode & 0xfff) == $settype AND (setcode & 0xf000 & $setsubtype) == $setsubtype";
-	const setcode_str2 = "(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & 0xf000 & $setsubtype) == $setsubtype";
-	const setcode_str3 = "(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & 0xf000 & $setsubtype) == $setsubtype";
-	const setcode_str4 = "(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & 0xf000 & $setsubtype) == $setsubtype";
+	const setcode_str1 = "(setcode & 0xfff) == $settype AND (setcode & $setsubtype) == $setsubtype";
+	const setcode_str2 = "(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & $setsubtype) == $setsubtype";
+	const setcode_str3 = "(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & $setsubtype) == $setsubtype";
+	const setcode_str4 = "(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & $setsubtype) == $setsubtype";
 	const setcode_str = ` OR ${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4}`;
 
-	let str_name = raw_name.replace(re_illegal, "");
+	let str_name = raw_name.replace(re_bad_escape, "");
 	if (!str_name)
 		return "";
 	
@@ -303,8 +303,10 @@ function process_name(locale, raw_name, arg){
 		case "en":
 			let en_list = [];
 			for(const key in name_table_en){
-				if(name_table_en[key] && name_table_en[key].toLowerCase().indexOf(raw_name.toLowerCase()) !== -1)
+				if (name_table_en[key] && name_table_en[key].toLowerCase().indexOf(str_name.toLowerCase()) !== -1)
 					en_list.push(key);
+				if (en_list.length > MAX_RESULT_LEN)
+					break;
 			}
 			name_cmd = "0";
 			if(en_list.length <= MAX_RESULT_LEN){
@@ -313,10 +315,21 @@ function process_name(locale, raw_name, arg){
 			}
 			break;
 		default:
-			name_cmd = "name LIKE $name ESCAPE '$' OR alias IN (SELECT texts.id FROM texts WHERE name LIKE $name ESCAPE '$')";
-			arg.$name = string_to_literal(str_name);
-			// setcode
-			if (!re_wildcard.test(str_name)){
+			// ja, name
+			let jp_list = [];
+			for (const key in name_table) {
+				if (name_table[key].toHalfWidth().indexOf(str_name) !== -1)
+					jp_list.push(key);
+				if (jp_list.length > MAX_RESULT_LEN)
+					break;
+			}
+			name_cmd = "0";
+			if (jp_list.length <= MAX_RESULT_LEN) {
+				for (let i = 0; i < jp_list.length; ++i)
+					name_cmd += ` OR datas.id=${jp_list[i]}`;
+			}
+			// zh, setcode
+			if (!re_wildcard.test(str_name)) {
 				let real_str = str_name.replace(/\$%/g, '%');
 				real_str = real_str.replace(/\$_/g, '_');
 				if (setname[real_str]) {
@@ -325,15 +338,9 @@ function process_name(locale, raw_name, arg){
 					arg.$setsubtype = setname[real_str] & 0xf000;
 				}
 			}
-			let jp_list = [];
-			for(const key in name_table){
-				if(name_table[key].toHalfWidth().indexOf(raw_name) !== -1)
-					jp_list.push(key);
-			}
-			if(jp_list.length <= MAX_RESULT_LEN){
-				for(let i = 0; i < jp_list.length; ++i)
-					name_cmd += ` OR datas.id=${jp_list[i]}`;
-			}
+			// zh, name
+			name_cmd += " OR name LIKE $name ESCAPE '$' OR alias IN (SELECT texts.id FROM texts WHERE name LIKE $name ESCAPE '$')";
+			arg.$name = string_to_literal(str_name);
 			break;
 	}
 	return name_cmd;
@@ -342,9 +349,7 @@ function process_name(locale, raw_name, arg){
 
 // entrance of query
 function server_analyze1(params){
-	let qstr = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts"
-	qstr += " WHERE datas.id == texts.id AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
-	
+	let qstr = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id"
 	let arg = new Object();
 	arg.$monster = TYPE_MONSTER;
 	arg.$spell = TYPE_SPELL;
@@ -352,7 +357,17 @@ function server_analyze1(params){
 	arg.$link = TYPE_LINK;
 	arg.$pendulum = TYPE_PENDULUM;
 	arg.$token = TYPE_TOKEN;
-	
+
+	let ctype = check_int(params.get("type"));
+	let subtype = check_int(params.get("subtype"));
+
+	if (ctype === TYPE_MONSTER && subtype > 0 && (subtype & TYPE_TOKEN)) {
+		qstr += " AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)"
+	}
+	else {
+		qstr += " AND NOT type & $token AND abs(datas.id - alias) >= 10";
+	}
+
 	// id, primary key
 	let cid = check_int(params.get("id"));
 	if(cid && cid > 0){
@@ -401,7 +416,7 @@ function get_single_card(cdata) {
 			return result[0];
     }
 
-	let str_name = cdata.replace(re_illegal, '');
+	let str_name = cdata.replace(re_bad_escape, '');
 	let real_str = str_name.replace(/\$%/g, '%');
 	real_str = real_str.replace(/\$_/g, '_');
 	if (real_str) {
@@ -825,7 +840,7 @@ function server_analyze_data(params, qstr, arg){
 	}
 	
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
-	let cmulti = check_str(params.get("multi"));
+	let cmulti = check_str(params.get("multi")).replace(re_bad_escape, "");
 	let clocale = check_str(params.get("locale"));
 	switch(clocale){
 		case "en":
@@ -838,34 +853,30 @@ function server_analyze_data(params, qstr, arg){
 	}
 	let name_cmd = process_name(clocale, cmulti, arg);
 	if (name_cmd) {
-		// multi, might be raw data
+		// multi
 		text_multi.value = cmulti;
 		qstr += ` AND (${name_cmd} OR ${desc_str})`;
-		arg.$desc = string_to_literal(cmulti.replace(re_illegal, ''));
+		arg.$desc = string_to_literal(cmulti);
 		arg.valid = true;
 	}
 	else {
-		// name, might be raw data
-		let cname = check_str(params.get("name"));
+		// name
+		let cname = check_str(params.get("name")).replace(re_bad_escape, "");
 		name_cmd = process_name(clocale, cname, arg);
 		if (name_cmd) {
 			text_name.value = cname;
 			qstr += ` AND (${name_cmd})`;
 			arg.valid = true;
 		}
-		// desc, must be literal
-		let str_desc = check_str(params.get("desc")).replace(re_illegal, '');
-		if (str_desc) {
-			text_effect.value = str_desc;
+		// desc
+		let cdesc = check_str(params.get("desc")).replace(re_bad_escape, "");
+		if (cdesc) {
+			text_effect.value = cdesc;
 			qstr += ` AND ${desc_str}`;
-			arg.$desc = string_to_literal(str_desc);
+			arg.$desc = string_to_literal(cdesc);
 			arg.valid = true;
         }
     }
-	
-	// avoid token
-	if(!(arg.$stype & TYPE_TOKEN))
-		qstr += " AND NOT type & $token";
 	qstr += ";";
 	
 	if(!arg.valid){
