@@ -52,6 +52,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/4/19  
+復刻更新：22TP Vol.2  
+
 22/4/7  
 新增功能：搜尋規則上的同名卡
 
