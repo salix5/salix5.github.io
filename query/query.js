@@ -156,6 +156,10 @@ function is_normal_atk(x){
 	return (x >= 0);
 }
 
+function is_modulus(x) {
+	return (x >= 0 && x <= 999);
+}
+
 function is_lv(x){
 	return (x >= 1 && x <= 13);
 }
@@ -703,7 +707,7 @@ function server_analyze_data(params, qstr, arg){
 			arg.valid = true;
 			is_monster = true;
 		}
-		if (is_normal_atk(atk_mod)) {
+		if (is_modulus(atk_mod)) {
 			text_atk_mod.value = atk_mod;
 			qstr += " AND atk % 1000 == $atkm";
 			arg.$atkm = atk_mod;
@@ -716,7 +720,7 @@ function server_analyze_data(params, qstr, arg){
 		let def2 = check_int(params.get("def2"));
 		let sum = check_int(params.get("sum"));
 		let def_mod = check_int(params.get("defm"));
-		if (is_def(def1) || is_normal_atk(def2) || is_normal_atk(sum) || is_normal_atk(def_mod))
+		if (is_def(def1) || is_normal_atk(def2) || is_normal_atk(sum) || is_modulus(def_mod))
 			qstr += " AND NOT type & $link";
 		if (is_def(def1)) {
 			if (is_normal_atk(def2)) {
@@ -754,7 +758,7 @@ function server_analyze_data(params, qstr, arg){
 			arg.valid = true;
 			is_monster = true;
 		}
-		if (is_normal_atk(def_mod)) {
+		if (is_modulus(def_mod)) {
 			text_def_mod.value = def_mod;
 			qstr += " AND def % 1000 == $defm";
 			arg.$defm = def_mod;
