@@ -2,8 +2,6 @@
 
 function submit_query(event){
 	var params = new URLSearchParams();
-	var cid1 = 0;
-	var cid2 = 0;
 	
 	button1.disabled = true;
 	button2.disabled = true;
@@ -52,7 +50,7 @@ function submit_query(event){
 		atk1 = parseInt(text_atk1.value, 10);
 	if(text_atk2.value && text_atk2.value.length <= MAX_DIGIT)
 		atk2 = parseInt(text_atk2.value, 10);
-	
+
 	if(is_atk(atk1) || is_atk(atk2)){
 		if(atk1 == -1 || atk2 == -1){
 			params.set('atk1', -1);
@@ -68,6 +66,12 @@ function submit_query(event){
 			params.set('atk2', atk2);
 		}
 	}
+
+	let atk_mod = -10;
+	if (text_atk_mod.value && text_atk_mod.value.length <= MAX_DIGIT)
+		atk_mod = parseInt(text_atk_mod.value, 10);
+	if (is_normal_atk(atk_mod))
+		params.set('atkm', atk_mod);
 	
 	// def, exclude link monsters
 	let def1 = -10;
@@ -94,12 +98,18 @@ function submit_query(event){
 			params.set('def2', def2);
 		}
 	}
-	
+
+	let def_mod = -10;
+	if (text_def_mod.value && text_def_mod.value.length <= MAX_DIGIT)
+		def_mod = parseInt(text_def_mod.value, 10);
+	if (is_normal_atk(def_mod))
+		params.set('defm', def_mod);
+
 	// sum
 	let sum = -10;
 	if(text_sum.value && text_sum.value.length <= MAX_DIGIT)
 		sum = parseInt(text_sum.value, 10);
-	if(is_sum(sum))
+	if(is_normal_atk(sum))
 		params.set('sum', sum);
 	
 	// lv, scale

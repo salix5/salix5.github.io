@@ -152,7 +152,7 @@ function is_def(x){
 	return (x >= -2);
 }
 
-function is_sum(x){
+function is_normal_atk(x){
 	return (x >= 0);
 }
 
@@ -673,9 +673,10 @@ function server_analyze_data(params, qstr, arg){
 		// atk
 		let atk1 = check_int(params.get("atk1"));
 		let atk2 = check_int(params.get("atk2"));
-		if(is_atk(atk1)){
-			if(is_atk(atk2)){
-				if(atk1 === -1 || atk2 === -1){
+		let atk_mod = check_int(params.get("atkm"));
+		if (is_atk(atk1)) {
+			if (is_normal_atk(atk2)) {
+				if (atk1 === -1) {
 					text_atk1.value = -1;
 					qstr += " AND atk == $atk1";
 					arg.$atk1 = -2;
@@ -690,30 +691,41 @@ function server_analyze_data(params, qstr, arg){
 			}
 			else{
 				text_atk1.value = atk1;
-				qstr += " AND atk == $atk1";
-				if(atk1 === -1)
+				if (atk1 === -1) {
+					qstr += " AND atk == $atk1";
 					arg.$atk1 = -2;
-				else
+				}
+				else {
+					qstr += " AND atk == $atk1";
 					arg.$atk1 = atk1;
+				}
 			}
 			arg.valid = true;
 			is_monster = true;
 		}
-		
+		if (is_normal_atk(atk_mod)) {
+			text_atk_mod.value = atk_mod;
+			qstr += " AND atk % 1000 == $atkm";
+			arg.$atkm = atk_mod;
+			arg.valid = true;
+			is_monster = true;
+		}
+
 		// def, exclude link monsters
 		let def1 = check_int(params.get("def1"));
 		let def2 = check_int(params.get("def2"));
 		let sum = check_int(params.get("sum"));
-		if(is_def(def1) || is_def(def2) || is_sum(sum))
+		let def_mod = check_int(params.get("defm"));
+		if (is_def(def1) || is_normal_atk(def2) || is_normal_atk(sum) || is_normal_atk(def_mod))
 			qstr += " AND NOT type & $link";
-		if(is_def(def1)){
-			if(is_def(def2)){
-				if(def1 === -1 || def2 === -1){
+		if (is_def(def1)) {
+			if (is_normal_atk(def2)) {
+				if (def1 === -1) {
 					text_def1.value = -1;
 					qstr = qstr + " AND def == $def1";
 					arg.$def1 = -2;
 				}
-				else if(def1 === -2 || def2 === -2){
+				else if (def1 === -2) {
 					text_def1.value = -2;
 					qstr = qstr + " AND def == atk AND def != -2";
 				}
@@ -742,9 +754,16 @@ function server_analyze_data(params, qstr, arg){
 			arg.valid = true;
 			is_monster = true;
 		}
+		if (is_normal_atk(def_mod)) {
+			text_def_mod.value = def_mod;
+			qstr += " AND def % 1000 == $defm";
+			arg.$defm = def_mod;
+			arg.valid = true;
+			is_monster = true;
+		}
 		
 		// sum
-		if(is_sum(sum)){
+		if(is_normal_atk(sum)){
 			text_sum.value = sum;
 			qstr += " AND atk != -2 AND def != -2 AND atk + def == $sum";
 			arg.$sum = sum;
