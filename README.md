@@ -52,6 +52,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/4/23  
+新增卡包：POTE (1109)  
+
 22/4/22  
 新增功能：搜尋餘數  
 
@@ -63,7 +66,6 @@ Ex.
 
 22/3/30  
 VJMP：卡西莫拉爾、布提斯、馬達暴徒  
-先行卡更新：POTE (1109)  
 
 22/3/28  
 C（コクーン）：繭狀體  
@@ -87,7 +89,6 @@ VJMP：魔鬼少女 蘿莉絲
 
 22/3/10  
 P.U.N.K.（パンク）：P.U.N.K.  
-先行卡更新：POTE (1109)  
 
 22/3/7  
 TCG特有卡：BACH-EN  
@@ -99,7 +100,6 @@ VJMP：真紅眼黑星龍
 
 22/2/16  
 ネオス：新宇  
-先行卡更新：POTE (1109)  
 
 22/2/3  
 マテリアクトル：原質  
