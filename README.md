@@ -52,6 +52,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/5/1  
+KC01：攻擊誘導裝甲、逐漸削減的生命、機械驅動的魔鏡  
+VJMP：艾樂隆  
+
 22/4/23  
 新增卡包：POTE (1109)  
 
