@@ -289,18 +289,19 @@ function string_to_literal(str) {
 	return re_wildcard.test(str) ? str : `%${str}%`;
 }
 
-function setcode_cmd(settype, setsubtype) {
-	const setcode_str1 = `(setcode & 0xfff) == ${settype} AND (setcode & ${setsubtype}) == ${setsubtype}`;
-	const setcode_str2 = `(setcode >> 16 & 0xfff) == ${settype} AND (setcode >> 16 & ${setsubtype}) == ${setsubtype}`;
-	const setcode_str3 = `(setcode >> 32 & 0xfff) == ${settype} AND (setcode >> 32 & ${setsubtype}) == ${setsubtype}`;
-	const setcode_str4 = `(setcode >> 48 & 0xfff) == ${settype} AND (setcode >> 48 & ${setsubtype}) == ${setsubtype}`;
-	return `(${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4})`
+function setcode_cmd(setcode) {
+	const setcode_str1 = `(setcode & 0xfff) == (${setcode} & 0xfff) AND (setcode & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	const setcode_str2 = `(setcode >> 16 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 16 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	const setcode_str3 = `(setcode >> 32 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 32 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	const setcode_str4 = `(setcode >> 48 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 48 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	let ret = `(${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4})`;
+	return ret;
 }
 
 // return: name_cmd
 // en: table, ja: table, zh: query
 function process_name(locale, raw_name, arg){
-	const setcode_str = ` OR ${setcode_cmd("$settype", "$setsubtype")}`
+	const setcode_str = ` OR ${setcode_cmd("$setcode")}`;
 	let str_name = raw_name.replace(re_bad_escape, "");
 	if (!str_name)
 		return "";
@@ -341,8 +342,7 @@ function process_name(locale, raw_name, arg){
 				real_str = real_str.replace(/\$_/g, '_');
 				if (setname[real_str]) {
 					name_cmd += setcode_str;
-					arg.$settype = setname[real_str] & 0x0fff;
-					arg.$setsubtype = setname[real_str] & 0xf000;
+					arg.$setcode = setname[real_str];
 				}
 			}
 			// zh, name
