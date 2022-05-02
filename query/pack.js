@@ -8,6 +8,7 @@ var pre_release={
 	AC02: 100290001,
 
 	// TCG
+	_DIFO: 101108000,
 };
 
 var wiki_link = {
@@ -20,4 +21,5 @@ var wiki_link = {
 	AC02: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202022",
 	
 	// TCG
+	_DIFO: "https://yugipedia.com/wiki/Dimension_Force",
 };
