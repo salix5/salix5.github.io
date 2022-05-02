@@ -289,15 +289,18 @@ function string_to_literal(str) {
 	return re_wildcard.test(str) ? str : `%${str}%`;
 }
 
+function setcode_cmd(settype, setsubtype) {
+	const setcode_str1 = `(setcode & 0xfff) == ${settype} AND (setcode & ${setsubtype}) == ${setsubtype}`;
+	const setcode_str2 = `(setcode >> 16 & 0xfff) == ${settype} AND (setcode >> 16 & ${setsubtype}) == ${setsubtype}`;
+	const setcode_str3 = `(setcode >> 32 & 0xfff) == ${settype} AND (setcode >> 32 & ${setsubtype}) == ${setsubtype}`;
+	const setcode_str4 = `(setcode >> 48 & 0xfff) == ${settype} AND (setcode >> 48 & ${setsubtype}) == ${setsubtype}`;
+	return `(${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4})`
+}
+
 // return: name_cmd
 // en: table, ja: table, zh: query
 function process_name(locale, raw_name, arg){
-	const setcode_str1 = "(setcode & 0xfff) == $settype AND (setcode & $setsubtype) == $setsubtype";
-	const setcode_str2 = "(setcode >> 16 & 0xfff) == $settype AND (setcode >> 16 & $setsubtype) == $setsubtype";
-	const setcode_str3 = "(setcode >> 32 & 0xfff) == $settype AND (setcode >> 32 & $setsubtype) == $setsubtype";
-	const setcode_str4 = "(setcode >> 48 & 0xfff) == $settype AND (setcode >> 48 & $setsubtype) == $setsubtype";
-	const setcode_str = ` OR ${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4}`;
-
+	const setcode_str = ` OR ${setcode_cmd("$settype", "$setsubtype")}`
 	let str_name = raw_name.replace(re_bad_escape, "");
 	if (!str_name)
 		return "";
