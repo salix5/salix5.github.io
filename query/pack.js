@@ -6,6 +6,8 @@ var pre_release={
 	YO05: 100289001,
 	
 	AC02: 100290001,
+	
+	VP22: 100291001,
 
 	// TCG
 	_DIFO: 101108000,
@@ -19,6 +21,8 @@ var wiki_link = {
 	YO05: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 	
 	AC02: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202022",
+	
+	VP22: "https://yugioh-wiki.net/index.php?V%20JUMP%20EDITION#VP22A",
 	
 	// TCG
 	_DIFO: "https://yugipedia.com/wiki/Dimension_Force",
