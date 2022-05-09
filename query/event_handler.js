@@ -12,10 +12,8 @@ const text_sc2 = document.getElementById('text_sc2');
 
 const text_atk1 = document.getElementById('text_atk1');
 const text_atk2 = document.getElementById('text_atk2');
-const text_atk_mod = document.getElementById('text_atk_mod');
 const text_def1 = document.getElementById('text_def1');
 const text_def2 = document.getElementById('text_def2');
-const text_def_mod = document.getElementById('text_def_mod');
 const text_sum = document.getElementById('text_sum');
 
 const select_locale = document.getElementById('select_locale');
@@ -175,10 +173,8 @@ function clear_query(){
 	
 	text_atk1.value = '';
 	text_atk2.value = '';
-	text_atk_mod.value = '';
 	text_def1.value = '';
 	text_def2.value = '';
-	text_def_mod.value = '';
 	text_sum.value = '';
 	text_effect.value = '';
 	text_multi.value = '';
