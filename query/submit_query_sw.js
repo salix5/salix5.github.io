@@ -2,8 +2,6 @@
 
 function submit_query(event){
 	var params = new URLSearchParams();
-	var cid1 = 0;
-	var cid2 = 0;
 	
 	button1.disabled = true;
 	button2.disabled = true;
