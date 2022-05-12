@@ -7,6 +7,8 @@ var pre_release={
 	
 	AC02: 100290001,
 	
+	SD44: 100344001,
+	
 	VP22: 100291001,
 
 	// TCG
@@ -21,6 +23,8 @@ var wiki_link = {
 	YO05: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 	
 	AC02: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202022",
+	
+	SD44: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%CA%F5%B6%CC%A4%CE%C5%C1%C0%E2%A1%DD",
 	
 	VP22: "https://yugioh-wiki.net/index.php?V%20JUMP%20EDITION#VP22A",
 	
