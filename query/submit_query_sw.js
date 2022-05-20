@@ -7,15 +7,15 @@ function submit_query(event){
 	button2.disabled = true;
 	// id or name of the 2 cards
 	let cdata1 = text_id1.value.toHalfWidth();
-	if (is_str(cdata1))
+	if (cdata1)
 		params.set('id1', cdata1);
 	let cdata2 = text_id2.value.toHalfWidth();
-	if (is_str(cdata2))
+	if (cdata2)
 		params.set('id2', cdata2);
 	
 	// pack
 	let pack = select_ot.value.toHalfWidth();
-	if(is_str(pack))
+	if (pack)
 		params.set('pack', pack);
 	
 	// type
@@ -44,100 +44,30 @@ function submit_query(event){
 	}
 	
 	// atk
-	let atk1 = -10;
-	let atk2 = -10;
-	if(text_atk1.value && text_atk1.value.length <= MAX_DIGIT)
-		atk1 = parseInt(text_atk1.value, 10);
-	if(text_atk2.value && text_atk2.value.length <= MAX_DIGIT)
-		atk2 = parseInt(text_atk2.value, 10);
-	
-	if(is_atk(atk1) || is_atk(atk2)){
-		if(atk1 == -1 || atk2 == -1){
-			params.set('atk1', -1);
-		}
-		else if(!is_atk(atk2)){
-			params.set('atk1', atk1);
-		}
-		else if(!is_atk(atk1)){
-			params.set('atk1', atk2);
-		}
-		else {
-			params.set('atk1', atk1);
-			params.set('atk2', atk2);
-		}
-	}
+	if (text_atk1.value)
+		params.set('atk1', text_atk1.value);
+	if (text_atk2.value)
+		params.set('atk2', text_atk2.value);
 
-	
-	// def, exclude link monsters
-	let def1 = -10;
-	let def2 = -10;
-	if(text_def1.value && text_def1.value.length <= MAX_DIGIT)
-		def1 = parseInt(text_def1.value, 10);
-	if(text_def2.value && text_def2.value.length <= MAX_DIGIT)
-		def2 = parseInt(text_def2.value, 10);
-	if(is_def(def1) || is_def(def2)){
-		if(def1 == -1 || def2 == -1){
-			params.set('def1', -1);
-		}
-		else if(def1 == -2 || def2 == -2){
-			params.set('def1', -2);
-		}
-		else if(!is_def(def2)){
-			params.set('def1', def1);
-		}
-		else if(!is_def(def1)){
-			params.set('def1', def2);
-		}
-		else {
-			params.set('def1', def1);
-			params.set('def2', def2);
-		}
-	}
+	// def
+	if (text_def1.value)
+		params.set('def1', text_def1.value);
+	if (text_def2.value)
+		params.set('def2', text_def2.value);
 
 	// sum
-	let sum = -10;
-	if(text_sum.value && text_sum.value.length <= MAX_DIGIT)
-		sum = parseInt(text_sum.value, 10);
-	if(is_normal_atk(sum))
-		params.set('sum', sum);
-	
+	if (text_sum.value)
+		params.set('sum', text_sum.value);
+
 	// lv, scale
-	let lv1 = -10;
-	let lv2 = -10;
-	let sc1 = -10;
-	let sc2 = -10;
-	if(text_lv1.value && text_lv1.value.length <= MAX_DIGIT)
-		lv1 = parseInt(text_lv1.value, 10);
-	if(text_lv2.value && text_lv2.value.length <= MAX_DIGIT)
-		lv2 = parseInt(text_lv2.value, 10);
-	if(text_sc1.value && text_sc1.value.length <= MAX_DIGIT)
-		sc1 = parseInt(text_sc1.value, 10);
-	if(text_sc2.value && text_sc2.value.length <= MAX_DIGIT)
-		sc2 = parseInt(text_sc2.value, 10);
-	if(is_lv(lv1) || is_lv(lv2)){
-		if(!is_lv(lv2)){
-			params.set('lv1', lv1);
-		}
-		else if(!is_lv(lv1)){
-			params.set('lv1', lv2);
-		}
-		else{
-			params.set('lv1', lv1);
-			params.set('lv2', lv2);
-		}
-	}
-	if(is_scale(sc1) || is_scale(sc2)){			
-		if(!is_scale(sc2)){
-			params.set('sc1', sc1);
-		}
-		else if(!is_scale(sc1)){
-			params.set('sc1', sc2);
-		}
-		else{
-			params.set('sc1', sc1);
-			params.set('sc2', sc2);
-		}
-	}
+	if (text_lv1.value)
+		params.set('lv1', text_lv1.value);
+	if (text_lv2.value)
+		params.set('lv2', text_lv2.value);
+	if (text_sc1.value)
+		params.set('sc1', text_sc1.value);
+	if (text_sc2.value)
+		params.set('sc2', text_sc2.value);
 	
 	// attr, race
 	let cattr = 0;
@@ -161,35 +91,35 @@ function submit_query(event){
 		
 	//multi
 	let cmulti = text_multi.value.toHalfWidth();
-	if(is_str(cmulti))
+	if (cmulti)
 		params.set('multi', cmulti);
 	else{
 		// name
 		let cname = text_name.value.toHalfWidth();
-		if(is_str(cname))
+		if(cname)
 			params.set('name', cname);
 		
 		//effect
 		let cdesc = text_effect.value.toHalfWidth();
-		if(is_str(cdesc))
+		if(cdesc)
 			params.set('desc', cdesc);
 	}
 	let clocale = select_locale.value;
-	if(is_str(clocale))
+	if(clocale)
 		params.set('locale', clocale);
 	
 	document.activeElement.blur();
 	event.preventDefault();
 	button1.disabled = false;
 	button2.disabled = false;
-	if(params.toString() != ''){
+	if(params.toString() !== ''){
 		window.location.search = '?' + params.toString();
 	}
 }
 form1.onsubmit = submit_query;
 
 function url_query(){
-	if(window.location.search.substring(1) == '')
+	if(window.location.search.substring(1) === '')
 		return;
 	var params = new URLSearchParams(window.location.search);
 	server_analyze2(params);
