@@ -163,36 +163,7 @@ cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype');};
 cb_attr_reset.onchange = function(event){clear_cb('cb_attr');};
 cb_race_reset.onchange = function(event){clear_cb('cb_race');};
 
-function clear_query(){
-	text_id.value = '';
-	text_name.value = '';
-	text_lv1.value = '';
-	text_lv2.value = '';
-	text_sc1.value = '';
-	text_sc2.value = '';
-	
-	text_atk1.value = '';
-	text_atk2.value = '';
-	text_def1.value = '';
-	text_def2.value = '';
-	text_sum.value = '';
-	text_effect.value = '';
-	text_multi.value = '';
-	text_mat.value = '';
-	
-	select_locale.selectedIndex = 0;
-	select_ot.selectedIndex = 0;
-	select_type.selectedIndex = 0;
-	select_subtype_op.selectedIndex = 0;
-	select_marker_op.selectedIndex = 0;
-	list_cb.forEach(element => clear_cb(element));
-	
-	show_subtype('');
-}
-
-button2.onclick = function(event){
-	clear_query();
-};
+button2.onclick = function(event){show_subtype('');};
 
 function init(event){
 	if(window.innerWidth > MAX_WIDTH){
@@ -203,7 +174,7 @@ function init(event){
 		table_count.style.width = '100%';
 		table_result.style.width = '100%';
 	}
-	clear_query();
+	form1.reset();
 	button1.disabled = true;
 	button2.disabled = true;
 }
