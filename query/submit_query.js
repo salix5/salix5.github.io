@@ -226,12 +226,10 @@ function submit_query(event){
 	}
 	document.activeElement.blur();
 	event.preventDefault();
+	button1.disabled = false;
+	button2.disabled = false;
 	if(params.toString() != ''){
 		window.location.search = '?' + params.toString();
-	}
-	else{
-		button1.disabled = false;
-		button2.disabled = false;
 	}
 }
 form1.onsubmit = submit_query;
