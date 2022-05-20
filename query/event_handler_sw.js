@@ -72,33 +72,6 @@ cb_exclude_reset.onchange = function(event){clear_cb('cb_exclude');};
 cb_attr_reset.onchange = function(event){clear_cb('cb_attr');};
 cb_race_reset.onchange = function(event){clear_cb('cb_race');};
 
-function clear_query(){
-	text_id1.value = '';
-	text_id2.value = '';
-	text_name.value = '';
-	text_lv1.value = '';
-	text_lv2.value = '';
-	text_sc1.value = '';
-	text_sc2.value = '';
-	
-	text_atk1.value = '';
-	text_atk2.value = '';
-	text_def1.value = '';
-	text_def2.value = '';
-	text_sum.value = '';
-	text_effect.value = '';
-	text_multi.value = '';
-	
-	select_locale.selectedIndex = 0;
-	select_ot.selectedIndex = 0;
-	select_subtype_op.selectedIndex = 0;
-	list_cb.forEach(element => clear_cb(element));
-}
-
-button2.onclick = function(event){
-	clear_query();
-};
-
 function init(event){
 	if(window.innerWidth > MAX_WIDTH){
 		table_count.style.width = MAX_WIDTH + 'px';
@@ -108,7 +81,7 @@ function init(event){
 		table_count.style.width = '100%';
 		table_result.style.width = '100%';
 	}
-	clear_query();
+	form1.reset();
 	button1.disabled = true;
 	button2.disabled = true;
 }
