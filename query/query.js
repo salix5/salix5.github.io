@@ -421,7 +421,7 @@ function get_single_card(cdata) {
 		query(qstr, arg);
 		if (result.length === 1)
 			return result[0];
-    }
+	}
 
 	let str_name = cdata.replace(re_bad_escape, '');
 	let real_str = str_name.replace(/\$%/g, '%');
@@ -432,7 +432,7 @@ function get_single_card(cdata) {
 		query(qstr, arg);
 		if (result.length === 1)
 			return result[0];
-    }
+	}
 
 	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === cdata);
 	if (nid && nid > 0) {
@@ -441,7 +441,7 @@ function get_single_card(cdata) {
 		query(qstr, arg);
 		if (result.length === 1)
 			return result[0];
-    }
+	}
 
 	let fuzzy_literal = string_to_literal(str_name);
 	if (fuzzy_literal) {
@@ -450,7 +450,7 @@ function get_single_card(cdata) {
 		query(qstr, arg);
 		if (result.length === 1)
 			return result[0];
-    }
+	}
 	return null;
 }
 
@@ -681,37 +681,29 @@ function server_analyze_data(params, qstr, arg){
 		let atk1 = check_int(params.get("atk1"));
 		let atk2 = check_int(params.get("atk2"));
 		let atk_mod = check_int(params.get("atkm"));
-		if (is_atk(atk1)) {
+		if (atk1 === -1) {
+			text_atk1.value = -1;
+			qstr += " AND atk == -2";
+			arg.valid = true;
+			is_monster = true;
+		}
+		else if (is_normal_atk(atk1)) {
 			if (is_normal_atk(atk2)) {
-				if (atk1 === -1) {
-					text_atk1.value = -1;
-					qstr += " AND atk == $atk1";
-					arg.$atk1 = -2;
-				}
-				else{
-					text_atk1.value = atk1;
-					text_atk2.value = atk2;
-					qstr += " AND atk >= $atk1 AND atk <= $atk2";
-					arg.$atk1 = atk1;
-					arg.$atk2 = atk2;
-				}
-			}
-			else{
 				text_atk1.value = atk1;
-				if (atk1 === -1) {
-					qstr += " AND atk == $atk1";
-					arg.$atk1 = -2;
-				}
-				else {
-					qstr += " AND atk == $atk1";
-					arg.$atk1 = atk1;
-				}
+				text_atk2.value = atk2;
+				qstr += " AND atk >= $atk1 AND atk <= $atk2";
+				arg.$atk1 = atk1;
+				arg.$atk2 = atk2;
+			}
+			else {
+				text_atk1.value = atk1;
+				qstr += " AND atk == $atk1";
+				arg.$atk1 = atk1;
 			}
 			arg.valid = true;
 			is_monster = true;
 		}
 		if (is_modulus(atk_mod)) {
-			text_atk_mod.value = atk_mod;
 			qstr += " AND atk % 1000 == $atkm";
 			arg.$atkm = atk_mod;
 			arg.valid = true;
@@ -725,44 +717,35 @@ function server_analyze_data(params, qstr, arg){
 		let def_mod = check_int(params.get("defm"));
 		if (is_def(def1) || is_normal_atk(def2) || is_normal_atk(sum) || is_modulus(def_mod))
 			qstr += " AND NOT type & $link";
-		if (is_def(def1)) {
+		if (def1 === -1) {
+			text_def1.value = -1;
+			qstr += " AND def == -2";
+			arg.valid = true;
+			is_monster = true;
+		}
+		else if (def1 === -2) {
+			text_def1.value = -2;
+			qstr += " AND def == atk AND def != -2";
+			arg.valid = true;
+			is_monster = true;
+		}
+		else if (is_normal_atk(def1)) {
 			if (is_normal_atk(def2)) {
-				if (def1 === -1) {
-					text_def1.value = -1;
-					qstr = qstr + " AND def == $def1";
-					arg.$def1 = -2;
-				}
-				else if (def1 === -2) {
-					text_def1.value = -2;
-					qstr = qstr + " AND def == atk AND def != -2";
-				}
-				else{
-					text_def1.value = def1;
-					text_def2.value = def2;
-					qstr = qstr + " AND def >= $def1 AND def <= $def2";
-					arg.$def1 = def1;
-					arg.$def2 = def2;
-				}
-			}
-			else{
 				text_def1.value = def1;
-				if(def1 === -1){
-					qstr = qstr + " AND def == $def1";
-					arg.$def1 = -2;
-				}
-				else if(def1 === -2){
-					qstr = qstr + " AND def == atk AND def != -2";
-				}
-				else{
-					qstr = qstr + " AND def == $def1";
-					arg.$def1 = def1;
-				}
+				text_def2.value = def2;
+				qstr += " AND def >= $def1 AND def <= $def2";
+				arg.$def1 = def1;
+				arg.$def2 = def2;
+			}
+			else {
+				text_def1.value = def1;
+				qstr += " AND def == $def1";
+				arg.$def1 = def1;
 			}
 			arg.valid = true;
 			is_monster = true;
 		}
 		if (is_modulus(def_mod)) {
-			text_def_mod.value = def_mod;
 			qstr += " AND def % 1000 == $defm";
 			arg.$defm = def_mod;
 			arg.valid = true;
@@ -785,12 +768,12 @@ function server_analyze_data(params, qstr, arg){
 			text_lv1.value = lv1;
 			if(is_lv(lv2)){
 				text_lv2.value = lv2;
-				qstr = qstr + " AND (level & 0xff) >= $lv1 AND (level & 0xff) <= $lv2";
+				qstr += " AND (level & 0xff) >= $lv1 AND (level & 0xff) <= $lv2";
 				arg.$lv1 = lv1;
 				arg.$lv2 = lv2;
 			}
 			else{
-				qstr = qstr + " AND (level & 0xff) == $lv1";
+				qstr += " AND (level & 0xff) == $lv1";
 				arg.$lv1 = lv1;
 			}
 			arg.valid = true;
@@ -805,12 +788,12 @@ function server_analyze_data(params, qstr, arg){
 			qstr += " AND type & $pendulum";
 			if(is_scale(sc2)){
 				text_sc2.value = sc2;
-				qstr = qstr + " AND (level >> 24 & 0xff) >= $sc1 AND (level >> 24 & 0xff) <= $sc2";
+				qstr += " AND (level >> 24 & 0xff) >= $sc1 AND (level >> 24 & 0xff) <= $sc2";
 				arg.$sc1 = sc1;
 				arg.$sc2 = sc2;
 			}
 			else{
-				qstr = qstr + " AND (level >> 24 & 0xff) == $sc1";
+				qstr += " AND (level >> 24 & 0xff) == $sc1";
 				arg.$sc1 = sc1;
 			}
 			arg.valid = true;
@@ -825,7 +808,7 @@ function server_analyze_data(params, qstr, arg){
 				if(cattr & index_to_attr[i])
 					cb_attr[i].checked = true;
 			}
-			qstr = qstr + " AND attribute & $attr";
+			qstr += " AND attribute & $attr";
 			arg.$attr = cattr;
 			arg.valid = true;
 			is_monster = true;
@@ -835,7 +818,7 @@ function server_analyze_data(params, qstr, arg){
 				if(crace & index_to_race[i])
 					cb_race[i].checked = true;
 			}
-			qstr = qstr + " AND race & $race";
+			qstr += " AND race & $race";
 			arg.$race = crace;
 			arg.valid = true;
 			is_monster = true;
@@ -848,14 +831,14 @@ function server_analyze_data(params, qstr, arg){
 				if(cmarker & index_to_marker[i])
 					cb_marker[i].checked = true;
 			}
-			qstr = qstr + " AND type & $link";
+			qstr += " AND type & $link";
 			if(marker_op){
 				select_marker_op.value = 'and';
-				qstr = qstr + " AND def & $marker == $marker";
+				qstr += " AND def & $marker == $marker";
 			}
 			else{
 				select_marker_op.value = 'or';
-				qstr = qstr + " AND def & $marker";
+				qstr += " AND def & $marker";
 			}
 			arg.$marker = cmarker;
 			arg.valid = true;
@@ -901,8 +884,8 @@ function server_analyze_data(params, qstr, arg){
 			qstr += ` AND ${desc_str}`;
 			arg.$desc = string_to_literal(cdesc);
 			arg.valid = true;
-        }
-    }
+		}
+	}
 	qstr += ";";
 	
 	if(!arg.valid){
