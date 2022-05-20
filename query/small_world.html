@@ -11,17 +11,17 @@
 <body bgcolor="#e0e0e0">
 	<form id="form1">
 	<table class="hidden">
-	<tr><td>起點</td><td><input id="text_id1" type="search" required></td></tr>
-	<tr><td>終點</td><td><input id="text_id2" type="search" required></td></tr>
+	<tr><td>起點</td><td><input type="search" id="text_id1" maxlength="50" required></td></tr>
+	<tr><td>終點</td><td><input type="search" id="text_id2" maxlength="50" required></td></tr>
 	
-	<tr><td>卡名</td><td><input id="text_name" type="search">
+	<tr><td>卡名</td><td><input type="search" id="text_name" maxlength="50">
 	<select id="select_locale">
 		<option value="">OCG</option>
 		<option value="en">TCG</option>
 	<select>
 	</td></tr>
-	<tr><td>效果</td><td><input id="text_effect" type="search" ></td></tr>
-	<tr><td>關鍵字</td><td><input id="text_multi" type="search" ></td></tr>
+	<tr><td>效果</td><td><input type="search" id="text_effect" maxlength="200"></td></tr>
+	<tr><td>關鍵字</td><td><input type="search" id="text_multi" maxlength="200"></td></tr>
 	
 	<tr><td>卡包</td>
 	<td>
@@ -93,39 +93,39 @@
 	
 	<tr id="row_lv"><td>星數</td>
 	<td>
-	<input id="text_lv1" type="number" min="1" max="13" style="width: 3em" >
+	<input type="number" id="text_lv1" min="1" max="13" style="width: 3em" >
 	～
-	<input id="text_lv2" type="number" min="1" max="13" style="width: 3em" >
+	<input type="number" id="text_lv2" min="1" max="13" style="width: 3em" >
 	</td>
 	</tr>
 	
 	<tr id="row_sc"><td>刻度</td>
 	<td>
-	<input id="text_sc1" type="number" min="0" max="13" style="width: 3em" >
+	<input type="number" id="text_sc1" min="0" max="13" style="width: 3em" >
 	～
-	<input id="text_sc2" type="number" min="0" max="13" style="width: 3em" >
+	<input type="number" id="text_sc2" min="0" max="13" style="width: 3em" >
 	</td>
 	</tr>
 	
 	<tr id="row_atk"><td>攻擊力</td>
 	<td>
-	<input id="text_atk1" type="number" min="-1" max="100000" style="width: 5em" >
+	<input type="number" id="text_atk1" min="-1" max="100000" style="width: 5em">
 	～
-	<input id="text_atk2" type="number" min="0" max="100000" style="width: 5em" > (-1 = ?)
+	<input type="number" id="text_atk2" min="0" max="100000" style="width: 5em"> (-1 = ?)
 	</td>
 	</tr>
 	
 	<tr id="row_def"><td>守備力</td>
 	<td>
-	<input id="text_def1" type="number" min="-2" max="100000" style="width: 5em" >
+	<input type="number" id="text_def1" min="-2" max="100000" style="width: 5em">
 	～
-	<input id="text_def2" type="number" min="0" max="100000" style="width: 5em" > (-2 = 攻守相等)
+	<input type="number" id="text_def2" min="0" max="100000" style="width: 5em"> (-2 = 攻守相等)
 	</td>
 	</tr>
 	
 	<tr id="row_sum"><td>總和</td>
 	<td>
-	<input id="text_sum" type="number" min="0" max="100000" style="width: 5em" >
+	<input type="number" id="text_sum" min="0" max="100000" style="width: 5em">
 	</td>
 	</tr>
 	
