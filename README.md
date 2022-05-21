@@ -52,6 +52,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/5/21  
+新增卡包：DP27  
+復刻更新：DP27  
+
 22/5/13  
 先行卡更新：AC02、DABL (1110)
 
@@ -62,7 +66,7 @@ Ex.
 復刻更新：DR02  
 
 22/5/5  
-先行卡更新：DIFO-EN、DP27  
+先行卡更新：DIFO-EN  
 
 22/5/1  
 KC01：攻擊誘導裝甲、逐漸削減的生命、機械驅動的魔鏡  
@@ -85,7 +89,6 @@ VJMP：卡西莫拉爾、布提斯、馬達暴徒
 C（コクーン）：繭狀體  
 N（ネオスペーシアン）：新空間俠  
 クリアウィング：清透翼  
-先行卡更新：DP27  
 
 22/3/20  
 新增卡包：VX02  
