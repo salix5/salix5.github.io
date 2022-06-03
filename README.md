@@ -55,7 +55,7 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
-22/6/1  
+22/6/3  
 先行卡更新：AC02
 
 22/5/21  
