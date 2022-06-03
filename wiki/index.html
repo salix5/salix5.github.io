@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="salix5">
+	<meta name="description" content="新卡包的Wiki連結。">
+	<title>遊戲王Wiki連結</title>
+</head>
+<body bgcolor="#e0e0e0">
+	<div id="div_link"></div>
+	<script src="../query/pack.js"></script>
+	<script>
+		let str_link = '';
+		for(const prop in wiki_link){
+			str_link += `<a href="${wiki_link[prop]}" target="_blank" rel="noreferrer">${prop}</a><br><br>`;
+		}
+		document.getElementById('div_link').innerHTML = str_link;
+	</script>
+</body>
+</html>
