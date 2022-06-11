@@ -55,15 +55,16 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
-22/6/3  
-先行卡更新：AC02
+22/6/10  
+新增卡包：AC02  
+復刻更新：AC02  
 
 22/5/21  
 新增卡包：DP27  
 復刻更新：DP27  
 
 22/5/13  
-先行卡更新：AC02、DABL (1110)
+先行卡更新：DABL (1110)
 
 22/5/9  
 先行卡更新：VJMP、VP22  
