@@ -55,6 +55,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/6/12  
+YO05：魔鍵憑神-亞斯塔圖
+
 22/6/10  
 新增卡包：AC02  
 復刻更新：AC02  
@@ -104,9 +107,6 @@ VJMP：魔鬼少女 蘿莉絲
 22/3/19  
 新增卡包：DBTM  
 復刻更新：DBTM  
-
-22/3/18  
-先行卡更新：YO05 (OCG構築 第5卷)  
 
 22/3/14  
 更新：4月禁卡表  
