@@ -55,6 +55,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/6/14  
+更新：7月禁卡表  
+先行卡更新：DABL (1110)
+
 22/6/12  
 YO05：魔鍵憑神-亞斯塔圖
 
