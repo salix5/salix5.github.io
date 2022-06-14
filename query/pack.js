@@ -6,6 +6,8 @@ var pre_release={
 	VP22: 100291001,
 	
 	DABL: 101110001,
+	
+	SR13: 100313001,
 
 	// TCG
 	_DIFO: 101108000,
@@ -19,6 +21,8 @@ var wiki_link = {
 	VP22: "https://yugioh-wiki.net/index.php?V%20JUMP%20EDITION#VP22A",
 	
 	DABL: "https://yugioh-wiki.net/index.php?DARKWING%20BLAST",
+	
+	SR13: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%ADR%A1%DD%A5%C7%A5%D3%A5%EB%A5%BA%A1%A6%A5%B2%A1%BC%A5%C8%A1%DD#pack"
 	
 	// TCG
 	_DIFO: "https://yugipedia.com/wiki/Dimension_Force",
