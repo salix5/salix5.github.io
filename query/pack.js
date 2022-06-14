@@ -22,7 +22,7 @@ var wiki_link = {
 	
 	DABL: "https://yugioh-wiki.net/index.php?DARKWING%20BLAST",
 	
-	SR13: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%ADR%A1%DD%A5%C7%A5%D3%A5%EB%A5%BA%A1%A6%A5%B2%A1%BC%A5%C8%A1%DD#pack"
+	SR13: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%ADR%A1%DD%A5%C7%A5%D3%A5%EB%A5%BA%A1%A6%A5%B2%A1%BC%A5%C8%A1%DD",
 	
 	// TCG
 	_DIFO: "https://yugipedia.com/wiki/Dimension_Force",
