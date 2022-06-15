@@ -11,12 +11,8 @@ var config = {
 var SQL;
 var db, db2;
 
-// from strings.conf, lflist.conf
-var setname = new Object();
-var ltable = new Object();
-
 // from json
-var cid_table, name_table, name_table_en, pack_list;
+var cid_table, name_table, name_table_en, pack_list, setname, ltable;
 
 var result = [];
 var pack_name = '';
@@ -88,54 +84,14 @@ const promise_db = fetch(`https://salix5.github.io/CardEditor/${zip_tag}.zip`).t
 const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(process_buffer);
 const promise_sql = initSqlJs(config).then(response => {SQL = response;});
 
-const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => {cid_table = data;});
-const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => {name_table = data;});
-const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => {pack_list = data;});
-const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => {name_table_en = data;});
+const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => { cid_table = data; });
+const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => { name_table = data; });
+const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => { name_table_en = data; });
+const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => { pack_list = data; });
+const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => { setname = data; });
+const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => { ltable = data; });
 
-const promise_strings = fetch("https://salix5.github.io/CardEditor/strings.conf").then(response => response.text()).then(function(data){
-	let ldata = data.replace(/\r\n/g, '\n');
-	let line = ldata.split('\n');
-	for(let i = 0; i < line.length; ++i){
-		let init = line[i].substring(0, 8);
-		if(init === '!setname'){
-			let tmp = line[i].substring(9);  // code + name
-			let j = tmp.indexOf(' ');
-			let scode = tmp.substring(0, j);
-			let part = tmp.substring(j + 1).split('\t');
-			let sname = part[0];
-			setname[sname] = parseInt(scode, 16) ? parseInt(scode, 16) : 0;
-		}
-	}
-}
-);
-
-const promise_lflist = fetch("text/lflist.conf").then(response => response.text()).then(function(data){
-	let ldata = data.replace(/\r\n/g, '\n');
-	let line = ldata.split('\n');
-	let count = 0;
-	for(let i = 0; i < line.length; ++i){
-		let init = line[i].substring(0, 1);
-		if(init === '!'){
-			++count;
-			// only take the first banlist
-			if(count === 2)
-				break;
-		}
-		else if(init === '#'){
-			continue;
-		}
-		else{
-			let part = line[i].split(' ');
-			let id = parseInt(part[0], 10);
-			if(id)
-				ltable[id] = parseInt(part[1], 10) ? parseInt(part[1], 10) : 0;
-		}
-	}
-}
-);
-
-Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_strings, promise_lflist]).then(function(values){
+Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function(values){
 	db = new SQL.Database(values[1]);
 	db2 = new SQL.Database(values[2]);
 	url_query();
