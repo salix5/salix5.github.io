@@ -55,8 +55,12 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/6/21  
+先行卡更新：POTE-EN  
+
 22/6/18  
 新增卡包：VP22  
+VJMP：賢瑞官 加爾丹  
 TCG特有卡：DIFO-EN  
 
 22/6/14  
