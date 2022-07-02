@@ -55,6 +55,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/7/2  
+復刻更新：22TP Vol.3  
+
 22/6/27  
 新增卡包：SD44  
 復刻更新：SD44  
