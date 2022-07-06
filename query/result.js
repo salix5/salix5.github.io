@@ -28,7 +28,7 @@ function print_card_number(pack, index){
 	let cat = pack.substr(0,2); 
 	
 	// ot
-	if(pack.charAt(0) == '_'){
+	if(pack.charAt(0) === '_'){
 		str_pack = pack.substring(1);
 		str_ot = 'EN';
 	}
@@ -83,7 +83,7 @@ function print_id(id, type, pack_id){
 }
 
 function print_ad(x){
-	if(x == -2)
+	if(x === -2)
 		return '?';
 	else
 		return x;
@@ -96,18 +96,18 @@ function print_db_link(id, ot, db_id){
 		default:
 			let url = `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${db_id}`
 			let locale = 'ja';
-			if(ot == 2)
+			if(ot === 2)
 				locale = 'en';
 			return url + `&request_locale=${locale}`;
 	}
 }
 
 function print_limit(limit){
-	if(limit == 0)
+	if(limit === 0)
 		return '<img src="icon/0.png" height="20" width="20">';
-	else if(limit == 1)
+	else if(limit === 1)
 		return '<img src="icon/1.png" height="20" width="20">';
-	else if(limit == 2)
+	else if(limit === 2)
 		return '<img src="icon/2.png" height="20" width="20">';
 	else
 		return '';
@@ -153,7 +153,7 @@ function create_rows(card){
 		else if(pre_pack = pre_id_to_pack(card.id)){
 			let str_site = '';
 			let str_pack = '';
-			if(pre_pack.charAt(0) == '_'){
+			if(pre_pack.charAt(0) === '_'){
 				str_site = 'Yugipedia';
 				str_pack = pre_pack.substring(1);
 			}
@@ -164,9 +164,9 @@ function create_rows(card){
 			link_text = `${str_site}: ${str_pack}`;
 			url = wiki_link[pre_pack];
 		}
-		if(link_text)
+		if (link_text)
 			card_alias = `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a><br>`;
-		if(card.en_name && card.en_name !== card.jp_name)
+		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name))
 			card_alias += `${card.en_name}<br>`;
 	}
 	card_alias += `${print_id(card.id, card.type, card.pack_id)}<br>`;
@@ -297,7 +297,7 @@ function create_rows(card){
 		
 		let lv = card.level & 0xff;
 		let scale = (card.level >> 24) & 0xff;
-		data += `${lvstr}${lv == 0 ? "?" : lv}`;
+		data += `${lvstr}${lv === 0 ? "?" : lv}`;
 		if(card.attribute)
 			data += `/${attr_to_str[card.attribute]}`;
 		else
