@@ -302,7 +302,7 @@ function process_name(locale, raw_name, arg){
 				}
 			}
 			// zh, name
-			name_cmd += " OR name LIKE $name ESCAPE '$' OR alias IN (SELECT texts.id FROM texts WHERE name LIKE $name ESCAPE '$')";
+			name_cmd += " OR name LIKE $name ESCAPE '$' OR alias IN (SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & $token AND name LIKE $name ESCAPE '$')";
 			arg.$name = string_to_literal(str_name);
 			break;
 	}
