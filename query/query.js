@@ -269,14 +269,14 @@ function process_name(locale, raw_name, arg){
 			for(const key in name_table_en){
 				if (name_table_en[key] && name_table_en[key].toLowerCase().indexOf(str_name.toLowerCase()) !== -1)
 					en_list.push(key);
-				if (en_list.length > MAX_RESULT_LEN)
+				if (en_list.length > MAX_RESULT_LEN){
+					en_list.length = 0;
 					break;
+				}
 			}
 			name_cmd = "0";
-			if(en_list.length <= MAX_RESULT_LEN){
-				for(let i = 0; i < en_list.length; ++i)
-					name_cmd += ` OR datas.id=${en_list[i]}`;
-			}
+			for(let i = 0; i < en_list.length; ++i)
+				name_cmd += ` OR datas.id=${en_list[i]}`;
 			break;
 		default:
 			// ja, name
@@ -284,14 +284,14 @@ function process_name(locale, raw_name, arg){
 			for (const key in name_table) {
 				if (name_table[key].toHalfWidth().indexOf(str_name) !== -1)
 					jp_list.push(key);
-				if (jp_list.length > MAX_RESULT_LEN)
+				if (jp_list.length > MAX_RESULT_LEN){
+					jp_list.length = 0;
 					break;
+				}
 			}
 			name_cmd = "0";
-			if (jp_list.length <= MAX_RESULT_LEN) {
-				for (let i = 0; i < jp_list.length; ++i)
-					name_cmd += ` OR datas.id=${jp_list[i]}`;
-			}
+			for (let i = 0; i < jp_list.length; ++i)
+				name_cmd += ` OR datas.id=${jp_list[i]}`;
 			// zh, setcode
 			if (!re_wildcard.test(str_name)) {
 				let real_str = str_name.replace(/\$%/g, '%');
