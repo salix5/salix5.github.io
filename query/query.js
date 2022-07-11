@@ -35,26 +35,32 @@ function process_buffer(buf){
 	return arr;
 }
 
-function query_card(db, qstr, arg){
+function query_card(db, qstr, arg, ret){
 	var stmt = db.prepare(qstr);
 	stmt.bind(arg);
 	while(stmt.step()) {
-		// execute
 		let card = stmt.getAsObject();
-		if(card.id <= 99999999){
-			card.db_id = cid_table[card.id];
-			card.jp_name = name_table[card.id];
-			card.en_name = name_table_en[card.id];
-		}
-		
 		// spell & trap reset data
-		if(card.type & (TYPE_SPELL | TYPE_TRAP)){
+		if (card.type & (TYPE_SPELL | TYPE_TRAP)) {
 			card.atk = 0;
 			card.def = 0;
 			card.lv = 0;
 			card.race = 0;
 			card.attr = 0;
 		}
+
+		// cid
+		if (card.id <= 99999999) {
+			card.cid = cid_table[card.id];
+			card.jp_name = name_table[card.id];
+			card.en_name = name_table_en[card.id];
+		}
+		else {
+			card.cid = null;
+			card.jp_name = null;
+			card.en_name = null;
+		}
+
 		// limit
 		if(ltable[card.id] === 0)
 			card.limit = 0;
@@ -75,7 +81,7 @@ function query_card(db, qstr, arg){
 		else{
 			card.pack_id = card.id % 1000;
 		}
-		result.push(card);
+		ret.push(card);
 	}
 	stmt.free();
 }
@@ -332,11 +338,11 @@ function server_analyze1(params){
 	}
 
 	// id, primary key
-	let cid = check_int(params.get("id"));
-	if(cid && cid > 0){
-		text_id.value = cid;
+	let id = check_int(params.get("id"));
+	if(id && id > 0){
+		text_id.value = id;
 		qstr += " AND datas.id == $id;";
-		arg.$id = cid;
+		arg.$id = id;
 		query(qstr, arg);
 		if(result.length === 1)
 			document.title = result[0].name;
@@ -370,10 +376,10 @@ function get_single_card(cdata) {
 	arg.$ext = TYPE_EXT;
 
 	result.length = 0;
-	let cid = check_int(cdata);
-	if (cid && cid > 0) {
+	let id = check_int(cdata);
+	if (id && id > 0) {
 		let qstr = `${qstr0} AND datas.id == $id;`;
-		arg.$id = cid;
+		arg.$id = id;
 		query(qstr, arg);
 		if (result.length === 1)
 			return result[0];
@@ -855,6 +861,6 @@ function server_analyze_data(params, qstr, arg){
 
 function query(qstr, arg){
 	result.length = 0;
-	query_card(db, qstr, arg);
-	query_card(db2, qstr, arg);
+	query_card(db, qstr, arg, result);
+	query_card(db2, qstr, arg, result);
 }
