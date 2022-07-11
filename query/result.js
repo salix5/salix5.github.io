@@ -89,12 +89,12 @@ function print_ad(x){
 		return x;
 }
 
-function print_db_link(id, ot, db_id){
+function print_db_link(id, ot, cid){
 	switch(id){
 		case 68811206:
 			return 'https://yugipedia.com/wiki/68811206';
 		default:
-			let url = `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${db_id}`
+			let url = `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${cid}`;
 			let locale = 'ja';
 			if(ot === 2)
 				locale = 'en';
@@ -148,7 +148,7 @@ function create_rows(card){
 		
 		if(card.id <= 99999999){
 			link_text = card.jp_name;
-			url = print_db_link(card.id, card.ot, card.db_id);
+			url = print_db_link(card.id, card.ot, card.cid);
 		}
 		else if(pre_pack = pre_id_to_pack(card.id)){
 			let str_site = '';
