@@ -55,6 +55,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/7/13  
+スケアクロー：恐懼爪牙  
+ティアラメンツ：珠淚哀歌  
+
 22/7/2  
 復刻更新：22TP Vol.3  
 
