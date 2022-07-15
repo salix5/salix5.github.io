@@ -667,14 +667,12 @@ function param_to_condition(params, arg){
 			break;
 		case 't':
 			qstr += " AND datas.ot == 2";
-			arg.valid = true;
 			break;
 		default:
 			for(const prop in pack_list){
 				if(pack === prop){
 					qstr += pack_cmd(pack_list[prop]);
 					pack_name = prop;
-					arg.valid = true;
 					break;
 				}
 			}
@@ -684,7 +682,6 @@ function param_to_condition(params, arg){
 				if(pack === prop){
 					qstr += ` AND datas.id>=${pre_release[prop]} AND datas.id<=${pre_release[prop] + 998}`;
 					pack_name = prop;
-					arg.valid = true;
 					break;
 				}
 			}
@@ -727,7 +724,6 @@ function param_to_condition(params, arg){
 				qstr += " AND NOT type & $exc";
 				arg.$exc = exc;
 			}
-			arg.valid = true;
 			if(select_type){
 				select_type.value = 'm';
 				show_subtype('m');
@@ -755,7 +751,6 @@ function param_to_condition(params, arg){
 					arg.$stype = subtype;
 				}
 			}
-			arg.valid = true;
 			if(select_type){
 				select_type.value = 's';
 				show_subtype('s');
@@ -783,7 +778,6 @@ function param_to_condition(params, arg){
 					arg.$stype = subtype;
 				}
 			}
-			arg.valid = true;
 			if(select_type){
 				select_type.value = 't';
 				show_subtype('t');
@@ -806,7 +800,6 @@ function param_to_condition(params, arg){
 			qstr += " AND (desc LIKE $mat1 ESCAPE '$' OR desc LIKE $mat2 ESCAPE '$')";
 			arg.$mat1 = `%「${mat}」+%`;
 			arg.$mat2 = `%+「${mat}」%`;
-			arg.valid = true;
 			is_monster = true;
 		}
 		
@@ -817,7 +810,6 @@ function param_to_condition(params, arg){
 		if (atk1 === -1) {
 			text_atk1.value = -1;
 			qstr += " AND atk == -2";
-			arg.valid = true;
 			is_monster = true;
 		}
 		else if (atk1 !== null) {
@@ -833,13 +825,11 @@ function param_to_condition(params, arg){
 				qstr += " AND atk == $atk1";
 				arg.$atk1 = atk1;
 			}
-			arg.valid = true;
 			is_monster = true;
 		}
 		if (atk_mod !== null) {
 			qstr += " AND atk % 1000 == $atkm";
 			arg.$atkm = atk_mod;
-			arg.valid = true;
 			is_monster = true;
 		}
 
@@ -853,13 +843,11 @@ function param_to_condition(params, arg){
 		if (def1 === -1) {
 			text_def1.value = -1;
 			qstr += " AND def == -2";
-			arg.valid = true;
 			is_monster = true;
 		}
 		else if (def1 === -2) {
 			text_def1.value = -2;
 			qstr += " AND def == atk AND def != -2";
-			arg.valid = true;
 			is_monster = true;
 		}
 		else if (def1 !== null) {
@@ -875,13 +863,11 @@ function param_to_condition(params, arg){
 				qstr += " AND def == $def1";
 				arg.$def1 = def1;
 			}
-			arg.valid = true;
 			is_monster = true;
 		}
 		if (def_mod !== null) {
 			qstr += " AND def % 1000 == $defm";
 			arg.$defm = def_mod;
-			arg.valid = true;
 			is_monster = true;
 		}
 		
@@ -890,7 +876,6 @@ function param_to_condition(params, arg){
 			text_sum.value = sum;
 			qstr += " AND atk != -2 AND def != -2 AND atk + def == $sum";
 			arg.$sum = sum;
-			arg.valid = true;
 			is_monster = true;
 		}
 	
@@ -909,7 +894,6 @@ function param_to_condition(params, arg){
 				qstr += " AND (level & 0xff) == $lv1";
 				arg.$lv1 = lv1;
 			}
-			arg.valid = true;
 			is_monster = true;
 		}
 		
@@ -929,7 +913,6 @@ function param_to_condition(params, arg){
 				qstr += " AND (level >> 24 & 0xff) == $sc1";
 				arg.$sc1 = sc1;
 			}
-			arg.valid = true;
 			is_monster = true;
 		}
 		
@@ -943,7 +926,6 @@ function param_to_condition(params, arg){
 			}
 			qstr += " AND attribute & $attr";
 			arg.$attr = attr;
-			arg.valid = true;
 			is_monster = true;
 		}
 		if (race) {
@@ -953,7 +935,6 @@ function param_to_condition(params, arg){
 			}
 			qstr += " AND race & $race";
 			arg.$race = race;
-			arg.valid = true;
 			is_monster = true;
 		}
 		// marker
@@ -974,7 +955,6 @@ function param_to_condition(params, arg){
 				qstr += " AND def & $marker";
 			}
 			arg.$marker = marker;
-			arg.valid = true;
 			is_monster = true;
 		}
 		if(arg.$ctype === 0 && is_monster)
@@ -999,7 +979,6 @@ function param_to_condition(params, arg){
 		text_multi.value = multi;
 		qstr += ` AND (${name_cmd} OR ${desc_str})`;
 		arg.$desc = string_to_literal(multi);
-		arg.valid = true;
 	}
 	else {
 		// name
@@ -1008,7 +987,6 @@ function param_to_condition(params, arg){
 		if (name_cmd) {
 			text_name.value = name;
 			qstr += ` AND (${name_cmd})`;
-			arg.valid = true;
 		}
 		// desc
 		let desc = params.get("desc");
@@ -1016,7 +994,6 @@ function param_to_condition(params, arg){
 			text_effect.value = desc;
 			qstr += ` AND ${desc_str}`;
 			arg.$desc = string_to_literal(desc);
-			arg.valid = true;
 		}
 	}
 	return qstr;
