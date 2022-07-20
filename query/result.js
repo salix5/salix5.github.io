@@ -3,24 +3,11 @@
 const MAX_WIDTH = 900;
 const MAX_RESULT_LEN = 200;
 
-function is_booster(pack){
-	switch(pack){
-		case 'ROTD':
-		case 'PHRA':
-		case 'BLVO':
-		case 'LIOV':
-		case 'DAMA':
-		case 'BODE':
-		case 'BACH':
-		case 'DIFO':
-		case 'POTE':
-		case 'DABL':
-			return true;
-			break;
-		default:
-			return false;
-			break;
-	}
+function is_booster(pack) {
+	if (pack_list[pack] && pack_list[pack][0] === 1)
+		return true;
+	else
+		return false;
 }
 
 function print_card_number(pack, index){
