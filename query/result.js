@@ -13,6 +13,8 @@ function is_booster(pack){
 		case 'BODE':
 		case 'BACH':
 		case 'DIFO':
+		case 'POTE':
+		case 'DABL':
 			return true;
 			break;
 		default:
@@ -38,22 +40,22 @@ function print_card_number(pack, index){
 	}
 	
 	// index
-	if(pack !== 'VJMP' && index > 200){
+	if (index === null || (pack !== 'VJMP' && index > 200)) {
 		str_index = '???';
 	}
-	else if(pack === 'WPP2' && index > 70){
+	else if (pack === 'WPP2' && index > 70) {
 		let sub_index = index - 70;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
-	else if((cat === 'SD' || cat === 'SR') && index > 50){
+	else if ((cat === 'SD' || cat === 'SR') && index > 50) {
 		let sub_index = index - 50;
 		str_index = `P${sub_index.toString().padStart(2, '0')}`;
 	}
-	else if(is_booster(pack) && index > 80){
+	else if (is_booster(pack) && index > 80) {
 		let sub_index = index - 80;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
-	else{
+	else {
 		str_index = index.toString().padStart(3, '0');
 	}
 	return `${str_pack}-${str_ot}${str_index}`;
