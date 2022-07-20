@@ -72,13 +72,13 @@ function query_card(db, qstr, arg, ret){
 			card.limit = 3;
 		
 		// pack_id
-		if(card.id <= 99999999){
-			if(pack_name && pack_list[pack_name])
+		if (card.id <= 99999999) {
+			if (pack_name && pack_list[pack_name])
 				card.pack_id = pack_list[pack_name].findIndex(x => x === card.id);
 			else
-				card.pack_id = 0;
+				card.pack_id = null;
 		}
-		else{
+		else {
 			card.pack_id = card.id % 1000;
 		}
 		ret.push(card);
