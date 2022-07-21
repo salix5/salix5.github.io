@@ -66,8 +66,8 @@ const table_count = document.getElementById('table_count');
 const text_count = document.getElementById('text_count');
 const table_result = document.getElementById('table_result');
 
-function show_subtype(type){
-	switch(type){
+function show_subtype(type) {
+	switch (type) {
 		case 'm':
 			subtype_m.style.display = '';
 			subtype_s.style.display = 'none';
@@ -75,7 +75,7 @@ function show_subtype(type){
 			select_subtype_op.disabled = false;
 			row_subtype.style.display = '';
 			row_exclude.style.display = '';
-			
+
 			row_lv.style.display = '';
 			row_sc.style.display = '';
 			row_marker.style.display = '';
@@ -92,7 +92,7 @@ function show_subtype(type){
 			select_subtype_op.selectedIndex = 0;
 			row_subtype.style.display = '';
 			row_exclude.style.display = 'none';
-			
+
 			row_lv.style.display = 'none';
 			row_sc.style.display = 'none';
 			row_marker.style.display = 'none';
@@ -109,7 +109,7 @@ function show_subtype(type){
 			select_subtype_op.selectedIndex = 0;
 			row_subtype.style.display = '';
 			row_exclude.style.display = 'none';
-			
+
 			row_lv.style.display = 'none';
 			row_sc.style.display = 'none';
 			row_marker.style.display = 'none';
@@ -126,7 +126,7 @@ function show_subtype(type){
 			select_subtype_op.selectedIndex = 0;
 			row_subtype.style.display = 'none';
 			row_exclude.style.display = 'none';
-			
+
 			row_lv.style.display = '';
 			row_sc.style.display = '';
 			row_marker.style.display = '';
@@ -138,39 +138,39 @@ function show_subtype(type){
 	}
 }
 
-select_type.onchange = function(event){
+select_type.onchange = function (event) {
 	show_subtype(select_type.value);
 };
 
-function clear_cb(name){
+function clear_cb(name) {
 	var cb_list = document.getElementsByName(name);
-	for(let i = 0; i < cb_list.length; ++i){
+	for (let i = 0; i < cb_list.length; ++i) {
 		cb_list[i].checked = false;
 	}
-	if(name != 'cb_marker'){
+	if (name != 'cb_marker') {
 		var rst = document.getElementById(name + '_reset');
 		rst.checked = false;
 	}
 }
 
-cb_mtype_reset.onchange = function(event){
+cb_mtype_reset.onchange = function (event) {
 	clear_cb('cb_mtype');
 	select_subtype_op.selectedIndex = 0;
 };
-cb_exclude_reset.onchange = function(event){clear_cb('cb_exclude');};
-cb_stype_reset.onchange = function(event){clear_cb('cb_stype');};
-cb_ttype_reset.onchange = function(event){clear_cb('cb_ttype');};
-cb_attr_reset.onchange = function(event){clear_cb('cb_attr');};
-cb_race_reset.onchange = function(event){clear_cb('cb_race');};
+cb_exclude_reset.onchange = function (event) { clear_cb('cb_exclude'); };
+cb_stype_reset.onchange = function (event) { clear_cb('cb_stype'); };
+cb_ttype_reset.onchange = function (event) { clear_cb('cb_ttype'); };
+cb_attr_reset.onchange = function (event) { clear_cb('cb_attr'); };
+cb_race_reset.onchange = function (event) { clear_cb('cb_race'); };
 
-button2.onclick = function(event){show_subtype('');};
+button2.onclick = function (event) { show_subtype(''); };
 
-function init(event){
-	if(window.innerWidth > MAX_WIDTH){
+function init(event) {
+	if (window.innerWidth > MAX_WIDTH) {
 		table_count.style.width = MAX_WIDTH + 'px';
 		table_result.style.width = MAX_WIDTH + 'px';
 	}
-	else{
+	else {
 		table_count.style.width = '100%';
 		table_result.style.width = '100%';
 	}
