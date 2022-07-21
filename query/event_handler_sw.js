@@ -53,31 +53,31 @@ const text_count = document.getElementById('text_count');
 const table_result = document.getElementById('table_result');
 
 
-function clear_cb(name){
+function clear_cb(name) {
 	var cb_list = document.getElementsByName(name);
-	for(let i = 0; i < cb_list.length; ++i){
+	for (let i = 0; i < cb_list.length; ++i) {
 		cb_list[i].checked = false;
 	}
-	if(name != 'cb_marker'){
+	if (name != 'cb_marker') {
 		var rst = document.getElementById(name + '_reset');
 		rst.checked = false;
 	}
 }
 
-cb_mtype_reset.onchange = function(event){
+cb_mtype_reset.onchange = function (event) {
 	clear_cb('cb_mtype');
 	select_subtype_op.selectedIndex = 0;
 };
-cb_exclude_reset.onchange = function(event){clear_cb('cb_exclude');};
-cb_attr_reset.onchange = function(event){clear_cb('cb_attr');};
-cb_race_reset.onchange = function(event){clear_cb('cb_race');};
+cb_exclude_reset.onchange = function (event) { clear_cb('cb_exclude'); };
+cb_attr_reset.onchange = function (event) { clear_cb('cb_attr'); };
+cb_race_reset.onchange = function (event) { clear_cb('cb_race'); };
 
-function init(event){
-	if(window.innerWidth > MAX_WIDTH){
+function init(event) {
+	if (window.innerWidth > MAX_WIDTH) {
 		table_count.style.width = MAX_WIDTH + 'px';
 		table_result.style.width = MAX_WIDTH + 'px';
 	}
-	else{
+	else {
 		table_count.style.width = '100%';
 		table_result.style.width = '100%';
 	}

@@ -22,23 +22,23 @@ const re_wildcard = /(^|[^\$])[%_]/;
 const re_bad_escape = /\$(?![%_])/g;
 const re_all_digit = /^\d+$/;
 
-String.prototype.toHalfWidth = function() {
-	return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) - 0xFEE0)});
+String.prototype.toHalfWidth = function () {
+	return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) { return String.fromCharCode(s.charCodeAt(0) - 0xFEE0) });
 };
 
-String.prototype.toFullWidth = function() {
-	return this.replace(/[A-Za-z0-9]/g, function(s) {return String.fromCharCode(s.charCodeAt(0) + 0xFEE0);});
+String.prototype.toFullWidth = function () {
+	return this.replace(/[A-Za-z0-9]/g, function (s) { return String.fromCharCode(s.charCodeAt(0) + 0xFEE0); });
 };
 
-function process_buffer(buf){
+function process_buffer(buf) {
 	let arr = new Uint8Array(buf);
 	return arr;
 }
 
-function query_card(db, qstr, arg, ret){
+function query_card(db, qstr, arg, ret) {
 	var stmt = db.prepare(qstr);
 	stmt.bind(arg);
-	while(stmt.step()) {
+	while (stmt.step()) {
 		let card = stmt.getAsObject();
 		// spell & trap reset data
 		if (card.type & (TYPE_SPELL | TYPE_TRAP)) {
@@ -62,15 +62,15 @@ function query_card(db, qstr, arg, ret){
 		}
 
 		// limit
-		if(ltable[card.id] === 0)
+		if (ltable[card.id] === 0)
 			card.limit = 0;
-		else if(ltable[card.id] === 1)
+		else if (ltable[card.id] === 1)
 			card.limit = 1;
-		else if(ltable[card.id] === 2)
+		else if (ltable[card.id] === 2)
 			card.limit = 2;
 		else
 			card.limit = 3;
-		
+
 		// pack_id
 		if (card.id <= 99999999) {
 			if (pack_name && pack_list[pack_name])
@@ -88,7 +88,7 @@ function query_card(db, qstr, arg, ret){
 
 const promise_db = fetch(`https://salix5.github.io/CardEditor/${zip_tag}.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
 const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(process_buffer);
-const promise_sql = initSqlJs(config).then(response => {SQL = response;});
+const promise_sql = initSqlJs(config).then(response => { SQL = response; });
 
 const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => { cid_table = data; });
 const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => { name_table = data; });
@@ -97,7 +97,7 @@ const promise_pack = fetch("text/pack_list.json").then(response => response.json
 const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => { setname = data; });
 const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => { ltable = data; });
 
-Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function(values){
+Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function (values) {
 	db = new SQL.Database(values[1]);
 	db2 = new SQL.Database(values[2]);
 	url_query();
@@ -110,15 +110,15 @@ function is_positive(x) {
 	return x !== null && x > 0;
 }
 
-function is_atk(x){
+function is_atk(x) {
 	return x !== null && x >= -1;
 }
 
-function is_def(x){
+function is_def(x) {
 	return x !== null && x >= -2;
 }
 
-function is_normal_atk(x){
+function is_normal_atk(x) {
 	return x !== null && x >= 0;
 }
 
@@ -126,20 +126,20 @@ function is_modulus(x) {
 	return x !== null && x >= 0 && x <= 999;
 }
 
-function is_lv(x){
+function is_lv(x) {
 	return x !== null && x >= 1 && x <= 13;
 }
 
-function is_scale(x){
+function is_scale(x) {
 	return x !== null && x >= 0 && x <= 13;
 }
 
-function is_str(x){
+function is_str(x) {
 	return x && x.length <= MAX_STRLEN;
 }
 
-function check_int(val){
-	if(val && val.length <= MAX_DIGIT){
+function check_int(val) {
+	if (val && val.length <= MAX_DIGIT) {
 		let x = parseInt(val, 10);
 		if (Number.isNaN(x))
 			return null;
@@ -150,16 +150,16 @@ function check_int(val){
 		return null;
 }
 
-function check_str(val){
+function check_str(val) {
 	if (!is_str(val))
 		return '';
 	return val.toHalfWidth();
 }
 
-function pack_cmd(pack){
+function pack_cmd(pack) {
 	var cmd = '';
 	cmd = ` AND (datas.id=${pack[0]}`;
-	for(let i = 1; i < pack.length; ++i)
+	for (let i = 1; i < pack.length; ++i)
 		cmd += ` OR datas.id=${pack[i]}`;
 	cmd += `)`;
 	return cmd;
@@ -170,30 +170,30 @@ var id_to_type = {
 	mtype2: TYPE_EFFECT,
 	mtype3: TYPE_RITUAL,
 	mtype4: TYPE_PENDULUM,
-	
+
 	mtype5: TYPE_FUSION,
 	mtype6: TYPE_SYNCHRO,
 	mtype7: TYPE_XYZ,
 	mtype8: TYPE_LINK,
-	
+
 	mtype9: TYPE_TOON,
 	mtype10: TYPE_SPIRIT,
 	mtype11: TYPE_UNION,
 	mtype12: TYPE_DUAL,
-	
+
 	mtype13: TYPE_TUNER,
 	mtype14: TYPE_FLIP,
 	mtype15: TYPE_SPSUMMON,
 	mtype16: TYPE_TOKEN,
-	
+
 	stype1: TYPE_NORMAL,
 	stype2: TYPE_QUICKPLAY,
 	stype3: TYPE_CONTINUOUS,
 	stype4: TYPE_EQUIP,
-	
+
 	stype5: TYPE_RITUAL,
 	stype6: TYPE_FIELD,
-	
+
 	ttype1: TYPE_NORMAL,
 	ttype2: TYPE_CONTINUOUS,
 	ttype3: TYPE_COUNTER,
@@ -429,26 +429,26 @@ function setcode_cmd(setcode) {
 
 // return: name_cmd
 // en: table, ja: table, zh: query
-function process_name(locale, raw_name, arg){
+function process_name(locale, raw_name, arg) {
 	const setcode_str = ` OR ${setcode_cmd("$setcode")}`;
 	let str_name = raw_name.replace(re_bad_escape, "");
 	if (!str_name)
 		return "";
-	
+
 	let name_cmd = "";
-	switch(locale){
+	switch (locale) {
 		case "en":
 			let en_list = [];
-			for(const key in name_table_en){
+			for (const key in name_table_en) {
 				if (name_table_en[key] && name_table_en[key].toLowerCase().indexOf(str_name.toLowerCase()) !== -1)
 					en_list.push(key);
-				if (en_list.length > MAX_RESULT_LEN){
+				if (en_list.length > MAX_RESULT_LEN) {
 					en_list.length = 0;
 					break;
 				}
 			}
 			name_cmd = "0";
-			for(let i = 0; i < en_list.length; ++i)
+			for (let i = 0; i < en_list.length; ++i)
 				name_cmd += ` OR datas.id=${en_list[i]}`;
 			break;
 		default:
@@ -457,7 +457,7 @@ function process_name(locale, raw_name, arg){
 			for (const key in name_table) {
 				if (name_table[key].toHalfWidth().indexOf(str_name) !== -1)
 					jp_list.push(key);
-				if (jp_list.length > MAX_RESULT_LEN){
+				if (jp_list.length > MAX_RESULT_LEN) {
 					jp_list.length = 0;
 					break;
 				}
@@ -484,7 +484,7 @@ function process_name(locale, raw_name, arg){
 
 
 // entrance of query
-function server_analyze1(params){
+function server_analyze1(params) {
 	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id";
 	let arg = new Object();
 	arg.$monster = TYPE_MONSTER;
@@ -493,7 +493,7 @@ function server_analyze1(params){
 	arg.$link = TYPE_LINK;
 	arg.$pendulum = TYPE_PENDULUM;
 	arg.$token = TYPE_TOKEN;
-	
+
 	let valid_params = server_validate1(params);
 	let condition = param_to_condition(valid_params, arg);
 	if (arg.$ctype === TYPE_MONSTER && arg.$stype && (arg.$stype & TYPE_TOKEN)) {
@@ -580,7 +580,7 @@ function server_analyze2(params) {
 	let ret1 = get_single_card(cdata1);
 	let card_begin = ret1[0];
 	let result_len1 = ret1[1];
-	
+
 	let cdata2 = check_str(params.get("id2"));
 	text_id2.value = cdata2;
 	let ret2 = get_single_card(cdata2);
@@ -601,7 +601,7 @@ function server_analyze2(params) {
 		cell0.innerHTML = '找不到起點。';
 		return;
 	}
-	
+
 	if (result_len2 > 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
@@ -636,7 +636,7 @@ function server_analyze2(params) {
 	arg.$lv_begin = card_begin.level;
 	arg.$atk_begin = card_begin.atk;
 	arg.$def_begin = card_begin.def;
-	
+
 	arg.$race_end = card_end.race;
 	arg.$attr_end = card_end.attribute;
 	arg.$lv_end = card_end.level;
@@ -646,7 +646,7 @@ function server_analyze2(params) {
 	show_result();
 }
 
-function param_to_condition(params, arg){
+function param_to_condition(params, arg) {
 	let qstr = '';
 	// id, primary key
 	let id = check_int(params.get("id"));
@@ -669,17 +669,17 @@ function param_to_condition(params, arg){
 			qstr += " AND datas.ot == 2";
 			break;
 		default:
-			for(const prop in pack_list){
-				if(pack === prop){
+			for (const prop in pack_list) {
+				if (pack === prop) {
 					qstr += pack_cmd(pack_list[prop]);
 					pack_name = prop;
 					break;
 				}
 			}
-			if(pack_name)
+			if (pack_name)
 				break;
-			for(const prop in pre_release){
-				if(pack === prop){
+			for (const prop in pre_release) {
+				if (pack === prop) {
 					qstr += ` AND datas.id>=${pre_release[prop]} AND datas.id<=${pre_release[prop] + 998}`;
 					pack_name = prop;
 					break;
@@ -688,43 +688,43 @@ function param_to_condition(params, arg){
 			break;
 	}
 	select_ot.value = pack;
-	
+
 	// type
 	let ctype = check_int(params.get("type"));
 	let subtype = check_int(params.get("subtype"));
 	let sub_op = check_int(params.get("sub_op"));
 	let exc = check_int(params.get("exc"));
-	
+
 	arg.$ctype = 0;
 	arg.$stype = 0;
-	switch(ctype){
+	switch (ctype) {
 		case TYPE_MONSTER:
 			qstr += " AND type & $ctype";
 			arg.$ctype = ctype;
-			if(subtype){
-				for(let i = 0; i < cb_mtype.length; ++i){
-					if(subtype & id_to_type[cb_mtype[i].id])
+			if (subtype) {
+				for (let i = 0; i < cb_mtype.length; ++i) {
+					if (subtype & id_to_type[cb_mtype[i].id])
 						cb_mtype[i].checked = true;
 				}
-				if(sub_op){
+				if (sub_op) {
 					select_subtype_op.value = 'and';
 					qstr += " AND type & $stype == $stype";
 				}
-				else{
+				else {
 					select_subtype_op.value = 'or';
 					qstr += " AND type & $stype";
 				}
 				arg.$stype = subtype;
 			}
-			if(exc){
-				for(let i = 0; i < cb_exclude.length; ++i){
-					if(exc & id_to_type[cb_mtype[i].id])
+			if (exc) {
+				for (let i = 0; i < cb_exclude.length; ++i) {
+					if (exc & id_to_type[cb_mtype[i].id])
 						cb_exclude[i].checked = true;
 				}
 				qstr += " AND NOT type & $exc";
 				arg.$exc = exc;
 			}
-			if(select_type){
+			if (select_type) {
 				select_type.value = 'm';
 				show_subtype('m');
 			}
@@ -732,26 +732,26 @@ function param_to_condition(params, arg){
 		case TYPE_SPELL:
 			qstr += " AND type & $ctype";
 			arg.$ctype = ctype;
-			if(subtype){
-				for(let i = 0; i < cb_stype.length; ++i){
-					if(subtype & id_to_type[cb_stype[i].id])
+			if (subtype) {
+				for (let i = 0; i < cb_stype.length; ++i) {
+					if (subtype & id_to_type[cb_stype[i].id])
 						cb_stype[i].checked = true;
 				}
-				if(subtype & TYPE_NORMAL){
-					if(subtype === TYPE_NORMAL){
+				if (subtype & TYPE_NORMAL) {
+					if (subtype === TYPE_NORMAL) {
 						qstr += " AND type == $spell";
 					}
-					else{
+					else {
 						qstr += " AND (type == $spell OR type & $stype)";
 						arg.$stype = subtype & ~TYPE_NORMAL;
 					}
 				}
-				else{
+				else {
 					qstr += " AND type & $stype";
 					arg.$stype = subtype;
 				}
 			}
-			if(select_type){
+			if (select_type) {
 				select_type.value = 's';
 				show_subtype('s');
 			}
@@ -759,50 +759,50 @@ function param_to_condition(params, arg){
 		case TYPE_TRAP:
 			qstr += " AND type & $ctype";
 			arg.$ctype = ctype;
-			if(subtype){
-				for(let i = 0; i < cb_ttype.length; ++i){
-					if(subtype & id_to_type[cb_ttype[i].id])
+			if (subtype) {
+				for (let i = 0; i < cb_ttype.length; ++i) {
+					if (subtype & id_to_type[cb_ttype[i].id])
 						cb_ttype[i].checked = true;
 				}
-				if(subtype & TYPE_NORMAL){
-					if(subtype === TYPE_NORMAL){
+				if (subtype & TYPE_NORMAL) {
+					if (subtype === TYPE_NORMAL) {
 						qstr += " AND type == $trap";
 					}
-					else{
+					else {
 						qstr += " AND (type == $trap OR type & $stype)";
 						arg.$stype = subtype & ~TYPE_NORMAL;
 					}
 				}
-				else{
+				else {
 					qstr += " AND type & $stype";
 					arg.$stype = subtype;
 				}
 			}
-			if(select_type){
+			if (select_type) {
 				select_type.value = 't';
 				show_subtype('t');
 			}
 			break;
 		default:
-			if(select_type){
+			if (select_type) {
 				select_type.value = '';
 				show_subtype('');
 			}
 			break;
 	}
-	
-	if(arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER){
+
+	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
 		let is_monster = false;
 		// mat
 		let mat = params.get("mat");
-		if(mat){
+		if (mat) {
 			text_mat.value = mat;
 			qstr += " AND (desc LIKE $mat1 ESCAPE '$' OR desc LIKE $mat2 ESCAPE '$')";
 			arg.$mat1 = `%「${mat}」+%`;
 			arg.$mat2 = `%+「${mat}」%`;
 			is_monster = true;
 		}
-		
+
 		// atk
 		let atk1 = check_int(params.get("atk1"));
 		let atk2 = check_int(params.get("atk2"));
@@ -870,7 +870,7 @@ function param_to_condition(params, arg){
 			arg.$defm = def_mod;
 			is_monster = true;
 		}
-		
+
 		// sum
 		if (sum !== null) {
 			text_sum.value = sum;
@@ -878,50 +878,50 @@ function param_to_condition(params, arg){
 			arg.$sum = sum;
 			is_monster = true;
 		}
-	
+
 		// lv, rank, link
 		let lv1 = check_int(params.get("lv1"));
 		let lv2 = check_int(params.get("lv2"));
 		if (lv1 !== null) {
 			text_lv1.value = lv1;
-			if (lv2 !== null){
+			if (lv2 !== null) {
 				text_lv2.value = lv2;
 				qstr += " AND (level & 0xff) >= $lv1 AND (level & 0xff) <= $lv2";
 				arg.$lv1 = lv1;
 				arg.$lv2 = lv2;
 			}
-			else{
+			else {
 				qstr += " AND (level & 0xff) == $lv1";
 				arg.$lv1 = lv1;
 			}
 			is_monster = true;
 		}
-		
+
 		// scale, pendulum monster only
 		let sc1 = check_int(params.get("sc1"));
 		let sc2 = check_int(params.get("sc2"));
 		if (sc1 !== null) {
 			text_sc1.value = sc1;
 			qstr += " AND type & $pendulum";
-			if (sc2 !== null){
+			if (sc2 !== null) {
 				text_sc2.value = sc2;
 				qstr += " AND (level >> 24 & 0xff) >= $sc1 AND (level >> 24 & 0xff) <= $sc2";
 				arg.$sc1 = sc1;
 				arg.$sc2 = sc2;
 			}
-			else{
+			else {
 				qstr += " AND (level >> 24 & 0xff) == $sc1";
 				arg.$sc1 = sc1;
 			}
 			is_monster = true;
 		}
-		
+
 		// attr, race
 		let attr = check_int(params.get("attr"));
 		let race = check_int(params.get("race"));
 		if (attr) {
-			for(let i = 0; i < cb_attr.length; ++i){
-				if(attr & index_to_attr[i])
+			for (let i = 0; i < cb_attr.length; ++i) {
+				if (attr & index_to_attr[i])
 					cb_attr[i].checked = true;
 			}
 			qstr += " AND attribute & $attr";
@@ -929,8 +929,8 @@ function param_to_condition(params, arg){
 			is_monster = true;
 		}
 		if (race) {
-			for(let i = 0; i < cb_race.length; ++i){
-				if(race & index_to_race[i])
+			for (let i = 0; i < cb_race.length; ++i) {
+				if (race & index_to_race[i])
 					cb_race[i].checked = true;
 			}
 			qstr += " AND race & $race";
@@ -941,26 +941,26 @@ function param_to_condition(params, arg){
 		let marker = check_int(params.get("marker"));
 		let marker_op = check_int(params.get("marker_op"));
 		if (marker) {
-			for(let i = 0; i < cb_marker.length; ++i){
-				if(marker & index_to_marker[i])
+			for (let i = 0; i < cb_marker.length; ++i) {
+				if (marker & index_to_marker[i])
 					cb_marker[i].checked = true;
 			}
 			qstr += " AND type & $link";
-			if(marker_op){
+			if (marker_op) {
 				select_marker_op.value = 'and';
 				qstr += " AND def & $marker == $marker";
 			}
-			else{
+			else {
 				select_marker_op.value = 'or';
 				qstr += " AND def & $marker";
 			}
 			arg.$marker = marker;
 			is_monster = true;
 		}
-		if(arg.$ctype === 0 && is_monster)
+		if (arg.$ctype === 0 && is_monster)
 			qstr += " AND type & $monster";
 	}
-	
+
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
 	let locale = params.get("locale");
 	switch (locale) {
@@ -972,7 +972,7 @@ function param_to_condition(params, arg){
 			select_locale.value = "";
 			break;
 	}
-	let multi = params.get("multi") ? params.get("multi") : "" ;
+	let multi = params.get("multi") ? params.get("multi") : "";
 	let name_cmd = process_name(locale, multi, arg);
 	if (name_cmd) {
 		// multi
