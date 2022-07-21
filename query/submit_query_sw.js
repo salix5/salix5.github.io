@@ -1,8 +1,8 @@
 "use strict";
 
-function submit_query(event){
+function submit_query(event) {
 	var params = new URLSearchParams();
-	
+
 	button1.disabled = true;
 	button2.disabled = true;
 	// id or name of the 2 cards
@@ -12,37 +12,37 @@ function submit_query(event){
 	let cdata2 = text_id2.value.toHalfWidth();
 	if (cdata2)
 		params.set('id2', cdata2);
-	
+
 	// pack
 	let pack = select_ot.value.toHalfWidth();
 	if (pack)
 		params.set('pack', pack);
-	
+
 	// type
 	params.set('type', TYPE_MONSTER);
 	let subtype = 0;
-	for(let i = 0; i < cb_mtype.length; ++i){
-		if(cb_mtype[i].checked)
+	for (let i = 0; i < cb_mtype.length; ++i) {
+		if (cb_mtype[i].checked)
 			subtype |= id_to_type[cb_mtype[i].id];
 	}
-	if(subtype){
+	if (subtype) {
 		params.set('subtype', subtype.toString(10));
 		// default: or
-		if(select_subtype_op.value == 'and')
+		if (select_subtype_op.value == 'and')
 			params.set('sub_op', 1);
 		else
 			params.set('sub_op', 0);
 	}
 	// exclude has the same checkboxes
 	let exc = 0;
-	for(let i = 0; i < cb_exclude.length; ++i){
-		if(cb_exclude[i].checked)
+	for (let i = 0; i < cb_exclude.length; ++i) {
+		if (cb_exclude[i].checked)
 			exc |= id_to_type[cb_mtype[i].id];
 	}
-	if(exc) {
+	if (exc) {
 		params.set('exc', exc.toString(10));
 	}
-	
+
 	// atk
 	if (text_atk1.value)
 		params.set('atk1', text_atk1.value);
@@ -68,58 +68,58 @@ function submit_query(event){
 		params.set('sc1', text_sc1.value);
 	if (text_sc2.value)
 		params.set('sc2', text_sc2.value);
-	
+
 	// attr, race
 	let cattr = 0;
-	for(let i = 0; i < cb_attr.length; ++i){
-		if(cb_attr[i].checked)
+	for (let i = 0; i < cb_attr.length; ++i) {
+		if (cb_attr[i].checked)
 			cattr |= index_to_attr[i];
 	}
-	if(cattr){
+	if (cattr) {
 		params.set('attr', cattr.toString(10));
 	}
-	
+
 	let crace = 0;
-	for(let i = 0; i < cb_race.length; ++i){
-		if(cb_race[i].checked)
+	for (let i = 0; i < cb_race.length; ++i) {
+		if (cb_race[i].checked)
 			crace |= index_to_race[i];
 	}
-	if(crace){
+	if (crace) {
 		params.set('race', crace.toString(10));
 	}
-			
-		
+
+
 	//multi
 	let cmulti = text_multi.value.toHalfWidth();
 	if (cmulti)
 		params.set('multi', cmulti);
-	else{
+	else {
 		// name
 		let cname = text_name.value.toHalfWidth();
-		if(cname)
+		if (cname)
 			params.set('name', cname);
-		
+
 		//effect
 		let cdesc = text_effect.value.toHalfWidth();
-		if(cdesc)
+		if (cdesc)
 			params.set('desc', cdesc);
 	}
 	let clocale = select_locale.value;
-	if(clocale)
+	if (clocale)
 		params.set('locale', clocale);
-	
+
 	document.activeElement.blur();
 	event.preventDefault();
 	button1.disabled = false;
 	button2.disabled = false;
-	if(params.toString() !== ''){
+	if (params.toString() !== '') {
 		window.location.search = '?' + params.toString();
 	}
 }
 form1.onsubmit = submit_query;
 
-function url_query(){
-	if(window.location.search.substring(1) === '')
+function url_query() {
+	if (window.location.search.substring(1) === '')
 		return;
 	var params = new URLSearchParams(window.location.search);
 	server_analyze2(params);
