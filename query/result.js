@@ -1,7 +1,8 @@
 "use strict";
 
 const MAX_WIDTH = 900;
-const MAX_RESULT_LEN = 200;
+const MAX_RESULT_LEN = 500;
+var result_per_page = 100;
 
 function is_booster(pack) {
 	if (pack_list[pack] && pack_list[pack][0] === 1)
@@ -349,19 +350,21 @@ function create_rows(card) {
 	}
 }
 
-function show_result() {
-	var result_per_page = (result.length > MAX_RESULT_LEN) ? MAX_RESULT_LEN : result.length;
+function show_result(params) {
 	table_result.innerHTML = '';
-	if (result.length > 0) {
+	let total_pages = Math.ceil(result.length / result_per_page);
+	let page = check_int(params.get("page"));
+	if (total_pages && page <= total_pages) {
+		let index_begin = result_per_page * (page - 1);
+		let index_end = Math.min(result_per_page * page - 1, result.length - 1);
 		if (pack_name)
 			result.sort(compare_id);
 		else
 			result.sort(compare_name);
-		text_count.innerHTML = `搜尋結果共${result.length}筆，此為${1}~${result_per_page}筆。`;
+		text_count.innerHTML = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		if (window.innerWidth > MAX_WIDTH)
 			table_result.style.border = '1px solid black';
-		//result.forEach(create_rows);
-		for (let i = 0; i < result_per_page; ++i) {
+		for (let i = index_begin; i <= index_end; ++i) {
 			create_rows(result[i]);
 		}
 	}

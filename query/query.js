@@ -110,6 +110,10 @@ function is_positive(x) {
 	return x !== null && x > 0;
 }
 
+function is_page(x) {
+	return x !== null && x >= 1 && x <= 1000;
+}
+
 function is_atk(x) {
 	return x !== null && x >= -1;
 }
@@ -254,93 +258,99 @@ function server_validate1(params) {
 	let id = check_int(params.get("id"));
 	if (is_positive(id)) {
 		valid_params.set("id", id);
-		return valid_params;
 	}
+	else {
+		let type = check_int(params.get("type"));
+		let subtype = check_int(params.get("subtype"));
+		let sub_op = check_int(params.get("sub_op"));
+		let exc = check_int(params.get("exc"));
+		let atk1 = check_int(params.get("atk1"));
+		let atk2 = check_int(params.get("atk2"));
+		let atkm = check_int(params.get("atkm"));
+		let def1 = check_int(params.get("def1"));
+		let def2 = check_int(params.get("def2"));
+		let defm = check_int(params.get("defm"));
+		let sum = check_int(params.get("sum"));
+		let lv1 = check_int(params.get("lv1"));
+		let lv2 = check_int(params.get("lv2"));
+		let sc1 = check_int(params.get("sc1"));
+		let sc2 = check_int(params.get("sc2"));
+		let attr = check_int(params.get("attr"));
+		let race = check_int(params.get("race"));
+		let marker = check_int(params.get("marker"));
+		let marker_op = check_int(params.get("marker_op"));
 
-	let type = check_int(params.get("type"));
-	let subtype = check_int(params.get("subtype"));
-	let sub_op = check_int(params.get("sub_op"));
-	let exc = check_int(params.get("exc"));
-	let atk1 = check_int(params.get("atk1"));
-	let atk2 = check_int(params.get("atk2"));
-	let atkm = check_int(params.get("atkm"));
-	let def1 = check_int(params.get("def1"));
-	let def2 = check_int(params.get("def2"));
-	let defm = check_int(params.get("defm"));
-	let sum = check_int(params.get("sum"));
-	let lv1 = check_int(params.get("lv1"));
-	let lv2 = check_int(params.get("lv2"));
-	let sc1 = check_int(params.get("sc1"));
-	let sc2 = check_int(params.get("sc2"));
-	let attr = check_int(params.get("attr"));
-	let race = check_int(params.get("race"));
-	let marker = check_int(params.get("marker"));
-	let marker_op = check_int(params.get("marker_op"));
+		if (is_positive(type))
+			valid_params.set("type", type);
+		if (is_positive(subtype)) {
+			valid_params.set("subtype", subtype);
+			if (sub_op)
+				valid_params.set("sub_op", 1);
+			else
+				valid_params.set("sub_op", 0);
+		}
+		if (is_positive(exc))
+			valid_params.set("exc", exc);
+		if (is_atk(atk1))
+			valid_params.set("atk1", atk1);
+		if (is_atk(atk2))
+			valid_params.set("atk2", atk2);
+		if (is_modulus(atkm))
+			valid_params.set("atkm", atkm);
+		if (is_def(def1))
+			valid_params.set("def1", def1);
+		if (is_def(def2))
+			valid_params.set("def2", def2);
+		if (is_modulus(defm))
+			valid_params.set("defm", defm);
+		if (is_normal_atk(sum))
+			valid_params.set("sum", sum);
+		if (is_lv(lv1))
+			valid_params.set("lv1", lv1);
+		if (is_lv(lv2))
+			valid_params.set("lv2", lv2);
+		if (is_scale(sc1))
+			valid_params.set("sc1", sc1);
+		if (is_scale(sc2))
+			valid_params.set("sc2", sc2);
+		if (is_positive(attr))
+			valid_params.set("attr", attr);
+		if (is_positive(race))
+			valid_params.set("race", race);
+		if (is_positive(marker)) {
+			valid_params.set("marker", marker);
+			if (marker_op)
+				valid_params.set("marker_op", 1);
+			else
+				valid_params.set("marker_op", 0);
+		}
 
-	if (is_positive(type))
-		valid_params.set("type", type);
-	if (is_positive(subtype)) {
-		valid_params.set("subtype", subtype);
-		if (sub_op)
-			valid_params.set("sub_op", 1);
-		else
-			valid_params.set("sub_op", 0);
+		// string
+		let pack = check_str(params.get("pack"));
+		let locale = check_str(params.get("locale"));
+		let mat = check_str(params.get("mat")).replace(/(^|[^\$])[%_]/g, "");
+		let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
+		let name = check_str(params.get("name")).replace(re_bad_escape, "");
+		let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
+		if (pack)
+			valid_params.set("pack", pack);
+		if (locale)
+			valid_params.set("locale", locale);
+		if (mat)
+			valid_params.set("mat", mat);
+		if (multi)
+			valid_params.set("multi", multi);
+		if (name)
+			valid_params.set("name", name);
+		if (desc)
+			valid_params.set("desc", desc);
 	}
-	if (is_positive(exc))
-		valid_params.set("exc", exc);
-	if (is_atk(atk1))
-		valid_params.set("atk1", atk1);
-	if (is_atk(atk2))
-		valid_params.set("atk2", atk2);
-	if (is_modulus(atkm))
-		valid_params.set("atkm", atkm);
-	if (is_def(def1))
-		valid_params.set("def1", def1);
-	if (is_def(def2))
-		valid_params.set("def2", def2);
-	if (is_modulus(defm))
-		valid_params.set("defm", defm);
-	if (is_normal_atk(sum))
-		valid_params.set("sum", sum);
-	if (is_lv(lv1))
-		valid_params.set("lv1", lv1);
-	if (is_lv(lv2))
-		valid_params.set("lv2", lv2);
-	if (is_scale(sc1))
-		valid_params.set("sc1", sc1);
-	if (is_scale(sc2))
-		valid_params.set("sc2", sc2);
-	if (is_positive(attr))
-		valid_params.set("attr", attr);
-	if (is_positive(race))
-		valid_params.set("race", race);
-	if (is_positive(marker)) {
-		valid_params.set("marker", marker);
-		if (marker_op)
-			valid_params.set("marker_op", 1);
-		else
-			valid_params.set("marker_op", 0);
-	}
-
-	// string
-	let pack = check_str(params.get("pack"));
-	let locale = check_str(params.get("locale"));
-	let mat = check_str(params.get("mat")).replace(/(^|[^\$])[%_]/g, "");
-	let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
-	let name = check_str(params.get("name")).replace(re_bad_escape, "");
-	let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
-	if (pack)
-		valid_params.set("pack", pack);
-	if (locale)
-		valid_params.set("locale", locale);
-	if (mat)
-		valid_params.set("mat", mat);
-	if (multi)
-		valid_params.set("multi", multi);
-	if (name)
-		valid_params.set("name", name);
-	if (desc)
-		valid_params.set("desc", desc);
+	// page
+	let page = check_int(params.get("page"));
+	if (is_page(page))
+		valid_params.set("page", page);
+	else
+		valid_params.set("page", 1);
 	return valid_params;
 }
 
@@ -410,6 +420,13 @@ function server_validate2(params) {
 		valid_params.set("name", name);
 	if (desc)
 		valid_params.set("desc", desc);
+
+	// page
+	let page = check_int(params.get("page"));
+	if (is_page(page))
+		valid_params.set("page", page);
+	else
+		valid_params.set("page", 1);
 	return valid_params;
 }
 
@@ -510,7 +527,7 @@ function server_analyze1(params) {
 	}
 	if (result.length === 1)
 		document.title = result[0].name;
-	show_result();
+	show_result(valid_params);
 }
 
 function get_sw_str(x) {
@@ -643,7 +660,7 @@ function server_analyze2(params) {
 	arg.$atk_end = card_end.atk;
 	arg.$def_end = card_end.def;
 	query(qstr_final, arg, result);
-	show_result();
+	show_result(valid_params);
 }
 
 function param_to_condition(params, arg) {
