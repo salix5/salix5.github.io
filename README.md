@@ -55,6 +55,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/7/22  
+VJMP：水月的冰長石  
+VJMP：綠色忍者  
+
 22/7/17  
 新增卡包：DABL (1110)  
 
@@ -94,9 +98,6 @@ YO05：魔鍵憑神-亞斯塔圖
 22/5/21  
 新增卡包：DP27  
 復刻更新：DP27  
-
-22/5/9  
-先行卡更新：VJMP、VP22  
 
 22/5/6  
 復刻更新：DR02  
