@@ -55,6 +55,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/7/26  
+先行卡更新：POTE-EN  
+
 22/7/22  
 VJMP：水月的冰長石  
 VJMP：綠色忍者  
