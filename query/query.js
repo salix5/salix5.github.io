@@ -446,12 +446,10 @@ function setcode_cmd(setcode) {
 
 // return: name_cmd
 // en: table, ja: table, zh: query
-function process_name(locale, raw_name, arg) {
-	const setcode_str = ` OR ${setcode_cmd("$setcode")}`;
-	let str_name = raw_name.replace(re_bad_escape, "");
+function process_name(locale, str_name, arg) {
 	if (!str_name)
 		return "";
-
+	const setcode_str = ` OR ${setcode_cmd("$setcode")}`;
 	let name_cmd = "";
 	switch (locale) {
 		case "en":
