@@ -48,7 +48,6 @@ const form1 = document.getElementById('form1');
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 
-const table_count = document.getElementById('table_count');
 const text_count = document.getElementById('text_count');
 const table_result = document.getElementById('table_result');
 
@@ -74,11 +73,11 @@ cb_race_reset.onchange = function (event) { clear_cb('cb_race'); };
 
 function init(event) {
 	if (window.innerWidth > MAX_WIDTH) {
-		table_count.style.width = MAX_WIDTH + 'px';
+		text_count.style.width = MAX_WIDTH + 'px';
 		table_result.style.width = MAX_WIDTH + 'px';
 	}
 	else {
-		table_count.style.width = '100%';
+		text_count.style.width = '100%';
 		table_result.style.width = '100%';
 	}
 	form1.reset();
