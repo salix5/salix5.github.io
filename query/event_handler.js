@@ -62,7 +62,7 @@ const form1 = document.getElementById('form1');
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 
-const text_count = document.getElementById('text_count');
+const div_count = document.getElementById('div_count');
 const table_result = document.getElementById('table_result');
 
 function show_subtype(type) {
@@ -166,11 +166,11 @@ button2.onclick = function (event) { show_subtype(''); };
 
 function init(event) {
 	if (window.innerWidth > MAX_WIDTH) {
-		text_count.style.width = MAX_WIDTH + 'px';
+		div_count.style.width = MAX_WIDTH + 'px';
 		table_result.style.width = MAX_WIDTH + 'px';
 	}
 	else {
-		text_count.style.width = '100%';
+		div_count.style.width = '100%';
 		table_result.style.width = '100%';
 	}
 	form1.reset();
