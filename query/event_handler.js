@@ -68,71 +68,71 @@ const table_result = document.getElementById('table_result');
 function show_subtype(type) {
 	switch (type) {
 		case 'm':
-			subtype_m.style.display = '';
-			subtype_s.style.display = 'none';
-			subtype_t.style.display = 'none';
+			subtype_m.hidden = false;
+			subtype_s.hidden = true;
+			subtype_t.hidden = true;
 			select_subtype_op.disabled = false;
-			row_subtype.style.display = '';
-			row_exclude.style.display = '';
+			row_subtype.hidden = false;
+			row_exclude.hidden = false;
 
-			row_lv.style.display = '';
-			row_sc.style.display = '';
-			row_marker.style.display = '';
-			row_attr.style.display = '';
-			row_race.style.display = '';
-			row_atk.style.display = '';
-			row_def.style.display = '';
+			row_lv.hidden = false;
+			row_sc.hidden = false;
+			row_marker.hidden = false;
+			row_attr.hidden = false;
+			row_race.hidden = false;
+			row_atk.hidden = false;
+			row_def.hidden = false;
 			break;
 		case 's':
-			subtype_m.style.display = 'none';
-			subtype_s.style.display = '';
-			subtype_t.style.display = 'none';
+			subtype_m.hidden = true;
+			subtype_s.hidden = false;
+			subtype_t.hidden = true;
 			select_subtype_op.disabled = true;
 			select_subtype_op.selectedIndex = 0;
-			row_subtype.style.display = '';
-			row_exclude.style.display = 'none';
+			row_subtype.hidden = false;
+			row_exclude.hidden = true;
 
-			row_lv.style.display = 'none';
-			row_sc.style.display = 'none';
-			row_marker.style.display = 'none';
-			row_attr.style.display = 'none';
-			row_race.style.display = 'none';
-			row_atk.style.display = 'none';
-			row_def.style.display = 'none';
+			row_lv.hidden = true;
+			row_sc.hidden = true;
+			row_marker.hidden = true;
+			row_attr.hidden = true;
+			row_race.hidden = true;
+			row_atk.hidden = true;
+			row_def.hidden = true;
 			break;
 		case 't':
-			subtype_m.style.display = 'none';
-			subtype_s.style.display = 'none';
-			subtype_t.style.display = '';
+			subtype_m.hidden = true;
+			subtype_s.hidden = true;
+			subtype_t.hidden = false;
 			select_subtype_op.disabled = true;
 			select_subtype_op.selectedIndex = 0;
-			row_subtype.style.display = '';
-			row_exclude.style.display = 'none';
+			row_subtype.hidden = false;
+			row_exclude.hidden = true;
 
-			row_lv.style.display = 'none';
-			row_sc.style.display = 'none';
-			row_marker.style.display = 'none';
-			row_attr.style.display = 'none';
-			row_race.style.display = 'none';
-			row_atk.style.display = 'none';
-			row_def.style.display = 'none';
+			row_lv.hidden = true;
+			row_sc.hidden = true;
+			row_marker.hidden = true;
+			row_attr.hidden = true;
+			row_race.hidden = true;
+			row_atk.hidden = true;
+			row_def.hidden = true;
 			break;
 		default:
-			subtype_m.style.display = 'none';
-			subtype_s.style.display = 'none';
-			subtype_t.style.display = 'none';
+			subtype_m.hidden = true;
+			subtype_s.hidden = true;
+			subtype_t.hidden = true;
 			select_subtype_op.disabled = true;
 			select_subtype_op.selectedIndex = 0;
-			row_subtype.style.display = 'none';
-			row_exclude.style.display = 'none';
+			row_subtype.hidden = true;
+			row_exclude.hidden = true;
 
-			row_lv.style.display = '';
-			row_sc.style.display = '';
-			row_marker.style.display = '';
-			row_attr.style.display = '';
-			row_race.style.display = '';
-			row_atk.style.display = '';
-			row_def.style.display = '';
+			row_lv.hidden = false;
+			row_sc.hidden = false;
+			row_marker.hidden = false;
+			row_attr.hidden = false;
+			row_race.hidden = false;
+			row_atk.hidden = false;
+			row_def.hidden = false;
 			break;
 	}
 }
