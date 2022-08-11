@@ -285,9 +285,7 @@ function create_rows(card) {
 		data = '[' + mtype + subtype + ']';
 		data = `[${mtype}${subtype}]<br>`;
 
-		let lv = card.level & 0xff;
-		let scale = (card.level >> 24) & 0xff;
-		data += `${lvstr}${lv === 0 ? "?" : lv}`;
+		data += `${lvstr}${card.level === 0 ? "?" : card.level}`;
 		if (card.attribute)
 			data += `/${attr_to_str[card.attribute]}`;
 		else
@@ -305,7 +303,7 @@ function create_rows(card) {
 		data += '<br>';
 
 		if (card.type & TYPE_PENDULUM) {
-			data += `【靈擺刻度：${scale}】<br>`;
+			data += `【靈擺刻度：${card.scale}】<br>`;
 		}
 	}
 	else if (card.type & TYPE_SPELL) {
