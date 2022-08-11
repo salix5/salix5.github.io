@@ -44,10 +44,12 @@ function query_card(db, qstr, arg, ret) {
 		if (card.type & (TYPE_SPELL | TYPE_TRAP)) {
 			card.atk = 0;
 			card.def = 0;
-			card.lv = 0;
+			card.level = 0;
 			card.race = 0;
-			card.attr = 0;
+			card.attribute = 0;
 		}
+		card.scale = (card.level >> 24) & 0xff;
+		card.level = card.level & 0xff;
 
 		// cid
 		if (card.id <= 99999999) {
