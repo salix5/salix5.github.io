@@ -58,7 +58,7 @@ function print_id(id, type, pack_id) {
 	let link_text = '';
 
 	if (type & TYPE_TOKEN) {
-		link_text = '(null)';
+		link_text = 'token';
 	}
 	else if (pack_name) {
 		link_text = print_card_number(pack_name, pack_id);
