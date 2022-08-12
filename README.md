@@ -55,6 +55,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/8/12  
+新增功能：按照卡片種類排序  
+
 22/8/7  
 新增卡包：SR13  
 復刻更新：SR13  
