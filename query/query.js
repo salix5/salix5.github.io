@@ -51,6 +51,62 @@ function query_card(db, qstr, arg, ret) {
 		card.scale = (card.level >> 24) & 0xff;
 		card.level = card.level & 0xff;
 
+		if (card.type & TYPE_MONSTER) {
+			if (!(card.type & TYPE_EXT)) {
+				if (card.type & TYPE_TOKEN)
+					card.color = 0;
+				else if (card.type & TYPE_NORMAL)
+					card.color = 1;
+				else if (card.type & TYPE_RITUAL)
+					card.color = 3;
+				else if (card.type & TYPE_EFFECT)
+					card.color = 2;
+				else
+					card.color = null;
+			}
+			else {
+				if (card.type & TYPE_FUSION)
+					card.color = 4;
+				else if (card.type & TYPE_SYNCHRO)
+					card.color = 5;
+				else if (card.type & TYPE_XYZ)
+					card.color = 6;
+				else if (card.type & TYPE_LINK)
+					card.color = 7;
+				else
+					card.color = null;
+			}
+		}
+		else if (card.type & TYPE_SPELL) {
+			if (card.type === TYPE_SPELL)
+				card.color = 10;
+			else if (card.type & TYPE_QUICKPLAY)
+				card.color = 11;
+			else if (card.type & TYPE_CONTINUOUS)
+				card.color = 12;
+			else if (card.type & TYPE_EQUIP)
+				card.color = 13;
+			else if (card.type & TYPE_RITUAL)
+				card.color = 14;
+			else if (card.type & TYPE_FIELD)
+				card.color = 15;
+			else
+				card.color = null;
+		}
+		else if (card.type & TYPE_TRAP) {
+			if (card.type === TYPE_TRAP)
+				card.color = 20;
+			else if (card.type & TYPE_CONTINUOUS)
+				card.color = 21;
+			else if (card.type & TYPE_COUNTER)
+				card.color = 22;
+			else
+				card.color = null;
+		}
+		else {
+			card.color = null;
+		}
+
 		// cid
 		if (card.id <= 99999999) {
 			card.cid = cid_table[card.id];
