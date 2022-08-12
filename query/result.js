@@ -111,6 +111,17 @@ function compare_name(a, b) {
 	return a.name.localeCompare(b.name);
 }
 
+function compare_type(a, b) {
+	if (a.color !== b.color) {
+		return a.color - b.color;
+	}
+	else if (a.color >= 0 && a.color <= 7) {
+		return b.level - a.level;
+	}
+	else
+		return 0;
+}
+
 function imgError(event) {
 	this.onerror = null;
 	this.src = "icon/unknown.jpg";
@@ -358,7 +369,7 @@ function show_result(params) {
 		if (pack_name)
 			result.sort(compare_id);
 		else
-			result.sort(compare_name);
+			result.sort(compare_type);
 		div_count.innerHTML = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		div_count.hidden = false;
 		if (window.innerWidth > MAX_WIDTH)
