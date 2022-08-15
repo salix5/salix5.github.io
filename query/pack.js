@@ -4,9 +4,10 @@ var pre_release={
 	DBAD: 100419001,
 	
 	WPP3: 100292001,
-
+	
+	PHHY: 101111001,
+	
 	// TCG
-	_POTE: 101109000,
 };
 
 var wiki_link = {
@@ -16,6 +17,7 @@ var wiki_link = {
 	
 	WPP3: "https://yugioh-wiki.net/index.php?WORLD%20PREMIERE%20PACK%202022",
 	
+	PHHY: "https://yugioh-wiki.net/index.php?PHOTON%20HYPERNOVA",
+	
 	// TCG
-	_POTE: "https://yugipedia.com/wiki/Power_of_the_Elements",
 };
