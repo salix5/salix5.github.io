@@ -55,6 +55,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/8/15  
+TCG特有卡：POTE-EN  
+先行卡更新：PHHY (1111)  
+
 22/8/13  
 先行卡更新：DBAD  
 
@@ -64,9 +68,6 @@ Ex.
 22/8/7  
 新增卡包：SR13  
 復刻更新：SR13  
-
-22/7/26  
-先行卡更新：POTE-EN  
 
 22/7/22  
 VJMP：水月的冰長石  
@@ -88,9 +89,6 @@ VJMP：綠色忍者
 22/6/27  
 新增卡包：SD44  
 復刻更新：SD44  
-
-22/6/21  
-先行卡更新：POTE-EN  
 
 22/6/18  
 新增卡包：VP22  
