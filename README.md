@@ -55,12 +55,14 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/8/22  
+新增卡包：DBAD  
+復刻更新：DBAD  
+VJMP：魔龍將 迪亞波利卡  
+
 22/8/15  
 TCG特有卡：POTE-EN  
 先行卡更新：PHHY (1111)  
-
-22/8/13  
-先行卡更新：DBAD  
 
 22/8/12  
 新增功能：按照卡片種類排序  
@@ -75,9 +77,6 @@ VJMP：綠色忍者
 
 22/7/17  
 新增卡包：DABL (1110)  
-
-22/7/14  
-先行卡更新：DBAD
 
 22/7/13  
 スケアクロー：恐懼爪牙  
