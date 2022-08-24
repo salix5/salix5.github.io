@@ -16,7 +16,7 @@
 	<select id="select_locale">
 		<option value="">OCG</option>
 		<option value="en">TCG</option>
-	<select>
+	</select>
 	</td></tr>
 	<tr><td>效果</td><td><input type="search" id="text_effect" maxlength="200"></td></tr>
 	<tr><td>關鍵字</td><td><input type="search" id="text_multi" maxlength="200"></td></tr>
@@ -270,11 +270,13 @@
 	</tr>
 	</table>
 	</form>
-	<div class="half_line">&nbsp;</div>
 	
 	<div class="count" id="div_count" hidden></div>
 	<table class="result" id="table_result">
 	</table>
+	<div class="count" id="div_page" hidden>
+		<select id="select_page"></select>
+	</div>
 	
 	<script src="dist/sql-wasm.js"></script>
 	<script src="dist/jszip.min.js"></script>
