@@ -73,11 +73,13 @@ cb_race_reset.onchange = function (event) { clear_cb('cb_race'); };
 
 function init(event) {
 	if (window.innerWidth > MAX_WIDTH) {
-		text_count.style.width = MAX_WIDTH + 'px';
+		div_count.style.width = MAX_WIDTH + 'px';
+		div_page.style.width = MAX_WIDTH + 'px';
 		table_result.style.width = MAX_WIDTH + 'px';
 	}
 	else {
-		text_count.style.width = '100%';
+		div_count.style.width = '100%';
+		div_page.style.width = '100%';
 		table_result.style.width = '100%';
 	}
 	form1.reset();
