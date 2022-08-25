@@ -36,7 +36,7 @@ function process_buffer(buf) {
 }
 
 function query_card(db, qstr, arg, ret) {
-	var stmt = db.prepare(qstr);
+	let stmt = db.prepare(qstr);
 	stmt.bind(arg);
 	while (stmt.step()) {
 		let card = stmt.getAsObject();
@@ -219,7 +219,7 @@ function check_str(val) {
 }
 
 function pack_cmd(pack) {
-	var cmd = '';
+	let cmd = '';
 	cmd = ` AND (datas.id=${pack[0]}`;
 	for (let i = 1; i < pack.length; ++i)
 		cmd += ` OR datas.id=${pack[i]}`;
