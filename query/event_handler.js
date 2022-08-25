@@ -63,6 +63,8 @@ const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 
 const div_count = document.getElementById('div_count');
+const div_page = document.getElementById('div_page');
+const select_page = document.getElementById('select_page');
 const table_result = document.getElementById('table_result');
 
 function show_subtype(type) {
