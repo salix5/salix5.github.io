@@ -53,12 +53,12 @@ const table_result = document.getElementById('table_result');
 
 
 function clear_cb(name) {
-	var cb_list = document.getElementsByName(name);
+	let cb_list = document.getElementsByName(name);
 	for (let i = 0; i < cb_list.length; ++i) {
 		cb_list[i].checked = false;
 	}
 	if (name != 'cb_marker') {
-		var rst = document.getElementById(name + '_reset');
+		let rst = document.getElementById(name + '_reset');
 		rst.checked = false;
 	}
 }
