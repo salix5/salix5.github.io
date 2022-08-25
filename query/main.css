@@ -16,9 +16,7 @@
 body{
 	font-family: '新微軟正黑體', 'Microsoft JhengHei', sans-serif;
 }
-.half_line{
-	line-height: 0.6;
-}
+
 table.hidden{
 	border-style: none;
 	margin: 0 auto;
