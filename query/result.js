@@ -3,6 +3,7 @@
 const MAX_WIDTH = 900;
 const MAX_RESULT_LEN = 500;
 var result_per_page = 100;
+var current_params = null;
 
 function is_booster(pack) {
 	if (pack_list[pack] && pack_list[pack][0] === 1)
@@ -360,10 +361,13 @@ function create_rows(card) {
 }
 
 function show_result(params) {
-	table_result.innerHTML = '';
+	table_result.innerHTML = "";
+	select_page.innerHTML = "";
+	div_page.hidden = true;
 	let total_pages = Math.ceil(result.length / result_per_page);
 	let page = check_int(params.get("page"));
 	if (total_pages && page <= total_pages) {
+		current_params = params;
 		let index_begin = result_per_page * (page - 1);
 		let index_end = Math.min(result_per_page * page - 1, result.length - 1);
 		if (pack_name)
@@ -373,15 +377,30 @@ function show_result(params) {
 		div_count.textContent = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		div_count.hidden = false;
 		if (window.innerWidth > MAX_WIDTH)
-			table_result.style.border = '1px solid black';
+			table_result.style.border = "1px solid black";
 		for (let i = index_begin; i <= index_end; ++i) {
 			create_rows(result[i]);
 		}
+		if (total_pages > 1) {
+			for (let i = 1; i <= total_pages; ++i) {
+				select_page.add(new Option(`第${i}頁`));
+			}
+			select_page.selectedIndex = page -1;
+			div_page.hidden = false;
+		}
 	}
 	else {
+		current_params = null;
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
-		table_result.style.border = '1px solid black';
-		cell0.textContent = '沒有符合搜尋的項目。';
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "沒有符合搜尋的項目。";
 	}
 }
+
+select_page.onchange = (event) => {
+	if (current_params) {
+		current_params.set("page", select_page.selectedIndex + 1);
+		window.location.search = '?' + current_params.toString();
+	}
+};

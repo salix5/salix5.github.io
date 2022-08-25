@@ -414,6 +414,9 @@ function server_validate1(params) {
 
 function server_validate2(params) {
 	let valid_params = new URLSearchParams();
+	valid_params.set("id1", params.get("id1"));
+	valid_params.set("id2", params.get("id2"));
+
 	let subtype = check_int(params.get("subtype"));
 	let sub_op = check_int(params.get("sub_op"));
 	let exc = check_int(params.get("exc"));
@@ -701,6 +704,8 @@ function server_analyze2(params) {
 	arg.$token = TYPE_TOKEN;
 	arg.$ext = TYPE_EXT;
 
+	params.set("id1", card_begin.id);
+	params.set("id2", card_end.id);
 	let valid_params = server_validate2(params);
 	let condition = param_to_condition(valid_params, arg);
 	let qstr_final = `${qstr0} AND ${get_sw_str('begin')} AND ${get_sw_str('end')}${condition};`;
