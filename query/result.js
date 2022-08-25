@@ -370,7 +370,7 @@ function show_result(params) {
 			result.sort(compare_id);
 		else
 			result.sort(compare_type);
-		div_count.innerHTML = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
+		div_count.textContent = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		div_count.hidden = false;
 		if (window.innerWidth > MAX_WIDTH)
 			table_result.style.border = '1px solid black';
@@ -379,9 +379,9 @@ function show_result(params) {
 		}
 	}
 	else {
-		var row0 = table_result.insertRow(-1);
-		var cell0 = row0.insertCell(-1);
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '沒有符合搜尋的項目。';
+		cell0.textContent = '沒有符合搜尋的項目。';
 	}
 }
