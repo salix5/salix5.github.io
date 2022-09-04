@@ -52,10 +52,6 @@ function print_card_number(pack, index) {
 
 function print_id(id, type, pack_id) {
 	let str_id = id.toString().padStart(8, '0');
-	let params = new URLSearchParams();
-	params.set('id', str_id);
-
-	let url = `https://salix5.github.io/query/?${params.toString()}`;
 	let link_text = '';
 
 	if (type & TYPE_TOKEN) {
@@ -70,7 +66,7 @@ function print_id(id, type, pack_id) {
 	else {
 		link_text = str_id;
 	}
-	return `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a>`;
+	return `${link_text}`;
 }
 
 function print_ad(x) {
