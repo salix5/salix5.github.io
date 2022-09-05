@@ -15,7 +15,6 @@ var db, db2;
 var cid_table, name_table, name_table_en, pack_list, setname, ltable;
 
 var result = [];
-var pack_name = '';
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
@@ -131,8 +130,8 @@ function query_card(db, qstr, arg, ret) {
 
 		// pack_id
 		if (card.id <= 99999999) {
-			if (pack_name && pack_list[pack_name])
-				card.pack_id = pack_list[pack_name].findIndex(x => x === card.id);
+			if (arg.pack && pack_list[arg.pack])
+				card.pack_id = pack_list[arg.pack].findIndex(x => x === card.id);
 			else
 				card.pack_id = null;
 		}
@@ -390,7 +389,7 @@ function server_validate1(params) {
 		let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
 		let name = check_str(params.get("name")).replace(re_bad_escape, "");
 		let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
-		if (pack)
+		if (pack === "o" || pack === "t" || pack_list[pack] || pre_release[pack])
 			valid_params.set("pack", pack);
 		if (locale)
 			valid_params.set("locale", locale);
@@ -471,7 +470,7 @@ function server_validate2(params) {
 	let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
 	let name = check_str(params.get("name")).replace(re_bad_escape, "");
 	let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
-	if (pack)
+	if (pack === "o" || pack === "t" || pack_list[pack] || pre_release[pack])
 		valid_params.set("pack", pack);
 	if (locale)
 		valid_params.set("locale", locale);
@@ -736,34 +735,19 @@ function param_to_condition(params, arg) {
 	}
 	// pack
 	let pack = params.get("pack");
-	pack_name = '';
-	switch (pack) {
-		case null:
-			break;
-		case 'o':
-			qstr += " AND datas.ot != 2";
-			break;
-		case 't':
-			qstr += " AND datas.ot == 2";
-			break;
-		default:
-			for (const prop in pack_list) {
-				if (pack === prop) {
-					qstr += pack_cmd(pack_list[prop]);
-					pack_name = prop;
-					break;
-				}
-			}
-			if (pack_name)
-				break;
-			for (const prop in pre_release) {
-				if (pack === prop) {
-					qstr += ` AND datas.id>=${pre_release[prop]} AND datas.id<=${pre_release[prop] + 998}`;
-					pack_name = prop;
-					break;
-				}
-			}
-			break;
+	if (pack === "o") {
+		qstr += " AND datas.ot != 2";
+	}
+	else if (pack === "t") {
+		qstr += " AND datas.ot == 2";
+	}
+	else if (pack_list[pack]) {
+		qstr += pack_cmd(pack_list[pack]);
+		arg.pack = pack;
+	}
+	else if (pre_release[pack]) {
+		qstr += ` AND datas.id>=${pre_release[pack]} AND datas.id<=${pre_release[pack] + 998}`;
+		arg.pack = pack;
 	}
 	select_ot.value = pack;
 

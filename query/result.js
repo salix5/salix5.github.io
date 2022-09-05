@@ -16,8 +16,6 @@ function print_card_number(pack, index) {
 	let str_pack = '';
 	let str_ot = '';
 	let str_index = '';
-	let cat = pack.substr(0, 2);
-
 	// ot
 	if (pack.charAt(0) === '_') {
 		str_pack = pack.substring(1);
@@ -27,12 +25,10 @@ function print_card_number(pack, index) {
 		str_pack = pack;
 		str_ot = 'JP';
 	}
+	let cat = str_pack.substr(0, 2);
 
 	// index
-	if (index === null || (pack !== 'VJMP' && index > 200)) {
-		str_index = '???';
-	}
-	else if (pack === 'WPP2' && index > 70) {
+	if (pack === 'WPP2' && index > 70) {
 		let sub_index = index - 70;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
@@ -44,21 +40,27 @@ function print_card_number(pack, index) {
 		let sub_index = index - 80;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
+	else if (pack === 'VJMP' || cat === 'MP') {
+		str_index = index.toString().padStart(3, '0');
+	}
+	else if (index === null || index > 200) {
+		str_index = '???';
+	}
 	else {
 		str_index = index.toString().padStart(3, '0');
 	}
 	return `${str_pack}-${str_ot}${str_index}`;
 }
 
-function print_id(id, type, pack_id) {
+function print_id(id, type, pack, pack_id) {
 	let str_id = id.toString().padStart(8, '0');
 	let link_text = '';
 
 	if (type & TYPE_TOKEN) {
 		link_text = 'token';
 	}
-	else if (pack_name) {
-		link_text = print_card_number(pack_name, pack_id);
+	else if (pack) {
+		link_text = print_card_number(pack, pack_id);
 	}
 	else if (id > 99999999) {
 		link_text = print_card_number(pre_id_to_pack(id), pack_id);
@@ -132,7 +134,7 @@ function pre_id_to_pack(id) {
 	return 'XXXX';
 }
 
-function create_rows(card) {
+function create_rows(card, pack) {
 	let card_name = '';
 	let card_alias = '';
 	card_name = `<strong>${card.name}</strong>${print_limit(card.limit)}`;
@@ -167,7 +169,7 @@ function create_rows(card) {
 		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name))
 			card_alias += `${card.en_name}<br>`;
 	}
-	card_alias += `${print_id(card.id, card.type, card.pack_id)}<br>`;
+	card_alias += `${print_id(card.id, card.type, pack, card.pack_id)}<br>`;
 
 	let row_pic = table_result.insertRow(-1);
 	let cell_pic = row_pic.insertCell(-1);
@@ -362,11 +364,12 @@ function show_result(params) {
 	div_page.hidden = true;
 	let total_pages = Math.ceil(result.length / result_per_page);
 	let page = check_int(params.get("page"));
+	let pack = params.get("pack");
 	if (total_pages && page <= total_pages) {
 		current_params = params;
 		let index_begin = result_per_page * (page - 1);
 		let index_end = Math.min(result_per_page * page - 1, result.length - 1);
-		if (pack_name)
+		if (pack)
 			result.sort(compare_id);
 		else
 			result.sort(compare_type);
@@ -375,7 +378,7 @@ function show_result(params) {
 		if (window.innerWidth > MAX_WIDTH)
 			table_result.style.border = "1px solid black";
 		for (let i = index_begin; i <= index_end; ++i) {
-			create_rows(result[i]);
+			create_rows(result[i], pack);
 		}
 		if (total_pages > 1) {
 			for (let i = 1; i <= total_pages; ++i) {
