@@ -55,6 +55,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/9/6  
+新增功能：完全符合的卡名優先排序  
+先行卡更新：VJMP
+
 22/8/25  
 新增功能：切換頁數  
 
