@@ -106,19 +106,23 @@ function compare_id(a, b) {
 	return a.pack_id - b.pack_id;
 }
 
-function compare_name(a, b) {
-	return a.name.localeCompare(b.name);
-}
-
 function compare_type(a, b) {
+	let name = current_params.get("name");
 	if (a.color !== b.color) {
 		return a.color - b.color;
 	}
-	else if (a.color >= 0 && a.color <= 7) {
+	else if (a.level && b.level && a.level !== b.level) {
 		return b.level - a.level;
 	}
-	else
-		return 0;
+	else if (a.name === name) {
+		return -1;
+	}
+	else if (b.name === name) {
+		return 1;
+	}
+	else {
+		return a.name.localeCompare(b.name);
+	}
 }
 
 function imgError(event) {
