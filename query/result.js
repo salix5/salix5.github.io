@@ -369,6 +369,8 @@ function show_result(params) {
 	let total_pages = Math.ceil(result.length / result_per_page);
 	let page = check_int(params.get("page"));
 	let pack = params.get("pack");
+	if (pack === "o" || pack === "t")
+		pack = null;
 	if (total_pages && page <= total_pages) {
 		current_params = params;
 		let index_begin = result_per_page * (page - 1);
