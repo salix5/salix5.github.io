@@ -32,6 +32,10 @@ function print_card_number(pack, index) {
 		let sub_index = index - 70;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
+	else if (pack === 'WPP3' && index > 60) {
+		let sub_index = index - 60;
+		str_index = `S${sub_index.toString().padStart(2, '0')}`;
+	}
 	else if ((cat === 'SD' || cat === 'SR') && index > 50) {
 		let sub_index = index - 50;
 		str_index = `P${sub_index.toString().padStart(2, '0')}`;
