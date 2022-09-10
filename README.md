@@ -55,8 +55,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
-22/9/9  
-エクゾディア：艾克佐迪亞
+22/9/10  
+エクゾディア：艾克佐迪亞  
+新增卡包：WPP3  
 
 22/9/6  
 新增功能：完全符合的卡名優先排序  
