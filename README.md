@@ -55,6 +55,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/9/11  
+更新：10月禁卡表  
+
 22/9/10  
 エクゾディア：艾克佐迪亞  
 新增卡包：WPP3  
