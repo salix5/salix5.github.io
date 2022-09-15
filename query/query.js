@@ -12,7 +12,7 @@ var SQL;
 var db, db2;
 
 // from json
-var cid_table, name_table, name_table_en, pack_list, setname, ltable;
+var cid_table, name_table, name_table_en, pack_list, setname, ltable, ltable_md;
 
 var result = [];
 
@@ -153,8 +153,9 @@ const promise_name_en = fetch("text/name_table_en.json").then(response => respon
 const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => { pack_list = data; });
 const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => { setname = data; });
 const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => { ltable = data; });
+const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => { ltable_md = data; });
 
-Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function (values) {
+Promise.all([promise_sql, promise_db, promise_db2, promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist, promise_lflist2]).then(function (values) {
 	db = new SQL.Database(values[1]);
 	db2 = new SQL.Database(values[2]);
 	url_query();
@@ -515,7 +516,7 @@ function process_name(locale, str_name, arg) {
 		case "en":
 			let en_list = [];
 			for (const key in name_table_en) {
-				if (name_table_en[key] && name_table_en[key].toLowerCase().indexOf(str_name.toLowerCase()) !== -1)
+				if (name_table_en[key] && name_table_en[key].toLowerCase().includes(str_name.toLowerCase()))
 					en_list.push(key);
 				if (en_list.length > MAX_RESULT_LEN) {
 					en_list.length = 0;
@@ -530,7 +531,7 @@ function process_name(locale, str_name, arg) {
 			// ja, name
 			let jp_list = [];
 			for (const key in name_table) {
-				if (name_table[key].toHalfWidth().indexOf(str_name) !== -1)
+				if (name_table[key].toHalfWidth().includes(str_name))
 					jp_list.push(key);
 				if (jp_list.length > MAX_RESULT_LEN) {
 					jp_list.length = 0;
@@ -550,8 +551,10 @@ function process_name(locale, str_name, arg) {
 				}
 			}
 			// zh, name
-			name_cmd += " OR name LIKE $name ESCAPE '$' OR alias IN (SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & $token AND name LIKE $name ESCAPE '$')";
+			name_cmd += " OR name LIKE $name ESCAPE '$' OR desc LIKE $kanji ESCAPE '$'";
+			name_cmd += " OR alias IN (SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & $token AND name LIKE $name ESCAPE '$')";
 			arg.$name = string_to_literal(str_name);
+			arg.$kanji = `%※${string_to_literal(str_name)}`;
 			break;
 	}
 	return name_cmd;
