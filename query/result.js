@@ -44,7 +44,7 @@ function print_card_number(pack, index) {
 		let sub_index = index - 80;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
-	else if (pack === 'VJMP' || cat === 'MP') {
+	else if (pack === 'VJMP' || cat === 'SL') {
 		str_index = index.toString().padStart(3, '0');
 	}
 	else if (index === null || index > 200) {
