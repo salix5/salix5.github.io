@@ -52,6 +52,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/9/19  
+マシンナーズ：機甲部隊
+
 22/9/15  
 アビス：深淵-  
 先行卡更新：PHHY、SLF1
