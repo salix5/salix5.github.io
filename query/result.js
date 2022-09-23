@@ -112,17 +112,17 @@ function compare_id(a, b) {
 
 function compare_type(a, b) {
 	let name = current_params.get("name");
-	if (a.color !== b.color) {
-		return a.color - b.color;
-	}
-	else if (a.level && b.level && a.level !== b.level) {
-		return b.level - a.level;
-	}
-	else if (a.name === name) {
+	if (a.name === name) {
 		return -1;
 	}
 	else if (b.name === name) {
 		return 1;
+	}
+	else if (a.color !== b.color) {
+		return a.color - b.color;
+	}
+	else if (a.level && b.level && a.level !== b.level) {
+		return b.level - a.level;
 	}
 	else {
 		return a.name.localeCompare(b.name);
