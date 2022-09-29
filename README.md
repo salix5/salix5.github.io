@@ -52,6 +52,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/9/29  
+アンティーク・ギア：古代機械齒輪  
+ガジェット：小工具
+
 22/9/26  
 VJMP：森林聖獸 貓尾紅  
 VJMP：女王蝶 斑蝶、祈願龍、大太郎法師  
