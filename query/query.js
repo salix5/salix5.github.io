@@ -107,7 +107,7 @@ function query_card(db, qstr, arg, ret) {
 		}
 
 		// cid
-		if (card.id <= 99999999) {
+		if (card.id <= 99999999 && !(card.type & TYPE_TOKEN)) {
 			card.cid = cid_table[card.id];
 			card.jp_name = name_table[card.id];
 			card.en_name = name_table_en[card.id];
