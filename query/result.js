@@ -151,12 +151,12 @@ function create_rows(card, pack) {
 	// db link
 	if (!(card.type & TYPE_TOKEN)) {
 		let link_text = '';
-		let url = '';
+		let db_url = '';
 		let pre_pack = '';
 
 		if (card.id <= 99999999) {
 			link_text = card.jp_name;
-			url = print_db_link(card.id, card.ot, card.cid);
+			db_url = print_db_link(card.id, card.ot, card.cid);
 		}
 		else if (pre_pack = pre_id_to_pack(card.id)) {
 			let str_site = '';
@@ -170,14 +170,20 @@ function create_rows(card, pack) {
 				str_pack = pre_pack;
 			}
 			link_text = `${str_site}: ${str_pack}`;
-			url = wiki_link[pre_pack];
+			db_url = wiki_link[pre_pack];
 		}
 		if (link_text)
-			card_alias = `<a href="${url}" target="_blank" rel="noreferrer">${link_text}</a><br>`;
+			card_alias = `<a href="${db_url}" target="_blank" rel="noreferrer">${link_text}</a><br>`;
 		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name))
 			card_alias += `${card.en_name}<br>`;
 	}
-	card_alias += `${print_id(card.id, card.type, pack, card.pack_id)}<br>`;
+	if (card.cid) {
+		let faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
+		card_alias += `<a href="${faq_url}" target="_blank" rel="noreferrer">${print_id(card.id, card.type, pack, card.pack_id)}</a><br>`;
+	}
+	else {
+		card_alias += `${print_id(card.id, card.type, pack, card.pack_id)}<br>`;
+	}
 
 	let row_pic = table_result.insertRow(-1);
 	let cell_pic = row_pic.insertCell(-1);
