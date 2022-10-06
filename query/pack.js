@@ -4,6 +4,7 @@ var pre_release={
 	SLF1: 100293001,
 	
 	// TCG
+	_DABL: 101110001,
 };
 
 var wiki_link = {
@@ -12,4 +13,5 @@ var wiki_link = {
 	SLF1: "https://yugioh-wiki.net/index.php?SELECTION%205",
 	
 	// TCG
+	_DABL: "https://yugipedia.com/wiki/Darkwing_Blast",
 };
