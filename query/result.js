@@ -111,11 +111,25 @@ function compare_id(a, b) {
 }
 
 function compare_type(a, b) {
-	let name = current_params.get("name");
+	let name = check_str(current_params.get("name"));
+	let jp_name = name.toHalfWidth();
+	let en_name = name.toLowerCase();
 	if (a.name === name) {
 		return -1;
 	}
 	else if (b.name === name) {
+		return 1;
+	}
+	else if (a.jp_name.toHalfWidth() === jp_name) {
+		return -1;
+	}
+	else if (b.jp_name.toHalfWidth() === jp_name) {
+		return 1;
+	}
+	else if (a.en_name && a.en_name.toLowerCase() === en_name) {
+		return -1;
+	}
+	else if (b.en_name && b.en_name.toLowerCase() === en_name) {
 		return 1;
 	}
 	else if (a.color !== b.color) {
