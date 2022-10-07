@@ -6,15 +6,15 @@ function submit_query(event) {
 	button1.disabled = true;
 	button2.disabled = true;
 	// id or name of the 2 cards
-	let cdata1 = text_id1.value.toHalfWidth();
+	let cdata1 = text_id1.value;
 	if (cdata1)
 		params.set('id1', cdata1);
-	let cdata2 = text_id2.value.toHalfWidth();
+	let cdata2 = text_id2.value;
 	if (cdata2)
 		params.set('id2', cdata2);
 
 	// pack
-	let pack = select_ot.value.toHalfWidth();
+	let pack = select_ot.value;
 	if (pack)
 		params.set('pack', pack);
 
@@ -90,17 +90,17 @@ function submit_query(event) {
 
 
 	//multi
-	let cmulti = text_multi.value.toHalfWidth();
+	let cmulti = text_multi.value;
 	if (cmulti)
 		params.set('multi', cmulti);
 	else {
 		// name
-		let cname = text_name.value.toHalfWidth();
+		let cname = text_name.value;
 		if (cname)
 			params.set('name', cname);
 
 		//effect
-		let cdesc = text_effect.value.toHalfWidth();
+		let cdesc = text_effect.value;
 		if (cdesc)
 			params.set('desc', cdesc);
 	}

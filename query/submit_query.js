@@ -14,7 +14,7 @@ function submit_query(event) {
 	}
 	else {
 		// pack
-		let pack = select_ot.value.toHalfWidth();
+		let pack = select_ot.value;
 		if (pack)
 			params.set('pack', pack);
 
@@ -69,7 +69,7 @@ function submit_query(event) {
 
 		if (select_type.value === '' || select_type.value === 'm') {
 			// mat
-			let mat = text_mat.value.toHalfWidth();
+			let mat = text_mat.value;
 			if (mat)
 				params.set('mat', mat);
 
@@ -135,17 +135,17 @@ function submit_query(event) {
 		}
 
 		//multi
-		let cmulti = text_multi.value.toHalfWidth();
+		let cmulti = text_multi.value;
 		if (cmulti)
 			params.set('multi', cmulti);
 		else {
 			// name
-			let cname = text_name.value.toHalfWidth();
+			let cname = text_name.value;
 			if (cname)
 				params.set('name', cname);
 
 			//effect
-			let cdesc = text_effect.value.toHalfWidth();
+			let cdesc = text_effect.value;
 			if (cdesc)
 				params.set('desc', cdesc);
 		}
