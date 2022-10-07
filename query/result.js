@@ -120,10 +120,10 @@ function compare_type(a, b) {
 	else if (b.name === name) {
 		return 1;
 	}
-	else if (a.jp_name.toHalfWidth() === jp_name) {
+	else if (a.jp_name && a.jp_name.toHalfWidth() === jp_name) {
 		return -1;
 	}
-	else if (b.jp_name.toHalfWidth() === jp_name) {
+	else if (b.jp_name && b.jp_name.toHalfWidth() === jp_name) {
 		return 1;
 	}
 	else if (a.en_name && a.en_name.toLowerCase() === en_name) {
