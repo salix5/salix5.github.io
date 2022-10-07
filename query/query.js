@@ -215,7 +215,7 @@ function check_int(val) {
 function check_str(val) {
 	if (!is_str(val))
 		return '';
-	return val.toHalfWidth();
+	return val;
 }
 
 function pack_cmd(pack) {
@@ -392,7 +392,7 @@ function server_validate1(params) {
 		let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
 		if (pack === "o" || pack === "t" || pack_list[pack] || pre_release[pack])
 			valid_params.set("pack", pack);
-		if (locale)
+		if (locale === "en")
 			valid_params.set("locale", locale);
 		if (mat)
 			valid_params.set("mat", mat);
@@ -473,7 +473,7 @@ function server_validate2(params) {
 	let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
 	if (pack === "o" || pack === "t" || pack_list[pack] || pre_release[pack])
 		valid_params.set("pack", pack);
-	if (locale)
+	if (locale === "en")
 		valid_params.set("locale", locale);
 	if (multi)
 		valid_params.set("multi", multi);
@@ -515,8 +515,9 @@ function process_name(locale, str_name, arg) {
 	switch (locale) {
 		case "en":
 			let en_list = [];
+			let str_en = str_name.toLowerCase();
 			for (const key in name_table_en) {
-				if (name_table_en[key] && name_table_en[key].toLowerCase().includes(str_name.toLowerCase()))
+				if (name_table_en[key] && name_table_en[key].toLowerCase().includes(str_en))
 					en_list.push(key);
 				if (en_list.length > MAX_RESULT_LEN) {
 					en_list.length = 0;
@@ -530,8 +531,9 @@ function process_name(locale, str_name, arg) {
 		default:
 			// ja, name
 			let jp_list = [];
+			let str_jp = str_name.toHalfWidth();
 			for (const key in name_table) {
-				if (name_table[key].toHalfWidth().includes(str_name))
+				if (name_table[key].toHalfWidth().includes(str_jp))
 					jp_list.push(key);
 				if (jp_list.length > MAX_RESULT_LEN) {
 					jp_list.length = 0;
@@ -633,7 +635,7 @@ function get_single_card(cdata) {
 	if (list_tmp.length === 1)
 		return [list_tmp[0], list_tmp.length];
 
-	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === cdata);
+	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === cdata.toHalfWidth());
 	if (nid && nid > 0) {
 		qstr = `${qstr0} AND datas.id == $nid;`;
 		arg.$nid = nid;

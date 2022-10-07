@@ -400,7 +400,7 @@ function show_result(params) {
 			for (let i = 1; i <= total_pages; ++i) {
 				select_page.add(new Option(`第${i}頁`));
 			}
-			select_page.selectedIndex = page -1;
+			select_page.selectedIndex = page - 1;
 			div_page.hidden = false;
 		}
 	}
