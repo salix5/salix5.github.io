@@ -1037,7 +1037,7 @@ function param_to_condition(params, arg) {
 			select_locale.value = "";
 			break;
 	}
-	let multi = params.get("multi") ? params.get("multi") : "";
+	let multi = params.get("multi");
 	let name_cmd = process_name(locale, multi, arg);
 	if (name_cmd) {
 		// multi
@@ -1047,7 +1047,7 @@ function param_to_condition(params, arg) {
 	}
 	else {
 		// name
-		let name = params.get("name") ? params.get("name") : "";
+		let name = params.get("name");
 		name_cmd = process_name(locale, name, arg);
 		if (name_cmd) {
 			text_name.value = name;
