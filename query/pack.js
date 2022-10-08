@@ -4,7 +4,7 @@ var pre_release={
 	SLF1: 100293001,
 	
 	// TCG
-	_DABL: 101110001,
+	_DABL: 101110000,
 };
 
 var wiki_link = {
