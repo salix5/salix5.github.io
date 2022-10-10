@@ -52,6 +52,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/10/10  
+ウェルカム・ラビュリンス：歡迎白銀之城  
+先行卡更新：PHHY、SLF1  
+
 22/9/29  
 アンティーク・ギア：古代機械齒輪  
 ガジェット：小工具  
