@@ -3,6 +3,7 @@ var pre_release={
 	PHHY: 101111001,
 	SLF1: 100293001,
 	SD45: 100345001,
+	SUB1: 100294001,
 	
 	// TCG
 	_DABL: 101110000,
@@ -13,6 +14,7 @@ var wiki_link = {
 	PHHY: "https://yugioh-wiki.net/index.php?PHOTON%20HYPERNOVA",
 	SLF1: "https://yugioh-wiki.net/index.php?SELECTION%205",
 	SD45: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%EA%B5%CF%C7%CB%E2%A4%CE%BF%B9%A1%DD",
+	SUB1: "https://yugioh-wiki.net/index.php?SECRET%20UTILITY%20BOX",
 	
 	// TCG
 	_DABL: "https://yugipedia.com/wiki/Darkwing_Blast",
