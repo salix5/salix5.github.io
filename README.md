@@ -52,15 +52,18 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/10/15  
+新增卡包：PHHY (1111)  
+
 22/10/14  
-先行卡更新：SUB1、PHHY  
+先行卡更新：SUB1  
 
 22/10/13  
 先行卡更新：SD45  
 
 22/10/10  
 ウェルカム・ラビュリンス：歡迎白銀之城  
-先行卡更新：PHHY、SLF1  
+先行卡更新：SLF1  
 
 22/9/29  
 アンティーク・ギア：古代機械齒輪  
@@ -80,7 +83,7 @@ VJMP：女王蝶 斑蝶、祈願龍、大太郎法師
 
 22/9/15  
 アビス：深淵-  
-先行卡更新：PHHY、SLF1
+先行卡更新：SLF1
 
 22/9/11  
 更新：10月禁卡表  
@@ -102,7 +105,6 @@ VJMP：魔龍將 迪亞波利卡
 
 22/8/15  
 TCG特有卡：POTE-EN  
-先行卡更新：PHHY (1111)  
 
 22/8/12  
 新增功能：按照卡片種類排序  
