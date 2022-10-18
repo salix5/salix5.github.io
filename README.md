@@ -52,6 +52,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/10/18  
+TCG特有卡：DABL-EN  
+
 22/10/15  
 新增卡包：PHHY (1111)  
 
