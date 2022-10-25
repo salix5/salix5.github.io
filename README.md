@@ -52,7 +52,7 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
-22/10/18  
+22/10/25  
 TCG特有卡：DABL-EN  
 
 22/10/15  
@@ -137,7 +137,6 @@ VJMP：綠色忍者
 22/6/18  
 新增卡包：VP22  
 VJMP：賢瑞官 加爾丹  
-TCG特有卡：DIFO-EN  
 
 22/6/14  
 更新：7月禁卡表  
@@ -193,7 +192,6 @@ VJMP：魔鬼少女 蘿莉絲
 P.U.N.K.（パンク）：P.U.N.K.  
 
 22/3/7  
-TCG特有卡：BACH-EN  
 VJMP：真紅眼黑星龍
 
 22/2/20  
