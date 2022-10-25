@@ -40,6 +40,10 @@ Ex.
 持有擲骰子的怪獸效果的怪獸：  
 效果怪獸、效果包含`骰子`
 
+作為超量素材期間給予效果的怪獸：  
+效果包含`持有此卡作為素材`
+
+
 ### 類型支援AND、OR、排除特定類型
 Ex.  
 協調同步怪獸：  
@@ -48,11 +52,13 @@ Ex.
 放在牌組的卡：  
 排除：融合、同步、超量、連結  
 
+
 ## 字段對照表
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
 22/10/25  
+VJMP：甲蟲合體 鍬形蟲鬥士  
 TCG特有卡：DABL-EN  
 
 22/10/15  
