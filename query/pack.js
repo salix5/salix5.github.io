@@ -7,7 +7,6 @@ var pre_release={
 	YO06: 100295001,
 	
 	// TCG
-	_DABL: 101110000,
 };
 
 var wiki_link = {
@@ -19,5 +18,4 @@ var wiki_link = {
 	YO06: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 	
 	// TCG
-	_DABL: "https://yugipedia.com/wiki/Darkwing_Blast",
 };
