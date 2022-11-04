@@ -1,3 +1,5 @@
+var last_pack = "PHHY";
+
 var pre_release={
 	VJMP: 100200001,
 	SLF1: 100293001,
