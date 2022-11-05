@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/11/5  
+新增卡包：SLF1  
+復刻更新：SLF1  
+
 22/10/29  
 重新校對：FLOD
 
@@ -78,7 +82,6 @@ TCG特有卡：DABL-EN
 
 22/10/10  
 ウェルカム・ラビュリンス：歡迎白銀之城  
-先行卡更新：SLF1  
 
 22/9/29  
 アンティーク・ギア：古代機械齒輪  
@@ -98,7 +101,6 @@ VJMP：女王蝶 斑蝶、祈願龍、大太郎法師
 
 22/9/15  
 アビス：深淵-  
-先行卡更新：SLF1
 
 22/9/11  
 更新：10月禁卡表  
