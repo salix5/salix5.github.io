@@ -1,3 +1,4 @@
+"use strict";
 // type
 const TYPE_MONSTER		=0x1
 const TYPE_SPELL		=0x2
