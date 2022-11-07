@@ -1,3 +1,4 @@
+"use strict";
 var last_pack = "SLF1#1";
 
 var pre_release={
