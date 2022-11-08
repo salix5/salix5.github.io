@@ -149,9 +149,9 @@ function imgError(event) {
 }
 
 function pre_id_to_pack(id) {
-	for (const prop in pre_release) {
-		if (id >= pre_release[prop] && id <= pre_release[prop] + 998)
-			return prop;
+	for (const [key, value] of Object.entries(pre_release)) {
+		if (id >= value && id <= value + 998)
+			return key;
 	}
 	return 'XXXX';
 }
