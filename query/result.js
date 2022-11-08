@@ -191,7 +191,7 @@ function create_rows(card, pack) {
 		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name))
 			card_alias += `${card.en_name}<br>`;
 	}
-	if (card.cid) {
+	if (card.cid && card.ot !== 2) {
 		let faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
 		card_alias += `<a href="${faq_url}" target="_blank" rel="noreferrer">${print_id(card.id, card.type, pack, card.pack_id)}</a><br>`;
 	}
