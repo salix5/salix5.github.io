@@ -548,8 +548,8 @@ function process_name(locale, str_name, arg) {
 		case "en":
 			let en_list = [];
 			let str_en = str_name.toLowerCase();
-			for (const key in name_table_en) {
-				if (name_table_en[key] && name_table_en[key].toLowerCase().includes(str_en))
+			for (const [key, value] of Object.entries(name_table_en)) {
+				if (value && value.toLowerCase().includes(str_en))
 					en_list.push(key);
 				if (en_list.length > MAX_RESULT_LEN) {
 					en_list.length = 0;
@@ -564,8 +564,8 @@ function process_name(locale, str_name, arg) {
 			// ja, name
 			let jp_list = [];
 			let str_jp = str_name.toHalfWidth();
-			for (const key in name_table) {
-				if (name_table[key].toHalfWidth().includes(str_jp))
+			for (const [key, value] of Object.entries(name_table)) {
+				if (value.toHalfWidth().includes(str_jp))
 					jp_list.push(key);
 				if (jp_list.length > MAX_RESULT_LEN) {
 					jp_list.length = 0;
