@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/11/9  
+重新校對：CIBR  
+先行卡更新：SD45  
+
 22/11/8  
 重新校對：EXFO  
 先行卡更新：VJMP  
