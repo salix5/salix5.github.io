@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/11/12  
+アビス：邃淵  
+
 22/11/10  
 重新校對：COTD  
 
@@ -109,9 +112,6 @@ VJMP：女王蝶 斑蝶、祈願龍、大太郎法師
 
 22/9/19  
 マシンナーズ：機甲部隊
-
-22/9/15  
-アビス：深淵-  
 
 22/9/11  
 更新：10月禁卡表  
