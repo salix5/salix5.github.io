@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "SLF1#1";
+const last_pack = "SLF1#2";
 
 var pre_release={
 	VJMP: 100200001,
