@@ -56,6 +56,7 @@ function query_card(db, qstr, arg, ret) {
 		card.scale = (card.level >> 24) & 0xff;
 		card.level = card.level & 0xff;
 
+		// color
 		if (card.type & TYPE_MONSTER) {
 			if (!(card.type & TYPE_EXT)) {
 				if (card.type & TYPE_TOKEN)
@@ -113,26 +114,9 @@ function query_card(db, qstr, arg, ret) {
 		}
 
 		// cid
-		if (card.id <= 99999999 && !(card.type & TYPE_TOKEN)) {
-			card.cid = cid_table[card.id];
-			card.jp_name = name_table[card.id];
-			card.en_name = name_table_en[card.id];
-		}
-		else {
-			card.cid = null;
-			card.jp_name = null;
-			card.en_name = null;
-		}
-
-		// limit
-		if (ltable[card.id] === 0)
-			card.limit = 0;
-		else if (ltable[card.id] === 1)
-			card.limit = 1;
-		else if (ltable[card.id] === 2)
-			card.limit = 2;
-		else
-			card.limit = 3;
+		card.cid = cid_table[card.id] ? cid_table[card.id] : null;
+		card.jp_name = name_table[card.id] ? name_table[card.id] : null;
+		card.en_name = name_table_en[card.id] ? name_table_en[card.id] : null;
 
 		// pack_id
 		if (card.id <= 99999999) {
