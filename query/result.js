@@ -135,7 +135,7 @@ function compare_type(a, b) {
 	else if (a.color !== b.color) {
 		return a.color - b.color;
 	}
-	else if (a.level && b.level && a.level !== b.level) {
+	else if (a.level !== b.level) {
 		return b.level - a.level;
 	}
 	else {
