@@ -159,7 +159,7 @@ function pre_id_to_pack(id) {
 function create_rows(card, pack) {
 	let card_name = '';
 	let card_alias = '';
-	card_name = `<strong>${card.name}</strong>${print_limit(card.limit)}`;
+	card_name = `<strong>${card.name}</strong>${print_limit(ltable[card.id])}`;
 	if (card.ot === 2)
 		card_name += '<img src="icon/tcg.png" height="20" width="40">';
 	// db link
