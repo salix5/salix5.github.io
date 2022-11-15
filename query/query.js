@@ -40,11 +40,30 @@ function process_buffer(buf) {
 	return arr;
 }
 
+function is_alternative(id, alias, type) {
+	if (type & TYPE_TOKEN)
+		return alias !== 0;
+	else
+		return Math.abs(id - alias) < 10;
+}
+
 function query_card(db, qstr, arg, ret) {
 	let stmt = db.prepare(qstr);
 	stmt.bind(arg);
+
+	let inv_pack = Object.create(null);
+	if (arg.pack && pack_list[arg.pack]) {
+		for (let i = 0; i < pack_list[arg.pack].length; ++i) {
+			if (pack_list[arg.pack][i] !== 0 && pack_list[arg.pack][i] !== 1)
+				inv_pack[pack_list[arg.pack][i]] = i;
+		}
+	}
+
 	while (stmt.step()) {
 		let card = stmt.getAsObject();
+		if (is_alternative(card.id, card.alias, card.type))
+			continue;
+
 		// spell & trap reset data
 		if (card.type & (TYPE_SPELL | TYPE_TRAP)) {
 			card.atk = 0;
@@ -121,7 +140,7 @@ function query_card(db, qstr, arg, ret) {
 		// pack_id
 		if (card.id <= 99999999) {
 			if (arg.pack && pack_list[arg.pack])
-				card.pack_id = pack_list[arg.pack].findIndex(x => x === card.id);
+				card.pack_id = inv_pack[card.id];
 			else
 				card.pack_id = null;
 		}
@@ -236,9 +255,11 @@ function check_str(val) {
 
 function pack_cmd(pack) {
 	let cmd = '';
-	cmd = ` AND (datas.id=${pack[0]}`;
-	for (let i = 1; i < pack.length; ++i)
-		cmd += ` OR datas.id=${pack[i]}`;
+	cmd = ` AND (0`;
+	for (let i = 0; i < pack.length; ++i) {
+		if (pack[i] !== 0 && pack[i] !== 1)
+			cmd += ` OR datas.id=${pack[i]}`;
+	}
 	cmd += `)`;
 	return cmd;
 }
