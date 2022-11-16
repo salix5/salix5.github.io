@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/11/16  
+先行卡更新：CYAC (1112)、YOS1  
+新增功能：顯示MD限制卡  
+
 22/11/12  
 アビス：邃淵  
 
