@@ -97,13 +97,13 @@ function print_db_link(id, ot, cid) {
 
 function print_limit(limit) {
 	if (limit === 0)
-		return '<img src="icon/0.png" height="20" width="20">';
+		return '<img src="icon/0.png" height="18" width="18">';
 	else if (limit === 1)
-		return '<img src="icon/1.png" height="20" width="20">';
+		return '<img src="icon/1.png" height="18" width="18">';
 	else if (limit === 2)
-		return '<img src="icon/2.png" height="20" width="20">';
+		return '<img src="icon/2.png" height="18" width="18">';
 	else
-		return '';
+		return '無';
 }
 
 function compare_id(a, b) {
@@ -159,7 +159,7 @@ function pre_id_to_pack(id) {
 function create_rows(card, pack) {
 	let card_name = '';
 	let card_alias = '';
-	card_name = `<strong>${card.name}</strong>${print_limit(ltable[card.id])}`;
+	card_name = `<strong>${card.name}</strong>`;
 	if (card.ot === 2)
 		card_name += '<img src="icon/tcg.png" height="20" width="40">';
 	// db link
@@ -197,6 +197,11 @@ function create_rows(card, pack) {
 	}
 	else {
 		card_alias += `${print_id(card.id, card.type, pack, card.pack_id)}<br>`;
+	}
+
+	// limit
+	if (ltable[card.id] !== undefined || ltable_md[card.id] !== undefined) {
+		card_alias += `(OCG：${print_limit(ltable[card.id])} / MD：${print_limit(ltable_md[card.id])})<br>`;
 	}
 
 	let row_pic = table_result.insertRow(-1);

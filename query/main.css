@@ -1,133 +1,154 @@
 @font-face {
-  font-family: '新微軟正黑體';
-  unicode-range: U+7DB0, U+78A7, U+7B75;
-  font-style: normal;
-  font-weight: bold;
-  src: local(Yu Gothic), local(MS Gothic);
-}
-@font-face {
-  font-family: '新微軟正黑體';
-  unicode-range: U+7DB0, U+78A7, U+7B75;
-  font-style: normal;
-  font-weight: normal;
-  src: local(Microsoft JhengHei);
+	font-family: '新微軟正黑體';
+	unicode-range: U+7DB0, U+78A7, U+7B75;
+	font-style: normal;
+	font-weight: bold;
+	src: local(Yu Gothic), local(MS Gothic);
 }
 
-body{
+@font-face {
+	font-family: '新微軟正黑體';
+	unicode-range: U+7DB0, U+78A7, U+7B75;
+	font-style: normal;
+	font-weight: normal;
+	src: local(Microsoft JhengHei);
+}
+
+body {
 	font-family: '新微軟正黑體', 'Microsoft JhengHei', sans-serif;
 }
 
-table.hidden{
+table.hidden {
 	border-style: none;
 	margin: 0 auto;
 }
-table.hidden td{
+
+table.hidden td {
 	padding: 5px 0px;
 }
-tr.row_button{
+
+tr.row_button {
 	text-align: center;
 }
-label.clear{
+
+label.clear {
 	color: Red;
 }
-label.F{
+
+label.F {
 	background: #A086B7;
 	color: Black;
 }
-label.S{
+
+label.S {
 	background: White;
 	color: Black;
 }
-label.X{
+
+label.X {
 	background: Black;
 	color: White;
 }
-label.L{
+
+label.L {
 	background: Blue;
 	color: White;
 }
 
-.count{
+.count {
 	margin: 0 auto;
 	padding: 10px 0px;
 }
 
-table.result{
+table.result {
 	border-collapse: collapse;
 	margin: 0 auto;
 	border-top: 1px solid black;
 }
-td.name{
-	text-align: center;
-	padding: 1%;
-}
-td.pic{
+
+td.pic {
 	vertical-align: top;
 	padding: 2%;
 }
-img.pic{
-	max-height:100%;
-	max-width:100%;
+
+img.pic {
+	max-height: 100%;
+	max-width: 100%;
 }
-td.data{
+
+td.data {
 	vertical-align: top;
 	padding: 2%;
 }
-td.effect{
+
+td.effect {
 	border-bottom: 1px solid black;
 	vertical-align: top;
 	padding: 2%;
 }
 
-.minor{
+.minor {
 	font-size: 14px;
 }
-.stat{
+
+.stat {
 	color: Blue;
 }
-hr{
+
+hr {
 	opacity: 0.4;
 }
 
-.marker span{
+.marker span {
 	padding: 5px;
 	display: inline-block;
 	font-family: sans-serif;
 }
-.t{
+
+.t {
 	color: Red;
 }
-.f{
+
+.f {
 	opacity: 0.4;
 }
-.ul{
+
+.ul {
 	transform: rotate(-45deg);
 }
-.ur{
+
+.ur {
 	transform: rotate(45deg);
 }
-.l{
+
+.l {
 	transform: rotate(-90deg);
 }
-.r{
+
+.r {
 	transform: rotate(90deg);
 }
-.dl{
+
+.dl {
 	transform: rotate(-135deg);
 }
-.d{
+
+.d {
 	transform: rotate(180deg);
 }
-.dr{
+
+.dr {
 	transform: rotate(135deg);
 }
 
-button{
+button {
 	padding: 5px 20px;
 }
-.invisible{
+
+.invisible {
 	visibility: hidden;
 }
-.transparent{
+
+.transparent {
 	opacity: 0;
 }
