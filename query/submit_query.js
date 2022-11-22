@@ -166,7 +166,7 @@ form1.onsubmit = submit_query;
 function url_query() {
 	if (window.location.search.substring(1) === '')
 		return;
-	var params = new URLSearchParams(window.location.search);
+	let params = new URLSearchParams(window.location.search);
 	server_analyze1(params);
 }
 

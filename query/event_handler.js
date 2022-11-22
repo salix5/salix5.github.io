@@ -180,5 +180,24 @@ function init(event) {
 	form1.reset();
 	button1.disabled = true;
 	button2.disabled = true;
+
+	let params = new URLSearchParams(window.location.search);
+	let type = check_int(params.get("type"));
+	switch (type) {
+		case TYPE_MONSTER:
+			select_type.value = 'm';
+			show_subtype('m');
+			break;
+		case TYPE_SPELL:
+			select_type.value = 's';
+			show_subtype('s');
+			break;
+		case TYPE_TRAP:
+			select_type.value = 't';
+			show_subtype('t');
+			break;
+		default:
+			break;
+	}
 }
 document.body.onload = init;
