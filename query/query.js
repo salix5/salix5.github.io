@@ -828,10 +828,6 @@ function param_to_condition(params, arg) {
 				qstr += " AND NOT type & $exc";
 				arg.$exc = exc;
 			}
-			if (select_type) {
-				select_type.value = 'm';
-				show_subtype('m');
-			}
 			break;
 		case TYPE_SPELL:
 			qstr += " AND type & $ctype";
@@ -854,10 +850,6 @@ function param_to_condition(params, arg) {
 					qstr += " AND type & $stype";
 					arg.$stype = subtype;
 				}
-			}
-			if (select_type) {
-				select_type.value = 's';
-				show_subtype('s');
 			}
 			break;
 		case TYPE_TRAP:
@@ -882,16 +874,8 @@ function param_to_condition(params, arg) {
 					arg.$stype = subtype;
 				}
 			}
-			if (select_type) {
-				select_type.value = 't';
-				show_subtype('t');
-			}
 			break;
 		default:
-			if (select_type) {
-				select_type.value = '';
-				show_subtype('');
-			}
 			break;
 	}
 
