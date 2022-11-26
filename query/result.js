@@ -2,7 +2,7 @@
 
 const MAX_WIDTH = 900;
 const MAX_RESULT_LEN = 200;
-var result_per_page = 100;
+var result_per_page = 50;
 var current_params = null;
 
 function is_booster(pack) {
