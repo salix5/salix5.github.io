@@ -568,9 +568,9 @@ function process_name(locale, str_name, arg) {
 		default:
 			// ja, name
 			let jp_list = [];
-			let str_jp = str_name.toHalfWidth();
+			let str_jp = str_name.toHalfWidth().toLowerCase();
 			for (const [key, value] of Object.entries(name_table)) {
-				if (value.toHalfWidth().includes(str_jp))
+				if (value.toHalfWidth().toLowerCase().includes(str_jp))
 					jp_list.push(key);
 				if (jp_list.length > MAX_RESULT_LEN) {
 					jp_list.length = 0;
@@ -582,11 +582,13 @@ function process_name(locale, str_name, arg) {
 				name_cmd += ` OR datas.id=${jp_list[i]}`;
 			// zh, setcode
 			if (!re_wildcard.test(str_name)) {
-				let real_str = str_name.replace(/\$%/g, '%');
-				real_str = real_str.replace(/\$_/g, '_');
-				if (setname[real_str]) {
-					name_cmd += setcode_str;
-					arg.$setcode = setname[real_str];
+				let real_str = str_name.replace(/\$%/g, '%').replace(/\$_/g, '_').toLowerCase();
+				for (const [key, value] of Object.entries(setname)) {
+					if (key.toLowerCase() === real_str) {
+						name_cmd += setcode_str;
+						arg.$setcode = value;
+						break;
+					}
 				}
 			}
 			// zh, name
