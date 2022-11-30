@@ -239,50 +239,6 @@ function create_rows(card, pack) {
 	div_alias.innerHTML = card_alias;
 	cell_data.appendChild(div_alias);
 
-	if (card.type & TYPE_LINK) {
-		let card_marker = document.createElement("div");
-		card_marker.className = "marker";
-		if (card.def & LINK_MARKER_TOP_LEFT)
-			marker += '<span class="ul t">▲</span>';
-		else
-			marker += '<span class="ul f">△</span>';
-		if (card.def & LINK_MARKER_TOP)
-			marker += '<span class="t">▲</span>';
-		else
-			marker += '<span class="f">△</span>';
-		if (card.def & LINK_MARKER_TOP_RIGHT)
-			marker += '<span class="ur t">▲</span>';
-		else
-			marker += '<span class="ur f">△</span>';
-
-		marker += '<br>';
-		if (card.def & LINK_MARKER_LEFT)
-			marker += '<span class="l t">▲</span>';
-		else
-			marker += '<span class="l f">△</span>';
-		marker += '<span class="transparent">△</span>';
-		if (card.def & LINK_MARKER_RIGHT)
-			marker += '<span class="r t">▲</span>';
-		else
-			marker += '<span class="r f">△</span>';
-		marker += '<br>';
-
-		if (card.def & LINK_MARKER_BOTTOM_LEFT)
-			marker += '<span class="dl t">▲</span>';
-		else
-			marker += '<span class="dl f">△</span>';
-		if (card.def & LINK_MARKER_BOTTOM)
-			marker += '<span class="d t">▲</span>';
-		else
-			marker += '<span class="d f">△</span>';
-		if (card.def & LINK_MARKER_BOTTOM_RIGHT)
-			marker += '<span class="dr t">▲</span>';
-		else
-			marker += '<span class="dr f">△</span>';
-		card_marker.innerHTML = marker;
-		cell_data.appendChild(card_marker);
-	}
-
 	let div_stat = document.createElement('div');
 	div_stat.className = 'stat';
 
@@ -379,9 +335,52 @@ function create_rows(card, pack) {
 	let row_effect = table_result.insertRow(-1);
 	let cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
-	div_stat.innerHTML = `${data}<br>`;
+	div_stat.innerHTML = `${data}`;
 	cell_effect.appendChild(div_stat);
 
+	if (card.type & TYPE_LINK) {
+		let div_marker = document.createElement("div");
+		if (card.def & LINK_MARKER_TOP_LEFT)
+			marker += '↖️';
+		else
+			marker += '⬜';
+		if (card.def & LINK_MARKER_TOP)
+			marker += '⬆️';
+		else
+			marker += '⬜';
+		if (card.def & LINK_MARKER_TOP_RIGHT)
+			marker += '↗️';
+		else
+			marker += '⬜';
+
+		marker += '<br>';
+		if (card.def & LINK_MARKER_LEFT)
+			marker += '⬅️';
+		else
+			marker += '⬜';
+		marker += '⬜';
+		if (card.def & LINK_MARKER_RIGHT)
+			marker += '➡️';
+		else
+			marker += '⬜';
+		marker += '<br>';
+
+		if (card.def & LINK_MARKER_BOTTOM_LEFT)
+			marker += '↙️';
+		else
+			marker += '⬜';
+		if (card.def & LINK_MARKER_BOTTOM)
+			marker += '⬇️';
+		else
+			marker += '⬜';
+		if (card.def & LINK_MARKER_BOTTOM_RIGHT)
+			marker += '↘️';
+		else
+			marker += '⬜';
+		div_marker.innerHTML = marker;
+		cell_effect.appendChild(div_marker);
+	}
+	cell_effect.appendChild(document.createElement('hr'));
 	let div_desc = document.createElement('div');
 	div_desc.innerHTML = card.desc.replace(/\n/g, "<br>");
 	cell_effect.appendChild(div_desc);
