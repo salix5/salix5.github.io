@@ -341,40 +341,40 @@ function create_rows(card, pack) {
 	if (card.type & TYPE_LINK) {
 		let div_marker = document.createElement("div");
 		if (card.def & LINK_MARKER_TOP_LEFT)
-			marker += '↖️';
+			marker += '🟥';
 		else
 			marker += '⬜';
 		if (card.def & LINK_MARKER_TOP)
-			marker += '⬆️';
+			marker += '🟥';
 		else
 			marker += '⬜';
 		if (card.def & LINK_MARKER_TOP_RIGHT)
-			marker += '↗️';
+			marker += '🟥';
 		else
 			marker += '⬜';
 
 		marker += '<br>';
 		if (card.def & LINK_MARKER_LEFT)
-			marker += '⬅️';
+			marker += '🟥';
 		else
 			marker += '⬜';
-		marker += '⬜';
+		marker += '<span class="transparent">⬛</span>';
 		if (card.def & LINK_MARKER_RIGHT)
-			marker += '➡️';
+			marker += '🟥';
 		else
 			marker += '⬜';
 		marker += '<br>';
 
 		if (card.def & LINK_MARKER_BOTTOM_LEFT)
-			marker += '↙️';
+			marker += '🟥';
 		else
 			marker += '⬜';
 		if (card.def & LINK_MARKER_BOTTOM)
-			marker += '⬇️';
+			marker += '🟥';
 		else
 			marker += '⬜';
 		if (card.def & LINK_MARKER_BOTTOM_RIGHT)
-			marker += '↘️';
+			marker += '🟥';
 		else
 			marker += '⬜';
 		div_marker.innerHTML = marker;
