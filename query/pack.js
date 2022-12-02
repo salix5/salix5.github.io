@@ -11,6 +11,7 @@ var pre_release={
 	CYAC: 101112001,
 	
 	// TCG
+	_PHHY: 101111000,
 };
 
 var wiki_link = {
@@ -23,4 +24,5 @@ var wiki_link = {
 	CYAC: "https://yugioh-wiki.net/index.php?CYBERSTORM%20ACCESS",
 	
 	// TCG
+	_PHHY: "https://yugipedia.com/wiki/Photon_Hypernova",
 };
