@@ -200,7 +200,7 @@ function create_rows(card, pack) {
 	}
 
 	// limit
-	if (card.id <= 99999999 && ltable[card.id] !== undefined || ltable_md[card.id] !== undefined) {
+	if (ltable[card.id] !== undefined || ltable_md[card.id] !== undefined) {
 		card_alias += `<br>OCG：${print_limit(ltable[card.id])} / MD：${print_limit(ltable_md[card.id])}<br>`;
 	}
 

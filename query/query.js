@@ -168,6 +168,7 @@ if (localStorage.getItem("last_pack") === last_pack) {
 	promise_text = Promise.resolve(true);
 }
 else {
+	localStorage.clear();
 	const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => { cid_table = Object.assign(cid_table, data); });
 	const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => { name_table = Object.assign(name_table, data); });
 	const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => { name_table_en = Object.assign(name_table_en, data); });
