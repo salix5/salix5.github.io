@@ -156,12 +156,17 @@ function pre_id_to_pack(id) {
 	return 'XXXX';
 }
 
+function is_real(id, type) {
+	return id <= 99999999 && !(type & TYPE_TOKEN);
+}
+
 function create_rows(card, pack) {
 	let card_name = '';
 	let card_alias = '';
 	card_name = `<strong>${card.name}</strong>`;
 	if (card.ot === 2)
 		card_name += '<img src="icon/tcg.png" height="20" width="40">';
+
 	// db link
 	if (!(card.type & TYPE_TOKEN)) {
 		let link_text = '';
@@ -191,6 +196,8 @@ function create_rows(card, pack) {
 		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name))
 			card_alias += `${card.en_name}<br>`;
 	}
+
+	// FAQ link
 	if (card.cid && card.ot !== 2) {
 		let faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
 		card_alias += `<a href="${faq_url}" target="_blank" rel="noreferrer">${print_id(card.id, card.type, pack, card.pack_id)}</a><br>`;
@@ -222,7 +229,18 @@ function create_rows(card, pack) {
 	else
 		img_card.src = `../cdb/pics/${card.id}.jpg`;
 	img_card.onerror = imgError;
-	cell_pic.appendChild(img_card);
+
+	if (is_real(card.id, card.type)) {
+		let params = new URLSearchParams({ "id": card.id.toString().padStart(8, '0') });
+		let link_id = document.createElement('a');
+		link_id.href = `https://salix5.github.io/query/?${params.toString()}`;
+		link_id.target = '_blank';
+		link_id.appendChild(img_card);
+		cell_pic.appendChild(link_id);
+	}
+	else {
+		cell_pic.appendChild(img_card);
+	}
 
 	let cell_data = row_pic.insertCell(-1);
 	cell_data.className = "data";
