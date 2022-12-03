@@ -57,6 +57,11 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/12/3  
+新增卡包：SD45  
+復刻更新：SD45  
+YOS1：慈愛的賢者-西埃拉  
+
 22/12/2  
 TCG特有卡：PHHY-EN  
 
@@ -64,7 +69,7 @@ TCG特有卡：PHHY-EN
 先行卡更新：23PP  
 
 22/11/16  
-先行卡更新：CYAC (1112)、YOS1  
+先行卡更新：CYAC (1112)  
 新增功能：顯示MD限制卡  
 
 22/11/12  
@@ -75,7 +80,6 @@ TCG特有卡：PHHY-EN
 
 22/11/9  
 重新校對：CIBR  
-先行卡更新：SD45  
 
 22/11/8  
 重新校對：EXFO  
@@ -100,9 +104,6 @@ TCG特有卡：DABL-EN
 
 22/10/14  
 先行卡更新：SUB1  
-
-22/10/13  
-先行卡更新：SD45  
 
 22/10/10  
 ウェルカム・ラビュリンス：歡迎白銀之城  
