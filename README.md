@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/12/20  
+新增卡包：23PP  
+復刻更新：23PP  
+
 22/12/19  
 ラビュリンス：拉比麗斯  
 ウェルカム・ラビュリンス：光臨拉比麗斯  
@@ -73,7 +77,7 @@ Ex.
 先行卡更新：SUB1  
 
 22/12/7  
-先行卡更新：23PP、VJMP  
+先行卡更新：VJMP  
 
 22/12/3  
 新增卡包：SD45  
@@ -82,9 +86,6 @@ YOS1：慈愛的賢者-西埃拉
 
 22/12/2  
 TCG特有卡：PHHY-EN  
-
-22/11/23  
-先行卡更新：23PP  
 
 22/11/16  
 先行卡更新：CYAC (1112)  
