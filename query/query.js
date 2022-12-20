@@ -888,9 +888,10 @@ function param_to_condition(params, arg) {
 		let mat = params.get("mat");
 		if (mat) {
 			text_mat.value = mat;
-			qstr += " AND (desc LIKE $mat1 ESCAPE '$' OR desc LIKE $mat2 ESCAPE '$')";
-			arg.$mat1 = `%「${mat}」+%`;
-			arg.$mat2 = `%+「${mat}」%`;
+			qstr += " AND (desc LIKE $mat1 ESCAPE '$' OR desc LIKE $mat2 ESCAPE '$' OR desc LIKE $mat3 ESCAPE '$')";
+			arg.$mat1 = `%${mat}+%`;
+			arg.$mat2 = `%+${mat}%`;
+			arg.$mat3 = `%${mat}×%`;
 			is_monster = true;
 		}
 
