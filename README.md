@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+22/12/22  
+VJMP：閃刀姬-阿澤莉亞  
+
 22/12/21  
 先行卡更新：CYAC (1112)  
 
@@ -78,9 +81,6 @@ Ex.
 
 22/12/8  
 先行卡更新：SUB1  
-
-22/12/7  
-先行卡更新：VJMP  
 
 22/12/3  
 新增卡包：SD45  
@@ -105,7 +105,6 @@ TCG特有卡：PHHY-EN
 
 22/11/8  
 重新校對：EXFO  
-先行卡更新：VJMP  
 
 22/11/5  
 新增卡包：SLF1  
