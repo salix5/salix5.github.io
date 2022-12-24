@@ -1,9 +1,8 @@
 "use strict";
-const last_pack = "23PP#5";
+const last_pack = "SUB1#2";
 
 var pre_release={
 	VJMP: 100200001,
-	SUB1: 100294001,
 	YO06: 100295001,
 	CYAC: 101112001,
 	
@@ -13,7 +12,6 @@ var pre_release={
 
 var wiki_link = {
 	VJMP: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#VJ2023",
-	SUB1: "https://yugioh-wiki.net/index.php?SECRET%20UTILITY%20BOX",
 	YO06: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 	CYAC: "https://yugioh-wiki.net/index.php?CYBERSTORM%20ACCESS",
 	
