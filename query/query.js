@@ -152,7 +152,7 @@ function query_card(db, qstr, arg, ret) {
 	stmt.free();
 }
 
-const promise_db = fetch(`https://salix5.github.io/CardEditor/${cdb_tag}.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
+const promise_db = fetch(`https://salix5.github.io/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
 const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(process_buffer);
 const promise_sql = initSqlJs(config).then(response => { SQL = response; });
 
