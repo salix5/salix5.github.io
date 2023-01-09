@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/1/9  
+YO06：紅戀的麗傑-布拉達曼特
+
 23/1/3  
 復刻更新：23TP Vol.1  
 先行卡更新：CYAC (1112)
