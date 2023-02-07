@@ -85,7 +85,7 @@ function getRandomInt(min, max) {
 	let secureMax = 0xffffffff - 0xffffffff % range;
 	let randomBuffer = new Uint32Array(1);
 	do {
-		window.crypto.getRandomValues(randomBuffer);
+		crypto.getRandomValues(randomBuffer);
 	} while (randomBuffer[0] >= secureMax);
 	return min + randomBuffer[0] % range;
 }
