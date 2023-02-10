@@ -57,11 +57,21 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/2/10  
+エレキ：電力  
+ヴォルカニック：火山性  
+レプティレス：爬蟲妖  
+／バスター：/爆裂  
+マグネット・ウォリアー：磁石戰士  
+バージェストマ：伯吉斯異獸  
+磁石の戦士：磁石勇士  
+マテリアクトル：原質爐
+
 23/2/7  
 先行卡更新：VJMP
 
 23/2/2  
-TCG特有卡：PHHY-EN  
+TCG特有卡：PHHY-EN
 
 23/1/25
 更新：MD 2月禁卡表
