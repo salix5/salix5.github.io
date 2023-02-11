@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/2/12  
+先行卡更新：VX03、DUNE
+
 23/2/10  
 エレキ：電力  
 ヴォルカニック：火山性  
