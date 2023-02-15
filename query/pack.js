@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "CYAC#3";
+const last_pack = "CYAC#4";
 
 var pre_release={
 	VJMP: 100200001,
@@ -8,7 +8,6 @@ var pre_release={
 	VX03: 100205001,
 	
 	// TCG
-	_PHHY: 101111000,
 };
 
 var wiki_link = {
@@ -18,5 +17,4 @@ var wiki_link = {
 	VX03: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#VB",
 	
 	// TCG
-	_PHHY: "https://yugipedia.com/wiki/Photon_Hypernova",
 };
