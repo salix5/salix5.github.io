@@ -57,6 +57,12 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/2/14  
+先行卡更新：DBWS  
+レッド・デーモン：暗紅惡魔  
+サイバネティック：人工腦  
+悪魔嬢：惡之魔娘
+
 23/2/12  
 森の聖獣：森之聖獸  
 森の聖霊：森之聖靈
