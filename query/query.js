@@ -236,6 +236,19 @@ function is_str(x) {
 	return x && x.length <= MAX_STRLEN;
 }
 
+function is_pack(x) {
+	const re_ocg = /^\w{4}$/;
+	const re_tcg = /^_\w{4}$/;
+	switch (x) {
+		case 'o':
+			return true;
+		case 't':
+			return true;
+		default:
+			return (re_ocg.test(x) || re_tcg.test(x)) && (pack_list[x] || pre_release[x]);
+	}
+}
+
 function check_int(val) {
 	if (val && val.length <= MAX_DIGIT) {
 		let x = parseInt(val, 10);
@@ -428,7 +441,7 @@ function server_validate1(params) {
 		let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
 		let name = check_str(params.get("name")).replace(re_bad_escape, "");
 		let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
-		if (pack === "o" || pack === "t" || pack_list[pack] || pre_release[pack])
+		if (is_pack(pack))
 			valid_params.set("pack", pack);
 		if (locale === "en")
 			valid_params.set("locale", locale);
@@ -509,7 +522,7 @@ function server_validate2(params) {
 	let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
 	let name = check_str(params.get("name")).replace(re_bad_escape, "");
 	let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
-	if (pack === "o" || pack === "t" || pack_list[pack] || pre_release[pack])
+	if (is_pack(pack))
 		valid_params.set("pack", pack);
 	if (locale === "en")
 		valid_params.set("locale", locale);

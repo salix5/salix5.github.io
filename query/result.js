@@ -16,6 +16,9 @@ function print_card_number(pack, index) {
 	let str_pack = '';
 	let str_ot = '';
 	let str_index = '';
+	if (!is_pack(pack))
+		return 'XXXX';
+
 	// ot
 	if (pack.charAt(0) === '_') {
 		str_pack = pack.substring(1);
