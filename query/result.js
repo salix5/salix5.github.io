@@ -270,9 +270,6 @@ function create_rows(card, pack) {
 	}
 	cell_data.appendChild(div_alias);
 
-	let div_stat = document.createElement('div');
-	div_stat.className = 'stat';
-
 	let mtype = '';
 	let subtype = '';
 	let lvstr = `\u2605`;
@@ -371,6 +368,8 @@ function create_rows(card, pack) {
 	let row_effect = table_result.insertRow(-1);
 	let cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
+	let div_stat = document.createElement('div');
+	div_stat.className = 'stat';
 	div_stat.innerHTML = `${data}`;
 	cell_effect.appendChild(div_stat);
 
@@ -417,8 +416,15 @@ function create_rows(card, pack) {
 		cell_effect.appendChild(div_marker);
 	}
 	cell_effect.appendChild(document.createElement('hr'));
+
+	let mapObj = Object.create(null);
+	mapObj['\r\n'] = '<br>';
+	mapObj['&'] = '&amp;';
+	mapObj['<'] = '&lt;';
+	mapObj['>'] = '&gt;';
+	mapObj['"'] = '&quot;';
 	let div_desc = document.createElement('div');
-	div_desc.innerHTML = card.desc.replace(/\n/g, "<br>");
+	div_desc.innerHTML = card.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x]);
 	cell_effect.appendChild(div_desc);
 
 	if (window.innerWidth <= MAX_WIDTH) {

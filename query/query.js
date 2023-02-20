@@ -237,15 +237,13 @@ function is_str(x) {
 }
 
 function is_pack(x) {
-	const re_ocg = /^\w{4}$/;
-	const re_tcg = /^_\w{4}$/;
 	switch (x) {
 		case 'o':
 			return true;
 		case 't':
 			return true;
 		default:
-			return (re_ocg.test(x) || re_tcg.test(x)) && (pack_list[x] || pre_release[x]);
+			return (/^\w{4}$/.test(x) || /^_\w{4}$/.test(x)) && (pack_list[x] || pre_release[x]);
 	}
 }
 
