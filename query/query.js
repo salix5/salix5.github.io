@@ -724,14 +724,14 @@ function server_analyze2(params) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '起點數量太多。';
+		cell0.textContent = '起點數量太多。';
 		return;
 	}
 	else if (result_len1 < 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '找不到起點。';
+		cell0.textContent = '找不到起點。';
 		return;
 	}
 
@@ -739,14 +739,14 @@ function server_analyze2(params) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '終點數量太多。';
+		cell0.textContent = '終點數量太多。';
 		return;
 	}
 	else if (result_len2 < 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
 		table_result.style.border = '1px solid black';
-		cell0.innerHTML = '找不到終點。';
+		cell0.textContent = '找不到終點。';
 		return;
 	}
 

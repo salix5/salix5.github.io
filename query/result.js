@@ -162,56 +162,6 @@ function is_real(id, type) {
 }
 
 function create_rows(card, pack) {
-	let card_name = '';
-	let card_alias = '';
-	card_name = `<strong>${card.name}</strong>`;
-	if (card.ot === 2)
-		card_name += '<img src="icon/tcg.png" height="20" width="40">';
-
-	// db link
-	if (!(card.type & TYPE_TOKEN)) {
-		let link_text = '';
-		let db_url = '';
-
-		if (card.id <= 99999999) {
-			link_text = card.jp_name;
-			db_url = print_db_link(card.id, card.ot, card.cid);
-		}
-		else {
-			let pre_pack = pre_id_to_pack(card.id)
-			let str_site = '';
-			let str_pack = '';
-			if (pre_pack.charAt(0) === '_') {
-				str_site = 'Yugipedia';
-				str_pack = pre_pack.substring(1);
-			}
-			else {
-				str_site = 'Wiki';
-				str_pack = pre_pack;
-			}
-			link_text = `${str_site}: ${str_pack}`;
-			db_url = wiki_link[pre_pack];
-		}
-		if (link_text)
-			card_alias = `<a href="${db_url}" target="_blank" rel="noreferrer">${link_text}</a><br>`;
-		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name))
-			card_alias += `${card.en_name}<br>`;
-	}
-
-	// FAQ link
-	if (card.cid && card.ot !== 2) {
-		let faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
-		card_alias += `<a href="${faq_url}" target="_blank" rel="noreferrer">${print_id(card.id, card.type, pack, card.pack_id)}</a><br>`;
-	}
-	else {
-		card_alias += `${print_id(card.id, card.type, pack, card.pack_id)}<br>`;
-	}
-
-	// limit
-	if (ltable[card.id] !== undefined || ltable_md[card.id] !== undefined) {
-		card_alias += `<br>OCG：${print_limit(ltable[card.id])} / MD：${print_limit(ltable_md[card.id])}<br>`;
-	}
-
 	let row_pic = table_result.insertRow(-1);
 	let cell_pic = row_pic.insertCell(-1);
 	cell_pic.className = 'pic';
@@ -246,21 +196,88 @@ function create_rows(card, pack) {
 	let cell_data = row_pic.insertCell(-1);
 	cell_data.className = "data";
 
-	let mtype = '';
-	let subtype = '';
-	let lvstr = `\u2605`;
-	let marker = '';
-	let data = '';
+	let div_name = document.createElement('div');
+	let st = document.createElement('strong');
+	st.textContent = card.name;
+	div_name.appendChild(st);
+	if (card.ot === 2)
+		div_name.insertAdjacentHTML('beforeend', '<img src="icon/tcg.png" height="20" width="40">');
+	cell_data.appendChild(div_name);
 
-	cell_data.innerHTML = card_name;
 	let div_alias = document.createElement('div');
 	div_alias.className = 'minor';
-	div_alias.innerHTML = card_alias;
+
+	// db link
+	if (!(card.type & TYPE_TOKEN)) {
+		let str_link = '';
+		let db_url = '';
+
+		if (card.id <= 99999999) {
+			str_link = card.jp_name;
+			db_url = print_db_link(card.id, card.ot, card.cid);
+		}
+		else {
+			let pre_pack = pre_id_to_pack(card.id)
+			let str_site = '';
+			let str_pack = '';
+			if (pre_pack.charAt(0) === '_') {
+				str_site = 'Yugipedia';
+				str_pack = pre_pack.substring(1);
+			}
+			else {
+				str_site = 'Wiki';
+				str_pack = pre_pack;
+			}
+			str_link = `${str_site}: ${str_pack}`;
+			db_url = wiki_link[pre_pack];
+		}
+		let div_db = document.createElement('div');
+		let link_db = document.createElement('a');
+		link_db.href = db_url;
+		link_db.target = '_blank';
+		link_db.rel = 'noreferrer';
+		link_db.textContent = str_link;
+		div_db.appendChild(link_db);
+		div_alias.appendChild(div_db);
+		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name)) {
+			let div_en = document.createElement('div');
+			div_en.textContent = card.en_name;
+			div_alias.appendChild(div_en);
+		}	
+	}
+
+	// id
+	let div_id = document.createElement('div');
+	if (card.cid && card.ot !== 2) {
+		let faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
+		let link_faq = document.createElement('a');
+		link_faq.href = faq_url;
+		link_faq.target = '_blank';
+		link_faq.rel = 'noreferrer';
+		link_faq.textContent = print_id(card.id, card.type, pack, card.pack_id);
+		div_id.appendChild(link_faq);
+	}
+	else {
+		div_id.textContent = print_id(card.id, card.type, pack, card.pack_id);
+	}
+	div_alias.appendChild(div_id);
+
+	// limit
+	if (ltable[card.id] !== undefined || ltable_md[card.id] !== undefined) {
+		let div_limit = document.createElement('div');
+		div_limit.innerHTML = `OCG：${print_limit(ltable[card.id])} / MD：${print_limit(ltable_md[card.id])}`;
+		div_alias.appendChild(div_limit);
+	}
 	cell_data.appendChild(div_alias);
 
 	let div_stat = document.createElement('div');
 	div_stat.className = 'stat';
 
+	let mtype = '';
+	let subtype = '';
+	let lvstr = `\u2605`;
+	let marker = '';
+	let data = '';
 	if (card.type & TYPE_MONSTER) {
 		mtype = '怪獸';
 		if (card.type & TYPE_RITUAL)
