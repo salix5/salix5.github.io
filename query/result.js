@@ -16,8 +16,6 @@ function print_card_number(pack, index) {
 	let str_pack = '';
 	let str_ot = '';
 	let str_index = '';
-	if (!is_pack(pack))
-		return 'XXXX';
 
 	// ot
 	if (pack.charAt(0) === '_') {
@@ -418,7 +416,7 @@ function show_result(params) {
 	let total_pages = Math.ceil(result.length / result_per_page);
 	let page = check_int(params.get("page"));
 	let pack = params.get("pack");
-	if (pack === "o" || pack === "t")
+	if (pack === "o" || pack === "t" || !is_pack(pack))
 		pack = null;
 	if (total_pages && page <= total_pages) {
 		current_params = params;
