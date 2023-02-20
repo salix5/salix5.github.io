@@ -172,13 +172,13 @@ function create_rows(card, pack) {
 	if (!(card.type & TYPE_TOKEN)) {
 		let link_text = '';
 		let db_url = '';
-		let pre_pack = '';
 
 		if (card.id <= 99999999) {
 			link_text = card.jp_name;
 			db_url = print_db_link(card.id, card.ot, card.cid);
 		}
-		else if (pre_pack = pre_id_to_pack(card.id)) {
+		else {
+			let pre_pack = pre_id_to_pack(card.id)
 			let str_site = '';
 			let str_pack = '';
 			if (pre_pack.charAt(0) === '_') {
