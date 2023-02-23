@@ -12,15 +12,15 @@ var SQL;
 var db, db2;
 
 // from json
-var cid_table = Object.create(null);
-var name_table = Object.create(null);
-var name_table_en = Object.create(null);
-var pack_list = Object.create(null);
-var setname = Object.create(null);
-var ltable = Object.create(null);
-var ltable_md = Object.create(null);
+const cid_table = Object.create(null);
+const name_table = Object.create(null);
+const name_table_en = Object.create(null);
+const pack_list = Object.create(null);
+const setname = Object.create(null);
+const ltable = Object.create(null);
+const ltable_md = Object.create(null);
 
-var result = [];
+const result = [];
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
@@ -158,24 +158,24 @@ const promise_sql = initSqlJs(config).then(response => { SQL = response; });
 
 var promise_text = null;
 if (localStorage.getItem("last_pack") === last_pack) {
-	cid_table = Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
-	name_table = Object.assign(name_table, JSON.parse(localStorage.getItem("name_table")));
-	name_table_en = Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
-	pack_list = Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
-	setname = Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
-	ltable = Object.assign(ltable, JSON.parse(localStorage.getItem("ltable")));
-	ltable_md = Object.assign(ltable_md, JSON.parse(localStorage.getItem("ltable_md")));
+	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
+	Object.assign(name_table, JSON.parse(localStorage.getItem("name_table")));
+	Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
+	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
+	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
+	Object.assign(ltable, JSON.parse(localStorage.getItem("ltable")));
+	Object.assign(ltable_md, JSON.parse(localStorage.getItem("ltable_md")));
 	promise_text = Promise.resolve(true);
 }
 else {
 	localStorage.clear();
-	const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => { cid_table = Object.assign(cid_table, data); });
-	const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => { name_table = Object.assign(name_table, data); });
-	const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => { name_table_en = Object.assign(name_table_en, data); });
-	const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => { pack_list = Object.assign(pack_list, data); });
-	const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => { setname = Object.assign(setname, data); });
-	const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => { ltable = Object.assign(ltable, data); });
-	const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => { ltable_md = Object.assign(ltable_md, data); });
+	const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => { Object.assign(cid_table, data); });
+	const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => { Object.assign(name_table, data); });
+	const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => { Object.assign(name_table_en, data); });
+	const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => { Object.assign(pack_list, data); });
+	const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => { Object.assign(setname, data); });
+	const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => { Object.assign(ltable, data); });
+	const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => { Object.assign(ltable_md, data); });
 	promise_text = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist, promise_lflist2]).then(function (values) {
 		try {
 			localStorage.setItem("last_pack", last_pack);
@@ -594,7 +594,7 @@ function process_name(locale, str_name, arg) {
 				name_cmd += ` OR datas.id=${jp_list[i]}`;
 			// zh, setcode
 			if (!re_wildcard.test(str_name)) {
-				let mapObj = Object.create(null);
+				const mapObj = Object.create(null);
 				mapObj['$%'] = '%';
 				mapObj['$_'] = '_';
 				let real_str = str_name.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
