@@ -417,7 +417,7 @@ function create_rows(card, pack) {
 	}
 	cell_effect.appendChild(document.createElement('hr'));
 
-	let mapObj = Object.create(null);
+	const mapObj = Object.create(null);
 	mapObj['\r\n'] = '<br>';
 	mapObj['&'] = '&amp;';
 	mapObj['<'] = '&lt;';
