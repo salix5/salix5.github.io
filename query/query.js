@@ -35,11 +35,6 @@ String.prototype.toFullWidth = function () {
 	return this.replace(/[A-Za-z0-9]/g, function (s) { return String.fromCharCode(s.charCodeAt(0) + 0xFEE0); });
 };
 
-function process_buffer(buf) {
-	let arr = new Uint8Array(buf);
-	return arr;
-}
-
 function is_alternative(id, alias, type) {
 	if (type & TYPE_TOKEN)
 		return alias !== 0;
@@ -153,7 +148,7 @@ function query_card(db, qstr, arg, ret) {
 }
 
 const promise_db = fetch(`https://salix5.github.io/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
-const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(process_buffer);
+const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(buf => new Uint8Array(buf));
 const promise_sql = initSqlJs(config).then(response => { SQL = response; });
 
 var promise_text = null;
@@ -169,14 +164,14 @@ if (localStorage.getItem("last_pack") === last_pack) {
 }
 else {
 	localStorage.clear();
-	const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => { Object.assign(cid_table, data); });
-	const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => { Object.assign(name_table, data); });
-	const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => { Object.assign(name_table_en, data); });
-	const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => { Object.assign(pack_list, data); });
-	const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => { Object.assign(setname, data); });
-	const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => { Object.assign(ltable, data); });
-	const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => { Object.assign(ltable_md, data); });
-	promise_text = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist, promise_lflist2]).then(function (values) {
+	const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => Object.assign(cid_table, data));
+	const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => Object.assign(name_table, data));
+	const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => Object.assign(name_table_en, data));
+	const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => Object.assign(pack_list, data));
+	const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => Object.assign(setname, data));
+	const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => Object.assign(ltable, data));
+	const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => Object.assign(ltable_md, data));
+	promise_text = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist, promise_lflist2]).then(function () {
 		try {
 			localStorage.setItem("last_pack", last_pack);
 			localStorage.setItem("cid_table", JSON.stringify(cid_table));
