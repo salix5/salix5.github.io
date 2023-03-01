@@ -8,6 +8,7 @@ var pre_release={
 	VX03: 100205001,
 	
 	// TCG
+	_MAZE: 100206001,
 };
 
 var wiki_link = {
@@ -17,4 +18,5 @@ var wiki_link = {
 	VX03: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#VB",
 	
 	// TCG
+	_MAZE: "https://yugipedia.com/wiki/Maze_of_Memories",
 };
