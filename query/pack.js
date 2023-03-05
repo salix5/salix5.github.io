@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "CYAC#5";
+const last_pack = "CYAC#6";
 
 var pre_release={
 	VJMP: 100200001,
