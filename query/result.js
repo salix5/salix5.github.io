@@ -273,7 +273,6 @@ function create_rows(card, pack) {
 	let mtype = '';
 	let subtype = '';
 	let lvstr = `\u2605`;
-	let marker = '';
 	let data = '';
 	if (card.type & TYPE_MONSTER) {
 		mtype = '怪獸';
@@ -374,45 +373,37 @@ function create_rows(card, pack) {
 	cell_effect.appendChild(div_stat);
 
 	if (card.type & TYPE_LINK) {
-		let div_marker = document.createElement("div");
-		if (card.def & LINK_MARKER_TOP_LEFT)
-			marker += '🟥';
-		else
-			marker += '⬜';
-		if (card.def & LINK_MARKER_TOP)
-			marker += '🟥';
-		else
-			marker += '⬜';
-		if (card.def & LINK_MARKER_TOP_RIGHT)
-			marker += '🟥';
-		else
-			marker += '⬜';
+		let marker_text = '';
+		for (let marker = LINK_MARKER_TOP_LEFT; marker <= LINK_MARKER_TOP_RIGHT; marker <<= 1) {
+			if (card.def & marker)
+				marker_text += marker_to_str[marker];
+			else
+				marker_text += marker_to_str.default;
+		}
+		marker_text += '<br>';
 
-		marker += '<br>';
 		if (card.def & LINK_MARKER_LEFT)
-			marker += '🟥';
+			marker_text += marker_to_str[LINK_MARKER_LEFT];
 		else
-			marker += '⬜';
-		marker += '<span class="transparent">⬛</span>';
-		if (card.def & LINK_MARKER_RIGHT)
-			marker += '🟥';
-		else
-			marker += '⬜';
-		marker += '<br>';
+			marker_text += marker_to_str.default;
 
-		if (card.def & LINK_MARKER_BOTTOM_LEFT)
-			marker += '🟥';
+		marker_text += '<span class="transparent">⬛</span>';
+
+		if (card.def & LINK_MARKER_RIGHT)
+			marker_text += marker_to_str[LINK_MARKER_RIGHT];
 		else
-			marker += '⬜';
-		if (card.def & LINK_MARKER_BOTTOM)
-			marker += '🟥';
-		else
-			marker += '⬜';
-		if (card.def & LINK_MARKER_BOTTOM_RIGHT)
-			marker += '🟥';
-		else
-			marker += '⬜';
-		div_marker.innerHTML = marker;
+			marker_text += marker_to_str.default;
+
+		marker_text += '<br>';
+
+		for (let marker = LINK_MARKER_BOTTOM_LEFT; marker <= LINK_MARKER_BOTTOM_RIGHT; marker <<= 1) {
+			if (card.def & marker)
+				marker_text += marker_to_str[marker];
+			else
+				marker_text += marker_to_str.default;
+		}
+		let div_marker = document.createElement("div");
+		div_marker.innerHTML = marker_text;
 		cell_effect.appendChild(div_marker);
 	}
 	cell_effect.appendChild(document.createElement('hr'));
