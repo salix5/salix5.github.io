@@ -29,11 +29,11 @@ const TYPE_SPSUMMON		=0x2000000
 const TYPE_QUICKPLAY		=0x10000
 const TYPE_CONTINUOUS		=0x20000
 const TYPE_EQUIP			=0x40000
-//const TYPE_RITUAL			=0x80
+//const TYPE_RITUAL
 const TYPE_FIELD			=0x80000
 
 // trap type
-//const TYPE_CONTINUOUS		=0x20000
+//const TYPE_CONTINUOUS
 const TYPE_COUNTER		=0x100000
 
 // race
@@ -91,7 +91,7 @@ const attr_to_str = {
 	[ATTRIBUTE_WIND]: '風',
 	[ATTRIBUTE_LIGHT]: '光',
 	[ATTRIBUTE_DARK]: '闇',
-	[ATTRIBUTE_DIVINE]: '神'
+	[ATTRIBUTE_DIVINE]: '神',
 };
 
 const race_to_str = {
@@ -119,5 +119,20 @@ const race_to_str = {
 	[RACE_DIVINE]: '幻神獸',
 	[RACE_CREATORGOD]: '創造神',
 	[RACE_WYRM]: '幻龍',
-	[RACE_CYBERSE]: '電子界'
+	[RACE_CYBERSE]: '電子界',
+};
+
+const marker_to_str = {
+	[LINK_MARKER_BOTTOM_LEFT]: '🟥',
+	[LINK_MARKER_BOTTOM]: '🟥',
+	[LINK_MARKER_BOTTOM_RIGHT]: '🟥',
+
+	[LINK_MARKER_LEFT]: '🟥',
+	[LINK_MARKER_RIGHT]: '🟥',
+
+	[LINK_MARKER_TOP_LEFT]: '🟥',
+	[LINK_MARKER_TOP]: '🟥',
+	[LINK_MARKER_TOP_RIGHT]: '🟥',
+
+	default: '⬜',
 };
