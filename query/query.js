@@ -56,8 +56,6 @@ function query_card(db, qstr, arg, ret) {
 
 	while (stmt.step()) {
 		let card = stmt.getAsObject();
-		if (is_alternative(card.id, card.alias, card.type))
-			continue;
 
 		// spell & trap reset data
 		if (card.type & (TYPE_SPELL | TYPE_TRAP)) {
@@ -150,6 +148,7 @@ function query_card(db, qstr, arg, ret) {
 const promise_db = fetch(`https://salix5.github.io/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
 const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(buf => new Uint8Array(buf));
 const promise_sql = initSqlJs(config).then(response => { SQL = response; });
+const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => Object.assign(ltable_md, data));
 
 var promise_text = null;
 if (localStorage.getItem("last_pack") === last_pack) {
@@ -159,7 +158,6 @@ if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
 	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
 	Object.assign(ltable, JSON.parse(localStorage.getItem("ltable")));
-	Object.assign(ltable_md, JSON.parse(localStorage.getItem("ltable_md")));
 	promise_text = Promise.resolve(true);
 }
 else {
@@ -170,8 +168,7 @@ else {
 	const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => Object.assign(pack_list, data));
 	const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => Object.assign(setname, data));
 	const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => Object.assign(ltable, data));
-	const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => Object.assign(ltable_md, data));
-	promise_text = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist, promise_lflist2]).then(function () {
+	promise_text = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function () {
 		try {
 			localStorage.setItem("last_pack", last_pack);
 			localStorage.setItem("cid_table", JSON.stringify(cid_table));
@@ -186,7 +183,7 @@ else {
 	});
 }
 
-Promise.all([promise_sql, promise_db, promise_db2, promise_text]).then(function (values) {
+Promise.all([promise_sql, promise_db, promise_db2, promise_lflist2, promise_text]).then(function (values) {
 	db = new SQL.Database(values[1]);
 	db2 = new SQL.Database(values[2]);
 	url_query();
