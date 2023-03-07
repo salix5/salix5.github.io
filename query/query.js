@@ -170,14 +170,13 @@ else {
 	const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => Object.assign(ltable, data));
 	promise_text = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function () {
 		try {
-			localStorage.setItem("last_pack", last_pack);
 			localStorage.setItem("cid_table", JSON.stringify(cid_table));
 			localStorage.setItem("name_table", JSON.stringify(name_table));
 			localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
 			localStorage.setItem("pack_list", JSON.stringify(pack_list));
 			localStorage.setItem("setname", JSON.stringify(setname));
 			localStorage.setItem("ltable", JSON.stringify(ltable));
-			localStorage.setItem("ltable_md", JSON.stringify(ltable_md));
+			localStorage.setItem("last_pack", last_pack);
 		} catch (ex) {
 		}
 	});
@@ -348,7 +347,7 @@ var index_to_marker = [
 	LINK_MARKER_RIGHT,
 	LINK_MARKER_BOTTOM_LEFT,
 	LINK_MARKER_BOTTOM,
-	LINK_MARKER_BOTTOM_RIGHT
+	LINK_MARKER_BOTTOM_RIGHT,
 ];
 
 function server_validate1(params) {
