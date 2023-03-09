@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/3/9  
+ジュラック：朱羅紀  
+先行卡更新：DBWS
+
 23/3/6  
 更新：MD 3/9禁卡表
 
