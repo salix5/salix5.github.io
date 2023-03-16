@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/3/16  
+VJMP：燃燒龍、三眼的死靈、薔薇蝶
+
 23/3/12  
 先行卡更新：DUNE
 
