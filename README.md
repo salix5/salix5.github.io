@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/3/17  
+VX03：E.HERO 火焰翼人-火焰射擊、連結解碼者
+
 23/3/16  
 VJMP：燃燒龍、三眼的死靈、薔薇蝶
 
@@ -93,7 +96,7 @@ TCG特有卡：PHHY-EN
 森の聖霊：森之聖靈
 
 23/2/12  
-先行卡更新：VX03、DUNE
+先行卡更新：DUNE
 
 23/2/10  
 エレキ：電力  
