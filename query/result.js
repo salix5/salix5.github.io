@@ -212,7 +212,7 @@ function create_rows(card, pack) {
 		let str_link = '';
 		let db_url = '';
 
-		if (card.id <= 99999999) {
+		if (card.cid) {
 			str_link = card.jp_name;
 			db_url = print_db_link(card.id, card.ot, card.cid);
 		}
