@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/3/19  
+新增卡包：DBWS  
+復刻更新：DBWS
+
 23/3/17  
 VX03：E.HERO 火焰翼人-火焰射擊、連結解碼者
 
@@ -68,7 +72,6 @@ VJMP：燃燒龍、三眼的死靈、薔薇蝶
 
 23/3/9  
 ジュラック：朱羅紀  
-先行卡更新：DBWS
 
 23/3/6  
 更新：MD 3/9禁卡表
@@ -86,7 +89,6 @@ VJMP：神聖魔術師
 TCG特有卡：PHHY-EN
 
 23/2/14  
-先行卡更新：DBWS  
 レッド・デーモン：暗紅惡魔  
 サイバネティック：人工腦  
 悪魔嬢：惡之魔娘
