@@ -186,7 +186,6 @@ function query_card(db, qstr, arg, ret) {
         if (card.id <= 99999999) {
             if (arg.pack && pack_list[arg.pack])
                 card.pack_id = inv_pack[card.id];
-
             else
                 card.pack_id = null;
         }
