@@ -389,7 +389,7 @@ function process_name(locale, str_name, arg) {
 			let jp_list = [];
 			let str_jp = str_name.toHalfWidth().toLowerCase();
 			for (const [key, value] of Object.entries(name_table)) {
-				if (value.toHalfWidth().toLowerCase().includes(str_jp))
+				if (value && value.toHalfWidth().toLowerCase().includes(str_jp))
 					jp_list.push(key);
 				if (jp_list.length > MAX_RESULT_LEN) {
 					jp_list.length = 0;
@@ -496,7 +496,7 @@ function get_single_card(cdata) {
 	if (list_tmp.length === 1)
 		return [list_tmp[0], list_tmp.length];
 
-	let nid = Object.keys(name_table).find(key => name_table[key].toHalfWidth() === cdata.toHalfWidth());
+	let nid = Object.keys(name_table).find(key => name_table[key] ? name_table[key].toHalfWidth() === cdata.toHalfWidth() : false);
 	if (nid && nid > 0) {
 		qstr = `${qstr0} AND datas.id == $nid;`;
 		arg.$nid = nid;
