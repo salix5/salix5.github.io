@@ -213,7 +213,7 @@ function create_rows(card, pack) {
 		let db_url = '';
 
 		if (card.cid) {
-			str_link = card.jp_name;
+			str_link = card.jp_name ? card.jp_name : card.en_name;
 			db_url = print_db_link(card.id, card.ot, card.cid);
 		}
 		else {
@@ -239,11 +239,11 @@ function create_rows(card, pack) {
 		link_db.textContent = str_link;
 		div_db.appendChild(link_db);
 		div_alias.appendChild(div_db);
-		if (card.en_name && !(card.ot === 2 && card.en_name === card.jp_name)) {
+		if (card.jp_name) {
 			let div_en = document.createElement('div');
 			div_en.textContent = card.en_name;
 			div_alias.appendChild(div_en);
-		}	
+		}
 	}
 
 	// id
