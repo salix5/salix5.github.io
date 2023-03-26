@@ -178,9 +178,12 @@ function query_card(db, qstr, arg, ret) {
 		}
 
 		// cid
-		card.cid = cid_table[card.id] ? cid_table[card.id] : null;
-		card.jp_name = name_table[card.id] ? name_table[card.id] : null;
-		card.en_name = name_table_en[card.id] ? name_table_en[card.id] : null;
+		if (cid_table[card.id])
+			card.cid = cid_table[card.id];
+		if (name_table[card.id])
+			card.jp_name = name_table[card.id];
+		if (name_table_en[card.id])
+			card.en_name = name_table_en[card.id];
 
 		// pack_id
 		if (card.id <= 99999999) {
