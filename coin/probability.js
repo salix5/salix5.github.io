@@ -31,8 +31,9 @@ function check(e) {
 
 	for (i = 0; i <= n - 1; ++i) {
 		acc = acc + prob(n, i) * 2;
-		if (acc <= err && acc + prob(n, i + 1) * 2 > err)
+		if (acc > err)
 			break;
 	}
+	--i;
 	div1.innerHTML = `拒絕域：正面${i}次以下或${n-i}次以上`;
 }
