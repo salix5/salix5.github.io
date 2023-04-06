@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/4/7  
+更新：MD 4/10禁卡表
+
 23/4/2  
 復刻更新：23TP Vol.2
 
