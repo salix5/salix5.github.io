@@ -6,8 +6,11 @@ const name_table_en = Object.create(null);
 const pack_list = Object.create(null);
 const setname = Object.create(null);
 const ltable = Object.create(null);
+
 const ltable_md = Object.create(null);
-const promise_lflist2 = fetch("text/lflist_md.json").then(response => response.json()).then(data => Object.assign(ltable_md, data));
+const name_table_md = Object.create(null);
+const promise_md1 = fetch("text/lflist_md.json").then(response => response.json()).then(data => Object.assign(ltable_md, data));
+const promise_md2 = fetch("text/name_table_md.json").then(response => response.json()).then(data => Object.assign(name_table_md, data));
 
 var promise_text = null;
 if (localStorage.getItem("last_pack") === last_pack) {
@@ -52,7 +55,7 @@ const config = {
 var SQL;
 var db, db2;
 
-Promise.all([initSqlJs(config), promise_db, promise_db2, promise_lflist2, promise_text]).then(function (values) {
+Promise.all([initSqlJs(config), promise_db, promise_db2, promise_md1, promise_md2, promise_text]).then(function (values) {
 	SQL = values[0];
 	db = new SQL.Database(values[1]);
 	db2 = new SQL.Database(values[2]);
