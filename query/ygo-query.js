@@ -1,4 +1,36 @@
-﻿"use strict";
+﻿// dependency: sql.js, JSZIP
+"use strict";
+const load_md = true;
+const load_prerelease = true;
+
+const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ${TYPE_TOKEN}`;
+const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
+
+/*
+ * wait: promise_ready
+ * query cards and push into ret
+ * @qstr: sqlite command
+ * @arg: binding object
+ * @ret: result array
+*/
+function query(qstr, arg, ret) {
+	ret.length = 0;
+	query_card(db, qstr, arg, ret);
+	if (load_prerelease)
+		query_card(db2, qstr, arg, ret);
+}
+
+
+const last_pack = "DBWS#10";
+const domain = "https://salix5.github.io";
+// sqlite
+const promise_db = fetch(`${domain}/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
+const config = { locateFile: filename => `./dist/${filename}` };
+const list_promise = [initSqlJs(config), promise_db];
+if (load_prerelease) {
+	list_promise.push(fetch(`${domain}/cdb/pre-release.cdb`).then(response => response.arrayBuffer()).then(buf => new Uint8Array(buf)));
+}
+
 // JSON
 const cid_table = Object.create(null);
 const name_table = Object.create(null);
@@ -7,12 +39,6 @@ const pack_list = Object.create(null);
 const setname = Object.create(null);
 const ltable = Object.create(null);
 
-const ltable_md = Object.create(null);
-const name_table_md = Object.create(null);
-const promise_md1 = fetch("text/lflist_md.json").then(response => response.json()).then(data => Object.assign(ltable_md, data));
-const promise_md2 = fetch("text/name_table_md.json").then(response => response.json()).then(data => Object.assign(name_table_md, data));
-
-var promise_text = null;
 if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
 	Object.assign(name_table, JSON.parse(localStorage.getItem("name_table")));
@@ -20,17 +46,16 @@ if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
 	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
 	Object.assign(ltable, JSON.parse(localStorage.getItem("ltable")));
-	promise_text = Promise.resolve(true);
 }
 else {
 	localStorage.clear();
-	const promise_cid = fetch("text/cid.json").then(response => response.json()).then(data => Object.assign(cid_table, data));
-	const promise_name = fetch("text/name_table.json").then(response => response.json()).then(data => Object.assign(name_table, data));
-	const promise_name_en = fetch("text/name_table_en.json").then(response => response.json()).then(data => Object.assign(name_table_en, data));
-	const promise_pack = fetch("text/pack_list.json").then(response => response.json()).then(data => Object.assign(pack_list, data));
-	const promise_setname = fetch("text/setname.json").then(response => response.json()).then(data => Object.assign(setname, data));
-	const promise_lflist = fetch("text/lflist.json").then(response => response.json()).then(data => Object.assign(ltable, data));
-	promise_text = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function () {
+	const promise_cid = fetch(`${domain}/query/text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data));
+	const promise_name = fetch(`${domain}/query/text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table, data));
+	const promise_name_en = fetch(`${domain}/query/text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data));
+	const promise_pack = fetch(`${domain}/query/text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data));
+	const promise_setname = fetch(`${domain}/query/text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data));
+	const promise_lflist = fetch(`${domain}/query/text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable, data));
+	const promise_local = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function () {
 		try {
 			localStorage.setItem("cid_table", JSON.stringify(cid_table));
 			localStorage.setItem("name_table", JSON.stringify(name_table));
@@ -39,33 +64,28 @@ else {
 			localStorage.setItem("setname", JSON.stringify(setname));
 			localStorage.setItem("ltable", JSON.stringify(ltable));
 			localStorage.setItem("last_pack", last_pack);
-		} catch (ex) {
+		} catch (e) {
 		}
 	});
+	list_promise.push(promise_local);
 }
 
-// sqlite
-const extra_url = "../cdb/pre-release.cdb";
-const promise_db = fetch("https://salix5.github.io/CardEditor/cards.zip").then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
-const promise_db2 = fetch(extra_url).then(response => response.arrayBuffer()).then(buf => new Uint8Array(buf));
-const config = {
-	locateFile: filename => `./dist/${filename}`
-};
+// MD
+const ltable_md = Object.create(null);
+const name_table_md = Object.create(null);
+if (load_md) {
+	list_promise.push(fetch(`${domain}/query/text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
+	list_promise.push(fetch(`${domain}/query/text/name_table_md.json`).then(response => response.json()).then(data => Object.assign(name_table_md, data)));
+}
 
-var SQL;
-var db, db2;
-
-Promise.all([initSqlJs(config), promise_db, promise_db2, promise_md1, promise_md2, promise_text]).then(function (values) {
+var SQL = null;
+var db = null, db2 = null;
+const promise_ready = Promise.all(list_promise).then(function (values) {
 	SQL = values[0];
 	db = new SQL.Database(values[1]);
-	db2 = new SQL.Database(values[2]);
-	url_query();
-	button1.disabled = false;
-	button2.disabled = false;
+	if (load_prerelease)
+		db2 = new SQL.Database(values[2]);
 });
-
-const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ${TYPE_TOKEN}`;
-const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
 
 // print condition for cards in pack
 function pack_cmd(pack) {
@@ -87,11 +107,7 @@ function is_alternative(card) {
 		return Math.abs(card.id - card.alias) < 10;
 }
 
-/*
- * query cards in db and push into ret
- * qstr: sqlite command
- * arg: bindind object
-*/
+// query cards in db
 function query_card(db, qstr, arg, ret) {
 	let stmt = db.prepare(qstr);
 	stmt.bind(arg);
@@ -201,11 +217,4 @@ function query_card(db, qstr, arg, ret) {
 		ret.push(card);
 	}
 	stmt.free();
-}
-
-// query cards in main db and pre-release db
-function query(qstr, arg, ret) {
-	ret.length = 0;
-	query_card(db, qstr, arg, ret);
-	query_card(db2, qstr, arg, ret);
 }

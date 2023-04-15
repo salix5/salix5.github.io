@@ -1,6 +1,4 @@
 "use strict";
-const last_pack = "DBWS#10";
-
 const pre_release={
 	VJMP: 100200001,
 	DUNE: 101201001,
