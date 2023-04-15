@@ -170,3 +170,8 @@ function url_query() {
 	server_analyze1(params);
 }
 
+promise_ready.then(() => {
+	url_query();
+	button1.disabled = false;
+	button2.disabled = false;
+});
