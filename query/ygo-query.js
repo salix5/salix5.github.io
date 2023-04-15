@@ -6,18 +6,19 @@ const load_prerelease = true;
 const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ${TYPE_TOKEN}`;
 const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
 
-/*
- * wait: promise_ready
- * query cards and push into ret
+/**
+ * query() - query cards and push into ret
+ * wait: db_ready
  * @qstr: sqlite command
  * @arg: binding object
  * @ret: result array
+ * Return: void
 */
 function query(qstr, arg, ret) {
 	ret.length = 0;
-	query_card(db, qstr, arg, ret);
+	query_db(db, qstr, arg, ret);
 	if (load_prerelease)
-		query_card(db2, qstr, arg, ret);
+		query_db(db2, qstr, arg, ret);
 }
 
 
@@ -80,7 +81,7 @@ if (load_md) {
 
 var SQL = null;
 var db = null, db2 = null;
-const promise_ready = Promise.all(list_promise).then(function (values) {
+const db_ready = Promise.all(list_promise).then(function (values) {
 	SQL = values[0];
 	db = new SQL.Database(values[1]);
 	if (load_prerelease)
@@ -108,7 +109,7 @@ function is_alternative(card) {
 }
 
 // query cards in db
-function query_card(db, qstr, arg, ret) {
+function query_db(db, qstr, arg, ret) {
 	let stmt = db.prepare(qstr);
 	stmt.bind(arg);
 

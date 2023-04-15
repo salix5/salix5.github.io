@@ -125,7 +125,7 @@ function url_query() {
 	server_analyze2(params);
 }
 
-promise_ready.then(() => {
+db_ready.then(() => {
 	url_query();
 	button1.disabled = false;
 	button2.disabled = false;
