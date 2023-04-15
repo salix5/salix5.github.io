@@ -124,3 +124,9 @@ function url_query() {
 	var params = new URLSearchParams(window.location.search);
 	server_analyze2(params);
 }
+
+promise_ready.then(() => {
+	url_query();
+	button1.disabled = false;
+	button2.disabled = false;
+});
