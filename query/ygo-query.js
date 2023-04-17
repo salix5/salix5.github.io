@@ -108,6 +108,10 @@ function is_alternative(card) {
 		return Math.abs(card.id - card.alias) < 10;
 }
 
+function is_released(card) {
+	return !!(card.jp_name || card.en_name);
+}
+
 // query cards in db
 function query_db(db, qstr, arg, ret) {
 	let stmt = db.prepare(qstr);
@@ -196,14 +200,14 @@ function query_db(db, qstr, arg, ret) {
 		else {
 			card.color = null;
 		}
-
-		// cid
 		if (cid_table[card.id])
 			card.cid = cid_table[card.id];
 		if (name_table[card.id])
 			card.jp_name = name_table[card.id];
 		if (name_table_en[card.id])
 			card.en_name = name_table_en[card.id];
+		if (name_table_md[card.id])
+			card.md_name = name_table_md[card.id];
 
 		// pack_id
 		if (card.id <= 99999999) {
