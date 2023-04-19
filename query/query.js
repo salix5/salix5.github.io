@@ -153,6 +153,7 @@ var index_to_race = [
 	RACE_DIVINE,
 	RACE_CREATORGOD,
 	RACE_CYBERSE,
+	RACE_ILLUSION,
 ];
 
 var index_to_marker = [
