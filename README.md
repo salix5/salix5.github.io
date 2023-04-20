@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/4/20  
+先行卡更新：DUNE (70/81)
+
 23/4/16  
 先行卡更新：AC03、DP28、SD46
 
