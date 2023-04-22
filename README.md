@@ -57,17 +57,15 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
-23/4/20  
-先行卡更新：DUNE (70/81)
+23/4/22  
+新增卡包：DUNE  
+復刻更新：DUNE
 
 23/4/16  
 先行卡更新：AC03、DP28、SD46
 
 23/4/14  
 新增功能：顯示MD收錄狀態  
-
-23/4/9  
-先行卡更新：DUNE
 
 23/4/7  
 先行卡更新：VJMP、DP28
@@ -90,9 +88,6 @@ VX03：E.HERO 火焰翼人-火焰射擊、連結解碼者
 
 23/3/16  
 VJMP：燃燒龍、三眼的死靈、薔薇蝶
-
-23/3/12  
-先行卡更新：DUNE
 
 23/3/9  
 ジュラック：朱羅紀  
@@ -120,9 +115,6 @@ TCG特有卡：PHHY-EN
 23/2/12  
 森の聖獣：森之聖獸  
 森の聖霊：森之聖靈
-
-23/2/12  
-先行卡更新：DUNE
 
 23/2/10  
 エレキ：電力  
