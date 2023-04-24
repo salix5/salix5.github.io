@@ -8,18 +8,37 @@ const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == text
 
 /**
  * query() - query cards and push into ret
- * wait: db_ready
- * @qstr: sqlite command
- * @arg: binding object
- * @ret: result array
- * Return: void
-*/
+ * @param {string} qstr sqlite command
+ * @param {object} arg binding object
+ * @param {Array} ret result
+ */
 function query(qstr, arg, ret) {
 	ret.length = 0;
 	query_db(db, qstr, arg, ret);
 	if (load_prerelease)
 		query_db(db2, qstr, arg, ret);
 }
+
+/**
+ * print_db_link() - return the link to official database
+ * @param {number} cid database id
+ * @param {number} ot OCT/TCG tag
+ */
+function print_db_link(cid, ot) {
+	let locale = 'ja';
+	if (ot === 2)
+		locale = 'en';
+	return `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${cid}&request_locale=${locale}`;
+}
+
+/**
+ * print_wiki_link() - return the link to Yugipedia
+ * @param {number} id card id
+ */
+function print_wiki_link(id) {
+	return `https://yugipedia.com/wiki/${id}`;
+}
+
 
 
 const last_pack = "DUNE#2";
@@ -200,7 +219,7 @@ function query_db(db, qstr, arg, ret) {
 		else {
 			card.color = null;
 		}
-		if (cid_table[card.id])
+		if (typeof cid_table[card.id] === "number")
 			card.cid = cid_table[card.id];
 		if (name_table[card.id])
 			card.jp_name = name_table[card.id];
