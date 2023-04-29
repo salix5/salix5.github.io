@@ -256,20 +256,24 @@ function create_rows(card, pack) {
 	div_alias.appendChild(div_id);
 
 	// limit
-	if (ltable[card.id] !== undefined || ltable_md[card.id] !== undefined || (is_released(card) && !card.md_name)) {
-		let lfstr_o = `OCG：${print_limit(ltable[card.id])}`;
-		let lfstr_m = '';
+	let lfstr_o = '';
+	let lfstr_m = '';
+	let seperator = '';
+	if (ltable[card.id] !== undefined)
+		lfstr_o = `OCG：${print_limit(ltable[card.id])}`;
+	if (ltable_md[card.id] !== undefined || (is_released(card) && !card.md_name)) {
 		if (ltable_md[card.id] !== undefined) {
 			lfstr_m = `MD：${print_limit(ltable_md[card.id])}`;
-		}
-		else if (card.md_name) {
-			lfstr_m = 'MD：無';
 		}
 		else {
 			lfstr_m = 'MD：未收錄';
 		}
+	}
+	if (lfstr_o && lfstr_m)
+		seperator = ' / ';
+	if (lfstr_o || lfstr_m) {
 		let div_limit = document.createElement('div');
-		div_limit.innerHTML = `${lfstr_o} / ${lfstr_m}`;
+		div_limit.innerHTML = `${lfstr_o}${seperator}${lfstr_m}`;
 		div_alias.appendChild(div_limit);
 	}
 	cell_data.appendChild(div_alias);
