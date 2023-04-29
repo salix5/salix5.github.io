@@ -39,6 +39,14 @@ function print_wiki_link(id) {
 	return `https://yugipedia.com/wiki/${id}`;
 }
 
+/**
+ * print_qa_link() - return the link to Q&A page
+ * @param {number} cid
+ */
+function print_qa_link(cid) {
+	return `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${cid}&request_locale=ja`;
+}
+
 
 
 const last_pack = "DUNE#2";
