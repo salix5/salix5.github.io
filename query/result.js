@@ -93,7 +93,7 @@ function print_limit(limit) {
 	else if (limit === 2)
 		return '<img src="icon/2.png" height="18" width="18">';
 	else
-		return '無';
+		return '';
 }
 
 function compare_id(a, b) {
