@@ -7,6 +7,7 @@ const pre_release={
 	SD46: 100346001,
 
 	// TCG
+	_CYAC: 101112001,
 };
 
 const wiki_link = {
@@ -17,4 +18,5 @@ const wiki_link = {
 	SD46: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%B2%A6%BC%D4%A4%CE%B8%DD%C6%B0%A1%DD",
 
 	// TCG
+	_CYAC: "https://yugipedia.com/wiki/Cyberstorm_Access",
 };

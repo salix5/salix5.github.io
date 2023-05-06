@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/5/6  
+Gold Pride：黃金榮耀  
+TCG特有卡：CYAC-EN
+
 23/4/23  
 更新：MD 5月禁卡表
 
