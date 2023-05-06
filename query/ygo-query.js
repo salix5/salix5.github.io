@@ -49,7 +49,7 @@ function print_qa_link(cid) {
 
 
 
-const last_pack = "DUNE#2";
+const last_pack = "DUNE#3";
 const domain = "https://salix5.github.io";
 // sqlite
 const promise_db = fetch(`${domain}/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
