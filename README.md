@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/5/12  
+TCG特有卡：更新MD的日文卡名  
+先行卡更新：AC03、DP28、SD46
+
 23/5/6  
 Gold Pride：黃金榮耀  
 TCG特有卡：CYAC-EN
