@@ -49,7 +49,7 @@ function print_qa_link(cid) {
 
 
 
-const last_pack = "DUNE#4";
+const last_pack = "DUNE#5";
 const domain = "https://salix5.github.io";
 // sqlite
 const promise_db = fetch(`${domain}/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
@@ -100,10 +100,10 @@ else {
 
 // MD
 const ltable_md = Object.create(null);
-const name_table_md = Object.create(null);
+const md_name = Object.create(null);
 if (load_md) {
 	list_promise.push(fetch(`${domain}/query/text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
-	list_promise.push(fetch(`${domain}/query/text/name_table_md.json`).then(response => response.json()).then(data => Object.assign(name_table_md, data)));
+	list_promise.push(fetch(`${domain}/query/text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
 }
 
 var SQL = null;
@@ -233,8 +233,8 @@ function query_db(db, qstr, arg, ret) {
 			card.jp_name = name_table[card.id];
 		if (name_table_en[card.id])
 			card.en_name = name_table_en[card.id];
-		if (name_table_md[card.id])
-			card.md_name = name_table_md[card.id];
+		if (md_name[card.id])
+			card.md_name = md_name[card.id];
 
 		// pack_id
 		if (card.id <= 99999999) {
