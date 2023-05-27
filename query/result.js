@@ -28,7 +28,7 @@ function print_card_number(pack, index) {
 		str_pack = pack;
 		str_ot = 'JP';
 	}
-	let cat = str_pack.substr(0, 2);
+	let cat = str_pack.substring(0, 2);
 
 	// index
 	if (pack === 'WPP2' && index > 70) {
@@ -96,42 +96,59 @@ function print_limit(limit) {
 		return '';
 }
 
+/** 
+ *  is_equal() - case-insensitive equal
+ *  @param {string} a
+ *  @param {string} b
+ */
+function is_equal(a, b) {
+	return a.toHalfWidth().toLowerCase() === b.toHalfWidth().toLowerCase();
+}
+
 function compare_id(a, b) {
 	return a.pack_id - b.pack_id;
 }
 
-function compare_type(a, b) {
-	let name = check_str(current_params.get("name"));
-	let jp_name = name.toHalfWidth();
-	let en_name = name.toLowerCase();
-	if (a.name === name) {
-		return -1;
-	}
-	else if (b.name === name) {
-		return 1;
-	}
-	else if (a.jp_name && a.jp_name.toHalfWidth() === jp_name) {
-		return -1;
-	}
-	else if (b.jp_name && b.jp_name.toHalfWidth() === jp_name) {
-		return 1;
-	}
-	else if (a.en_name && a.en_name.toLowerCase() === en_name) {
-		return -1;
-	}
-	else if (b.en_name && b.en_name.toLowerCase() === en_name) {
-		return 1;
-	}
-	else if (a.color !== b.color) {
-		return a.color - b.color;
-	}
-	else if (a.level !== b.level) {
-		return b.level - a.level;
-	}
-	else {
-		return a.name.localeCompare(b.name);
+function compare_card() {
+	const name = check_str(current_params.get("name"));
+	const locale = check_str(current_params.get("locale"));
+
+	return function (a, b) {
+		if (locale === 'en') {
+			if (a.en_name && is_equal(a.en_name, name)) {
+				return -1;
+			}
+			else if (b.en_name && is_equal(b.en_name, name)) {
+				return 1;
+			}
+		}
+		else {
+			if (is_equal(a.name, name)) {
+				return -1;
+			}
+			else if (is_equal(b.name, name)) {
+				return 1;
+			}
+			else if (a.jp_name && is_equal(a.jp_name, name)) {
+				return -1;
+			}
+			else if (b.jp_name && is_equal(b.jp_name, name)) {
+				return 1;
+			}
+		}
+
+		if (a.color !== b.color) {
+			return a.color - b.color;
+		}
+		else if (a.level !== b.level) {
+			return b.level - a.level;
+		}
+		else {
+			return a.name.localeCompare(b.name, 'zh-Hant');
+		}
 	}
 }
+
 
 function imgError(event) {
 	this.onerror = null;
@@ -447,7 +464,7 @@ function show_result(params) {
 		if (pack)
 			result.sort(compare_id);
 		else
-			result.sort(compare_type);
+			result.sort(compare_card());
 		div_count.textContent = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		div_count.hidden = false;
 		if (window.innerWidth > MAX_WIDTH)
