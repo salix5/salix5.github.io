@@ -1,7 +1,7 @@
 "use strict";
 // max of int32: 10 digit
 const MAX_DIGIT = 10;
-const MAX_STRLEN = 200;
+const MAX_STRLEN = 1000;
 
 const result = [];
 
@@ -50,10 +50,6 @@ function is_scale(x) {
 	return x !== null && x >= 0 && x <= 13;
 }
 
-function is_str(x) {
-	return x && x.length <= MAX_STRLEN;
-}
-
 function is_pack(x) {
 	switch (x) {
 		case 'o':
@@ -78,9 +74,12 @@ function check_int(val) {
 }
 
 function check_str(val) {
-	if (!is_str(val))
+	if (typeof val !== 'string')
 		return '';
-	return val;
+	else if (val.length > MAX_STRLEN)
+		return val.substring(0, MAX_STRLEN);
+	else
+		return val;
 }
 
 var id_to_type = {
