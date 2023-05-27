@@ -57,12 +57,17 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/5/27  
+新增卡包：DP28  
+復刻更新：DP28  
+VJMP(7月)：蒲公英白獅
+
 23/5/18  
 先行卡更新：AGOV (1202)
 
 23/5/12  
 TCG特有卡：更新MD的日文卡名  
-先行卡更新：AC03、DP28、SD46
+先行卡更新：AC03、SD46
 
 23/5/6  
 Gold Pride：黃金榮耀  
@@ -72,17 +77,15 @@ TCG特有卡：CYAC-EN
 更新：MD 5月禁卡表
 
 23/4/22  
-新增卡包：DUNE  
-復刻更新：DUNE
+新增卡包：DUNE (1201)  
+復刻更新：DUNE (1201)  
+VJMP(6月)：殺手馬鈴薯  
 
 23/4/16  
-先行卡更新：AC03、DP28、SD46
+先行卡更新：AC03、SD46
 
 23/4/14  
 新增功能：顯示MD收錄狀態  
-
-23/4/7  
-先行卡更新：VJMP、DP28
 
 23/4/7  
 更新：MD 4/10禁卡表
@@ -91,7 +94,8 @@ TCG特有卡：CYAC-EN
 復刻更新：23TP Vol.2
 
 23/3/26  
-更新：4月禁卡表
+更新：4月禁卡表  
+VJMP(5月)：血肉的代價
 
 23/3/19  
 新增卡包：DBWS  
@@ -101,7 +105,7 @@ TCG特有卡：CYAC-EN
 VX03：E.HERO 火焰翼人-火焰射擊、連結解碼者
 
 23/3/16  
-VJMP：燃燒龍、三眼的死靈、薔薇蝶
+VJMP特典：燃燒龍、三眼的死靈、薔薇蝶
 
 23/3/9  
 ジュラック：朱羅紀  
@@ -113,7 +117,7 @@ VJMP：燃燒龍、三眼的死靈、薔薇蝶
 TCG特有卡：Maze of Memories
 
 23/2/21  
-VJMP：神聖魔術師
+VJMP(4月)：神聖魔術師
 
 23/2/19  
 復刻更新：RC04
