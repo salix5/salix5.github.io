@@ -121,6 +121,12 @@ function compare_card() {
 			else if (b.en_name && is_equal(b.en_name, name)) {
 				return 1;
 			}
+			if (a.md_name_en && is_equal(a.md_name_en, name)) {
+				return -1;
+			}
+			else if (b.md_name_en && is_equal(b.md_name_en, name)) {
+				return 1;
+			}
 		}
 		else {
 			if (is_equal(a.name, name)) {
@@ -249,9 +255,12 @@ function create_rows(card, pack) {
 		link_db.textContent = str_link;
 		div_db.appendChild(link_db);
 		div_alias.appendChild(div_db);
-		if (card.jp_name) {
+		if (card.jp_name && (card.en_name || card.md_name_en)) {
 			let div_en = document.createElement('div');
-			div_en.textContent = card.en_name;
+			if (card.en_name)
+				div_en.textContent = card.en_name;
+			else
+				div_en.textContent = `${card.md_name_en} (MD)`;
 			div_alias.appendChild(div_en);
 		}
 	}
