@@ -101,9 +101,11 @@ else {
 // MD
 const ltable_md = Object.create(null);
 const md_name = Object.create(null);
+const md_name_en = Object.create(null);
 if (load_md) {
 	list_promise.push(fetch(`${domain}/query/text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
 	list_promise.push(fetch(`${domain}/query/text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
+	list_promise.push(fetch(`${domain}/query/text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
 }
 
 var SQL = null;
@@ -233,6 +235,8 @@ function query_db(db, qstr, arg, ret) {
 			card.jp_name = name_table[card.id];
 		if (name_table_en[card.id])
 			card.en_name = name_table_en[card.id];
+		else if (md_name_en[card.id])
+			card.md_name_en = md_name_en[card.id];
 		if (md_name[card.id])
 			card.md_name = md_name[card.id];
 
