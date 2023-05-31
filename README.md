@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/5/31  
+更新：MD 6月禁卡表
+
 23/5/27  
 新增卡包：DP28  
 復刻更新：DP28  
