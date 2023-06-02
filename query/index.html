@@ -9,7 +9,7 @@
 	<link href="main.css" rel="stylesheet">
 </head>
 <body bgcolor="#cccccc">
-	<form id="form1" action="/query/" autocomplete="on">
+	<form id="form1" action="/query/" autocomplete="off">
 	<table class="hidden">
 	<tr><td>密碼</td><td><input type="number" id="text_id" name="cid" min="1" max="102000000"></td></tr>
 	<tr><td>卡名</td><td><input type="search" id="text_name" name="cname" maxlength="100">
@@ -111,63 +111,14 @@
 	<td>
 		<select id="select_type" name="type">
 			<option value=""></option>
-			<option value="m">怪獸</option>
-			<option value="s">魔法</option>
-			<option value="t">陷阱</option>
+			<option value="1">怪獸</option>
+			<option value="2">魔法</option>
+			<option value="3">陷阱</option>
 		</select>
 	</td>
 	</tr>
 	
-	<tr><td>素材</td><td><input type="search" id="text_mat" name="mat" maxlength="50"></td></tr>
-	<tr id="row_lv"><td>星數</td>
-	<td>
-	<input type="number" id="text_lv1" name="lv1" min="1" max="13" style="width: 3em" >
-	～
-	<input type="number" id="text_lv2" name="lv2" min="1" max="13" style="width: 3em" >
-	</td>
-	</tr>
-	
-	<tr id="row_sc"><td>刻度</td>
-	<td>
-	<input type="number" id="text_sc1" name="sc1" min="0" max="13" style="width: 3em" >
-	～
-	<input type="number" id="text_sc2" name="sc2" min="0" max="13" style="width: 3em" >
-	</td>
-	</tr>
-	
-	<tr id="row_marker"><td>標記</td>
-	<td>
-	<input type="checkbox" id="marker1" name="marker" value="7"> <input type="checkbox" id="marker2" name="marker"  value="8"> <input type="checkbox" id="marker3" name="marker"  value="9">
-		<select id="select_marker_op">
-			<option value="or">OR</option>
-			<option value="and">AND</option>
-		</select><br>
-		<input type="checkbox" id="marker4" name="marker" value="4"> <input type="checkbox" id="marker_ph" class="invisible" disabled> <input type="checkbox" id="marker5" name="marker" value="6"><br>
-		<input type="checkbox" id="marker6" name="marker" value="1"> <input type="checkbox" id="marker7" name="marker" value="2"> <input type="checkbox" id="marker8" name="marker" value="3">
-	</td>
-	</tr>
-	
-	<tr id="row_atk"><td>攻擊力</td>
-	<td>
-	<input type="number" id="text_atk1" name="atk1" min="-1" max="100000" style="width: 5em">
-	～
-	<input type="number" id="text_atk2" name="atk2" min="0" max="100000" style="width: 5em"> (-1 = ?)
-	</td>
-	</tr>
-	
-	<tr id="row_def"><td>守備力</td>
-	<td>
-	<input type="number" id="text_def1" name="def1" min="-2" max="100000" style="width: 5em">
-	～
-	<input type="number" id="text_def2" name="def2" min="0" max="100000" style="width: 5em"> (-2 = 攻守相等)
-	</td>
-	</tr>
-	
-	<tr id="row_sum"><td>總和</td>
-	<td>
-	<input type="number" id="text_sum" name="sum" min="0" max="100000" style="width: 5em">
-	</td>
-	</tr>
+	<tr id="row_mat"><td>素材</td><td><input type="search" id="text_mat" name="mat" maxlength="50"></td></tr>
 	
 	<tr id="row_attr"><td>屬性</td>
 	<td>
@@ -210,17 +161,19 @@
 	<input type="checkbox" id="race24" name="race" value="24"><label for="race24">創造神</label><br>
 	<input type="checkbox" id="race25" name="race" value="25"><label for="race25">電子界</label>
 	<input type="checkbox" id="race26" name="race" value="26"><label for="race26">幻想魔</label>
-	<input type="checkbox" id="race_reset"><label for="race_reset" class="clear">✗</label>
+	<input type="checkbox" id="race_reset"><label for="race_reset" class="clear">✗　　</label>
 	</td>
 	</tr>
 	
 	<tr id="row_subtype" hidden><td>類型</td>
 	<td>
-	<select id="select_subtype_op" >
-		<option value="or">OR</option>
-		<option value="and">AND</option>
-	</select>
 	<div id="subtype_m" hidden>
+		<div>
+			<select id="select_subtype_op" name="mtype_operator">
+				<option value="or">OR</option>
+				<option value="and">AND</option>
+			</select>
+		</div>
 		<input type="checkbox" id="mtype5" name="mtype" value="1"><label for="mtype5" class="F">融合</label>
 		<input type="checkbox" id="mtype6" name="mtype" value="2"><label for="mtype6" class="S">同步</label>
 		<input type="checkbox" id="mtype7" name="mtype" value="3"><label for="mtype7" class="X">超量</label>　　
@@ -237,7 +190,7 @@
 		<input type="checkbox" id="mtype14" name="mtype" value="14"><label for="mtype14">反轉</label>
 		<input type="checkbox" id="mtype15" name="mtype" value="15"><label for="mtype15">特殊召喚</label>
 		<input type="checkbox" id="mtype16" name="mtype" value="16"><label for="mtype16">衍生物</label><br>
-		<input type="checkbox" id="mtype_reset"><label for="mtype_reset" class="clear">✗</label>
+		<input type="checkbox" id="mtype_reset"><label for="mtype_reset" class="clear">✗　</label>
 	</div>
 	<div id="subtype_s" hidden>
 		<input type="checkbox" id="stype1" name="stype" value="1"><label for="stype1">通常　</label>
@@ -246,7 +199,7 @@
 		<input type="checkbox" id="stype4" name="stype" value="4"><label for="stype4">裝備　</label><br>
 		<input type="checkbox" id="stype5" name="stype" value="5"><label for="stype5">儀式　</label>
 		<input type="checkbox" id="stype6" name="stype" value="6"><label for="stype6">場地　</label>
-		<input type="checkbox" id="stype_reset"><label for="stype_reset" class="clear">✗</label>
+		<input type="checkbox" id="stype_reset"><label for="stype_reset" class="clear">✗　　</label>
 	</div>
 	<div id="subtype_t" hidden>
 		<input type="checkbox" id="ttype1" name="ttype" value="1"><label for="ttype1">通常　</label>
@@ -274,7 +227,57 @@
 		<input type="checkbox" id="exclude_type13" name="exclude" value="13"><label for="exclude_type13">協調</label>
 		<input type="checkbox" id="exclude_type14" name="exclude" value="14"><label for="exclude_type14">反轉</label>
 		<input type="checkbox" id="exclude_type15" name="exclude" value="15"><label for="exclude_type15">特殊召喚</label>
-		<input type="checkbox" id="exclude_reset"><label for="exclude_reset" class="clear">✗</label>
+		<input type="checkbox" id="exclude_reset"><label for="exclude_reset" class="clear">✗　</label>
+	</td>
+	</tr>
+	
+	<tr id="row_lv"><td>星數</td>
+	<td>
+	<input type="number" id="text_lv1" name="lv1" min="1" max="13" style="width: 3em" >
+	～
+	<input type="number" id="text_lv2" name="lv2" min="1" max="13" style="width: 3em" >
+	</td>
+	</tr>
+	
+	<tr id="row_sc"><td>刻度</td>
+	<td>
+	<input type="number" id="text_sc1" name="sc1" min="0" max="13" style="width: 3em" >
+	～
+	<input type="number" id="text_sc2" name="sc2" min="0" max="13" style="width: 3em" >
+	</td>
+	</tr>
+	
+	<tr id="row_marker"><td>標記</td>
+	<td>
+	<input type="checkbox" id="marker1" name="marker" value="7"> <input type="checkbox" id="marker2" name="marker"  value="8"> <input type="checkbox" id="marker3" name="marker"  value="9">
+		<select id="select_marker_op" name="marker_operator">
+			<option value="or">OR</option>
+			<option value="and">AND</option>
+		</select><br>
+		<input type="checkbox" id="marker4" name="marker" value="4"> <input type="checkbox" id="marker_ph" class="invisible" disabled> <input type="checkbox" id="marker5" name="marker" value="6"><br>
+		<input type="checkbox" id="marker6" name="marker" value="1"> <input type="checkbox" id="marker7" name="marker" value="2"> <input type="checkbox" id="marker8" name="marker" value="3">
+	</td>
+	</tr>
+	
+	<tr id="row_atk"><td>攻擊力</td>
+	<td>
+	<input type="number" id="text_atk1" name="atk1" min="-1" max="100000" style="width: 5em">
+	～
+	<input type="number" id="text_atk2" name="atk2" min="0" max="100000" style="width: 5em"> (-1 = ?)
+	</td>
+	</tr>
+	
+	<tr id="row_def"><td>守備力</td>
+	<td>
+	<input type="number" id="text_def1" name="def1" min="-2" max="100000" style="width: 5em">
+	～
+	<input type="number" id="text_def2" name="def2" min="0" max="100000" style="width: 5em"> (-2 = 攻守相等)
+	</td>
+	</tr>
+	
+	<tr id="row_sum"><td>總和</td>
+	<td>
+	<input type="number" id="text_sum" name="sum" min="0" max="100000" style="width: 5em">
 	</td>
 	</tr>
 	
