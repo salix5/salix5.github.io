@@ -196,8 +196,6 @@ window.addEventListener('DOMContentLoaded', function (event) {
 		div_page.style.width = '100%';
 		table_result.style.width = '100%';
 	}
-	//button1.disabled = true;
-	//button2.disabled = true;
 
 	let params = new URLSearchParams(window.location.search);
 	let type = check_int(params.get("type"));

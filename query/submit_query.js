@@ -161,7 +161,7 @@ function submit_query(event) {
 		window.location.search = '?' + params.toString();
 	}
 }
-//form1.onsubmit = submit_query;
+form1.onsubmit = submit_query;
 
 function url_query() {
 	if (window.location.search.substring(1) === '')
@@ -170,8 +170,8 @@ function url_query() {
 	server_analyze1(params);
 }
 
-/*db_ready.then(() => {
+db_ready.then(() => {
 	url_query();
 	button1.disabled = false;
 	button2.disabled = false;
-});*/
+});
