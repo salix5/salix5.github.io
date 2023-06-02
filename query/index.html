@@ -14,7 +14,7 @@
 	<tr><td>密碼</td><td><input type="number" id="text_id" name="cid" min="1" max="102000000"></td></tr>
 	<tr><td>卡名</td><td><input type="search" id="text_name" name="cname" maxlength="100">
 	<select id="select_locale" name="locale">
-		<option value="ocg">OCG</option>
+		<option value="">OCG</option>
 		<option value="en">TCG</option>
 	</select>
 	</td></tr>
@@ -169,7 +169,7 @@
 	<td>
 	<div id="subtype_m" hidden>
 		<div>
-			<select id="select_subtype_op" name="mtype_operator">
+			<select id="select_subtype_op" name="mtype_operator" disabled>
 				<option value="0">OR</option>
 				<option value="1">AND</option>
 			</select>
