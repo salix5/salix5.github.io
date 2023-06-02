@@ -30,7 +30,7 @@ function submit_query(event) {
 				if (subtype) {
 					params.set('subtype', subtype.toString(10));
 					// default: or
-					if (select_subtype_op.value == 'and')
+					if (select_subtype_op.value === '1')
 						params.set('sub_op', 1);
 					else
 						params.set('sub_op', 0);
@@ -127,7 +127,7 @@ function submit_query(event) {
 			}
 			if (cmarker) {
 				params.set('marker', cmarker.toString(10));
-				if (select_marker_op.value === 'and')
+				if (select_marker_op.value === '1')
 					params.set('marker_op', 1);
 				else
 					params.set('marker_op', 0);
