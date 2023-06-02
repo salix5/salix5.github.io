@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/6/2  
+YOS1：閃刀姬-卡米麗亞
+
 23/5/31  
 更新：MD 6月禁卡表
 
