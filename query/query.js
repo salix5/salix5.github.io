@@ -1,7 +1,7 @@
 "use strict";
 // max of int32: 10 digit
 const MAX_DIGIT = 10;
-const MAX_STRLEN = 1000;
+const MAX_STRLEN = 500;
 
 const result = [];
 
