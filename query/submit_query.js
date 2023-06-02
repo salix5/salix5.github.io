@@ -21,7 +21,7 @@ function submit_query(event) {
 		// type
 		let subtype = 0;
 		switch (select_type.value) {
-			case 'm':
+			case '1':
 				params.set('type', TYPE_MONSTER);
 				for (let i = 0; i < cb_mtype.length; ++i) {
 					if (cb_mtype[i].checked)
@@ -45,7 +45,7 @@ function submit_query(event) {
 					params.set('exc', exc.toString(10));
 				}
 				break;
-			case 's':
+			case '2':
 				params.set('type', TYPE_SPELL);
 				for (let i = 0; i < cb_stype.length; ++i) {
 					if (cb_stype[i].checked)
@@ -54,7 +54,7 @@ function submit_query(event) {
 				if (subtype)
 					params.set('subtype', subtype.toString(10));
 				break;
-			case 't':
+			case '3':
 				params.set('type', TYPE_TRAP);
 				for (let i = 0; i < cb_ttype.length; ++i) {
 					if (cb_ttype[i].checked)
@@ -67,7 +67,7 @@ function submit_query(event) {
 				break;
 		}
 
-		if (select_type.value === '' || select_type.value === 'm') {
+		if (select_type.value === '' || select_type.value === '1') {
 			// mat
 			let mat = text_mat.value;
 			if (mat)
