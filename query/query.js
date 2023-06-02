@@ -635,11 +635,11 @@ function param_to_condition(params, arg) {
 						cb_mtype[i].checked = true;
 				}
 				if (sub_op) {
-					select_subtype_op.value = 'and';
+					select_subtype_op.value = '1';
 					qstr += " AND type & $stype == $stype";
 				}
 				else {
-					select_subtype_op.value = 'or';
+					select_subtype_op.value = '0';
 					qstr += " AND type & $stype";
 				}
 				arg.$stype = subtype;
@@ -860,11 +860,11 @@ function param_to_condition(params, arg) {
 			}
 			qstr += " AND type & $link";
 			if (marker_op) {
-				select_marker_op.value = 'and';
+				select_marker_op.value = '1';
 				qstr += " AND def & $marker == $marker";
 			}
 			else {
-				select_marker_op.value = 'or';
+				select_marker_op.value = '0';
 				qstr += " AND def & $marker";
 			}
 			arg.$marker = marker;
