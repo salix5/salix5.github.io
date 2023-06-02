@@ -28,7 +28,7 @@ function submit_query(event) {
 	if (subtype) {
 		params.set('subtype', subtype.toString(10));
 		// default: or
-		if (select_subtype_op.value == 'and')
+		if (select_subtype_op.value === '1')
 			params.set('sub_op', 1);
 		else
 			params.set('sub_op', 0);

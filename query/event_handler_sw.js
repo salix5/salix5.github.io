@@ -22,17 +22,15 @@ const select_type = null;
 const select_subtype_op = document.getElementById('select_subtype_op');
 
 const subtype_m = document.getElementById('subtype_m');
-const cb_mtype = document.getElementsByName('cb_mtype');
-const cb_exclude = document.getElementsByName('cb_exclude');
-const cb_attr = document.getElementsByName('cb_attr');
-const cb_race = document.getElementsByName('cb_race');
-const list_cb = ['cb_mtype', 'cb_exclude', 'cb_attr', 'cb_race'];
+const cb_mtype = document.getElementsByName('mtype');
+const cb_exclude = document.getElementsByName('exclude');
+const cb_attr = document.getElementsByName('attr');
+const cb_race = document.getElementsByName('race');
 
-// reset combobox, excluding cb_marker
-const cb_mtype_reset = document.getElementById('cb_mtype_reset');
-const cb_exclude_reset = document.getElementById('cb_exclude_reset');
-const cb_attr_reset = document.getElementById('cb_attr_reset');
-const cb_race_reset = document.getElementById('cb_race_reset');
+const cb_mtype_reset = document.getElementById('mtype_reset');
+const cb_exclude_reset = document.getElementById('exclude_reset');
+const cb_attr_reset = document.getElementById('attr_reset');
+const cb_race_reset = document.getElementById('race_reset');
 
 const row_lv = document.getElementById('row_lv');
 const row_sc = document.getElementById('row_sc');
@@ -56,24 +54,29 @@ const table_result = document.getElementById('table_result');
 
 function clear_cb(name) {
 	let cb_list = document.getElementsByName(name);
-	for (let i = 0; i < cb_list.length; ++i) {
-		cb_list[i].checked = false;
-	}
-	if (name != 'cb_marker') {
-		let rst = document.getElementById(name + '_reset');
-		rst.checked = false;
+	for (const cb of cb_list) {
+		cb.checked = false;
 	}
 }
 
-cb_mtype_reset.onchange = function (event) {
-	clear_cb('cb_mtype');
-	select_subtype_op.selectedIndex = 0;
-};
-cb_exclude_reset.onchange = function (event) { clear_cb('cb_exclude'); };
-cb_attr_reset.onchange = function (event) { clear_cb('cb_attr'); };
-cb_race_reset.onchange = function (event) { clear_cb('cb_race'); };
+cb_mtype_reset.addEventListener('change', function (event) {
+	clear_cb('mtype');
+	this.checked = false;
+});
+cb_exclude_reset.addEventListener('change', function (event) {
+	clear_cb('exclude');
+	this.checked = false;
+});
+cb_attr_reset.addEventListener('change', function (event) {
+	clear_cb('attr');
+	this.checked = false;
+});
+cb_race_reset.addEventListener('change', function (event) {
+	clear_cb('race');
+	this.checked = false;
+});
 
-function init(event) {
+window.addEventListener('DOMContentLoaded', function (event) {
 	if (window.innerWidth > MAX_WIDTH) {
 		div_count.style.width = MAX_WIDTH + 'px';
 		div_page.style.width = MAX_WIDTH + 'px';
@@ -84,8 +87,4 @@ function init(event) {
 		div_page.style.width = '100%';
 		table_result.style.width = '100%';
 	}
-	form1.reset();
-	button1.disabled = true;
-	button2.disabled = true;
-}
-document.body.onload = init;
+});
