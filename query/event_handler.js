@@ -185,7 +185,7 @@ form1.addEventListener('reset', function (event) {
 	select_type.dispatchEvent(new Event('change'));
 });
 
-function init(event) {
+window.addEventListener('DOMContentLoaded', function (event) {
 	if (window.innerWidth > MAX_WIDTH) {
 		div_count.style.width = MAX_WIDTH + 'px';
 		div_page.style.width = MAX_WIDTH + 'px';
@@ -217,5 +217,4 @@ function init(event) {
 		default:
 			break;
 	}
-}
-document.body.onload = init;
+});
