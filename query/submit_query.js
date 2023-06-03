@@ -31,9 +31,9 @@ function submit_query(event) {
 					params.set("subtype", subtype.toString(10));
 					// default: or
 					if (select_subtype_op.value === "1")
-						params.set("sub_op", 1);
+						params.set("mtype_operator", 1);
 					else
-						params.set("sub_op", 0);
+						params.set("mtype_operator", 0);
 				}
 				// exclude has the same checkboxes
 				let exc = 0;
