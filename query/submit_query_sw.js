@@ -89,10 +89,10 @@ function submit_query(event) {
 	}
 
 
-	//multi
-	let cmulti = text_multi.value;
-	if (cmulti)
-		params.set("multi", cmulti);
+	//keyword
+	let keyword = text_keyword.value;
+	if (keyword)
+		params.set("keyword", keyword);
 	else {
 		// name
 		let cname = text_name.value;
