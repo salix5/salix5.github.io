@@ -10,7 +10,7 @@ function submit_query(event) {
 	if (text_id.value)
 		cid = parseInt(text_id.value, 10);
 	if (cid && cid > 0) {
-		params.set("id", cid.toString().padStart(8, "0"));
+		params.set("cid", cid.toString().padStart(8, "0"));
 	}
 	else {
 		// pack
