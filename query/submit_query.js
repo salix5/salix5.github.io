@@ -128,9 +128,9 @@ function submit_query(event) {
 			if (cmarker) {
 				params.set("marker", cmarker.toString(10));
 				if (select_marker_op.value === "1")
-					params.set("marker_op", 1);
+					params.set("marker_operator", 1);
 				else
-					params.set("marker_op", 0);
+					params.set("marker_operator", 0);
 			}
 		}
 
