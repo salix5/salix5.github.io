@@ -19,7 +19,7 @@ function submit_query(event) {
 		params.set("pack", pack);
 
 	// type
-	params.set("type", TYPE_MONSTER);
+	params.set("type", "1");
 	let subtype = 0;
 	for (let i = 0; i < cb_mtype.length; ++i) {
 		if (cb_mtype[i].checked)

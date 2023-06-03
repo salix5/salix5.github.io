@@ -22,7 +22,7 @@ function submit_query(event) {
 		let subtype = 0;
 		switch (select_type.value) {
 			case "1":
-				params.set("type", TYPE_MONSTER);
+				params.set("type", "1");
 				for (let i = 0; i < cb_mtype.length; ++i) {
 					if (cb_mtype[i].checked)
 						subtype |= id_to_type[cb_mtype[i].id];
@@ -46,7 +46,7 @@ function submit_query(event) {
 				}
 				break;
 			case "2":
-				params.set("type", TYPE_SPELL);
+				params.set("type", "2");
 				for (let i = 0; i < cb_stype.length; ++i) {
 					if (cb_stype[i].checked)
 						subtype |= id_to_type[cb_stype[i].id];
@@ -55,7 +55,7 @@ function submit_query(event) {
 					params.set("subtype", subtype.toString(10));
 				break;
 			case "3":
-				params.set("type", TYPE_TRAP);
+				params.set("type", "3");
 				for (let i = 0; i < cb_ttype.length; ++i) {
 					if (cb_ttype[i].checked)
 						subtype |= id_to_type[cb_ttype[i].id];
