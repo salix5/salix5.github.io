@@ -192,7 +192,7 @@ function server_validate1(params) {
 		let attr = check_int(params.get("attr"));
 		let race = check_int(params.get("race"));
 		let marker = check_int(params.get("marker"));
-		let marker_op = check_int(params.get("marker_op"));
+		let marker_op = check_int(params.get("marker_operator"));
 
 		if (is_positive(type))
 			valid_params.set("type", type);
@@ -234,9 +234,9 @@ function server_validate1(params) {
 		if (is_positive(marker)) {
 			valid_params.set("marker", marker);
 			if (marker_op)
-				valid_params.set("marker_op", 1);
+				valid_params.set("marker_operator", 1);
 			else
-				valid_params.set("marker_op", 0);
+				valid_params.set("marker_operator", 0);
 		}
 
 		// string
@@ -852,7 +852,7 @@ function param_to_condition(params, arg) {
 		}
 		// marker
 		let marker = check_int(params.get("marker"));
-		let marker_op = check_int(params.get("marker_op"));
+		let marker_op = check_int(params.get("marker_operator"));
 		if (marker) {
 			for (let i = 0; i < cb_marker.length; ++i) {
 				if (marker & index_to_marker[i])
