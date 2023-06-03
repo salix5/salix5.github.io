@@ -9,6 +9,12 @@ const result = [];
 const re_wildcard = /(^|[^\$])[%_]/;
 const re_bad_escape = /\$(?![%_])/g;
 const re_all_digit = /^\d+$/;
+const re_id = /^\d{1,9}$/;
+const re_value = /^\d{1,2}$/;
+const re_atk = /^-?\d{1,6}$/;
+const re_sum = /^\d{1,6}$/;
+const re_mod = /^\d{1,3}$/;
+const re_page = /^\d{1,3}$/;
 
 String.prototype.toHalfWidth = function () {
 	return this.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) { return String.fromCharCode(s.charCodeAt(0) - 0xFEE0) });
@@ -169,63 +175,66 @@ var index_to_marker = [
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
 	// id, primary key
-	let id = check_int(params.get("cid"));
-	if (is_positive(id)) {
+	let id = params.get("cid");
+	if (re_id.test(id)) {
 		valid_params.set("cid", id);
 	}
 	else {
-		let type = check_int(params.get("type"));
+		let type = params.get("type");
+		let mtype_operator = params.get("mtype_operator");
+
 		let subtype = check_int(params.get("subtype"));
-		let mtype_operator = check_int(params.get("mtype_operator"));
 		let exc = check_int(params.get("exc"));
-		let atk1 = check_int(params.get("atk1"));
-		let atk2 = check_int(params.get("atk2"));
-		let atkm = check_int(params.get("atkm"));
-		let def1 = check_int(params.get("def1"));
-		let def2 = check_int(params.get("def2"));
-		let defm = check_int(params.get("defm"));
-		let sum = check_int(params.get("sum"));
-		let lv1 = check_int(params.get("lv1"));
-		let lv2 = check_int(params.get("lv2"));
-		let sc1 = check_int(params.get("sc1"));
-		let sc2 = check_int(params.get("sc2"));
+
+		let atk1 = params.get("atk1");
+		let atk2 = params.get("atk2");
+		let atkm = params.get("atkm");
+		let def1 = params.get("def1");
+		let def2 = params.get("def2");
+		let defm = params.get("defm");
+		let sum = params.get("sum");
+		let lv1 = params.get("lv1");
+		let lv2 = params.get("lv2");
+		let sc1 = params.get("sc1");
+		let sc2 = params.get("sc2");
 		let attr = check_int(params.get("attr"));
 		let race = check_int(params.get("race"));
 		let marker = check_int(params.get("marker"));
-		let marker_op = check_int(params.get("marker_operator"));
+		let marker_op = params.get("marker_operator");
 
-		if (is_positive(type))
+		if (re_value.test(type))
 			valid_params.set("type", type);
 		if (is_positive(subtype)) {
 			valid_params.set("subtype", subtype);
-			if (mtype_operator)
-				valid_params.set("mtype_operator", 1);
+			if (mtype_operator === "1")
+				valid_params.set("mtype_operator", "1");
 			else
-				valid_params.set("mtype_operator", 0);
+				valid_params.set("mtype_operator", "0");
 		}
 		if (is_positive(exc))
 			valid_params.set("exc", exc);
-		if (is_atk(atk1))
+
+		if (re_atk.test(atk1))
 			valid_params.set("atk1", atk1);
-		if (is_atk(atk2))
+		if (re_atk.test(atk2))
 			valid_params.set("atk2", atk2);
-		if (is_modulus(atkm))
+		if (re_mod.test(atkm))
 			valid_params.set("atkm", atkm);
-		if (is_def(def1))
+		if (re_atk.test(def1))
 			valid_params.set("def1", def1);
-		if (is_def(def2))
+		if (re_atk.test(def2))
 			valid_params.set("def2", def2);
-		if (is_modulus(defm))
+		if (re_mod.test(defm))
 			valid_params.set("defm", defm);
-		if (is_normal_atk(sum))
+		if (re_sum.test(sum))
 			valid_params.set("sum", sum);
-		if (is_lv(lv1))
+		if (re_value.test(lv1))
 			valid_params.set("lv1", lv1);
-		if (is_lv(lv2))
+		if (re_value.test(lv2))
 			valid_params.set("lv2", lv2);
-		if (is_scale(sc1))
+		if (re_value.test(sc1))
 			valid_params.set("sc1", sc1);
-		if (is_scale(sc2))
+		if (re_value.test(sc2))
 			valid_params.set("sc2", sc2);
 		if (is_positive(attr))
 			valid_params.set("attr", attr);
@@ -233,7 +242,7 @@ function server_validate1(params) {
 			valid_params.set("race", race);
 		if (is_positive(marker)) {
 			valid_params.set("marker", marker);
-			if (marker_op)
+			if (marker_op === "1")
 				valid_params.set("marker_operator", 1);
 			else
 				valid_params.set("marker_operator", 0);
@@ -260,11 +269,9 @@ function server_validate1(params) {
 			valid_params.set("desc", desc);
 	}
 	// page
-	let page = check_int(params.get("page"));
-	if (is_page(page))
+	let page = params.get("page");
+	if (re_page.test(page))
 		valid_params.set("page", page);
-	else
-		valid_params.set("page", 1);
 	return valid_params;
 }
 
@@ -274,48 +281,52 @@ function server_validate2(params) {
 	valid_params.set("id2", params.get("id2"));
 
 	let subtype = check_int(params.get("subtype"));
-	let mtype_operator = check_int(params.get("mtype_operator"));
 	let exc = check_int(params.get("exc"));
-	let atk1 = check_int(params.get("atk1"));
-	let atk2 = check_int(params.get("atk2"));
-	let def1 = check_int(params.get("def1"));
-	let def2 = check_int(params.get("def2"));
-	let sum = check_int(params.get("sum"));
-	let lv1 = check_int(params.get("lv1"));
-	let lv2 = check_int(params.get("lv2"));
-	let sc1 = check_int(params.get("sc1"));
-	let sc2 = check_int(params.get("sc2"));
+
+	let mtype_operator = params.get("mtype_operator");
+	let atk1 = params.get("atk1");
+	let atk2 = params.get("atk2");
+	let def1 = params.get("def1");
+	let def2 = params.get("def2");
+	let sum = params.get("sum");
+	let lv1 = params.get("lv1");
+	let lv2 = params.get("lv2");
+	let sc1 = params.get("sc1");
+	let sc2 = params.get("sc2");
+
 	let attr = check_int(params.get("attr"));
 	let race = check_int(params.get("race"));
 
 	valid_params.set("type", "1");
 	if (is_positive(subtype)) {
 		valid_params.set("subtype", subtype);
-		if (mtype_operator)
-			valid_params.set("mtype_operator", 1);
+		if (mtype_operator === "1")
+			valid_params.set("mtype_operator", "1");
 		else
-			valid_params.set("mtype_operator", 0);
+			valid_params.set("mtype_operator", "0");
 	}
 	if (is_positive(exc))
 		valid_params.set("exc", exc);
-	if (is_atk(atk1))
+
+	if (re_atk.test(atk1))
 		valid_params.set("atk1", atk1);
-	if (is_atk(atk2))
+	if (re_atk.test(atk2))
 		valid_params.set("atk2", atk2);
-	if (is_def(def1))
+	if (re_atk.test(def1))
 		valid_params.set("def1", def1);
-	if (is_def(def2))
+	if (re_atk.test(def2))
 		valid_params.set("def2", def2);
-	if (is_normal_atk(sum))
+	if (re_sum.test(sum))
 		valid_params.set("sum", sum);
-	if (is_lv(lv1))
+	if (re_value.test(lv1))
 		valid_params.set("lv1", lv1);
-	if (is_lv(lv2))
+	if (re_value.test(lv2))
 		valid_params.set("lv2", lv2);
-	if (is_scale(sc1))
+	if (re_value.test(sc1))
 		valid_params.set("sc1", sc1);
-	if (is_scale(sc2))
+	if (re_value.test(sc2))
 		valid_params.set("sc2", sc2);
+
 	if (is_positive(attr))
 		valid_params.set("attr", attr);
 	if (is_positive(race))
@@ -339,11 +350,9 @@ function server_validate2(params) {
 		valid_params.set("desc", desc);
 
 	// page
-	let page = check_int(params.get("page"));
-	if (is_page(page))
+	let page = params.get("page");
+	if (re_page.test(page))
 		valid_params.set("page", page);
-	else
-		valid_params.set("page", 1);
 	return valid_params;
 }
 
