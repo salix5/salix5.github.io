@@ -52,9 +52,9 @@ function is_scale(x) {
 
 function is_pack(x) {
 	switch (x) {
-		case 'o':
+		case "o":
 			return true;
-		case 't':
+		case "t":
 			return true;
 		default:
 			return (/^\w{4}$/.test(x) || /^_\w{4}$/.test(x)) && (pack_list[x] || pre_release[x]);
@@ -74,8 +74,8 @@ function check_int(val) {
 }
 
 function check_str(val) {
-	if (typeof val !== 'string')
-		return '';
+	if (typeof val !== "string")
+		return "";
 	else if (val.length > MAX_STRLEN)
 		return val.substring(0, MAX_STRLEN);
 	else
@@ -402,8 +402,8 @@ function process_name(locale, str_name, arg) {
 			// zh, setcode
 			if (!re_wildcard.test(str_name)) {
 				const mapObj = Object.create(null);
-				mapObj['$%'] = '%';
-				mapObj['$_'] = '_';
+				mapObj["$%"] = "%";
+				mapObj["$_"] = "_";
 				let real_str = str_name.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
 				for (const [key, value] of Object.entries(setname)) {
 					if (key.toLowerCase() === real_str) {
@@ -531,30 +531,30 @@ function server_analyze2(params) {
 	if (result_len1 > 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
-		table_result.style.border = '1px solid black';
-		cell0.textContent = '起點數量太多。';
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "起點數量太多。";
 		return;
 	}
 	else if (result_len1 < 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
-		table_result.style.border = '1px solid black';
-		cell0.textContent = '找不到起點。';
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "找不到起點。";
 		return;
 	}
 
 	if (result_len2 > 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
-		table_result.style.border = '1px solid black';
-		cell0.textContent = '終點數量太多。';
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "終點數量太多。";
 		return;
 	}
 	else if (result_len2 < 1) {
 		let row0 = table_result.insertRow(-1);
 		let cell0 = row0.insertCell(-1);
-		table_result.style.border = '1px solid black';
-		cell0.textContent = '找不到終點。';
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "找不到終點。";
 		return;
 	}
 
@@ -573,7 +573,7 @@ function server_analyze2(params) {
 	params.set("id2", card_end.id);
 	let valid_params = server_validate2(params);
 	let condition = param_to_condition(valid_params, arg);
-	let qstr_final = `${qstr0} AND ${get_sw_str('begin')} AND ${get_sw_str('end')}${condition};`;
+	let qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
 	arg.$race_begin = card_begin.race;
 	arg.$attr_begin = card_begin.attribute;
 	arg.$lv_begin = card_begin.level;
@@ -590,7 +590,7 @@ function server_analyze2(params) {
 }
 
 function param_to_condition(params, arg) {
-	let qstr = '';
+	let qstr = "";
 	// id, primary key
 	let id = check_int(params.get("id"));
 	if (id) {
@@ -635,11 +635,11 @@ function param_to_condition(params, arg) {
 						cb_mtype[i].checked = true;
 				}
 				if (sub_op) {
-					select_subtype_op.value = '1';
+					select_subtype_op.value = "1";
 					qstr += " AND type & $stype == $stype";
 				}
 				else {
-					select_subtype_op.value = '0';
+					select_subtype_op.value = "0";
 					qstr += " AND type & $stype";
 				}
 				arg.$stype = subtype;
@@ -860,11 +860,11 @@ function param_to_condition(params, arg) {
 			}
 			qstr += " AND type & $link";
 			if (marker_op) {
-				select_marker_op.value = '1';
+				select_marker_op.value = "1";
 				qstr += " AND def & $marker == $marker";
 			}
 			else {
-				select_marker_op.value = '0';
+				select_marker_op.value = "0";
 				qstr += " AND def & $marker";
 			}
 			arg.$marker = marker;
