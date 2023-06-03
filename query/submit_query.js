@@ -142,7 +142,7 @@ function submit_query(event) {
 			// name
 			let cname = text_name.value;
 			if (cname)
-				params.set("name", cname);
+				params.set("cname", cname);
 
 			//effect
 			let cdesc = text_effect.value;
