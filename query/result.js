@@ -462,7 +462,7 @@ function show_result(params) {
 	select_page.innerHTML = "";
 	div_page.hidden = true;
 	let total_pages = Math.ceil(result.length / result_per_page);
-	let page = check_int(params.get("page"));
+	let page = params.get("page") ? Number.parseInt(params.get("page"), 10) : 1;
 	let pack = params.get("pack");
 	if (pack === "o" || pack === "t" || !is_pack(pack))
 		pack = null;
