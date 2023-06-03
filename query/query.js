@@ -288,7 +288,7 @@ function server_validate2(params) {
 	let attr = check_int(params.get("attr"));
 	let race = check_int(params.get("race"));
 
-	valid_params.set("type", TYPE_MONSTER);
+	valid_params.set("type", "1");
 	if (is_positive(subtype)) {
 		valid_params.set("subtype", subtype);
 		if (mtype_operator)
@@ -618,17 +618,16 @@ function param_to_condition(params, arg) {
 	select_ot.value = pack;
 
 	// type
-	let ctype = check_int(params.get("type"));
 	let subtype = check_int(params.get("subtype"));
 	let mtype_operator = check_int(params.get("mtype_operator"));
 	let exc = check_int(params.get("exc"));
 
 	arg.$ctype = 0;
 	arg.$stype = 0;
-	switch (ctype) {
-		case TYPE_MONSTER:
+	switch (params.get("type")) {
+		case "1":
 			qstr += " AND type & $ctype";
-			arg.$ctype = ctype;
+			arg.$ctype = TYPE_MONSTER;
 			if (subtype) {
 				for (let i = 0; i < cb_mtype.length; ++i) {
 					if (subtype & id_to_type[cb_mtype[i].id])
@@ -653,9 +652,9 @@ function param_to_condition(params, arg) {
 				arg.$exc = exc;
 			}
 			break;
-		case TYPE_SPELL:
+		case "2":
 			qstr += " AND type & $ctype";
-			arg.$ctype = ctype;
+			arg.$ctype = TYPE_SPELL;
 			if (subtype) {
 				for (let i = 0; i < cb_stype.length; ++i) {
 					if (subtype & id_to_type[cb_stype[i].id])
@@ -676,9 +675,9 @@ function param_to_condition(params, arg) {
 				}
 			}
 			break;
-		case TYPE_TRAP:
+		case "3":
 			qstr += " AND type & $ctype";
-			arg.$ctype = ctype;
+			arg.$ctype = TYPE_TRAP;
 			if (subtype) {
 				for (let i = 0; i < cb_ttype.length; ++i) {
 					if (subtype & id_to_type[cb_ttype[i].id])

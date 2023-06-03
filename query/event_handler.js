@@ -198,17 +198,17 @@ window.addEventListener("DOMContentLoaded", function (event) {
 	}
 
 	let params = new URLSearchParams(window.location.search);
-	let type = check_int(params.get("type"));
-	switch (type) {
-		case TYPE_MONSTER:
+	let type = check_int();
+	switch (params.get("type")) {
+		case "1":
 			select_type.value = "1";
 			select_type.dispatchEvent(new Event("change"));
 			break;
-		case TYPE_SPELL:
+		case "2":
 			select_type.value = "2";
 			select_type.dispatchEvent(new Event("change"));
 			break;
-		case TYPE_TRAP:
+		case "3":
 			select_type.value = "3";
 			select_type.dispatchEvent(new Event("change"));
 			break;
