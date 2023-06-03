@@ -244,7 +244,7 @@ function server_validate1(params) {
 		let locale = check_str(params.get("locale"));
 		let mat = check_str(params.get("mat")).replace(/(^|[^\$])[%_]/g, "");
 		let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
-		let name = check_str(params.get("name")).replace(re_bad_escape, "");
+		let name = check_str(params.get("cname")).replace(re_bad_escape, "");
 		let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
 		if (is_pack(pack))
 			valid_params.set("pack", pack);
@@ -255,7 +255,7 @@ function server_validate1(params) {
 		if (multi)
 			valid_params.set("multi", multi);
 		if (name)
-			valid_params.set("name", name);
+			valid_params.set("cname", name);
 		if (desc)
 			valid_params.set("desc", desc);
 	}
@@ -325,7 +325,7 @@ function server_validate2(params) {
 	let pack = check_str(params.get("pack"));
 	let locale = check_str(params.get("locale"));
 	let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
-	let name = check_str(params.get("name")).replace(re_bad_escape, "");
+	let name = check_str(params.get("cname")).replace(re_bad_escape, "");
 	let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
 	if (is_pack(pack))
 		valid_params.set("pack", pack);
@@ -334,7 +334,7 @@ function server_validate2(params) {
 	if (multi)
 		valid_params.set("multi", multi);
 	if (name)
-		valid_params.set("name", name);
+		valid_params.set("cname", name);
 	if (desc)
 		valid_params.set("desc", desc);
 
@@ -895,7 +895,7 @@ function param_to_condition(params, arg) {
 	}
 	else {
 		// name
-		let name = params.get("name");
+		let name = params.get("cname");
 		name_cmd = process_name(locale, name, arg);
 		if (name_cmd) {
 			text_name.value = name;
