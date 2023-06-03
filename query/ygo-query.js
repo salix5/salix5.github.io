@@ -25,9 +25,9 @@ function query(qstr, arg, ret) {
  * @param {number} ot OCT/TCG tag
  */
 function print_db_link(cid, ot) {
-	let locale = 'ja';
+	let locale = "ja";
 	if (ot === 2)
-		locale = 'en';
+		locale = "en";
 	return `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${cid}&request_locale=${locale}`;
 }
 
@@ -119,7 +119,7 @@ const db_ready = Promise.all(list_promise).then(function (values) {
 
 // print condition for cards in pack
 function pack_cmd(pack) {
-	let cmd = '';
+	let cmd = "";
 	cmd = ` AND (0`;
 	for (let i = 0; i < pack.length; ++i) {
 		if (pack[i] !== 0 && pack[i] !== 1)
