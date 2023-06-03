@@ -243,7 +243,7 @@ function server_validate1(params) {
 		let pack = check_str(params.get("pack"));
 		let locale = check_str(params.get("locale"));
 		let mat = check_str(params.get("mat")).replace(/(^|[^\$])[%_]/g, "");
-		let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
+		let keyword = check_str(params.get("keyword")).replace(re_bad_escape, "");
 		let name = check_str(params.get("cname")).replace(re_bad_escape, "");
 		let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
 		if (is_pack(pack))
@@ -252,8 +252,8 @@ function server_validate1(params) {
 			valid_params.set("locale", locale);
 		if (mat)
 			valid_params.set("mat", mat);
-		if (multi)
-			valid_params.set("multi", multi);
+		if (keyword)
+			valid_params.set("keyword", keyword);
 		if (name)
 			valid_params.set("cname", name);
 		if (desc)
@@ -324,15 +324,15 @@ function server_validate2(params) {
 	// string
 	let pack = check_str(params.get("pack"));
 	let locale = check_str(params.get("locale"));
-	let multi = check_str(params.get("multi")).replace(re_bad_escape, "");
+	let keyword = check_str(params.get("keyword")).replace(re_bad_escape, "");
 	let name = check_str(params.get("cname")).replace(re_bad_escape, "");
 	let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
 	if (is_pack(pack))
 		valid_params.set("pack", pack);
 	if (locale === "en")
 		valid_params.set("locale", locale);
-	if (multi)
-		valid_params.set("multi", multi);
+	if (keyword)
+		valid_params.set("keyword", keyword);
 	if (name)
 		valid_params.set("cname", name);
 	if (desc)
@@ -885,13 +885,13 @@ function param_to_condition(params, arg) {
 			select_locale.value = "";
 			break;
 	}
-	let multi = params.get("multi");
-	let name_cmd = process_name(locale, multi, arg);
+	let keyword = params.get("keyword");
+	let name_cmd = process_name(locale, keyword, arg);
 	if (name_cmd) {
-		// multi
-		text_multi.value = multi;
+		// keyword
+		text_keyword.value = keyword;
 		qstr += ` AND (${name_cmd} OR ${desc_str})`;
-		arg.$desc = string_to_literal(multi);
+		arg.$desc = string_to_literal(keyword);
 	}
 	else {
 		// name

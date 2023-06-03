@@ -2,7 +2,7 @@
 const text_id = document.getElementById('text_id');
 const text_name = document.getElementById('text_name');
 const text_effect = document.getElementById('text_effect');
-const text_multi = document.getElementById('text_multi');
+const text_keyword = document.getElementById('text_keyword');
 
 const text_lv1 = document.getElementById('text_lv1');
 const text_lv2 = document.getElementById('text_lv2');
