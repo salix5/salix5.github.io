@@ -176,7 +176,7 @@ function server_validate1(params) {
 	else {
 		let type = check_int(params.get("type"));
 		let subtype = check_int(params.get("subtype"));
-		let sub_op = check_int(params.get("sub_op"));
+		let mtype_operator = check_int(params.get("mtype_operator"));
 		let exc = check_int(params.get("exc"));
 		let atk1 = check_int(params.get("atk1"));
 		let atk2 = check_int(params.get("atk2"));
@@ -198,10 +198,10 @@ function server_validate1(params) {
 			valid_params.set("type", type);
 		if (is_positive(subtype)) {
 			valid_params.set("subtype", subtype);
-			if (sub_op)
-				valid_params.set("sub_op", 1);
+			if (mtype_operator)
+				valid_params.set("mtype_operator", 1);
 			else
-				valid_params.set("sub_op", 0);
+				valid_params.set("mtype_operator", 0);
 		}
 		if (is_positive(exc))
 			valid_params.set("exc", exc);
@@ -274,7 +274,7 @@ function server_validate2(params) {
 	valid_params.set("id2", params.get("id2"));
 
 	let subtype = check_int(params.get("subtype"));
-	let sub_op = check_int(params.get("sub_op"));
+	let mtype_operator = check_int(params.get("mtype_operator"));
 	let exc = check_int(params.get("exc"));
 	let atk1 = check_int(params.get("atk1"));
 	let atk2 = check_int(params.get("atk2"));
@@ -291,10 +291,10 @@ function server_validate2(params) {
 	valid_params.set("type", TYPE_MONSTER);
 	if (is_positive(subtype)) {
 		valid_params.set("subtype", subtype);
-		if (sub_op)
-			valid_params.set("sub_op", 1);
+		if (mtype_operator)
+			valid_params.set("mtype_operator", 1);
 		else
-			valid_params.set("sub_op", 0);
+			valid_params.set("mtype_operator", 0);
 	}
 	if (is_positive(exc))
 		valid_params.set("exc", exc);
@@ -620,7 +620,7 @@ function param_to_condition(params, arg) {
 	// type
 	let ctype = check_int(params.get("type"));
 	let subtype = check_int(params.get("subtype"));
-	let sub_op = check_int(params.get("sub_op"));
+	let mtype_operator = check_int(params.get("mtype_operator"));
 	let exc = check_int(params.get("exc"));
 
 	arg.$ctype = 0;
@@ -634,7 +634,7 @@ function param_to_condition(params, arg) {
 					if (subtype & id_to_type[cb_mtype[i].id])
 						cb_mtype[i].checked = true;
 				}
-				if (sub_op) {
+				if (mtype_operator) {
 					select_subtype_op.value = "1";
 					qstr += " AND type & $stype == $stype";
 				}
