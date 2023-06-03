@@ -169,9 +169,9 @@ var index_to_marker = [
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
 	// id, primary key
-	let id = check_int(params.get("id"));
+	let id = check_int(params.get("cid"));
 	if (is_positive(id)) {
-		valid_params.set("id", id);
+		valid_params.set("cid", id);
 	}
 	else {
 		let type = check_int(params.get("type"));
@@ -592,7 +592,7 @@ function server_analyze2(params) {
 function param_to_condition(params, arg) {
 	let qstr = "";
 	// id, primary key
-	let id = check_int(params.get("id"));
+	let id = check_int(params.get("cid"));
 	if (id) {
 		text_id.value = id;
 		qstr += " AND datas.id == $id;";
