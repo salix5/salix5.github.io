@@ -1,6 +1,9 @@
 "use strict";
 // max of int32: 10 digit
 const MAX_DIGIT = 10;
+
+const LOCALE_LIMIT = 2;
+const PACK_LIMIT = 5;
 const NAME_LIMIT = 100;
 const DESC_LIMIT = 500;
 
@@ -89,11 +92,9 @@ function check_int(val) {
 		return null;
 }
 
-function check_str(val) {
-	if (typeof val !== "string")
+function check_str(val, limit) {
+	if (typeof val !== "string" || val.length > limit)
 		return "";
-	else if (val.length > DESC_LIMIT)
-		return val.substring(0, DESC_LIMIT);
 	else
 		return val;
 }
@@ -314,12 +315,12 @@ function server_validate1(params) {
 		}
 
 		// string
-		let pack = check_str(params.get("pack"));
-		let locale = check_str(params.get("locale"));
-		let mat = check_str(params.get("mat")).replace(/(^|[^\$])[%_]/g, "");
-		let keyword = check_str(params.get("keyword")).replace(re_bad_escape, "");
-		let name = check_str(params.get("cname")).replace(re_bad_escape, "");
-		let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
+		let pack = check_str(params.get("pack"), PACK_LIMIT);
+		let locale = check_str(params.get("locale"), LOCALE_LIMIT);
+		let mat = check_str(params.get("mat"), NAME_LIMIT).replace(/(^|[^\$])[%_]/g, "");
+		let keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
+		let name = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
+		let desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
 		if (is_pack(pack))
 			valid_params.set("pack", pack);
 		if (locale === "en")
@@ -398,11 +399,11 @@ function server_validate2(params) {
 		valid_params.set("race", race);
 
 	// string
-	let pack = check_str(params.get("pack"));
-	let locale = check_str(params.get("locale"));
-	let keyword = check_str(params.get("keyword")).replace(re_bad_escape, "");
-	let name = check_str(params.get("cname")).replace(re_bad_escape, "");
-	let desc = check_str(params.get("desc")).replace(re_bad_escape, "");
+	let pack = check_str(params.get("pack"), PACK_LIMIT);
+	let locale = check_str(params.get("locale"), LOCALE_LIMIT);
+	let keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
+	let name = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
+	let desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
 	if (is_pack(pack))
 		valid_params.set("pack", pack);
 	if (locale === "en")
@@ -590,13 +591,13 @@ function get_single_card(cdata) {
 // entrance of small world
 function server_analyze2(params) {
 	// id or name
-	let cdata1 = check_str(params.get("id1"));
+	let cdata1 = check_str(params.get("id1"), NAME_LIMIT);
 	text_id1.value = cdata1;
 	let ret1 = get_single_card(cdata1);
 	let card_begin = ret1[0];
 	let result_len1 = ret1[1];
 
-	let cdata2 = check_str(params.get("id2"));
+	let cdata2 = check_str(params.get("id2"), NAME_LIMIT);
 	text_id2.value = cdata2;
 	let ret2 = get_single_card(cdata2);
 	let card_end = ret2[0];
