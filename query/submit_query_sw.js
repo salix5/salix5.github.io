@@ -73,7 +73,7 @@ function submit_query(event) {
 	let cattr = 0;
 	for (let i = 0; i < cb_attr.length; ++i) {
 		if (cb_attr[i].checked)
-			cattr |= index_to_attr[i];
+			cattr |= attr_list[i];
 	}
 	if (cattr) {
 		params.set("attr", cattr.toString(10));
@@ -82,7 +82,7 @@ function submit_query(event) {
 	let crace = 0;
 	for (let i = 0; i < cb_race.length; ++i) {
 		if (cb_race[i].checked)
-			crace |= index_to_race[i];
+			crace |= race_list[i];
 	}
 	if (crace) {
 		params.set("race", crace.toString(10));

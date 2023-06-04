@@ -76,7 +76,7 @@ function is_pack(x) {
 		case "t":
 			return true;
 		default:
-			return (/^\w{4}$/.test(x) || /^_\w{4}$/.test(x)) && (pack_list[x] || pre_release[x]);
+			return !!(/^\w{4}$/.test(x) || /^_\w{4}$/.test(x)) && !!(pack_list[x] || pre_release[x]);
 	}
 }
 
@@ -236,21 +236,53 @@ var index_to_marker = [
 /**
  * server_validate1() - validate the input of query
  * @param {URLSearchParams} params 
- * @returns 
+ * @returns {URLSearchParams}
  */
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
 	// id, primary key
-	let id = params.get("cid");
-	if (re_id.test(id)) {
-		valid_params.set("cid", id);
+	if (re_id.test(params.get("cid"))) {
+		valid_params.set("cid", params.get("cid"));
 	}
 	else {
-		let type = params.get("type");
-		let mtype_operator = params.get("mtype_operator");
-
+		let keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
+		let cname = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
+		let locale = check_str(params.get("locale"), LOCALE_LIMIT);
+		let desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
+		if (keyword) {
+			valid_params.set("keyword", keyword);
+		}
+		else {
+			if (cname)
+				valid_params.set("cname", cname);
+			if (is_locale(locale))
+				valid_params.set("locale", locale);
+			if (desc)
+				valid_params.set("desc", desc);
+		}
+		let pack = check_str(params.get("pack"), PACK_LIMIT);
+		if (is_pack(pack))
+			valid_params.set("pack", pack);
+		
+		if (re_value.test(params.get("type")))
+			valid_params.set("type", params.get("type"));
+		let mat = check_str(params.get("mat"), NAME_LIMIT).replace(/(^|[^\$])[%_]/g, "");
+		if (mat)
+			valid_params.set("mat", mat);
+		
+		
 		let subtype = check_int(params.get("subtype"));
+		let mtype_operator = params.get("mtype_operator");
 		let exc = check_int(params.get("exc"));
+		if (is_positive(subtype)) {
+			valid_params.set("subtype", subtype);
+			if (mtype_operator === "1")
+				valid_params.set("mtype_operator", "1");
+			else
+				valid_params.set("mtype_operator", "0");
+		}
+		if (is_positive(exc))
+			valid_params.set("exc", exc);
 
 		let atk1 = params.get("atk1");
 		let atk2 = params.get("atk2");
@@ -268,17 +300,6 @@ function server_validate1(params) {
 		let marker = check_int(params.get("marker"));
 		let marker_op = params.get("marker_operator");
 
-		if (re_value.test(type))
-			valid_params.set("type", type);
-		if (is_positive(subtype)) {
-			valid_params.set("subtype", subtype);
-			if (mtype_operator === "1")
-				valid_params.set("mtype_operator", "1");
-			else
-				valid_params.set("mtype_operator", "0");
-		}
-		if (is_positive(exc))
-			valid_params.set("exc", exc);
 
 		if (re_atk.test(atk1))
 			valid_params.set("atk1", atk1);
@@ -313,26 +334,6 @@ function server_validate1(params) {
 			else
 				valid_params.set("marker_operator", 0);
 		}
-
-		// string
-		let pack = check_str(params.get("pack"), PACK_LIMIT);
-		let locale = check_str(params.get("locale"), LOCALE_LIMIT);
-		let mat = check_str(params.get("mat"), NAME_LIMIT).replace(/(^|[^\$])[%_]/g, "");
-		let keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
-		let name = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
-		let desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
-		if (is_pack(pack))
-			valid_params.set("pack", pack);
-		if (locale === "en")
-			valid_params.set("locale", locale);
-		if (mat)
-			valid_params.set("mat", mat);
-		if (keyword)
-			valid_params.set("keyword", keyword);
-		if (name)
-			valid_params.set("cname", name);
-		if (desc)
-			valid_params.set("desc", desc);
 	}
 	// page
 	let page = params.get("page");
