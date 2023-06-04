@@ -1,7 +1,8 @@
 "use strict";
 // max of int32: 10 digit
 const MAX_DIGIT = 10;
-const MAX_STRLEN = 500;
+const NAME_LIMIT = 100;
+const DESC_LIMIT = 500;
 
 const result = [];
 
@@ -23,6 +24,15 @@ String.prototype.toHalfWidth = function () {
 String.prototype.toFullWidth = function () {
 	return this.replace(/[A-Za-z0-9]/g, function (s) { return String.fromCharCode(s.charCodeAt(0) + 0xFEE0); });
 };
+
+function is_locale(x) {
+	switch (x) {
+		case "en":
+			return true;
+		default:
+			return false;
+	}
+}
 
 function is_positive(x) {
 	return x !== null && x > 0;
@@ -82,8 +92,8 @@ function check_int(val) {
 function check_str(val) {
 	if (typeof val !== "string")
 		return "";
-	else if (val.length > MAX_STRLEN)
-		return val.substring(0, MAX_STRLEN);
+	else if (val.length > DESC_LIMIT)
+		return val.substring(0, DESC_LIMIT);
 	else
 		return val;
 }
@@ -122,7 +132,45 @@ var id_to_type = {
 	ttype3: TYPE_COUNTER,
 };
 
-var index_to_attr = [
+const mtype_list = [
+	TYPE_FUSION,
+	TYPE_SYNCHRO,
+	TYPE_XYZ,
+	TYPE_LINK,
+
+	TYPE_NORMAL,
+	TYPE_EFFECT,
+	TYPE_RITUAL,
+	TYPE_PENDULUM,
+
+	TYPE_TOON,
+	TYPE_SPIRIT,
+	TYPE_UNION,
+	TYPE_DUAL,
+
+	TYPE_TUNER,
+	TYPE_FLIP,
+	TYPE_SPSUMMON,
+	TYPE_TOKEN,
+];
+
+const stype_list = [
+	0,
+	TYPE_QUICKPLAY,
+	TYPE_CONTINUOUS,
+	TYPE_EQUIP,
+
+	TYPE_RITUAL,
+	TYPE_FIELD,
+];
+
+const ttype_list = [
+	0,
+	TYPE_CONTINUOUS,
+	TYPE_COUNTER,
+];
+
+const attr_list = [
 	ATTRIBUTE_EARTH,
 	ATTRIBUTE_WATER,
 	ATTRIBUTE_FIRE,
@@ -132,7 +180,7 @@ var index_to_attr = [
 	ATTRIBUTE_DIVINE,
 ];
 
-var index_to_race = [
+const race_list = [
 	RACE_AQUA,
 	RACE_PYRO,
 	RACE_THUNDER,
@@ -161,6 +209,18 @@ var index_to_race = [
 	RACE_ILLUSION,
 ];
 
+const marker_list = [
+	LINK_MARKER_BOTTOM_LEFT,
+	LINK_MARKER_BOTTOM,
+	LINK_MARKER_BOTTOM_RIGHT,
+	LINK_MARKER_LEFT,
+	0,
+	LINK_MARKER_RIGHT,
+	LINK_MARKER_TOP_LEFT,
+	LINK_MARKER_TOP,
+	LINK_MARKER_TOP_RIGHT,
+];
+
 var index_to_marker = [
 	LINK_MARKER_TOP_LEFT,
 	LINK_MARKER_TOP,
@@ -172,6 +232,11 @@ var index_to_marker = [
 	LINK_MARKER_BOTTOM_RIGHT,
 ];
 
+/**
+ * server_validate1() - validate the input of query
+ * @param {URLSearchParams} params 
+ * @returns 
+ */
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
 	// id, primary key
@@ -842,7 +907,7 @@ function param_to_condition(params, arg) {
 		let race = check_int(params.get("race"));
 		if (attr) {
 			for (let i = 0; i < cb_attr.length; ++i) {
-				if (attr & index_to_attr[i])
+				if (attr & attr_list[i])
 					cb_attr[i].checked = true;
 			}
 			qstr += " AND attribute & $attr";
@@ -851,7 +916,7 @@ function param_to_condition(params, arg) {
 		}
 		if (race) {
 			for (let i = 0; i < cb_race.length; ++i) {
-				if (race & index_to_race[i])
+				if (race & race_list[i])
 					cb_race[i].checked = true;
 			}
 			qstr += " AND race & $race";
