@@ -110,8 +110,8 @@ function compare_id(a, b) {
 }
 
 function compare_card() {
-	const name = current_params.get("cname");
-	const locale = current_params.get("locale");
+	const name = check_str(current_params.get("cname"), NAME_LIMIT);
+	const locale = check_str(current_params.get("locale"), LOCALE_LIMIT);
 
 	return function (a, b) {
 		if (locale === 'en') {
