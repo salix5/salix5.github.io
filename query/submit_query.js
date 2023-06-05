@@ -1,6 +1,6 @@
 "use strict";
 
-function submit_query(event) {
+/*function submit_query(event) {
 	var params = new URLSearchParams();
 	var cid = 0;
 
@@ -161,7 +161,7 @@ function submit_query(event) {
 		window.location.search = "?" + params.toString();
 	}
 }
-form1.onsubmit = submit_query;
+form1.onsubmit = submit_query;*/
 
 function url_query() {
 	if (window.location.search.substring(1) === "")
