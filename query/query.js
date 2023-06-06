@@ -240,51 +240,6 @@ function check_str(val, limit) {
 		return val;
 }
 
-var id_to_type = {
-	mtype1: TYPE_NORMAL,
-	mtype2: TYPE_EFFECT,
-	mtype3: TYPE_RITUAL,
-	mtype4: TYPE_PENDULUM,
-
-	mtype5: TYPE_FUSION,
-	mtype6: TYPE_SYNCHRO,
-	mtype7: TYPE_XYZ,
-	mtype8: TYPE_LINK,
-
-	mtype9: TYPE_TOON,
-	mtype10: TYPE_SPIRIT,
-	mtype11: TYPE_UNION,
-	mtype12: TYPE_DUAL,
-
-	mtype13: TYPE_TUNER,
-	mtype14: TYPE_FLIP,
-	mtype15: TYPE_SPSUMMON,
-	mtype16: TYPE_TOKEN,
-
-	stype1: TYPE_NORMAL,
-	stype2: TYPE_QUICKPLAY,
-	stype3: TYPE_CONTINUOUS,
-	stype4: TYPE_EQUIP,
-
-	stype5: TYPE_RITUAL,
-	stype6: TYPE_FIELD,
-
-	ttype1: TYPE_NORMAL,
-	ttype2: TYPE_CONTINUOUS,
-	ttype3: TYPE_COUNTER,
-};
-
-var index_to_marker = [
-	LINK_MARKER_TOP_LEFT,
-	LINK_MARKER_TOP,
-	LINK_MARKER_TOP_RIGHT,
-	LINK_MARKER_LEFT,
-	LINK_MARKER_RIGHT,
-	LINK_MARKER_BOTTOM_LEFT,
-	LINK_MARKER_BOTTOM,
-	LINK_MARKER_BOTTOM_RIGHT,
-];
-
 /**
  * server_validate1() - validate the input of query
  * @param {URLSearchParams} params 
