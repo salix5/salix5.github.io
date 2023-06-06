@@ -580,7 +580,7 @@ function param_to_condition(params, arg) {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_MONSTER;
 			for (const val of params.getAll("mtype")) {
-				let idx = Number.parseInt(val, 10) - 1;
+				let idx = Number.parseInt(val) - 1;
 				subtype |= mtype_list[idx];
 				if (cb_mtype[idx].type === "checkbox")
 					cb_mtype[idx].checked = true;
@@ -598,7 +598,7 @@ function param_to_condition(params, arg) {
 				arg.$mtype = subtype;
 			}
 			for (const val of params.getAll("exclude")) {
-				let idx = Number.parseInt(val, 10) - 1;
+				let idx = Number.parseInt(val) - 1;
 				exc |= exclude_list[idx];
 				if (cb_exclude[idx].type === "checkbox")
 					cb_exclude[idx].checked = true;
@@ -612,7 +612,7 @@ function param_to_condition(params, arg) {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_SPELL;
 			for (const val of params.getAll("stype")) {
-				let idx = Number.parseInt(val, 10) - 1;
+				let idx = Number.parseInt(val) - 1;
 				subtype |= stype_list[idx];
 				cb_stype[idx].checked = true;
 			}
@@ -636,7 +636,7 @@ function param_to_condition(params, arg) {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_TRAP;
 			for (const val of params.getAll("ttype")) {
-				let idx = Number.parseInt(val, 10) - 1;
+				let idx = Number.parseInt(val) - 1;
 				subtype |= ttype_list[idx];
 				cb_ttype[idx].checked = true;
 			}
@@ -789,7 +789,7 @@ function param_to_condition(params, arg) {
 		// attr, race
 		let attr = 0;
 		for (const val of params.getAll("attr")) {
-			let idx = Number.parseInt(val, 10) - 1;
+			let idx = Number.parseInt(val) - 1;
 			attr |= attr_list[idx];
 			cb_attr[idx].checked = true;
 		}
@@ -801,7 +801,7 @@ function param_to_condition(params, arg) {
 
 		let race = 0;
 		for (const val of params.getAll("race")) {
-			let idx = Number.parseInt(val, 10) - 1;
+			let idx = Number.parseInt(val) - 1;
 			race |= race_list[idx];
 			cb_race[idx].checked = true;
 		}
@@ -813,7 +813,7 @@ function param_to_condition(params, arg) {
 		// marker
 		let marker = 0;
 		for (const val of params.getAll("marker")) {
-			let idx = Number.parseInt(val, 10) - 1;
+			let idx = Number.parseInt(val) - 1;
 			marker |= marker_list[idx];
 			cb_marker[idx].checked = true;
 		}
@@ -922,7 +922,7 @@ function get_single_card(cdata) {
 
 
 	if (re_id.test(cdata)) {
-		let id = Number.parseInt(cdata, 10);
+		let id = Number.parseInt(cdata);
 		qstr = `${qstr0} AND datas.id == $id;`;
 		arg.$id = id;
 		query(qstr, arg, list_tmp);
