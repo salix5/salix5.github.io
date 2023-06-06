@@ -15,8 +15,8 @@ const re_bad_escape = /\$(?![%_])/g;
 const re_all_digit = /^\d+$/;
 const re_id = /^\d{1,9}$/;
 const re_value = /^\d{1,2}$/;
-const re_atk = /^-?\d{1,6}$/;
-const re_sum = /^\d{1,6}$/;
+const re_atkfr = /^-?\d{1,6}$/;
+const re_atkto = /^\d{1,6}$/;
 const re_mod = /^\d{1,3}$/;
 const re_page = /^\d{1,3}$/;
 
@@ -148,20 +148,28 @@ function is_locale(x) {
 	}
 }
 
-function is_positive(x) {
-	return x !== null && x > 0;
+function is_atkfr(x) {
+	return re_atkfr.test(x) && Number.parseInt(x) >= -1;
+}
+
+function is_atkto(x) {
+	return re_atkto.test(x);
+}
+
+function is_deffr(x) {
+	return re_atkfr.test(x) && Number.parseInt(x) >= -2;
+}
+
+function is_defto(x) {
+	return re_atkto.test(x);
+}
+
+function is_range_mode(fr) {
+	return fr === null || fr >= 0;
 }
 
 function is_page(x) {
 	return x !== null && x >= 1 && x <= 1000;
-}
-
-function is_atk(x) {
-	return x !== null && x >= -1;
-}
-
-function is_def(x) {
-	return x !== null && x >= -2;
 }
 
 function is_normal_atk(x) {
@@ -349,23 +357,23 @@ function server_validate1(params) {
 			let atk1 = params.get("atk1");
 			let atk2 = params.get("atk2");
 			let atkm = params.get("atkm");
-			if (re_atk.test(atk1))
+			if (atk1 && is_atkfr(atk1))
 				valid_params.set("atk1", atk1);
-			if (re_atk.test(atk2))
+			if (atk2 && is_atkto(atk2))
 				valid_params.set("atk2", atk2);
-			if (re_mod.test(atkm))
+			if (atkm && re_mod.test(atkm))
 				valid_params.set("atkm", atkm);
 			let def1 = params.get("def1");
 			let def2 = params.get("def2");
 			let defm = params.get("defm");
-			if (re_atk.test(def1))
+			if (def1 && is_deffr(def1))
 				valid_params.set("def1", def1);
-			if (re_atk.test(def2))
+			if (def2 && is_defto(def2))
 				valid_params.set("def2", def2);
-			if (re_mod.test(defm))
+			if (defm && re_mod.test(defm))
 				valid_params.set("defm", defm);
 			let sum = params.get("sum");
-			if (re_sum.test(sum))
+			if (sum && is_atkto(sum))
 				valid_params.set("sum", sum);
 		}
 	}
@@ -441,18 +449,18 @@ function server_validate2(params) {
 
 	let atk1 = params.get("atk1");
 	let atk2 = params.get("atk2");
-	if (re_atk.test(atk1))
+	if (atk1 && is_atkfr(atk1))
 		valid_params.set("atk1", atk1);
-	if (re_atk.test(atk2))
+	if (atk2 && is_atkto(atk2))
 		valid_params.set("atk2", atk2);
 	let def1 = params.get("def1");
 	let def2 = params.get("def2");
-	if (re_atk.test(def1))
+	if (def1 && is_deffr(def1))
 		valid_params.set("def1", def1);
-	if (re_atk.test(def2))
+	if (def2 && is_defto(def2))
 		valid_params.set("def2", def2);
 	let sum = params.get("sum");
-	if (re_sum.test(sum))
+	if (sum && is_atkto(sum))
 		valid_params.set("sum", sum);
 	// page
 	let page = params.get("page");
@@ -674,81 +682,88 @@ function param_to_condition(params, arg) {
 		}
 
 		// atk
-		let atk1 = check_int(params.get("atk1"));
-		let atk2 = check_int(params.get("atk2"));
-		let atk_mod = check_int(params.get("atkm"));
-		if (atk1 === -1) {
-			text_atk1.value = -1;
-			qstr += " AND atk == -2";
+		let atk1 = null;
+		if (params.has("atk1")) {
+			atk1 = Number.parseInt(params.get("atk1"));
+			text_atk1.value = atk1;
 			is_monster = true;
-		}
-		else if (atk1 !== null) {
-			if (is_normal_atk(atk2)) {
-				text_atk1.value = atk1;
-				text_atk2.value = atk2;
-				qstr += " AND atk >= $atk1 AND atk <= $atk2";
-				arg.$atk1 = atk1;
-				arg.$atk2 = atk2;
+			if (atk1 === -1) {
+				qstr += " AND atk == -2";
 			}
 			else {
-				text_atk1.value = atk1;
-				qstr += " AND atk == $atk1";
+				qstr += " AND atk >= $atk1";
 				arg.$atk1 = atk1;
 			}
-			is_monster = true;
 		}
-		if (atk_mod !== null) {
-			qstr += " AND atk % 1000 == $atkm";
-			arg.$atkm = atk_mod;
-			is_monster = true;
+		if (is_range_mode(atk1)) {
+			if (params.has("atk2")) {
+				let atk2 = Number.parseInt(params.get("atk2"));
+				text_atk2.value = atk2;
+				is_monster = true;
+				if (atk1 === null) {
+					qstr += " AND atk >= 0 AND atk <= $atk2";
+					arg.$atk2 = atk2;
+				}
+				else {
+					qstr += " AND atk <= $atk2";
+					arg.$atk2 = atk2;
+				}
+			}
+			if (params.has("atkm")) {
+				let atk_mod = Number.parseInt(params.get("atkm"));
+				qstr += " AND atk % 1000 == $atkm";
+				arg.$atkm = atk_mod;
+				is_monster = true;
+			}
 		}
 
 		// def, exclude link monsters
-		let def1 = check_int(params.get("def1"));
-		let def2 = check_int(params.get("def2"));
-		let sum = check_int(params.get("sum"));
-		let def_mod = check_int(params.get("defm"));
-		if (def1 !== null || def2 !== null || sum !== null || def_mod !== null)
+		if (params.has("def1") || params.has("def2") || params.has("defm") || params.has("sum")) {
 			qstr += " AND NOT type & $link";
-		if (def1 === -1) {
-			text_def1.value = -1;
-			qstr += " AND def == -2";
 			is_monster = true;
 		}
-		else if (def1 === -2) {
-			text_def1.value = -2;
-			qstr += " AND def == atk AND def != -2";
-			is_monster = true;
-		}
-		else if (def1 !== null) {
-			if (is_normal_atk(def2)) {
-				text_def1.value = def1;
-				text_def2.value = def2;
-				qstr += " AND def >= $def1 AND def <= $def2";
-				arg.$def1 = def1;
-				arg.$def2 = def2;
+			
+		let def1 = null;
+		if (params.has("def1")) {
+			def1 = Number.parseInt(params.get("def1"));
+			text_def1.value = def1;
+			if (def1 === -1) {
+				qstr += " AND def == -2";
+			}
+			else if (def1 === -2) {
+				qstr += " AND def == atk";
 			}
 			else {
-				text_def1.value = def1;
-				qstr += " AND def == $def1";
+				qstr += " AND def >= $def1";
 				arg.$def1 = def1;
 			}
-			is_monster = true;
 		}
-		if (def_mod !== null) {
-			qstr += " AND def % 1000 == $defm";
-			arg.$defm = def_mod;
-			is_monster = true;
+		if (is_range_mode(def1)) {
+			if (params.has("def2")) {
+				let def2 = Number.parseInt(params.get("def2"));
+				text_def2.value = def2;
+				if (def1 === null) {
+					qstr += " AND def >= 0 AND def <= $def2";
+					arg.$def2 = def2;
+				}
+				else {
+					qstr += " AND def <= $def2";
+					arg.$def2 = def2;
+				}
+			}
+			if (params.has("defm")) {
+				let def_mod = Number.parseInt(params.get("defm"));
+				qstr += " AND def % 1000 == $defm";
+				arg.$defm = def_mod;
+			}
+			if (params.has("sum")) {
+				let sum = Number.parseInt(params.get("sum"));
+				text_sum.value = sum;
+				qstr += " AND atk != -2 AND def != -2 AND atk + def == $sum";
+				arg.$sum = sum;
+			}
 		}
-
-		// sum
-		if (sum !== null) {
-			text_sum.value = sum;
-			qstr += " AND atk != -2 AND def != -2 AND atk + def == $sum";
-			arg.$sum = sum;
-			is_monster = true;
-		}
-
+		
 		// lv, rank, link
 		let lv1 = check_int(params.get("lv1"));
 		let lv2 = check_int(params.get("lv2"));
