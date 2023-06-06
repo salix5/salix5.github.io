@@ -288,7 +288,7 @@ var index_to_marker = [
 /**
  * server_validate1() - validate the input of query
  * @param {URLSearchParams} params 
- * @returns {URLSearchParams}
+ * @returns
  */
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
@@ -315,7 +315,7 @@ function server_validate1(params) {
 		let pack = check_str(params.get("pack"), PACK_LIMIT);
 		if (is_pack(pack))
 			valid_params.set("pack", pack);
-		
+
 		let monster_type = false;
 		switch (params.get("type")) {
 			case "1":
@@ -352,7 +352,7 @@ function server_validate1(params) {
 				monster_type = true;
 				break;
 		}
-		
+
 		if (monster_type) {
 			let mat = check_str(params.get("mat"), NAME_LIMIT).replace(/(^|[^\$])[%_]/g, "");
 			if (mat)
@@ -381,7 +381,7 @@ function server_validate1(params) {
 				valid_params.set("sc1", sc1);
 			if (re_value.test(sc2))
 				valid_params.set("sc2", sc2);
-			
+
 			for (const val of params.getAll("marker")) {
 				if (is_valid(val, "marker"))
 					valid_params.append("marker", val);
@@ -444,7 +444,7 @@ function server_validate2(params) {
 	let pack = check_str(params.get("pack"), PACK_LIMIT);
 	if (is_pack(pack))
 		valid_params.set("pack", pack);
-	
+
 	valid_params.set("type", "1");
 	for (const val of params.getAll("mtype")) {
 		if (is_valid(val, "mtype"))
@@ -458,7 +458,7 @@ function server_validate2(params) {
 		if (is_valid(val, "exclude"))
 			valid_params.append("exclude", val);
 	}
-	
+
 	// attr
 	for (const val of params.getAll("attr")) {
 		if (is_valid(val, "attr"))
@@ -582,163 +582,8 @@ function process_name(locale, str_name, arg) {
 	return name_cmd;
 }
 
-
-// entrance of query
-function server_analyze1(params) {
-	let qstr0 = default_query1;
-	let arg = new Object();
-	arg.$monster = TYPE_MONSTER;
-	arg.$link = TYPE_LINK;
-	arg.$pendulum = TYPE_PENDULUM;
-	arg.$token = TYPE_TOKEN;
-
-	let valid_params = server_validate1(params);
-	let condition = param_to_condition(valid_params, arg);
-	//qstr0 += " AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
-
-	result.length = 0;
-	if (condition) {
-		let qstr_final = `${qstr0}${condition};`;
-		query(qstr_final, arg, result);
-	}
-	if (result.length === 1)
-		document.title = result[0].name;
-	show_result(valid_params);
-}
-
-function get_sw_str(x) {
-	let sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str3 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) == $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str4 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk == $atk_${x} AND def != $def_${x}`;
-	let sw_str5 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def == $def_${x}`;
-	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
-}
-
-function get_single_card(cdata) {
-	if (!cdata)
-		return [null, 0];
-
-	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
-	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND type & $monster AND NOT type & ($token | $ext)";
-	let arg = new Object();
-	arg.$monster = TYPE_MONSTER;
-	arg.$link = TYPE_LINK;
-	arg.$pendulum = TYPE_PENDULUM;
-	arg.$token = TYPE_TOKEN;
-	arg.$ext = TYPE_EXT;
-
-	let qstr = "";
-	let list_tmp = [];
-
-	let id = check_int(cdata);
-	if (is_positive(id)) {
-		qstr = `${qstr0} AND datas.id == $id;`;
-		arg.$id = id;
-		query(qstr, arg, list_tmp);
-		if (list_tmp.length === 1)
-			return [list_tmp[0], list_tmp.length];
-	}
-
-	qstr = `${qstr0} AND name == $exact;`;
-	arg.$exact = cdata;
-	query(qstr, arg, list_tmp);
-	if (list_tmp.length === 1)
-		return [list_tmp[0], list_tmp.length];
-
-	let nid = Object.keys(name_table).find(key => name_table[key] ? name_table[key].toHalfWidth() === cdata.toHalfWidth() : false);
-	if (nid && nid > 0) {
-		qstr = `${qstr0} AND datas.id == $nid;`;
-		arg.$nid = nid;
-		query(qstr, arg, list_tmp);
-		if (list_tmp.length === 1)
-			return [list_tmp[0], list_tmp.length];
-	}
-
-	qstr = `${qstr0} AND name LIKE $fuzzy ESCAPE '$';`;
-	arg.$fuzzy = string_to_literal(cdata);
-	query(qstr, arg, list_tmp);
-	if (list_tmp.length === 1)
-		return [list_tmp[0], list_tmp.length];
-	return [null, list_tmp.length];
-}
-
-// entrance of small world
-function server_analyze2(params) {
-	// id or name
-	let cdata1 = check_str(params.get("begin"), NAME_LIMIT);
-	text_id1.value = cdata1;
-	let ret1 = get_single_card(cdata1);
-	let card_begin = ret1[0];
-	let result_len1 = ret1[1];
-
-	let cdata2 = check_str(params.get("end"), NAME_LIMIT);
-	text_id2.value = cdata2;
-	let ret2 = get_single_card(cdata2);
-	let card_end = ret2[0];
-	let result_len2 = ret2[1];
-
-	if (result_len1 > 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
-		table_result.style.border = "1px solid black";
-		cell0.textContent = "起點數量太多。";
-		return;
-	}
-	else if (result_len1 < 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
-		table_result.style.border = "1px solid black";
-		cell0.textContent = "找不到起點。";
-		return;
-	}
-
-	if (result_len2 > 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
-		table_result.style.border = "1px solid black";
-		cell0.textContent = "終點數量太多。";
-		return;
-	}
-	else if (result_len2 < 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
-		table_result.style.border = "1px solid black";
-		cell0.textContent = "找不到終點。";
-		return;
-	}
-
-	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
-	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ($token | $ext)";
-	let arg = new Object();
-	arg.$monster = TYPE_MONSTER;
-	arg.$link = TYPE_LINK;
-	arg.$pendulum = TYPE_PENDULUM;
-	arg.$token = TYPE_TOKEN;
-	arg.$ext = TYPE_EXT;
-
-	params.set("begin", card_begin.id);
-	params.set("end", card_end.id);
-	let valid_params = server_validate2(params);
-	let condition = param_to_condition(valid_params, arg);
-	let qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
-	arg.$race_begin = card_begin.race;
-	arg.$attr_begin = card_begin.attribute;
-	arg.$lv_begin = card_begin.level;
-	arg.$atk_begin = card_begin.atk;
-	arg.$def_begin = card_begin.def;
-
-	arg.$race_end = card_end.race;
-	arg.$attr_end = card_end.attribute;
-	arg.$lv_end = card_end.level;
-	arg.$atk_end = card_end.atk;
-	arg.$def_end = card_end.def;
-	query(qstr_final, arg, result);
-	show_result(valid_params);
-}
-
 /**
- * param_to_condition() - parse the param into sqlite command
+ * param_to_condition() - parse param into sqlite command
  * @param {URLSearchParams} params 
  * @param {object} arg 
  * @returns 
@@ -1070,4 +915,159 @@ function param_to_condition(params, arg) {
 		}
 	}
 	return qstr;
+}
+
+// entrance of query
+function server_analyze1(params) {
+	let qstr0 = default_query1;
+	let arg = new Object();
+	arg.$monster = TYPE_MONSTER;
+	arg.$link = TYPE_LINK;
+	arg.$pendulum = TYPE_PENDULUM;
+	arg.$token = TYPE_TOKEN;
+
+	let valid_params = server_validate1(params);
+	let condition = param_to_condition(valid_params, arg);
+	//qstr0 += " AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
+
+	result.length = 0;
+	if (condition) {
+		let qstr_final = `${qstr0}${condition};`;
+		query(qstr_final, arg, result);
+	}
+	if (result.length === 1)
+		document.title = result[0].name;
+	show_result(valid_params);
+}
+
+function get_sw_str(x) {
+	let sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str3 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) == $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	let sw_str4 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk == $atk_${x} AND def != $def_${x}`;
+	let sw_str5 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def == $def_${x}`;
+	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
+}
+
+function get_single_card(cdata) {
+	if (!cdata)
+		return [null, 0];
+
+	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
+	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND type & $monster AND NOT type & ($token | $ext)";
+	let arg = new Object();
+	arg.$monster = TYPE_MONSTER;
+	arg.$link = TYPE_LINK;
+	arg.$pendulum = TYPE_PENDULUM;
+	arg.$token = TYPE_TOKEN;
+	arg.$ext = TYPE_EXT;
+
+	let qstr = "";
+	let list_tmp = [];
+
+
+	if (re_id.test(cdata)) {
+		let id = Number.parseInt(cdata, 10);
+		qstr = `${qstr0} AND datas.id == $id;`;
+		arg.$id = id;
+		query(qstr, arg, list_tmp);
+		if (list_tmp.length === 1)
+			return [list_tmp[0], list_tmp.length];
+	}
+
+	qstr = `${qstr0} AND name == $exact;`;
+	arg.$exact = cdata;
+	query(qstr, arg, list_tmp);
+	if (list_tmp.length === 1)
+		return [list_tmp[0], list_tmp.length];
+
+	let nid = Object.keys(name_table).find(key => name_table[key] ? name_table[key].toHalfWidth() === cdata.toHalfWidth() : false);
+	if (nid && nid > 0) {
+		qstr = `${qstr0} AND datas.id == $nid;`;
+		arg.$nid = nid;
+		query(qstr, arg, list_tmp);
+		if (list_tmp.length === 1)
+			return [list_tmp[0], list_tmp.length];
+	}
+
+	qstr = `${qstr0} AND name LIKE $fuzzy ESCAPE '$';`;
+	arg.$fuzzy = string_to_literal(cdata);
+	query(qstr, arg, list_tmp);
+	if (list_tmp.length === 1)
+		return [list_tmp[0], list_tmp.length];
+	return [null, list_tmp.length];
+}
+
+// entrance of small world
+function server_analyze2(params) {
+	// id or name
+	let cdata1 = check_str(params.get("begin"), NAME_LIMIT);
+	text_id1.value = cdata1;
+	let ret1 = get_single_card(cdata1);
+	let card_begin = ret1[0];
+	let result_len1 = ret1[1];
+
+	let cdata2 = check_str(params.get("end"), NAME_LIMIT);
+	text_id2.value = cdata2;
+	let ret2 = get_single_card(cdata2);
+	let card_end = ret2[0];
+	let result_len2 = ret2[1];
+
+	if (result_len1 > 1) {
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "起點數量太多。";
+		return;
+	}
+	else if (result_len1 < 1) {
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "找不到起點。";
+		return;
+	}
+
+	if (result_len2 > 1) {
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "終點數量太多。";
+		return;
+	}
+	else if (result_len2 < 1) {
+		let row0 = table_result.insertRow(-1);
+		let cell0 = row0.insertCell(-1);
+		table_result.style.border = "1px solid black";
+		cell0.textContent = "找不到終點。";
+		return;
+	}
+
+	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
+	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ($token | $ext)";
+	let arg = new Object();
+	arg.$monster = TYPE_MONSTER;
+	arg.$link = TYPE_LINK;
+	arg.$pendulum = TYPE_PENDULUM;
+	arg.$token = TYPE_TOKEN;
+	arg.$ext = TYPE_EXT;
+
+	params.set("begin", card_begin.id);
+	params.set("end", card_end.id);
+	let valid_params = server_validate2(params);
+	let condition = param_to_condition(valid_params, arg);
+	let qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
+	arg.$race_begin = card_begin.race;
+	arg.$attr_begin = card_begin.attribute;
+	arg.$lv_begin = card_begin.level;
+	arg.$atk_begin = card_begin.atk;
+	arg.$def_begin = card_begin.def;
+
+	arg.$race_end = card_end.race;
+	arg.$attr_end = card_end.attribute;
+	arg.$lv_end = card_end.level;
+	arg.$atk_end = card_end.atk;
+	arg.$def_end = card_end.def;
+	query(qstr_final, arg, result);
+	show_result(valid_params);
 }

@@ -198,7 +198,6 @@ window.addEventListener("DOMContentLoaded", function (event) {
 	}
 
 	let params = new URLSearchParams(window.location.search);
-	let type = check_int();
 	switch (params.get("type")) {
 		case "1":
 			select_type.value = "1";
