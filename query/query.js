@@ -39,7 +39,6 @@ const mtype_list = [
 	TYPE_TUNER,
 	TYPE_FLIP,
 	TYPE_SPSUMMON,
-	TYPE_TOKEN,
 ];
 
 const exclude_list = [
@@ -586,7 +585,7 @@ function process_name(locale, str_name, arg) {
 
 // entrance of query
 function server_analyze1(params) {
-	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id";
+	let qstr0 = default_query1;
 	let arg = new Object();
 	arg.$monster = TYPE_MONSTER;
 	arg.$link = TYPE_LINK;
@@ -595,12 +594,7 @@ function server_analyze1(params) {
 
 	let valid_params = server_validate1(params);
 	let condition = param_to_condition(valid_params, arg);
-	if (arg.$ctype === TYPE_MONSTER && arg.$stype && (arg.$stype & TYPE_TOKEN)) {
-		qstr0 += " AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
-	}
-	else {
-		qstr0 += " AND NOT type & $token AND abs(datas.id - alias) >= 10";
-	}
+	//qstr0 += " AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
 
 	result.length = 0;
 	if (condition) {
