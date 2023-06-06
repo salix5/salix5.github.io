@@ -436,15 +436,15 @@ function server_validate2(params) {
 	// scale
 	let lv1 = params.get("lv1");
 	let lv2 = params.get("lv2");
-	if (re_value.test(lv1))
+	if (lv1 && re_value.test(lv1))
 		valid_params.set("lv1", lv1);
-	if (re_value.test(lv2))
+	if (lv2 && re_value.test(lv2))
 		valid_params.set("lv2", lv2);
 	let sc1 = params.get("sc1");
 	let sc2 = params.get("sc2");
-	if (re_value.test(sc1))
+	if (sc1 && re_value.test(sc1))
 		valid_params.set("sc1", sc1);
-	if (re_value.test(sc2))
+	if (sc2 && re_value.test(sc2))
 		valid_params.set("sc2", sc2);
 
 	let atk1 = params.get("atk1");
@@ -765,40 +765,37 @@ function param_to_condition(params, arg) {
 		}
 		
 		// lv, rank, link
-		let lv1 = check_int(params.get("lv1"));
-		let lv2 = check_int(params.get("lv2"));
-		if (lv1 !== null) {
+		if (params.has("lv1")) {
+			let lv1 = Number.parseInt(params.get("lv1"));
 			text_lv1.value = lv1;
-			if (lv2 !== null) {
-				text_lv2.value = lv2;
-				qstr += " AND (level & 0xff) >= $lv1 AND (level & 0xff) <= $lv2";
-				arg.$lv1 = lv1;
-				arg.$lv2 = lv2;
-			}
-			else {
-				qstr += " AND (level & 0xff) == $lv1";
-				arg.$lv1 = lv1;
-			}
 			is_monster = true;
+			qstr += " AND (level & 0xff) >= $lv1";
+			arg.$lv1 = lv1;
+		}
+		if (params.has("lv2")) {
+			let lv2 = Number.parseInt(params.get("lv2"));
+			text_lv2.value = lv2;
+			is_monster = true;
+			qstr += " AND (level & 0xff) <= $lv2";
+			arg.$lv2 = lv2;
 		}
 
 		// scale, pendulum monster only
-		let sc1 = check_int(params.get("sc1"));
-		let sc2 = check_int(params.get("sc2"));
-		if (sc1 !== null) {
-			text_sc1.value = sc1;
+		if (params.has("sc1") || params.has("sc2")) {
 			qstr += " AND type & $pendulum";
-			if (sc2 !== null) {
-				text_sc2.value = sc2;
-				qstr += " AND (level >> 24 & 0xff) >= $sc1 AND (level >> 24 & 0xff) <= $sc2";
-				arg.$sc1 = sc1;
-				arg.$sc2 = sc2;
-			}
-			else {
-				qstr += " AND (level >> 24 & 0xff) == $sc1";
-				arg.$sc1 = sc1;
-			}
 			is_monster = true;
+		}
+		if (params.has("sc1")) {
+			let sc1 = Number.parseInt(params.get("sc1"));
+			text_sc1.value = sc1;
+			qstr += " AND (level >> 24 & 0xff) >= $sc1";
+			arg.$sc1 = sc1;
+		}
+		if (params.has("sc2")) {
+			let sc2 = Number.parseInt(params.get("sc2"));
+			text_sc2.value = sc2;
+			qstr += " AND (level >> 24 & 0xff) <= $sc2";
+			arg.$sc2 = sc2;
 		}
 
 		// attr, race
