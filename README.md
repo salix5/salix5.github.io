@@ -57,6 +57,11 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/6/7  
+CCC1：包烤蒸騎-漢堡排  
+CCC1：復刻更新  
+先行卡更新：AC03、VJMP、YO07
+
 23/6/2  
 YOS1：閃刀姬-卡米麗亞
 
