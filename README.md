@@ -57,10 +57,14 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/6/10  
+新增卡包：AC03  
+復刻更新：AC03  
+
 23/6/7  
 CCC1：包烤蒸騎-漢堡排  
 CCC1：復刻更新  
-先行卡更新：AC03、VJMP、YO07
+先行卡更新：VJMP、YO07
 
 23/6/2  
 YOS1：閃刀姬-卡米麗亞
@@ -78,7 +82,7 @@ VJMP(7月)：蒲公英白獅
 
 23/5/12  
 TCG特有卡：更新MD的日文卡名  
-先行卡更新：AC03、SD46
+先行卡更新：SD46
 
 23/5/6  
 Gold Pride：黃金榮耀  
@@ -93,7 +97,7 @@ TCG特有卡：CYAC-EN
 VJMP(6月)：殺手馬鈴薯  
 
 23/4/16  
-先行卡更新：AC03、SD46
+先行卡更新：SD46
 
 23/4/14  
 新增功能：顯示MD收錄狀態  
