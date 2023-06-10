@@ -2,6 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
+const last_pack = "AC03#2";
 
 const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ${TYPE_TOKEN}`;
 const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
@@ -49,7 +50,6 @@ function print_qa_link(cid) {
 
 
 
-const last_pack = "AC03#1";
 const domain = "https://salix5.github.io";
 // sqlite
 const promise_db = fetch(`${domain}/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
@@ -77,12 +77,12 @@ if (localStorage.getItem("last_pack") === last_pack) {
 }
 else {
 	localStorage.clear();
-	const promise_cid = fetch(`${domain}/query/text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data));
-	const promise_name = fetch(`${domain}/query/text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table, data));
-	const promise_name_en = fetch(`${domain}/query/text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data));
-	const promise_pack = fetch(`${domain}/query/text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data));
-	const promise_setname = fetch(`${domain}/query/text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data));
-	const promise_lflist = fetch(`${domain}/query/text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable, data));
+	const promise_cid = fetch(`text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data));
+	const promise_name = fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table, data));
+	const promise_name_en = fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data));
+	const promise_pack = fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data));
+	const promise_setname = fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data));
+	const promise_lflist = fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable, data));
 	const promise_local = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function () {
 		try {
 			localStorage.setItem("cid_table", JSON.stringify(cid_table));
@@ -92,7 +92,7 @@ else {
 			localStorage.setItem("setname", JSON.stringify(setname));
 			localStorage.setItem("ltable", JSON.stringify(ltable));
 			localStorage.setItem("last_pack", last_pack);
-		} catch (e) {
+		} catch (ex) {
 		}
 	});
 	list_promise.push(promise_local);
@@ -103,9 +103,9 @@ const ltable_md = Object.create(null);
 const md_name = Object.create(null);
 const md_name_en = Object.create(null);
 if (load_md) {
-	list_promise.push(fetch(`${domain}/query/text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
-	list_promise.push(fetch(`${domain}/query/text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
-	list_promise.push(fetch(`${domain}/query/text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
+	list_promise.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
+	list_promise.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
+	list_promise.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
 }
 
 var SQL = null;
