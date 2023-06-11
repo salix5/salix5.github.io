@@ -229,18 +229,6 @@ function is_valid(x, type) {
 	return re_value.test(x) && Number.parseInt(x) <= len;
 }
 
-function check_int(val) {
-	if (val && val.length <= MAX_DIGIT) {
-		let x = parseInt(val, 10);
-		if (Number.isNaN(x))
-			return null;
-		else
-			return x;
-	}
-	else
-		return null;
-}
-
 function check_str(val, limit) {
 	if (typeof val !== "string" || val.length > limit)
 		return "";
