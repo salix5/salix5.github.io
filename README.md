@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/6/22  
+VJMP(8月)：超未來融合
+
 23/6/20  
 更新：MD 7月禁卡表
 
@@ -73,7 +76,7 @@ Ex.
 23/6/7  
 CCC1：包烤蒸騎-漢堡排  
 CCC1：復刻更新  
-先行卡更新：VJMP、YO07
+先行卡更新：YO07
 
 23/6/2  
 YOS1：閃刀姬-卡米麗亞
