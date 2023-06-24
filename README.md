@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/6/24  
+新增卡包：SD46  
+復刻更新：SD46
+
 23/6/22  
 VJMP(8月)：超未來融合
 
@@ -93,8 +97,7 @@ VJMP(7月)：蒲公英白獅
 先行卡更新：AGOV (1202)
 
 23/5/12  
-TCG特有卡：更新MD的日文卡名  
-先行卡更新：SD46
+TCG特有卡：更新MD的日文卡名
 
 23/5/6  
 Gold Pride：黃金榮耀  
@@ -107,9 +110,6 @@ TCG特有卡：CYAC-EN
 新增卡包：DUNE (1201)  
 復刻更新：DUNE (1201)  
 VJMP(6月)：殺手馬鈴薯  
-
-23/4/16  
-先行卡更新：SD46
 
 23/4/14  
 新增功能：顯示MD收錄狀態  
