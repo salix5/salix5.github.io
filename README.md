@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/6/25  
+更新：7月禁卡表  
+
 23/6/24  
 新增卡包：SD46  
 復刻更新：SD46
