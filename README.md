@@ -57,6 +57,11 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/7/1  
+ヴィサス：維薩思  
+ハート：哈忒  
+復刻更新：23TP Vol.3
+
 23/6/25  
 更新：7月禁卡表  
 
