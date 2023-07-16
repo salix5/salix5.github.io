@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/7/16  
+先行卡更新：AGOV (1202)、DBVS、SR14
+
 23/7/1  
 ヴィサス：維薩思  
 ハート：哈忒  
