@@ -4,8 +4,9 @@ const load_md = true;
 const load_prerelease = true;
 const last_pack = "SD46#5";
 
-const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ${TYPE_TOKEN}`;
+const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN}`;
 const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
+const artwork_filter = ` AND abs(datas.id - alias) >= 10`;
 
 /**
  * query() - query cards and push into ret
@@ -157,6 +158,8 @@ function query_db(db, qstr, arg, ret) {
 
 	while (stmt.step()) {
 		let card = stmt.getAsObject();
+		// real_id
+		card.real_id = is_alternative(card) ? card.alias : card.id;
 
 		// spell & trap reset data
 		if (card.type & (TYPE_SPELL | TYPE_TRAP)) {
@@ -227,16 +230,16 @@ function query_db(db, qstr, arg, ret) {
 		else {
 			card.color = -1;
 		}
-		if (typeof cid_table[card.id] === "number")
-			card.cid = cid_table[card.id];
-		if (name_table[card.id])
-			card.jp_name = name_table[card.id];
-		if (name_table_en[card.id])
-			card.en_name = name_table_en[card.id];
-		else if (md_name_en[card.id])
-			card.md_name_en = md_name_en[card.id];
-		if (md_name[card.id])
-			card.md_name = md_name[card.id];
+		if (typeof cid_table[card.real_id] === "number")
+			card.cid = cid_table[card.real_id];
+		if (name_table[card.real_id])
+			card.jp_name = name_table[card.real_id];
+		if (name_table_en[card.real_id])
+			card.en_name = name_table_en[card.real_id];
+		else if (md_name_en[card.real_id])
+			card.md_name_en = md_name_en[card.real_id];
+		if (md_name[card.real_id])
+			card.md_name = md_name[card.real_id];
 
 		// pack_id
 		if (card.id <= 99999999) {

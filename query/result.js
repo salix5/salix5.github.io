@@ -14,7 +14,7 @@ function is_booster(pack) {
 		return false;
 }
 
-function print_card_number(pack, index) {
+function print_pack_number(pack, index) {
 	let str_pack = '';
 	let str_ot = '';
 	let str_index = '';
@@ -67,10 +67,10 @@ function print_id(id, type, pack, pack_id) {
 		link_text = 'token';
 	}
 	else if (pack) {
-		link_text = print_card_number(pack, pack_id);
+		link_text = print_pack_number(pack, pack_id);
 	}
 	else if (id > 99999999) {
-		link_text = print_card_number(pre_id_to_pack(id), pack_id);
+		link_text = print_pack_number(pre_id_to_pack(id), pack_id);
 	}
 	else {
 		link_text = str_id;
@@ -273,11 +273,11 @@ function create_rows(card, pack) {
 		link_faq.href = faq_url;
 		link_faq.target = '_blank';
 		link_faq.rel = 'noreferrer';
-		link_faq.textContent = print_id(card.id, card.type, pack, card.pack_id);
+		link_faq.textContent = print_id(card.real_id, card.type, pack, card.pack_id);
 		div_id.appendChild(link_faq);
 	}
 	else {
-		div_id.textContent = print_id(card.id, card.type, pack, card.pack_id);
+		div_id.textContent = print_id(card.real_id, card.type, pack, card.pack_id);
 	}
 	div_alias.appendChild(div_id);
 
