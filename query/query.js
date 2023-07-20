@@ -549,6 +549,7 @@ function param_to_condition(params, arg) {
 		arg.$id = id;
 		return qstr;
 	}
+	qstr += artwork_filter;
 	// pack
 	let pack = params.get("pack");
 	if (pack === "o") {
@@ -710,7 +711,7 @@ function param_to_condition(params, arg) {
 			qstr += " AND NOT type & $link";
 			is_monster = true;
 		}
-			
+
 		let def1 = null;
 		if (params.has("def1")) {
 			def1 = Number.parseInt(params.get("def1"));
@@ -751,7 +752,7 @@ function param_to_condition(params, arg) {
 				arg.$sum = sum;
 			}
 		}
-		
+
 		// lv, rank, link
 		if (params.has("lv1")) {
 			let lv1 = Number.parseInt(params.get("lv1"));
