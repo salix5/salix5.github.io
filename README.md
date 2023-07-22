@@ -57,8 +57,13 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/7/22  
+新增卡包：AGOV (1202)  
+復刻更新：AGOV (1202)  
+VJMP(9月)：冰魔龍 光槍龍
+
 23/7/16  
-先行卡更新：AGOV (1202)、DBVS、SR14
+先行卡更新：DBVS、SR14
 
 23/7/1  
 ヴィサス：維薩思  
@@ -77,9 +82,6 @@ VJMP(8月)：超未來融合
 
 23/6/20  
 更新：MD 7月禁卡表
-
-23/6/16  
-先行卡更新：AGOV (1202)
 
 23/6/15  
 ヴェンデット：仇屍
@@ -103,9 +105,6 @@ YOS1：閃刀姬-卡米麗亞
 新增卡包：DP28  
 復刻更新：DP28  
 VJMP(7月)：蒲公英白獅
-
-23/5/18  
-先行卡更新：AGOV (1202)
 
 23/5/12  
 TCG特有卡：更新MD的日文卡名
