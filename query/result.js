@@ -8,7 +8,7 @@ var current_params = null;
 function is_booster(pack) {
 	if (pack_list[pack] && pack_list[pack][0] === 1)
 		return true;
-	else if (pack === 'DUNE')
+	else if (pack === 'DUNE' || pack === 'AGOV')
 		return true;
 	else
 		return false;
