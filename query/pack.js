@@ -8,6 +8,7 @@ const pre_release={
 	SR14: 100314001,
 
 	// TCG
+	_DUNE: 101201001,
 };
 
 const wiki_link = {
@@ -19,4 +20,5 @@ const wiki_link = {
 	SR14: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%ADR%A1%DD%B1%EA%B2%A6%A4%CE%B5%DE%BD%B1%A1%DD",
 
 	// TCG
+	_DUNE: "https://yugipedia.com/wiki/Duelist_Nexus",
 };
