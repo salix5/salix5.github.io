@@ -57,6 +57,11 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/8/1  
+ビーステッド：淵獸
+ザ・ビーステッド：深淵獸
+ネムレリア：妮夢雷莉婭
+
 23/7/22  
 新增卡包：AGOV (1202)  
 復刻更新：AGOV (1202)  
