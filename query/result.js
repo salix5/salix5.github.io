@@ -6,9 +6,7 @@ var result_per_page = 50;
 var current_params = null;
 
 function is_booster(pack) {
-	if (pack_list[pack] && pack_list[pack][0] === 1)
-		return true;
-	else if (pack === 'DUNE' || pack === 'AGOV')
+	if (pack_list[pack] && pack_list[pack][82] === 1)
 		return true;
 	else
 		return false;
