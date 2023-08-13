@@ -1,5 +1,5 @@
 "use strict";
-const pre_release={
+const pre_release = {
 	VJMP: 100200001,
 	YOS1: 100296001,
 	
