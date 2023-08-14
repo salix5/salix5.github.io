@@ -7,6 +7,7 @@ const last_pack = "AGOV#6";
 const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN}`;
 const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
 const artwork_filter = ` AND abs(datas.id - alias) >= 10`;
+const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM})`;
 
 /**
  * query() - query cards and push into ret
