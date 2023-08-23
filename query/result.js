@@ -261,6 +261,11 @@ function create_rows(card, pack) {
 				div_en.textContent = `${card.md_name_en} (MD)`;
 			div_alias.appendChild(div_en);
 		}
+		if (card.md_name) {
+			let div_md = document.createElement('div');
+			div_md.textContent = `MD：${card.md_name}`;
+			div_alias.appendChild(div_md);
+		}
 	}
 
 	// id
@@ -285,13 +290,8 @@ function create_rows(card, pack) {
 	let seperator = '';
 	if (ltable[card.real_id] !== undefined)
 		lfstr_o = `OCG：${print_limit(ltable[card.real_id])}`;
-	if (ltable_md[card.real_id] !== undefined || (is_released(card) && !card.md_name)) {
-		if (ltable_md[card.real_id] !== undefined) {
-			lfstr_m = `MD：${print_limit(ltable_md[card.real_id])}`;
-		}
-		else {
-			lfstr_m = 'MD：未收錄';
-		}
+	if (ltable_md[card.real_id] !== undefined) {
+		lfstr_m = `MD：${print_limit(ltable_md[card.real_id])}`;
 	}
 	if (lfstr_o && lfstr_m)
 		seperator = ' / ';
