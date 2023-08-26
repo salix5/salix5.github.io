@@ -2,7 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "DBVS#1";
+const last_pack = "DBVS#2";
 
 const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN}`;
 const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
