@@ -12,10 +12,10 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_)
 	e1:SetProperty(EFFECT_FLAG_)
 	e1:SetCountLimit(1,id)
-	e1:SetCondition(s.)
-	e1:SetCost(s.)
-	e1:SetTarget(s.)
-	e1:SetOperation(s.)
+	e1:SetCondition(s.condition)
+	e1:SetCost(s.cost)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 	
 	--反轉效果，選發
@@ -25,10 +25,10 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_FLIP+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_)
 	e2:SetCountLimit(1,id)
-	e2:SetCondition(s.)
-	e2:SetCost(s.)
-	e2:SetTarget(s.)
-	e2:SetOperation(s.)
+	e2:SetCondition(s.condition)
+	e2:SetCost(s.cost)
+	e2:SetTarget(s.target)
+	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 	
 	--反轉效果，必發
@@ -38,10 +38,10 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_FLIP+EFFECT_TYPE_TRIGGER_F)
 	e3:SetProperty(EFFECT_FLAG_)
 	e3:SetCountLimit(1,id)
-	e3:SetCondition(s.)
-	e3:SetCost(s.)
-	e3:SetTarget(s.)
-	e3:SetOperation(s.)
+	e3:SetCondition(s.condition)
+	e3:SetCost(s.cost)
+	e3:SetTarget(s.target)
+	e3:SetOperation(s.operation)
 	c:RegisterEffect(e3)
 	
 	--誘發效果，此卡...時，選發
@@ -52,10 +52,10 @@ function s.initial_effect(c)
 	e4:SetCode(EVENT_)
 	e4:SetProperty(EFFECT_FLAG_)
 	e4:SetCountLimit(1,id)
-	e4:SetCondition(s.)
-	e4:SetCost(s.)
-	e4:SetTarget(s.)
-	e4:SetOperation(s.)
+	e4:SetCondition(s.condition)
+	e4:SetCost(s.cost)
+	e4:SetTarget(s.target)
+	e4:SetOperation(s.operation)
 	c:RegisterEffect(e4)
 	
 	--誘發效果，此卡...的場合，選發
@@ -66,10 +66,10 @@ function s.initial_effect(c)
 	e5:SetCode(EVENT_)
 	e5:SetProperty(EFFECT_FLAG_DELAY)
 	e5:SetCountLimit(1,id)
-	e5:SetCondition(s.)
-	e5:SetCost(s.)
-	e5:SetTarget(s.)
-	e5:SetOperation(s.)
+	e5:SetCondition(s.condition)
+	e5:SetCost(s.cost)
+	e5:SetTarget(s.target)
+	e5:SetOperation(s.operation)
 	c:RegisterEffect(e5)
 	
 	--誘發效果，此卡...的場合，必發
@@ -80,10 +80,10 @@ function s.initial_effect(c)
 	e6:SetCode(EVENT_)
 	e6:SetProperty(EFFECT_FLAG_)
 	e6:SetCountLimit(1,id)
-	e6:SetCondition(s.)
-	e6:SetCost(s.)
-	e6:SetTarget(s.)
-	e6:SetOperation(s.)
+	e6:SetCondition(s.condition)
+	e6:SetCost(s.cost)
+	e6:SetTarget(s.target)
+	e6:SetOperation(s.operation)
 	c:RegisterEffect(e6)
 	
 	--誘發效果，其他事件，時選發
@@ -95,10 +95,10 @@ function s.initial_effect(c)
 	e7:SetRange(LOCATION_)
 	e7:SetProperty(EFFECT_FLAG_)
 	e7:SetCountLimit(1,id)
-	e7:SetCondition(s.)
-	e7:SetCost(s.)
-	e7:SetTarget(s.)
-	e7:SetOperation(s.)
+	e7:SetCondition(s.condition)
+	e7:SetCost(s.cost)
+	e7:SetTarget(s.target)
+	e7:SetOperation(s.operation)
 	c:RegisterEffect(e7)
 	
 	--誘發效果，其他事件，場合選發
@@ -110,10 +110,10 @@ function s.initial_effect(c)
 	e8:SetRange(LOCATION_)
 	e8:SetProperty(EFFECT_FLAG_DELAY)
 	e8:SetCountLimit(1,id)
-	e8:SetCondition(s.)
-	e8:SetCost(s.)
-	e8:SetTarget(s.)
-	e8:SetOperation(s.)
+	e8:SetCondition(s.condition)
+	e8:SetCost(s.cost)
+	e8:SetTarget(s.target)
+	e8:SetOperation(s.operation)
 	c:RegisterEffect(e8)
 	
 	--誘發效果，其他事件，必發
@@ -125,10 +125,10 @@ function s.initial_effect(c)
 	e9:SetRange(LOCATION_)
 	e9:SetProperty(EFFECT_FLAG_)
 	e9:SetCountLimit(1,id)
-	e9:SetCondition(s.)
-	e9:SetCost(s.)
-	e9:SetTarget(s.)
-	e9:SetOperation(s.)
+	e9:SetCondition(s.condition)
+	e9:SetCost(s.cost)
+	e9:SetTarget(s.target)
+	e9:SetOperation(s.operation)
 	c:RegisterEffect(e9)
 	
 	--誘發即時效果，選發
@@ -140,10 +140,10 @@ function s.initial_effect(c)
 	ea:SetRange(LOCATION_)
 	ea:SetProperty(EFFECT_FLAG_)
 	ea:SetCountLimit(1,id)
-	ea:SetCondition(s.)
-	ea:SetCost(s.)
-	ea:SetTarget(s.)
-	ea:SetOperation(s.)
+	ea:SetCondition(s.condition)
+	ea:SetCost(s.cost)
+	ea:SetTarget(s.target)
+	ea:SetOperation(s.operation)
 	c:RegisterEffect(ea)
 	
 	--誘發即時效果，必發
@@ -155,10 +155,10 @@ function s.initial_effect(c)
 	eb:SetRange(LOCATION_)
 	eb:SetProperty(EFFECT_FLAG_)
 	eb:SetCountLimit(1,id)
-	eb:SetCondition(s.)
-	eb:SetCost(s.)
-	eb:SetTarget(s.)
-	eb:SetOperation(s.)
+	eb:SetCondition(s.condition)
+	eb:SetCost(s.cost)
+	eb:SetTarget(s.target)
+	eb:SetOperation(s.operation)
 	c:RegisterEffect(eb)
 	
 	--魔法陷阱卡，卡片的發動
@@ -169,9 +169,37 @@ function s.initial_effect(c)
 	ec:SetCode(EVENT_FREE_CHAIN)
 	ec:SetProperty(EFFECT_FLAG_)
 	ec:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
-	ec:SetCondition(s.)
-	ec:SetCost(s.)
-	ec:SetTarget(s.)
-	ec:SetOperation(s.)
+	ec:SetCondition(s.condition)
+	ec:SetCost(s.cost)
+	ec:SetTarget(s.target)
+	ec:SetOperation(s.operation)
 	c:RegisterEffect(ec)
+end
+
+---@return boolean
+---@param e Effect
+---@param eg Group
+---@param re Effect
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return true
+end
+
+---@return boolean|nil
+---@param e Effect
+---@param eg Group
+---@param re Effect
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+end
+
+---@return boolean|nil
+---@param e Effect
+---@param eg Group
+---@param re Effect
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+end
+
+---@param e Effect
+---@param eg Group
+---@param re Effect
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
