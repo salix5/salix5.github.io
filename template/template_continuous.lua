@@ -31,8 +31,8 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e3:SetCode(EVENT_)
 	e3:SetProperty(EFFECT_FLAG_)
-	e3:SetCondition(s.)
-	e3:SetOperation(s.)
+	e3:SetCondition(s.condition)
+	e3:SetOperation(s.operation)
 	c:RegisterEffect(e3)
 	
 	--觸發型永續效果，其他事件
@@ -42,8 +42,8 @@ function s.initial_effect(c)
 	e4:SetCode(EVENT_)
 	e4:SetRange(LOCATION_)
 	e4:SetProperty(EFFECT_FLAG_)
-	e4:SetCondition(s.)
-	e4:SetOperation(s.)
+	e4:SetCondition(s.condition)
+	e4:SetOperation(s.operation)
 	c:RegisterEffect(e4)
 	
 	--裝備卡給予裝備怪獸的效果
@@ -54,4 +54,18 @@ function s.initial_effect(c)
 	e5:SetCondition(s.)
 	e5:SetValue(s.)
 	c:RegisterEffect(e5)
+end
+
+---@return boolean
+---@param e Effect
+---@param eg Group
+---@param re Effect
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return true
+end
+
+---@param e Effect
+---@param eg Group
+---@param re Effect
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
