@@ -2,11 +2,13 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "DBVS#3";
+const last_pack = "DBVS#4";
+const ID_BLACK_LUSTER_SOLDIER = 5405695;
 
-const default_query1 = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN}`;
-const default_query2 = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & ${TYPE_TOKEN}`;
-const artwork_filter = ` AND abs(datas.id - alias) >= 10`;
+const stmt_default = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts`
+	+ ` WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN}`;
+const stmt_no_alias = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN} AND alias == 0`;
+const artwork_filter = ` AND (datas.id == ${ID_BLACK_LUSTER_SOLDIER} OR abs(datas.id - alias) >= 10)`;
 const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM})`;
 
 /**
@@ -135,6 +137,8 @@ function pack_cmd(pack) {
 function is_alternative(card) {
 	if (card.type & TYPE_TOKEN)
 		return card.alias !== 0;
+	else if (card.id === ID_BLACK_LUSTER_SOLDIER)
+		return false;
 	else
 		return Math.abs(card.id - card.alias) < 10;
 }
