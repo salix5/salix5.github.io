@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/9/9  
+新增卡包：SR14  
+復刻更新：SR14  
+
 23/8/26  
 新增卡包：DBVS  
 復刻更新：DBVS  
@@ -66,9 +70,6 @@ Ex.
 
 23/8/11  
 先行卡更新：PHNI (1203)
-
-23/8/8  
-先行卡更新：SR14
 
 23/8/5  
 超越竜：超越恐龍
@@ -82,9 +83,6 @@ Ex.
 新增卡包：AGOV (1202)  
 復刻更新：AGOV (1202)  
 VJMP(9月)：冰魔龍 光槍龍
-
-23/7/16  
-先行卡更新：SR14
 
 23/7/1  
 ヴィサス：維薩思  
