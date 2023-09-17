@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/9/17  
+復刻更新：TBC1  
+先行卡更新：WPP4、PHNI (1203)
+
 23/9/9  
 新增卡包：SR14  
 復刻更新：SR14  
