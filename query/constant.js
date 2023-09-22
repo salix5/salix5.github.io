@@ -85,56 +85,100 @@ const LINK_MARKER_TOP_LEFT = 0x040;
 const LINK_MARKER_TOP = 0x080;
 const LINK_MARKER_TOP_RIGHT = 0x100;
 
-const attr_to_str = {
-	[ATTRIBUTE_EARTH]: "地",
-	[ATTRIBUTE_WATER]: "水",
-	[ATTRIBUTE_FIRE]: "炎",
-	[ATTRIBUTE_WIND]: "風",
-	[ATTRIBUTE_LIGHT]: "光",
-	[ATTRIBUTE_DARK]: "闇",
-	[ATTRIBUTE_DIVINE]: "神",
+const attribute_name = {
+	unknown: '？',
+	[ATTRIBUTE_EARTH]: '地',
+	[ATTRIBUTE_WATER]: '水',
+	[ATTRIBUTE_FIRE]: '炎',
+	[ATTRIBUTE_WIND]: '風',
+	[ATTRIBUTE_LIGHT]: '光',
+	[ATTRIBUTE_DARK]: '闇',
+	[ATTRIBUTE_DIVINE]: '神',
 };
 
-const race_to_str = {
-	[RACE_WARRIOR]: "戰士",
-	[RACE_SPELLCASTER]: "魔法使",
-	[RACE_FAIRY]: "天使",
-	[RACE_FIEND]: "惡魔",
-	[RACE_ZOMBIE]: "不死",
-	[RACE_MACHINE]: "機械",
-	[RACE_AQUA]: "水",
-	[RACE_PYRO]: "炎",
-	[RACE_ROCK]: "岩石",
-	[RACE_WINDBEAST]: "鳥獸",
-	[RACE_PLANT]: "植物",
-	[RACE_INSECT]: "昆蟲",
-	[RACE_THUNDER]: "雷",
-	[RACE_DRAGON]: "龍",
-	[RACE_BEAST]: "獸",
-	[RACE_BEASTWARRIOR]: "獸戰士",
-	[RACE_DINOSAUR]: "恐龍",
-	[RACE_FISH]: "魚",
-	[RACE_SEASERPENT]: "海龍",
-	[RACE_REPTILE]: "爬蟲類",
-	[RACE_PSYCHO]: "超能",
-	[RACE_DIVINE]: "幻神獸",
-	[RACE_CREATORGOD]: "創造神",
-	[RACE_WYRM]: "幻龍",
-	[RACE_CYBERSE]: "電子界",
-	[RACE_ILLUSION]: "幻想魔",
+const race_name = {
+	unknown: '？族',
+	[RACE_WARRIOR]: '戰士族',
+	[RACE_SPELLCASTER]: '魔法使族',
+	[RACE_FAIRY]: '天使族',
+	[RACE_FIEND]: '惡魔族',
+	[RACE_ZOMBIE]: '不死族',
+	[RACE_MACHINE]: '機械族',
+	[RACE_AQUA]: '水族',
+	[RACE_PYRO]: '炎族',
+	[RACE_ROCK]: '岩石族',
+	[RACE_WINDBEAST]: '鳥獸族',
+	[RACE_PLANT]: '植物族',
+	[RACE_INSECT]: '昆蟲族',
+	[RACE_THUNDER]: '雷族',
+	[RACE_DRAGON]: '龍族',
+	[RACE_BEAST]: '獸族',
+	[RACE_BEASTWARRIOR]: '獸戰士族',
+	[RACE_DINOSAUR]: '恐龍族',
+	[RACE_FISH]: '魚族',
+	[RACE_SEASERPENT]: '海龍族',
+	[RACE_REPTILE]: '爬蟲類族',
+	[RACE_PSYCHO]: '超能族',
+	[RACE_DIVINE]: '幻神獸族',
+	[RACE_CREATORGOD]: '創造神族',
+	[RACE_WYRM]: '幻龍族',
+	[RACE_CYBERSE]: '電子界族',
+	[RACE_ILLUSION]: '幻想魔族',
 };
 
-const marker_to_str = {
-	[LINK_MARKER_BOTTOM_LEFT]: "🟥",
-	[LINK_MARKER_BOTTOM]: "🟥",
-	[LINK_MARKER_BOTTOM_RIGHT]: "🟥",
+const type_name = {
+	[TYPE_MONSTER]: '怪獸',
+	[TYPE_SPELL]: '魔法',
+	[TYPE_TRAP]: '陷阱',
 
-	[LINK_MARKER_LEFT]: "🟥",
-	[LINK_MARKER_RIGHT]: "🟥",
+	[TYPE_NORMAL]: '通常',
+	[TYPE_EFFECT]: '效果',
+	[TYPE_FUSION]: '融合',
+	[TYPE_RITUAL]: '儀式',
+	[TYPE_SYNCHRO]: '同步',
+	[TYPE_XYZ]: '超量',
+	[TYPE_PENDULUM]: '靈擺',
+	[TYPE_LINK]: '連結',
 
-	[LINK_MARKER_TOP_LEFT]: "🟥",
-	[LINK_MARKER_TOP]: "🟥",
-	[LINK_MARKER_TOP_RIGHT]: "🟥",
+	[TYPE_SPIRIT]: '靈魂',
+	[TYPE_UNION]: '聯合',
+	[TYPE_DUAL]: '二重',
+	[TYPE_TUNER]: '協調',
+	[TYPE_TOKEN]: '衍生物',
+	[TYPE_FLIP]: '反轉',
+	[TYPE_TOON]: '卡通',
+	[TYPE_SPSUMMON]: '特殊召喚',
 
-	default: "⬜",
+	[TYPE_QUICKPLAY]: '速攻',
+	[TYPE_CONTINUOUS]: '永續',
+	[TYPE_EQUIP]: '裝備',
+	[TYPE_FIELD]: '場地',
+	[TYPE_COUNTER]: '反擊',
+};
+
+const value_name = {
+	atk: '攻',
+	def: '守',
+	scale: '靈擺刻度',
+};
+
+const limit_name = {
+	0: '禁止',
+	1: '限制',
+	2: '準限制',
+};
+
+const marker_char = {
+	[LINK_MARKER_BOTTOM_LEFT]: '🟥',
+	[LINK_MARKER_BOTTOM]: '🟥',
+	[LINK_MARKER_BOTTOM_RIGHT]: '🟥',
+
+	[LINK_MARKER_LEFT]: '🟥',
+	[LINK_MARKER_RIGHT]: '🟥',
+
+	[LINK_MARKER_TOP_LEFT]: '🟥',
+	[LINK_MARKER_TOP]: '🟥',
+	[LINK_MARKER_TOP_RIGHT]: '🟥',
+
+	default: '⬜',
 };

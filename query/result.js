@@ -302,137 +302,43 @@ function create_rows(card, pack) {
 	}
 	cell_data.appendChild(div_alias);
 
-	let mtype = '';
-	let subtype = '';
-	let lvstr = `\u2605`;
-	let data = '';
-	if (card.type & TYPE_MONSTER) {
-		mtype = '怪獸';
-		if (card.type & TYPE_RITUAL)
-			subtype = '/儀式';
-		else if (card.type & TYPE_FUSION)
-			subtype = '/融合';
-		else if (card.type & TYPE_SYNCHRO)
-			subtype = '/同步';
-		else if (card.type & TYPE_XYZ) {
-			subtype = '/超量';
-			lvstr = `\u2606`;
-		}
-		else if (card.type & TYPE_LINK) {
-			subtype = '/連結';
-			lvstr = 'LINK-';
-		}
-		if (card.type & TYPE_PENDULUM) {
-			subtype += '/靈擺';
-		}
-
-		// extype
-		if (card.type & TYPE_NORMAL)
-			subtype += '/通常';
-		if (card.type & TYPE_SPIRIT)
-			subtype += '/靈魂';
-		if (card.type & TYPE_UNION)
-			subtype += '/聯合';
-		if (card.type & TYPE_DUAL)
-			subtype += '/二重';
-		if (card.type & TYPE_TUNER)
-			subtype += '/協調';
-		if (card.type & TYPE_FLIP)
-			subtype += '/反轉';
-		if (card.type & TYPE_TOON)
-			subtype += '/卡通';
-		if (card.type & TYPE_SPSUMMON)
-			subtype += '/特殊召喚';
-		if (card.type & TYPE_EFFECT)
-			subtype += '/效果';
-		data = '[' + mtype + subtype + ']';
-		data = `[${mtype}${subtype}]<br>`;
-
-		data += `${lvstr}${card.level === 0 ? "?" : card.level}`;
-		if (card.attribute)
-			data += `/${attr_to_str[card.attribute]}`;
-		else
-			data += '/？';
-		if (card.race)
-			data += `/${race_to_str[card.race]}族`;
-		else
-			data += '/？族';
-		data += '<br>';
-
-		data += `攻${print_ad(card.atk)}`;
-		if (!(card.type & TYPE_LINK)) {
-			data += `/守${print_ad(card.def)}`;
-		}
-		data += '<br>';
-
-		if (card.type & TYPE_PENDULUM) {
-			data += `【靈擺刻度：${card.scale}】<br>`;
-		}
-	}
-	else if (card.type & TYPE_SPELL) {
-		mtype = '魔法';
-		if (card.type & TYPE_QUICKPLAY)
-			subtype = '速攻';
-		else if (card.type & TYPE_CONTINUOUS)
-			subtype = '永續';
-		else if (card.type & TYPE_EQUIP)
-			subtype = '裝備';
-		else if (card.type & TYPE_RITUAL)
-			subtype = '儀式';
-		else if (card.type & TYPE_FIELD)
-			subtype = '場地';
-		else
-			subtype = '通常';
-		data = `[${subtype}${mtype}]<br>`;
-	}
-	else if (card.type & TYPE_TRAP) {
-		mtype = '陷阱';
-		if (card.type & TYPE_CONTINUOUS)
-			subtype = '永續';
-		else if (card.type & TYPE_COUNTER)
-			subtype = '反擊';
-		else
-			subtype = '通常';
-		data = `[${subtype}${mtype}]<br>`;
-	}
-
 	let row_effect = table_result.insertRow(-1);
 	let cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
 	let div_stat = document.createElement('div');
 	div_stat.className = 'stat';
-	div_stat.innerHTML = `${data}`;
+	div_stat.innerHTML = `${print_data(card, '<br>')}`;
 	cell_effect.appendChild(div_stat);
 
 	if (card.type & TYPE_LINK) {
 		let marker_text = '';
 		for (let marker = LINK_MARKER_TOP_LEFT; marker <= LINK_MARKER_TOP_RIGHT; marker <<= 1) {
 			if (card.def & marker)
-				marker_text += marker_to_str[marker];
+				marker_text += marker_char[marker];
 			else
-				marker_text += marker_to_str.default;
+				marker_text += marker_char.default;
 		}
 		marker_text += '<br>';
 
 		if (card.def & LINK_MARKER_LEFT)
-			marker_text += marker_to_str[LINK_MARKER_LEFT];
+			marker_text += marker_char[LINK_MARKER_LEFT];
 		else
-			marker_text += marker_to_str.default;
+			marker_text += marker_char.default;
 
 		marker_text += '<span class="transparent">⬛</span>';
 
 		if (card.def & LINK_MARKER_RIGHT)
-			marker_text += marker_to_str[LINK_MARKER_RIGHT];
+			marker_text += marker_char[LINK_MARKER_RIGHT];
 		else
-			marker_text += marker_to_str.default;
+			marker_text += marker_char.default;
 
 		marker_text += '<br>';
 
 		for (let marker = LINK_MARKER_BOTTOM_LEFT; marker <= LINK_MARKER_BOTTOM_RIGHT; marker <<= 1) {
 			if (card.def & marker)
-				marker_text += marker_to_str[marker];
+				marker_text += marker_char[marker];
 			else
-				marker_text += marker_to_str.default;
+				marker_text += marker_char.default;
 		}
 		let div_marker = document.createElement("div");
 		div_marker.innerHTML = marker_text;
