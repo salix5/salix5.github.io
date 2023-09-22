@@ -11,6 +11,9 @@ const stmt_no_alias = `SELECT datas.id FROM datas, texts WHERE datas.id == texts
 const artwork_filter = ` AND (datas.id == ${ID_BLACK_LUSTER_SOLDIER} OR abs(datas.id - alias) >= 10)`;
 const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM})`;
 
+let SQL = null;
+let db = null, db2 = null;
+
 /**
  * query() - query cards and push into ret
  * @param {string} qstr sqlite command
@@ -55,12 +58,30 @@ function print_qa_link(cid) {
 
 
 const domain = "https://salix5.github.io";
+const fetch_list = [];
 // sqlite
-const promise_db = fetch(`${domain}/CardEditor/cards.zip`).then(response => response.blob()).then(JSZip.loadAsync).then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
 const config = { locateFile: filename => `./dist/${filename}` };
-const list_promise = [initSqlJs(config), promise_db];
+const promise_db = fetch(`${domain}/CardEditor/cards.zip`)
+	.then(response => response.blob())
+	.then(JSZip.loadAsync)
+	.then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
 if (load_prerelease) {
-	list_promise.push(fetch(`${domain}/cdb/pre-release.cdb`).then(response => response.arrayBuffer()).then(buf => new Uint8Array(buf)));
+	const promise_db2 = fetch(`${domain}/cdb/pre-release.cdb`)
+		.then(response => response.arrayBuffer())
+		.then(buf => new Uint8Array(buf));
+	fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
+		.then(([sql, file1, file2]) => {
+			SQL = sql;
+			db = new SQL.Database(file1);
+			db2 = new SQL.Database(file2);
+		}));
+}
+else {
+	fetch_list.push(Promise.all([initSqlJs(config), promise_db])
+		.then(([sql, file1]) => {
+			SQL = sql;
+			db = new SQL.Database(file1);
+		}));
 }
 
 // JSON
@@ -81,25 +102,12 @@ if (localStorage.getItem("last_pack") === last_pack) {
 }
 else {
 	localStorage.clear();
-	const promise_cid = fetch(`text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data));
-	const promise_name = fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table, data));
-	const promise_name_en = fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data));
-	const promise_pack = fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data));
-	const promise_setname = fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data));
-	const promise_lflist = fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable, data));
-	const promise_local = Promise.all([promise_cid, promise_name, promise_name_en, promise_pack, promise_setname, promise_lflist]).then(function () {
-		try {
-			localStorage.setItem("cid_table", JSON.stringify(cid_table));
-			localStorage.setItem("name_table", JSON.stringify(name_table));
-			localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
-			localStorage.setItem("pack_list", JSON.stringify(pack_list));
-			localStorage.setItem("setname", JSON.stringify(setname));
-			localStorage.setItem("ltable", JSON.stringify(ltable));
-			localStorage.setItem("last_pack", last_pack);
-		} catch (ex) {
-		}
-	});
-	list_promise.push(promise_local);
+	fetch_list.push(fetch(`text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data)));
+	fetch_list.push(fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table, data)));
+	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data)));
+	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
+	fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
+	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable, data)));
 }
 
 // MD
@@ -107,19 +115,26 @@ const ltable_md = Object.create(null);
 const md_name = Object.create(null);
 const md_name_en = Object.create(null);
 if (load_md) {
-	list_promise.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
-	list_promise.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
-	list_promise.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
+	fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
+	fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
+	fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
 }
 
-var SQL = null;
-var db = null, db2 = null;
-const db_ready = Promise.all(list_promise).then(function (values) {
-	SQL = values[0];
-	db = new SQL.Database(values[1]);
-	if (load_prerelease)
-		db2 = new SQL.Database(values[2]);
-});
+const db_ready = Promise.all(fetch_list)
+	.then(() => {
+		if (!localStorage.getItem("last_pack")) {
+			try {
+				localStorage.setItem("cid_table", JSON.stringify(cid_table));
+				localStorage.setItem("name_table", JSON.stringify(name_table));
+				localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
+				localStorage.setItem("pack_list", JSON.stringify(pack_list));
+				localStorage.setItem("setname", JSON.stringify(setname));
+				localStorage.setItem("ltable", JSON.stringify(ltable));
+				localStorage.setItem("last_pack", last_pack);
+			} catch (ex) {
+			}
+		}
+	});
 
 // print condition for cards in pack
 function pack_cmd(pack) {
@@ -149,6 +164,9 @@ function is_released(card) {
 
 // query cards in db
 function query_db(db, qstr, arg, ret) {
+	if (!db)
+		return;
+
 	let stmt = db.prepare(qstr);
 	stmt.bind(arg);
 
@@ -239,10 +257,12 @@ function query_db(db, qstr, arg, ret) {
 			card.cid = cid_table[card.real_id];
 		if (name_table[card.real_id])
 			card.jp_name = name_table[card.real_id];
+
 		if (name_table_en[card.real_id])
 			card.en_name = name_table_en[card.real_id];
 		else if (md_name_en[card.real_id])
 			card.md_name_en = md_name_en[card.real_id];
+
 		if (md_name[card.real_id])
 			card.md_name = md_name[card.real_id];
 
