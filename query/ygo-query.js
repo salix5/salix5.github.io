@@ -28,9 +28,10 @@ function query(qstr, arg, ret) {
 }
 
 /**
- * print_db_link() - return the link to official database
+ * print_db_link() - return the link to DB page
  * @param {number} cid database id
  * @param {number} ot OCT/TCG tag
+ * @returns page address
  */
 function print_db_link(cid, ot) {
 	let locale = "ja";
@@ -40,8 +41,9 @@ function print_db_link(cid, ot) {
 }
 
 /**
- * print_wiki_link() - return the link to Yugipedia
+ * print_wiki_link() - return the link to Yugipedia page
  * @param {number} id card id
+ * @returns page address
  */
 function print_wiki_link(id) {
 	return `https://yugipedia.com/wiki/${id}`;
@@ -49,10 +51,138 @@ function print_wiki_link(id) {
 
 /**
  * print_qa_link() - return the link to Q&A page
- * @param {number} cid
+ * @param {number} cid database id
+ * @returns page address
  */
 function print_qa_link(cid) {
 	return `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${cid}&request_locale=ja`;
+}
+
+/**
+ * is_alternative() - check if the card is an alternative artwork card
+ * @param {object} card card object
+ * @returns boolean result
+ */
+function is_alternative(card) {
+	if (card.type & TYPE_TOKEN)
+		return card.alias !== 0;
+	else if (card.id === ID_BLACK_LUSTER_SOLDIER)
+		return false;
+	else
+		return Math.abs(card.id - card.alias) < 10;
+}
+
+/**
+ * is_released() - check if the card has an official card name
+ * @param {object} card 
+ * @returns boolean result
+ */
+function is_released(card) {
+	return !!(card.jp_name || card.en_name);
+}
+
+/**
+ * print_data() - print card data (without Link Marker)
+ * @param {object} card card object
+ * @param {string} newline newline char
+ * @returns card data
+ */
+function print_data(card, newline) {
+	let mtype = '';
+	let subtype = '';
+	let lvstr = '\u2605';
+	let data = '';
+
+	if (card.type & TYPE_MONSTER) {
+		mtype = type_name[TYPE_MONSTER];
+		if (card.type & TYPE_RITUAL)
+			subtype = `/${type_name[TYPE_RITUAL]}`;
+		else if (card.type & TYPE_FUSION)
+			subtype = `/${type_name[TYPE_FUSION]}`;
+		else if (card.type & TYPE_SYNCHRO)
+			subtype = `/${type_name[TYPE_SYNCHRO]}`;
+		else if (card.type & TYPE_XYZ) {
+			subtype = `/${type_name[TYPE_XYZ]}`;
+			lvstr = `\u2606`;
+		}
+		else if (card.type & TYPE_LINK) {
+			subtype = `/${type_name[TYPE_LINK]}`;
+			lvstr = `LINK-`;
+		}
+		if (card.type & TYPE_PENDULUM) {
+			subtype += `/${type_name[TYPE_PENDULUM]}`;
+		}
+
+		// extype
+		if (card.type & TYPE_NORMAL)
+			subtype += `/${type_name[TYPE_NORMAL]}`;
+		if (card.type & TYPE_SPIRIT)
+			subtype += `/${type_name[TYPE_SPIRIT]}`;
+		if (card.type & TYPE_UNION)
+			subtype += `/${type_name[TYPE_UNION]}`;
+		if (card.type & TYPE_DUAL)
+			subtype += `/${type_name[TYPE_DUAL]}`;
+		if (card.type & TYPE_TUNER)
+			subtype += `/${type_name[TYPE_TUNER]}`;
+		if (card.type & TYPE_FLIP)
+			subtype += `/${type_name[TYPE_FLIP]}`;
+		if (card.type & TYPE_TOON)
+			subtype += `/${type_name[TYPE_TOON]}`;
+		if (card.type & TYPE_SPSUMMON)
+			subtype += `/${type_name[TYPE_SPSUMMON]}`;
+		if (card.type & TYPE_EFFECT)
+			subtype += `/${type_name[TYPE_EFFECT]}`;
+		data = `[${mtype}${subtype}]${newline}`;
+
+		let lv = card.level;
+		data += `${lvstr}${lv == 0 ? '?' : lv}`;
+		if (card.attribute)
+			data += `/${attribute_name[card.attribute]}`;
+		else
+			data += `/${attribute_name['unknown']}`;
+		if (card.race)
+			data += `/${race_name[card.race]}`;
+		else
+			data += `/${race_name['unknown']}`;
+		data += newline;
+
+		data += `${value_name['atk']}${print_ad(card.atk)}`;
+		if (!(card.type & TYPE_LINK)) {
+			data += `/${value_name['def']}${print_ad(card.def)}`;
+		}
+		data += newline;
+
+		if (card.type & TYPE_PENDULUM) {
+			data += `【${value_name['scale']}：${card.scale}】${newline}`;
+		}
+	}
+	else if (card.type & TYPE_SPELL) {
+		mtype = `${type_name[TYPE_SPELL]}`;
+		if (card.type & TYPE_QUICKPLAY)
+			subtype = `${type_name[TYPE_QUICKPLAY]}`;
+		else if (card.type & TYPE_CONTINUOUS)
+			subtype = `${type_name[TYPE_CONTINUOUS]}`;
+		else if (card.type & TYPE_EQUIP)
+			subtype = `${type_name[TYPE_EQUIP]}`;
+		else if (card.type & TYPE_RITUAL)
+			subtype = `${type_name[TYPE_RITUAL]}`;
+		else if (card.type & TYPE_FIELD)
+			subtype = `${type_name[TYPE_FIELD]}`;
+		else
+			subtype = `${type_name[TYPE_NORMAL]}`;
+		data = `[${subtype}${mtype}]${newline}`;
+	}
+	else if (card.type & TYPE_TRAP) {
+		mtype = `${type_name[TYPE_TRAP]}`;
+		if (card.type & TYPE_CONTINUOUS)
+			subtype = `${type_name[TYPE_CONTINUOUS]}`;
+		else if (card.type & TYPE_COUNTER)
+			subtype = `${type_name[TYPE_COUNTER]}`;
+		else
+			subtype = `${type_name[TYPE_NORMAL]}`;
+		data = `[${subtype}${mtype}]${newline}`;
+	}
+	return data;
 }
 
 
@@ -146,20 +276,6 @@ function pack_cmd(pack) {
 	}
 	cmd += `)`;
 	return cmd;
-}
-
-// check if card is alternative art
-function is_alternative(card) {
-	if (card.type & TYPE_TOKEN)
-		return card.alias !== 0;
-	else if (card.id === ID_BLACK_LUSTER_SOLDIER)
-		return false;
-	else
-		return Math.abs(card.id - card.alias) < 10;
-}
-
-function is_released(card) {
-	return !!(card.jp_name || card.en_name);
 }
 
 // query cards in db
@@ -279,107 +395,4 @@ function query_db(db, qstr, arg, ret) {
 		ret.push(card);
 	}
 	stmt.free();
-}
-
-/**
- * print_data() - print card data (without Link Marker)
- * @param {object} card 
- * @param {string} newline newline char
- */
-function print_data(card, newline) {
-	let mtype = '';
-	let subtype = '';
-	let lvstr = '\u2605';
-	let data = '';
-
-	if (card.type & TYPE_MONSTER) {
-		mtype = type_name[TYPE_MONSTER];
-		if (card.type & TYPE_RITUAL)
-			subtype = `/${type_name[TYPE_RITUAL]}`;
-		else if (card.type & TYPE_FUSION)
-			subtype = `/${type_name[TYPE_FUSION]}`;
-		else if (card.type & TYPE_SYNCHRO)
-			subtype = `/${type_name[TYPE_SYNCHRO]}`;
-		else if (card.type & TYPE_XYZ) {
-			subtype = `/${type_name[TYPE_XYZ]}`;
-			lvstr = `\u2606`;
-		}
-		else if (card.type & TYPE_LINK) {
-			subtype = `/${type_name[TYPE_LINK]}`;
-			lvstr = `LINK-`;
-		}
-		if (card.type & TYPE_PENDULUM) {
-			subtype += `/${type_name[TYPE_PENDULUM]}`;
-		}
-
-		// extype
-		if (card.type & TYPE_NORMAL)
-			subtype += `/${type_name[TYPE_NORMAL]}`;
-		if (card.type & TYPE_SPIRIT)
-			subtype += `/${type_name[TYPE_SPIRIT]}`;
-		if (card.type & TYPE_UNION)
-			subtype += `/${type_name[TYPE_UNION]}`;
-		if (card.type & TYPE_DUAL)
-			subtype += `/${type_name[TYPE_DUAL]}`;
-		if (card.type & TYPE_TUNER)
-			subtype += `/${type_name[TYPE_TUNER]}`;
-		if (card.type & TYPE_FLIP)
-			subtype += `/${type_name[TYPE_FLIP]}`;
-		if (card.type & TYPE_TOON)
-			subtype += `/${type_name[TYPE_TOON]}`;
-		if (card.type & TYPE_SPSUMMON)
-			subtype += `/${type_name[TYPE_SPSUMMON]}`;
-		if (card.type & TYPE_EFFECT)
-			subtype += `/${type_name[TYPE_EFFECT]}`;
-		data = `[${mtype}${subtype}]${newline}`;
-
-		let lv = card.level;
-		data += `${lvstr}${lv == 0 ? '?' : lv}`;
-		if (card.attribute)
-			data += `/${attribute_name[card.attribute]}`;
-		else
-			data += `/${attribute_name['unknown']}`;
-		if (card.race)
-			data += `/${race_name[card.race]}`;
-		else
-			data += `/${race_name['unknown']}`;
-		data += newline;
-
-		data += `${value_name['atk']}${print_ad(card.atk)}`;
-		if (!(card.type & TYPE_LINK)) {
-			data += `/${value_name['def']}${print_ad(card.def)}`;
-		}
-		data += newline;
-
-		if (card.type & TYPE_PENDULUM) {
-			data += `【${value_name['scale']}：${card.scale}】${newline}`;
-		}
-	}
-	else if (card.type & TYPE_SPELL) {
-		mtype = `${type_name[TYPE_SPELL]}`;
-		if (card.type & TYPE_QUICKPLAY)
-			subtype = `${type_name[TYPE_QUICKPLAY]}`;
-		else if (card.type & TYPE_CONTINUOUS)
-			subtype = `${type_name[TYPE_CONTINUOUS]}`;
-		else if (card.type & TYPE_EQUIP)
-			subtype = `${type_name[TYPE_EQUIP]}`;
-		else if (card.type & TYPE_RITUAL)
-			subtype = `${type_name[TYPE_RITUAL]}`;
-		else if (card.type & TYPE_FIELD)
-			subtype = `${type_name[TYPE_FIELD]}`;
-		else
-			subtype = `${type_name[TYPE_NORMAL]}`;
-		data = `[${subtype}${mtype}]${newline}`;
-	}
-	else if (card.type & TYPE_TRAP) {
-		mtype = `${type_name[TYPE_TRAP]}`;
-		if (card.type & TYPE_CONTINUOUS)
-			subtype = `${type_name[TYPE_CONTINUOUS]}`;
-		else if (card.type & TYPE_COUNTER)
-			subtype = `${type_name[TYPE_COUNTER]}`;
-		else
-			subtype = `${type_name[TYPE_NORMAL]}`;
-		data = `[${subtype}${mtype}]${newline}`;
-	}
-	return data;
 }
