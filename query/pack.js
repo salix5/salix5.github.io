@@ -11,6 +11,7 @@ const pre_release = {
 	TW01: 100211001,
 
 	// TCG
+	YCSW: 100210001,
 };
 
 const wiki_link = {
@@ -25,4 +26,5 @@ const wiki_link = {
 	TW01: "https://yugioh-wiki.net/index.php?TERMINAL%20WORLD",
 
 	// TCG
+	YCSW: "https://yugipedia.com/wiki/Anotherverse_Gluttonia",
 };
