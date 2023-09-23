@@ -57,12 +57,18 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/9/22  
+VJMP(11月)：征霸龍-烈焰  
+VJMP連續訂閱：廢品插座龍、廢品盔甲、魔法妖精 勃艮第  
+新增卡包：WPP4  
+復刻更新：WPP4
+
 23/9/18  
 先行卡更新：TW01
 
 23/9/17  
 復刻更新：TBC1  
-先行卡更新：WPP4、PHNI (1203)
+先行卡更新：PHNI (1203)
 
 23/9/9  
 新增卡包：SR14  
@@ -73,7 +79,8 @@ Ex.
 復刻更新：DBVS  
 
 23/8/25  
-更新：MD 9月禁卡表
+更新：MD 9月禁卡表  
+VJMP(10月)：救援刺蝟
 
 23/8/11  
 先行卡更新：PHNI (1203)
