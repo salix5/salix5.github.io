@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/9/24  
+更新：10月禁卡表  
+
 23/9/22  
 VJMP(11月)：征霸龍-烈焰  
 VJMP連續訂閱：廢品插座龍、廢品盔甲、魔法妖精 勃艮第  
