@@ -2,7 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "WPP4#7";
+const last_pack = "WPP4#8";
 const ID_BLACK_LUSTER_SOLDIER = 5405695;
 
 const stmt_default = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts`
