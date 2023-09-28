@@ -481,11 +481,11 @@ function string_to_literal(str) {
  */
 function process_name(locale, name_string, arg) {
 	if (!name_string)
-		return "";
-	const setcode_str = ` OR ${setcode_condition("$setcode")}`;
-	let name_cmd = "";
+		return '';
+	const setcode_str = ` OR ${setcode_condition('$setcode')}`;
+	let name_cmd = '';
 	switch (locale) {
-		case "en":
+		case 'en':
 			let en_list = [];
 			let en_name = name_string.toLowerCase();
 			for (const [key, value] of Object.entries(name_table_en)) {
@@ -496,44 +496,48 @@ function process_name(locale, name_string, arg) {
 					break;
 				}
 			}
-			name_cmd = "0";
+			name_cmd = '0';
 			for (let i = 0; i < en_list.length; ++i)
 				name_cmd += ` OR datas.id=${en_list[i]}`;
 			break;
 		default:
-			// ja, name
-			let jp_list = [];
-			let jp_name = toHalfWidth(name_string.toLowerCase());
-			for (const [key, value] of Object.entries(name_table)) {
-				if (toHalfWidth(value.toLowerCase()).includes(jp_name))
-					jp_list.push(key);
-				if (jp_list.length > MAX_RESULT_LEN) {
-					jp_list.length = 0;
-					break;
-				}
-			}
-			name_cmd = "0";
-			for (let i = 0; i < jp_list.length; ++i)
-				name_cmd += ` OR datas.id=${jp_list[i]}`;
+			name_cmd = '0';
+			let is_setname = false;
 			// zh, setcode
 			if (!re_wildcard.test(name_string)) {
 				const mapObj = Object.create(null);
-				mapObj["$%"] = "%";
-				mapObj["$_"] = "_";
-				let real_str = name_string.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
+				mapObj['$%'] = '%';
+				mapObj['$_'] = '_';
+				let zh_name = name_string.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
 				for (const [key, value] of Object.entries(setname)) {
-					if (key.toLowerCase() === real_str) {
+					if (key.toLowerCase() === zh_name) {
 						name_cmd += setcode_str;
 						arg.$setcode = value;
+						is_setname = true;
 						break;
 					}
 				}
 			}
 			// zh, name
-			name_cmd += " OR name LIKE $name ESCAPE '$' OR desc LIKE $kanji ESCAPE '$'";
-			name_cmd += " OR alias IN (SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & $token AND name LIKE $name ESCAPE '$')";
+			name_cmd += ` OR name LIKE $name ESCAPE '$' OR desc LIKE $kanji ESCAPE '$'`;
+			name_cmd += ` OR alias IN (SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & $token AND name LIKE $name ESCAPE '$')`;
 			arg.$name = string_to_literal(name_string);
 			arg.$kanji = `%※${string_to_literal(name_string)}`;
+			// ja, name
+			if (!is_setname) {
+				let jp_list = [];
+				let jp_name = toHalfWidth(name_string.toLowerCase());
+				for (const [key, value] of Object.entries(name_table)) {
+					if (toHalfWidth(value.toLowerCase()).includes(jp_name))
+						jp_list.push(key);
+					if (jp_list.length > MAX_RESULT_LEN) {
+						jp_list.length = 0;
+						break;
+					}
+				}
+				for (let i = 0; i < jp_list.length; ++i)
+					name_cmd += ` OR datas.id=${jp_list[i]}`;
+			}
 			break;
 	}
 	return name_cmd;
