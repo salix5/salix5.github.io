@@ -94,13 +94,14 @@ function print_limit(limit) {
 		return '';
 }
 
-/** 
- *  is_equal() - case-insensitive equal
- *  @param {string} a
- *  @param {string} b
+/**
+ * is_equal() - case-insensitive equal
+ * @param {string} a 
+ * @param {string} b 
+ * @returns boolean result
  */
 function is_equal(a, b) {
-	return a.toHalfWidth().toLowerCase() === b.toHalfWidth().toLowerCase();
+	return toHalfWidth(a.toLowerCase()) === toHalfWidth(b.toLowerCase());
 }
 
 function compare_id(a, b) {
