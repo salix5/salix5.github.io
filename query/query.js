@@ -237,9 +237,9 @@ function check_str(val, limit) {
 }
 
 /**
- * server_validate1() - validate the input of query
- * @param {URLSearchParams} params 
- * @returns
+ * server_validate1() - Validate the input of query.
+ * @param {URLSearchParams} params original params
+ * @returns validated params
  */
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
@@ -462,28 +462,25 @@ function string_to_literal(str) {
 	return re_wildcard.test(str) ? str : `%${str}%`;
 }
 
-function setcode_cmd(setcode) {
-	const setcode_str1 = `(setcode & 0xfff) == (${setcode} & 0xfff) AND (setcode & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
-	const setcode_str2 = `(setcode >> 16 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 16 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
-	const setcode_str3 = `(setcode >> 32 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 32 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
-	const setcode_str4 = `(setcode >> 48 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 48 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
-	let ret = `(${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4})`;
-	return ret;
-}
-
-// return: name_cmd
 // en: table, ja: table, zh: query
-function process_name(locale, str_name, arg) {
-	if (!str_name)
+/**
+ * process_name() - Generate the name condition of a statement.
+ * @param {string} locale 
+ * @param {string} name_string 
+ * @param {object} arg 
+ * @returns name condition
+ */
+function process_name(locale, name_string, arg) {
+	if (!name_string)
 		return "";
-	const setcode_str = ` OR ${setcode_cmd("$setcode")}`;
+	const setcode_str = ` OR ${setcode_condition("$setcode")}`;
 	let name_cmd = "";
 	switch (locale) {
 		case "en":
 			let en_list = [];
-			let str_en = str_name.toLowerCase();
+			let en_name = name_string.toLowerCase();
 			for (const [key, value] of Object.entries(name_table_en)) {
-				if (value && value.toLowerCase().includes(str_en))
+				if (value && value.toLowerCase().includes(en_name))
 					en_list.push(key);
 				if (en_list.length > MAX_RESULT_LEN) {
 					en_list.length = 0;
@@ -497,9 +494,9 @@ function process_name(locale, str_name, arg) {
 		default:
 			// ja, name
 			let jp_list = [];
-			let str_jp = str_name.toHalfWidth().toLowerCase();
+			let jp_name = name_string.toHalfWidth().toLowerCase();
 			for (const [key, value] of Object.entries(name_table)) {
-				if (value && value.toHalfWidth().toLowerCase().includes(str_jp))
+				if (value && value.toHalfWidth().toLowerCase().includes(jp_name))
 					jp_list.push(key);
 				if (jp_list.length > MAX_RESULT_LEN) {
 					jp_list.length = 0;
@@ -510,11 +507,11 @@ function process_name(locale, str_name, arg) {
 			for (let i = 0; i < jp_list.length; ++i)
 				name_cmd += ` OR datas.id=${jp_list[i]}`;
 			// zh, setcode
-			if (!re_wildcard.test(str_name)) {
+			if (!re_wildcard.test(name_string)) {
 				const mapObj = Object.create(null);
 				mapObj["$%"] = "%";
 				mapObj["$_"] = "_";
-				let real_str = str_name.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
+				let real_str = name_string.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
 				for (const [key, value] of Object.entries(setname)) {
 					if (key.toLowerCase() === real_str) {
 						name_cmd += setcode_str;
@@ -526,18 +523,18 @@ function process_name(locale, str_name, arg) {
 			// zh, name
 			name_cmd += " OR name LIKE $name ESCAPE '$' OR desc LIKE $kanji ESCAPE '$'";
 			name_cmd += " OR alias IN (SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & $token AND name LIKE $name ESCAPE '$')";
-			arg.$name = string_to_literal(str_name);
-			arg.$kanji = `%※${string_to_literal(str_name)}`;
+			arg.$name = string_to_literal(name_string);
+			arg.$kanji = `%※${string_to_literal(name_string)}`;
 			break;
 	}
 	return name_cmd;
 }
 
 /**
- * param_to_condition() - parse param into sqlite command
+ * param_to_condition() - Parse param into sqlite statement condition.
  * @param {URLSearchParams} params 
  * @param {object} arg 
- * @returns 
+ * @returns sqlite statement condition
  */
 function param_to_condition(params, arg) {
 	let qstr = "";

@@ -15,7 +15,7 @@ let SQL = null;
 let db = null, db2 = null;
 
 /**
- * query() - query cards and push into ret
+ * query() - Query cards and push into ret.
  * @param {string} qstr sqlite command
  * @param {object} arg binding object
  * @param {Array} ret result
@@ -28,7 +28,7 @@ function query(qstr, arg, ret) {
 }
 
 /**
- * print_db_link() - return the link to DB page
+ * print_db_link() - Return the link to DB page.
  * @param {number} cid database id
  * @param {number} ot OCT/TCG tag
  * @returns page address
@@ -41,7 +41,7 @@ function print_db_link(cid, ot) {
 }
 
 /**
- * print_wiki_link() - return the link to Yugipedia page
+ * print_wiki_link() - Return the link to Yugipedia page.
  * @param {number} id card id
  * @returns page address
  */
@@ -50,7 +50,7 @@ function print_wiki_link(id) {
 }
 
 /**
- * print_qa_link() - return the link to Q&A page
+ * print_qa_link() - Return the link to Q&A page.
  * @param {number} cid database id
  * @returns page address
  */
@@ -59,7 +59,7 @@ function print_qa_link(cid) {
 }
 
 /**
- * is_alternative() - check if the card is an alternative artwork card
+ * is_alternative() - Check if the card is an alternative artwork card.
  * @param {object} card card object
  * @returns boolean result
  */
@@ -73,8 +73,8 @@ function is_alternative(card) {
 }
 
 /**
- * is_released() - check if the card has an official card name
- * @param {object} card 
+ * is_released() - Check if the card has an official card name.
+ * @param {object} card card object
  * @returns boolean result
  */
 function is_released(card) {
@@ -82,7 +82,21 @@ function is_released(card) {
 }
 
 /**
- * print_data() - print card data (without Link Marker)
+ * setcode_condition() - Generate the setcode condition of a statement.
+ * @param {number|string} setcode setcode or binding string
+ * @returns setcode condition
+ */
+function setcode_condition(setcode) {
+	const setcode_str1 = `(setcode & 0xfff) == (${setcode} & 0xfff) AND (setcode & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	const setcode_str2 = `(setcode >> 16 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 16 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	const setcode_str3 = `(setcode >> 32 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 32 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	const setcode_str4 = `(setcode >> 48 & 0xfff) == (${setcode} & 0xfff) AND (setcode >> 48 & (${setcode} & 0xf000)) == (${setcode} & 0xf000)`;
+	let ret = `(${setcode_str1} OR ${setcode_str2} OR ${setcode_str3} OR ${setcode_str4})`;
+	return ret;
+}
+
+/**
+ * print_data() - Print the card data (without Link Marker).
  * @param {object} card card object
  * @param {string} newline newline char
  * @returns card data
