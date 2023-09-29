@@ -17,7 +17,7 @@ let db = null, db2 = null;
 /**
  * query() - Query cards and push into ret.
  * @param {string} qstr sqlite command
- * @param {object} arg binding object
+ * @param {Object} arg binding object
  * @param {Array} ret result
  */
 function query(qstr, arg, ret) {
@@ -60,7 +60,7 @@ function print_qa_link(cid) {
 
 /**
  * is_alternative() - Check if the card is an alternative artwork card.
- * @param {object} card card object
+ * @param {Object} card card object
  * @returns boolean result
  */
 function is_alternative(card) {
@@ -74,7 +74,7 @@ function is_alternative(card) {
 
 /**
  * is_released() - Check if the card has an official card name.
- * @param {object} card card object
+ * @param {Object} card card object
  * @returns boolean result
  */
 function is_released(card) {
@@ -97,7 +97,7 @@ function setcode_condition(setcode) {
 
 /**
  * print_data() - Print the card data (without Link Marker).
- * @param {object} card card object
+ * @param {Object} card card object
  * @param {string} newline newline char
  * @returns card data
  */

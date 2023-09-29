@@ -476,7 +476,7 @@ function string_to_literal(str) {
  * process_name() - Generate the name condition of a statement.
  * @param {string} locale 
  * @param {string} name_string 
- * @param {object} arg 
+ * @param {Object} arg 
  * @returns name condition
  */
 function process_name(locale, name_string, arg) {
@@ -546,7 +546,7 @@ function process_name(locale, name_string, arg) {
 /**
  * param_to_condition() - Parse param into sqlite statement condition.
  * @param {URLSearchParams} params 
- * @param {object} arg 
+ * @param {Object} arg 
  * @returns sqlite statement condition
  */
 function param_to_condition(params, arg) {
@@ -559,6 +559,7 @@ function param_to_condition(params, arg) {
 		arg.$id = id;
 		return qstr;
 	}
+
 	qstr += artwork_filter;
 	// pack
 	let pack = params.get("pack");
@@ -730,7 +731,7 @@ function param_to_condition(params, arg) {
 				qstr += " AND def == -2";
 			}
 			else if (def1 === -2) {
-				qstr += " AND def == atk";
+				qstr += " AND def == atk AND def >= 0";
 			}
 			else {
 				qstr += " AND def >= $def1";
