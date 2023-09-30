@@ -310,11 +310,18 @@ function query_db(db, qstr, arg, ret) {
 	}
 
 	while (stmt.step()) {
-		let card = stmt.getAsObject();
-		// real_id
+		let cdata = stmt.getAsObject();
+		let card = Object.create(null);
+
+		// basic
+		card.id = cdata.id;
+		card.ot = cdata.ot;
+		card.alias = cdata.alias;
+		card.setcode = cdata.setcode;
+		card.type = cdata.type;
 		card.real_id = is_alternative(card) ? card.alias : card.id;
 
-		// spell & trap reset data
+		// copy data
 		if (card.type & (TYPE_SPELL | TYPE_TRAP)) {
 			card.atk = 0;
 			card.def = 0;
@@ -322,10 +329,21 @@ function query_db(db, qstr, arg, ret) {
 			card.race = 0;
 			card.attribute = 0;
 		}
-		else if (card.type & TYPE_PENDULUM) {
-			card.scale = (card.level >> 24) & 0xff;
-			card.level = card.level & 0xff;
+		else {
+			card.atk = cdata.atk;
+			card.def = cdata.def;
+			card.race = cdata.race;
+			card.attribute = cdata.attribute;
+			if (card.type & TYPE_PENDULUM) {
+				card.scale = (cdata.level >> 24) & 0xff;
+				card.level = cdata.level & 0xff;
+			}
+			else {
+				card.level = cdata.level;
+			}
 		}
+		card.name = cdata.name;
+		card.desc = cdata.desc;
 
 		// color
 		if (card.type & TYPE_MONSTER) {
