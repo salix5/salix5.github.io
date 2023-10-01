@@ -57,6 +57,12 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/10/1  
+Visas相關字段改回前一版本  
+ヴィサス：維薩思 → 維薩斯  
+ハート：哈忒 → 哈特  
+ヴェーダ：韋陀 → 吠陀
+
 23/9/29  
 更新：MD 10月禁卡表
 
@@ -105,8 +111,6 @@ VJMP(10月)：救援刺蝟
 VJMP(9月)：冰魔龍 光槍龍
 
 23/7/1  
-ヴィサス：維薩思  
-ハート：哈忒  
 復刻更新：23TP Vol.3
 
 23/6/25  
