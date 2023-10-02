@@ -29,15 +29,12 @@ function query(qstr, arg, ret) {
 
 /**
  * print_db_link() - Return the link to DB page.
- * @param {number} cid database id
- * @param {number} ot OCT/TCG tag
+ * @param {number} cid 
+ * @param {string} request_locale 
  * @returns page address
  */
-function print_db_link(cid, ot) {
-	let locale = "ja";
-	if (ot === 2)
-		locale = "en";
-	return `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${cid}&request_locale=${locale}`;
+function print_db_link(cid, request_locale) {
+	return `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${cid}&request_locale=${request_locale}`;
 }
 
 /**
