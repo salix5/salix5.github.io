@@ -225,7 +225,8 @@ function create_rows(card, pack) {
 
 		if (card.cid) {
 			str_link = card.jp_name ? card.jp_name : card.en_name;
-			db_url = print_db_link(card.cid, card.ot);
+			let request_locale = (card.ot === 2) ? 'en' : 'ja';
+			db_url = print_db_link(card.cid, request_locale);
 		}
 		else if (card.cid === 0) {
 			str_link = card.jp_name ? card.jp_name : card.en_name;
