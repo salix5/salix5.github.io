@@ -111,35 +111,34 @@ function compare_id(a, b) {
 function compare_card() {
 	const name = check_str(current_params.get("cname"), NAME_LIMIT);
 	const locale = check_str(current_params.get("locale"), LOCALE_LIMIT);
+	const zh_collator = new Intl.Collator('zh-Hant');
 
 	return function (a, b) {
 		if (locale === 'en') {
-			if (a.en_name && is_equal(a.en_name, name)) {
+			let match1 = (a.en_name && is_equal(a.en_name, name)) || (a.md_name_en && is_equal(a.md_name_en, name));
+			let match2 = (b.en_name && is_equal(b.en_name, name)) || (b.md_name_en && is_equal(b.md_name_en, name));
+			if (match1 && match2)
+				return 0;
+			else if (match1)
 				return -1;
-			}
-			else if (b.en_name && is_equal(b.en_name, name)) {
+			else if (match2)
 				return 1;
-			}
-			if (a.md_name_en && is_equal(a.md_name_en, name)) {
-				return -1;
-			}
-			else if (b.md_name_en && is_equal(b.md_name_en, name)) {
-				return 1;
-			}
 		}
 		else {
-			if (is_equal(a.name, name)) {
+			let match1 = (a.jp_name && is_equal(a.jp_name, name)) || (a.md_name_jp && is_equal(a.md_name_jp, name));
+			let match2 = (b.jp_name && is_equal(b.jp_name, name)) || (b.md_name_jp && is_equal(b.md_name_jp, name));
+			if (is_equal(a.name, name) && is_equal(b.name, name))
+				return 0;
+			else if (is_equal(a.name, name))
 				return -1;
-			}
-			else if (is_equal(b.name, name)) {
+			else if (is_equal(b.name, name))
 				return 1;
-			}
-			else if (a.jp_name && is_equal(a.jp_name, name)) {
+			else if (match1 && match2)
+				return 0;
+			else if (match1)
 				return -1;
-			}
-			else if (b.jp_name && is_equal(b.jp_name, name)) {
+			else if (match2)
 				return 1;
-			}
 		}
 
 		if (a.color !== b.color) {
@@ -149,7 +148,7 @@ function compare_card() {
 			return b.level - a.level;
 		}
 		else {
-			return a.name.localeCompare(b.name, 'zh-Hant');
+			return zh_collator.compare(a.name, b.name);
 		}
 	}
 }

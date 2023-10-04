@@ -400,8 +400,13 @@ function query_db(db, qstr, arg, ret) {
 		}
 		if (typeof cid_table[card.real_id] === "number")
 			card.cid = cid_table[card.real_id];
-		if (name_table[card.real_id])
-			card.jp_name = name_table[card.real_id];
+
+		if (name_table[card.real_id]) {
+			if (card.ot === 2)
+				card.md_nmae_jp = name_table[card.real_id];
+			else
+				card.jp_name = name_table[card.real_id];
+		}
 
 		if (name_table_en[card.real_id])
 			card.en_name = name_table_en[card.real_id];
