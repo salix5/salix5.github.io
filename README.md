@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/10/2  
+復刻更新：23TP Vol.4
+
 23/10/1  
 Visas相關字段改回前一版本  
 ヴィサス：維薩思 → 維薩斯  
