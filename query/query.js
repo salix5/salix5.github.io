@@ -130,6 +130,8 @@ const marker_list = [
 	LINK_MARKER_BOTTOM_RIGHT,
 ];
 
+const cid_to_id = inverse_mapping(cid_table);
+
 /**
  * toHalfWidth()
  * @param {string} str
@@ -146,6 +148,17 @@ function toHalfWidth(str) {
  */
 function toFullWidth(str) {
 	return str.replace(/[A-Za-z0-9]/g, (s) => String.fromCharCode(s.charCodeAt(0) + 0xFEE0));
+}
+
+function inverse_mapping(table) {
+	const inverse = Object.create(null);
+	for (const [key, value] of Object.entries(table)) {
+		if (inverse[value]) {
+			return null;
+		}
+		inverse[value] = key;
+	}
+	return inverse;
 }
 
 function is_locale(x) {
@@ -488,9 +501,9 @@ function process_name(locale, name_string, arg) {
 		case 'en':
 			let en_list = [];
 			let en_name = name_string.toLowerCase();
-			for (const [key, value] of Object.entries(name_table_en)) {
-				if (value.toLowerCase().includes(en_name))
-					en_list.push(key);
+			for (const [cid, name] of Object.entries(name_table_en)) {
+				if (name.toLowerCase().includes(en_name))
+					en_list.push(cid_to_id[cid]);
 				if (en_list.length > MAX_RESULT_LEN) {
 					en_list.length = 0;
 					break;
@@ -527,9 +540,9 @@ function process_name(locale, name_string, arg) {
 			if (!is_setname) {
 				let jp_list = [];
 				let jp_name = toHalfWidth(name_string.toLowerCase());
-				for (const [key, value] of Object.entries(name_table)) {
-					if (toHalfWidth(value.toLowerCase()).includes(jp_name))
-						jp_list.push(key);
+				for (const [cid, name] of Object.entries(name_table)) {
+					if (toHalfWidth(name.toLowerCase()).includes(jp_name))
+						jp_list.push(cid_to_id[cid]);
 					if (jp_list.length > MAX_RESULT_LEN) {
 						jp_list.length = 0;
 						break;
@@ -948,8 +961,9 @@ function get_single_card(cdata) {
 	if (list_tmp.length === 1)
 		return [list_tmp[0], list_tmp.length];
 
-	let nid = Object.keys(name_table).find(key => name_table[key] ? toHalfWidth(name_table[key]) === toHalfWidth(cdata) : false);
-	if (nid && nid > 0) {
+	let cid = Object.keys(name_table).find(key => name_table[key] ? toHalfWidth(name_table[key]) === toHalfWidth(cdata) : false);
+	if (cid) {
+		let nid = cid_to_id[cid];
 		qstr = `${qstr0} AND datas.id == $nid;`;
 		arg.$nid = nid;
 		query(qstr, arg, list_tmp);
