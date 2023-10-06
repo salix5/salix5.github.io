@@ -2,7 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "WPP4#8";
+const last_pack = "WPP4#9";
 const ID_BLACK_LUSTER_SOLDIER = 5405695;
 
 const stmt_default = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts`
@@ -398,23 +398,25 @@ function query_db(db, qstr, arg, ret) {
 		else {
 			card.color = -1;
 		}
-		if (typeof cid_table[card.real_id] === "number")
+		if (typeof cid_table[card.real_id] === 'number') {
 			card.cid = cid_table[card.real_id];
+			if (name_table[card.cid]) {
+				if (card.ot === 2)
+					card.md_nmae_jp = name_table[card.cid];
+				else
+					card.jp_name = name_table[card.cid];
+			}
+			if (name_table_kr[card.cid])
+				card.kr_name = name_table_kr[card.cid];
 
-		if (name_table[card.real_id]) {
-			if (card.ot === 2)
-				card.md_nmae_jp = name_table[card.real_id];
-			else
-				card.jp_name = name_table[card.real_id];
+			if (name_table_en[card.cid])
+				card.en_name = name_table_en[card.cid];
+			else if (md_name_en[card.cid])
+				card.md_name_en = md_name_en[card.cid];
+
+			if (md_name[card.cid])
+				card.md_name = md_name[card.cid];
 		}
-
-		if (name_table_en[card.real_id])
-			card.en_name = name_table_en[card.real_id];
-		else if (md_name_en[card.real_id])
-			card.md_name_en = md_name_en[card.real_id];
-
-		if (md_name[card.real_id])
-			card.md_name = md_name[card.real_id];
 
 		// pack_id
 		if (card.id <= 99999999) {
