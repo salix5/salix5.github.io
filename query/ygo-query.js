@@ -4,10 +4,11 @@ const load_md = true;
 const load_prerelease = true;
 const last_pack = "WPP4#9";
 const ID_BLACK_LUSTER_SOLDIER = 5405695;
+const ID_TYLER = 68811206;
 
 const stmt_default = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts`
-	+ ` WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN}`;
-const stmt_no_alias = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND NOT type & ${TYPE_TOKEN} AND alias == 0`;
+	+ ` WHERE datas.id == texts.id AND datas.id != ${ID_TYLER} AND NOT type & ${TYPE_TOKEN}`;
+const stmt_no_alias = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND datas.id != ${ID_TYLER} AND NOT type & ${TYPE_TOKEN} AND alias == 0`;
 const artwork_filter = ` AND (datas.id == ${ID_BLACK_LUSTER_SOLDIER} OR abs(datas.id - alias) >= 10)`;
 const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM})`;
 
