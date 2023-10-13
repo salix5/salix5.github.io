@@ -7,6 +7,7 @@ const pre_release = {
 	TW01: 100211001,
 
 	// TCG
+	_AGOV: 101202001,
 };
 
 const wiki_link = {
@@ -17,4 +18,5 @@ const wiki_link = {
 	TW01: "https://yugioh-wiki.net/index.php?TERMINAL%20WORLD",
 
 	// TCG
+	_AGOV: "https://yugipedia.com/wiki/Age_of_Overlord",
 };
