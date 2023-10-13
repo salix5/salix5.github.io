@@ -13,7 +13,7 @@ const artwork_filter = ` AND (datas.id == ${ID_BLACK_LUSTER_SOLDIER} OR abs(data
 const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM})`;
 
 let SQL = null;
-let db = null, db2 = null;
+const db_list = [];
 
 /**
  * query() - Query cards and push into ret.
@@ -23,9 +23,9 @@ let db = null, db2 = null;
  */
 function query(qstr, arg, ret) {
 	ret.length = 0;
-	query_db(db, qstr, arg, ret);
-	if (load_prerelease)
-		query_db(db2, qstr, arg, ret);
+	for (const db of db_list) {
+		query_db(db, qstr, arg, ret);
+	}
 }
 
 /**
@@ -214,15 +214,17 @@ if (load_prerelease) {
 	fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
 		.then(([sql, file1, file2]) => {
 			SQL = sql;
-			db = new SQL.Database(file1);
-			db2 = new SQL.Database(file2);
+			db_list.push(new SQL.Database(file1));
+			db_list.push(new SQL.Database(file2));
+			return true;
 		}));
 }
 else {
 	fetch_list.push(Promise.all([initSqlJs(config), promise_db])
 		.then(([sql, file1]) => {
 			SQL = sql;
-			db = new SQL.Database(file1);
+			db_list.push(new SQL.Database(file1));
+			return true;
 		}));
 }
 
@@ -275,6 +277,7 @@ const db_ready = Promise.all(fetch_list)
 				localStorage.setItem("last_pack", last_pack);
 			} catch (ex) {
 			}
+			return true;
 		}
 	});
 
