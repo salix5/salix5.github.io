@@ -5,6 +5,7 @@ const pre_release = {
 
 	PHNI: 101203001,
 	TW01: 100211001,
+	QCDB: 100212001,
 
 	// TCG
 	_AGOV: 101202001,
@@ -16,6 +17,7 @@ const wiki_link = {
 
 	PHNI: "https://yugioh-wiki.net/index.php?PHANTOM%20NIGHTMARE",
 	TW01: "https://yugioh-wiki.net/index.php?TERMINAL%20WORLD",
+	QCDB: "https://yugioh-wiki.net/index.php?QUARTER%20CENTURY%20DUELIST%20BOX",
 
 	// TCG
 	_AGOV: "https://yugipedia.com/wiki/Age_of_Overlord",
