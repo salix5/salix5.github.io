@@ -2,7 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "WPP4#9";
+const last_pack = "WPP4#10";
 const ID_BLACK_LUSTER_SOLDIER = 5405695;
 const ID_TYLER = 68811206;
 
