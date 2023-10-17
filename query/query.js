@@ -266,14 +266,22 @@ function check_str(val, limit) {
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
 	// id, primary key
-	if (re_id.test(params.get("code"))) {
+	if (params.get("code") && re_id.test(params.get("code"))) {
 		valid_params.set("code", params.get("code"));
 	}
 	else {
-		let keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
-		let cname = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
-		let locale = check_str(params.get("locale"), LOCALE_LIMIT);
-		let desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
+		let keyword = '';
+		if (params.get("keyword"))
+			keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
+		let cname = '';
+		if (params.get("cname"))
+			check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
+		let locale = '';
+		if (params.get("locale"))
+			locale = check_str(params.get("locale"), LOCALE_LIMIT);
+		let desc = '';
+		if (params.get("desc"))
+			desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
 		if (keyword) {
 			valid_params.set("keyword", keyword);
 		}
@@ -285,7 +293,10 @@ function server_validate1(params) {
 			if (desc)
 				valid_params.set("desc", desc);
 		}
-		let pack = check_str(params.get("pack"), PACK_LIMIT);
+
+		let pack = '';
+		if (params.get("pack"))
+			pack = check_str(params.get("pack"), PACK_LIMIT);
 		if (is_pack(pack))
 			valid_params.set("pack", pack);
 
@@ -327,7 +338,9 @@ function server_validate1(params) {
 		}
 
 		if (monster_type) {
-			let mat = check_str(params.get("mat"), NAME_LIMIT).replace(/(^|[^\$])[%_]/g, "");
+			let mat = '';
+			if (params.get("mat"))
+				mat = check_str(params.get("mat"), NAME_LIMIT).replace(/(^|[^\$])[%_]/g, "");
 			if (mat)
 				valid_params.set("mat", mat);
 			// attr
@@ -340,20 +353,15 @@ function server_validate1(params) {
 				if (is_valid(val, "race"))
 					valid_params.append("race", val);
 			}
-			// lv
-			// scale
-			let lv1 = params.get("lv1");
-			let lv2 = params.get("lv2");
-			if (re_value.test(lv1))
-				valid_params.set("lv1", lv1);
-			if (re_value.test(lv2))
-				valid_params.set("lv2", lv2);
-			let sc1 = params.get("sc1");
-			let sc2 = params.get("sc2");
-			if (re_value.test(sc1))
-				valid_params.set("sc1", sc1);
-			if (re_value.test(sc2))
-				valid_params.set("sc2", sc2);
+			// lv, scale
+			if (params.get("lv1") && re_value.test(params.get("lv1")))
+				valid_params.set("lv1", params.get("lv1"));
+			if (params.get("lv2") && re_value.test(params.get("lv2")))
+				valid_params.set("lv2", params.get("lv2"));
+			if (params.get("sc1") && re_value.test(params.get("sc1")))
+				valid_params.set("sc1", params.get("sc1"));
+			if (params.get("sc2") && re_value.test(params.get("sc2")))
+				valid_params.set("sc2", params.get("sc2"));
 
 			for (const val of params.getAll("marker")) {
 				if (is_valid(val, "marker"))
@@ -388,9 +396,8 @@ function server_validate1(params) {
 		}
 	}
 	// page
-	let page = params.get("page");
-	if (re_page.test(page))
-		valid_params.set("page", page);
+	if (params.get("page") && re_page.test(params.get("page")))
+		valid_params.set("page", params.get("page"));
 	return valid_params;
 }
 
