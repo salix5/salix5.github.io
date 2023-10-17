@@ -190,26 +190,6 @@ function is_range_mode(fr) {
 	return fr === null || fr >= 0;
 }
 
-function is_page(x) {
-	return x !== null && x >= 1 && x <= 1000;
-}
-
-function is_normal_atk(x) {
-	return x !== null && x >= 0;
-}
-
-function is_modulus(x) {
-	return x !== null && x >= 0 && x <= 999;
-}
-
-function is_lv(x) {
-	return x !== null && x >= 1 && x <= 13;
-}
-
-function is_scale(x) {
-	return x !== null && x >= 0 && x <= 13;
-}
-
 function is_pack(x) {
 	switch (x) {
 		case "o":
