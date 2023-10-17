@@ -255,7 +255,7 @@ function server_validate1(params) {
 			keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
 		let cname = '';
 		if (params.get("cname"))
-			check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
+			cname = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
 		let locale = '';
 		if (params.get("locale"))
 			locale = check_str(params.get("locale"), LOCALE_LIMIT);
@@ -391,7 +391,7 @@ function server_validate2(params) {
 		keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
 	let cname = '';
 	if (params.get("cname"))
-		check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
+		cname = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
 	let locale = '';
 	if (params.get("locale"))
 		locale = check_str(params.get("locale"), LOCALE_LIMIT);
