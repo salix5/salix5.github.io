@@ -266,8 +266,8 @@ function check_str(val, limit) {
 function server_validate1(params) {
 	let valid_params = new URLSearchParams();
 	// id, primary key
-	if (re_id.test(params.get("cid"))) {
-		valid_params.set("cid", params.get("cid"));
+	if (re_id.test(params.get("code"))) {
+		valid_params.set("code", params.get("code"));
 	}
 	else {
 		let keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
@@ -565,7 +565,7 @@ function process_name(locale, name_string, arg) {
 function param_to_condition(params, arg) {
 	let qstr = "";
 	// id, primary key
-	let id = Number.parseInt(params.get("cid"), 10);
+	let id = Number.parseInt(params.get("code"), 10);
 	if (id) {
 		text_id.value = id;
 		qstr += " AND datas.id == $id;";

@@ -192,7 +192,7 @@ function create_rows(card, pack) {
 	img_card.onerror = imgError;
 
 	if (is_real(card.id, card.type)) {
-		let params = new URLSearchParams({ "cid": card.id.toString().padStart(8, '0') });
+		let params = new URLSearchParams({ "code": card.id.toString().padStart(8, '0') });
 		let link_id = document.createElement('a');
 		link_id.href = `https://salix5.github.io/query/?${params.toString()}`;
 		link_id.target = '_blank';
