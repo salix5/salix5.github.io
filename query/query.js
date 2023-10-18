@@ -475,7 +475,6 @@ function string_to_literal(str) {
 	return re_wildcard.test(str) ? str : `%${str}%`;
 }
 
-// en: table, ja: table, zh: query
 /**
  * process_name() - Generate the name condition of a statement.
  * @param {string} locale 
@@ -530,9 +529,9 @@ function process_name(locale, name_string, arg) {
 			// ja, name
 			if (!is_setname) {
 				let jp_list = [];
-				let jp_name = toHalfWidth(name_string.toLowerCase());
+				let jp_name = toHalfWidth(name_string);
 				for (const [cid, name] of Object.entries(name_table)) {
-					if (toHalfWidth(name.toLowerCase()).includes(jp_name))
+					if (toHalfWidth(name).includes(jp_name))
 						jp_list.push(cid_to_id[cid]);
 					if (jp_list.length > MAX_RESULT_LEN) {
 						jp_list.length = 0;
