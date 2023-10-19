@@ -4,13 +4,17 @@ const load_md = true;
 const load_prerelease = true;
 const last_pack = "WPP4#10";
 const ID_BLACK_LUSTER_SOLDIER = 5405695;
-const ID_TYLER = 68811206;
+const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
 
-const stmt_default = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts`
-	+ ` WHERE datas.id == texts.id AND datas.id != ${ID_TYLER} AND NOT type & ${TYPE_TOKEN}`;
-const stmt_no_alias = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND datas.id != ${ID_TYLER} AND NOT type & ${TYPE_TOKEN} AND alias == 0`;
+const select_all = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id`;
+const select_id = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id`;
+
+const base_filter = ` AND datas.id != ${ID_TYLER_THE_GREAT_WARRIOR} AND NOT type & ${TYPE_TOKEN}`;
 const artwork_filter = ` AND (datas.id == ${ID_BLACK_LUSTER_SOLDIER} OR abs(datas.id - alias) >= 10)`;
 const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM})`;
+
+const stmt_default = `${select_all}${base_filter}`;
+const stmt_no_alias = `${select_id}${base_filter} AND alias == 0`;
 
 let SQL = null;
 const db_list = [];
