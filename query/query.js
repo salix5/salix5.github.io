@@ -523,7 +523,7 @@ function process_name(locale, name_string, arg) {
 			}
 			// zh, name
 			name_cmd += ` OR name LIKE $name ESCAPE '$' OR desc LIKE $kanji ESCAPE '$'`;
-			name_cmd += ` OR alias IN (SELECT datas.id FROM datas, texts WHERE datas.id == texts.id AND alias == 0 AND NOT type & $token AND name LIKE $name ESCAPE '$')`;
+			name_cmd += ` OR alias IN (${stmt_no_alias} AND name LIKE $name ESCAPE '$')`;
 			arg.$name = string_to_literal(name_string);
 			arg.$kanji = `%※${string_to_literal(name_string)}`;
 			// ja, name
