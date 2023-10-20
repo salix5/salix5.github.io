@@ -530,7 +530,7 @@ function process_name(locale, name_string, arg) {
 			if (!is_setname) {
 				let jp_list = [];
 				let jp_name = toHalfWidth(name_string);
-				for (const [cid, name] of Object.entries(name_table)) {
+				for (const [cid, name] of Object.entries(name_table_jp)) {
 					if (toHalfWidth(name).includes(jp_name))
 						jp_list.push(cid_to_id[cid]);
 					if (jp_list.length > MAX_RESULT_LEN) {
@@ -951,7 +951,7 @@ function get_single_card(cdata) {
 	if (list_tmp.length === 1)
 		return [list_tmp[0], list_tmp.length];
 
-	let cid = Object.keys(name_table).find(key => name_table[key] ? toHalfWidth(name_table[key]) === toHalfWidth(cdata) : false);
+	let cid = Object.keys(name_table_jp).find(key => name_table_jp[key] ? toHalfWidth(name_table_jp[key]) === toHalfWidth(cdata) : false);
 	if (cid) {
 		let nid = cid_to_id[cid];
 		qstr = `${qstr0} AND datas.id == $nid;`;
