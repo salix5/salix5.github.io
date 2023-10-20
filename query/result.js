@@ -219,16 +219,26 @@ function create_rows(card, pack) {
 
 	// db link
 	if (!(card.type & TYPE_TOKEN)) {
-		let str_link = '';
+		let link_db_text = '';
 		let db_url = '';
 
 		if (card.cid) {
-			str_link = card.jp_name ? card.jp_name : card.en_name;
+			if (card.jp_name)
+				link_db_text = card.jp_name;
+			else if (card.md_name_jp)
+				link_db_text = `${card.md_name_jp}  (MD)`;
+			else
+				link_db_text = card.en_name;
 			let request_locale = (card.ot === 2) ? 'en' : 'ja';
 			db_url = print_db_link(card.cid, request_locale);
 		}
 		else if (card.cid === 0) {
-			str_link = card.jp_name ? card.jp_name : card.en_name;
+			if (card.jp_name)
+				link_db_text = card.jp_name;
+			else if (card.md_name_jp)
+				link_db_text = `${card.md_name_jp}  (MD)`;
+			else
+				link_db_text = card.en_name;
 			db_url = print_wiki_link(card.id);
 		}
 		else {
@@ -243,7 +253,7 @@ function create_rows(card, pack) {
 				str_site = 'Wiki';
 				str_pack = pre_pack;
 			}
-			str_link = `${str_site}: ${str_pack}`;
+			link_db_text = `${str_site}: ${str_pack}`;
 			db_url = wiki_link[pre_pack];
 		}
 		let div_db = document.createElement('div');
@@ -251,15 +261,15 @@ function create_rows(card, pack) {
 		link_db.href = db_url;
 		link_db.target = '_blank';
 		link_db.rel = 'noreferrer';
-		link_db.textContent = str_link;
+		link_db.textContent = link_db_text;
 		div_db.appendChild(link_db);
 		div_alias.appendChild(div_db);
-		if (card.jp_name && (card.en_name || card.md_name_en)) {
+		if ((card.jp_name || card.md_name_jp) && (card.en_name || card.md_name_en)) {
 			let div_en = document.createElement('div');
 			if (card.en_name)
 				div_en.textContent = card.en_name;
 			else
-				div_en.textContent = `${card.md_name_en} (MD)`;
+				div_en.textContent = `${card.md_name_en}  (MD)`;
 			div_alias.appendChild(div_en);
 		}
 		if (card.md_name) {

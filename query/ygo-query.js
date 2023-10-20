@@ -234,7 +234,7 @@ else {
 
 // JSON
 const cid_table = Object.create(null);
-const name_table = Object.create(null);
+const name_table_jp = Object.create(null);
 const name_table_en = Object.create(null);
 const pack_list = Object.create(null);
 const setname = Object.create(null);
@@ -242,7 +242,7 @@ const ltable = Object.create(null);
 
 if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
-	Object.assign(name_table, JSON.parse(localStorage.getItem("name_table")));
+	Object.assign(name_table_jp, JSON.parse(localStorage.getItem("name_table")));
 	Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
 	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
 	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
@@ -251,7 +251,7 @@ if (localStorage.getItem("last_pack") === last_pack) {
 else {
 	localStorage.clear();
 	fetch_list.push(fetch(`text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data)));
-	fetch_list.push(fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table, data)));
+	fetch_list.push(fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table_jp, data)));
 	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data)));
 	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
 	fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
@@ -261,10 +261,12 @@ else {
 // MD
 const ltable_md = Object.create(null);
 const md_name = Object.create(null);
+const md_name_jp = Object.create(null);
 const md_name_en = Object.create(null);
 if (load_md) {
 	fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
 	fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
+	fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => Object.assign(md_name_jp, data)));
 	fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
 }
 
@@ -273,7 +275,7 @@ const db_ready = Promise.all(fetch_list)
 		if (!localStorage.getItem("last_pack")) {
 			try {
 				localStorage.setItem("cid_table", JSON.stringify(cid_table));
-				localStorage.setItem("name_table", JSON.stringify(name_table));
+				localStorage.setItem("name_table", JSON.stringify(name_table_jp));
 				localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
 				localStorage.setItem("pack_list", JSON.stringify(pack_list));
 				localStorage.setItem("setname", JSON.stringify(setname));
@@ -408,12 +410,10 @@ function query_db(db, qstr, arg, ret) {
 		}
 		if (typeof cid_table[card.real_id] === 'number') {
 			card.cid = cid_table[card.real_id];
-			if (name_table[card.cid]) {
-				if (card.ot === 2)
-					card.md_nmae_jp = name_table[card.cid];
-				else
-					card.jp_name = name_table[card.cid];
-			}
+			if (name_table_jp[card.cid])
+				card.jp_name = name_table_jp[card.cid];
+			else if (md_name_jp[card.cid])
+				card.md_name_jp = md_name_jp[card.cid];
 
 			if (name_table_en[card.cid])
 				card.en_name = name_table_en[card.cid];
