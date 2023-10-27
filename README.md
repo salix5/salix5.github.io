@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/10/27  
+TCG特有卡：AGOV-EN  
+フュージョン：融合 → 結合  
+
 23/10/26  
 先行卡更新：PHNI (1203)
 
@@ -162,7 +166,6 @@ TCG特有卡：更新MD的日文卡名
 
 23/5/6  
 Gold Pride：黃金榮耀  
-TCG特有卡：CYAC-EN
 
 23/4/23  
 更新：MD 5月禁卡表
@@ -201,17 +204,11 @@ VJMP特典：燃燒龍、三眼的死靈、薔薇蝶
 23/3/6  
 更新：MD 3/9禁卡表
 
-23/3/1  
-TCG特有卡：Maze of Memories
-
 23/2/21  
 VJMP(4月)：神聖魔術師
 
 23/2/19  
 復刻更新：RC04
-
-23/2/15  
-TCG特有卡：PHHY-EN
 
 23/2/14  
 レッド・デーモン：暗紅惡魔  
