@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/10/29  
+更新：MD 11月禁卡表  
+
 23/10/28  
 新增卡包：PHNI (1203)  
 復刻更新：PHNI (1203)  
