@@ -929,7 +929,7 @@ function get_single_card(cdata) {
 	arg.$link = TYPE_LINK;
 	arg.$pendulum = TYPE_PENDULUM;
 	arg.$token = TYPE_TOKEN;
-	arg.$ext = TYPE_EXT;
+	arg.$ext = TYPE_EXTRA;
 
 	let qstr = "";
 	let list_tmp = [];
@@ -1020,7 +1020,7 @@ function server_analyze2(params) {
 	arg.$link = TYPE_LINK;
 	arg.$pendulum = TYPE_PENDULUM;
 	arg.$token = TYPE_TOKEN;
-	arg.$ext = TYPE_EXT;
+	arg.$ext = TYPE_EXTRA;
 
 	params.set("begin", card_begin.id);
 	params.set("end", card_end.id);
