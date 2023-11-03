@@ -127,11 +127,11 @@ function compare_card() {
 		else {
 			let match1 = (a.jp_name && is_equal(a.jp_name, name)) || (a.md_name_jp && is_equal(a.md_name_jp, name));
 			let match2 = (b.jp_name && is_equal(b.jp_name, name)) || (b.md_name_jp && is_equal(b.md_name_jp, name));
-			if (is_equal(a.name, name) && is_equal(b.name, name))
+			if (is_equal(a.tw_name, name) && is_equal(b.tw_name, name))
 				return 0;
-			else if (is_equal(a.name, name))
+			else if (is_equal(a.tw_name, name))
 				return -1;
-			else if (is_equal(b.name, name))
+			else if (is_equal(b.tw_name, name))
 				return 1;
 			else if (match1 && match2)
 				return 0;
@@ -148,7 +148,7 @@ function compare_card() {
 			return b.level - a.level;
 		}
 		else {
-			return zh_collator.compare(a.name, b.name);
+			return zh_collator.compare(a.tw_name, b.tw_name);
 		}
 	}
 }
@@ -208,7 +208,7 @@ function create_rows(card, pack) {
 
 	let div_name = document.createElement('div');
 	let st = document.createElement('strong');
-	st.textContent = card.name;
+	st.textContent = card.tw_name;
 	div_name.appendChild(st);
 	if (card.ot === 2)
 		div_name.insertAdjacentHTML('beforeend', '<img src="icon/tcg.png" height="20" width="40">');
