@@ -898,7 +898,6 @@ function server_analyze1(params) {
 
 	let valid_params = server_validate1(params);
 	let condition = param_to_condition(valid_params, arg);
-	//qstr0 += " AND (type & $token OR abs(datas.id - alias) >= 10) AND (NOT type & $token OR alias == 0)";
 
 	result.length = 0;
 	if (condition) {
@@ -906,7 +905,7 @@ function server_analyze1(params) {
 		query(qstr_final, arg, result);
 	}
 	if (result.length === 1)
-		document.title = result[0].name;
+		document.title = result[0].tw_name;
 	show_result(valid_params);
 }
 
