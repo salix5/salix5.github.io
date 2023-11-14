@@ -188,7 +188,7 @@ function create_rows(card, pack) {
 	if (card.id <= 99999999)
 		img_card.src = `https://salix5.github.io/query-data/pics/${card.id}.jpg`;
 	else
-		img_card.src = `../cdb/pics/${card.id}.jpg`;
+		img_card.src = `../cdb/expansions/pics/${card.id}.jpg`;
 	img_card.onerror = imgError;
 
 	if (is_real(card.id, card.type)) {
