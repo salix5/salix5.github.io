@@ -7,6 +7,7 @@ const pre_release = {
 	TW01: 100211001,
 	QCDB: 100212001,
 	"24PR": 100213001,
+	LEDE: 101204001,
 
 	// TCG
 	_AGOV: 101202001,
@@ -20,6 +21,7 @@ const wiki_link = {
 	TW01: "https://yugioh-wiki.net/index.php?TERMINAL%20WORLD",
 	QCDB: "https://yugioh-wiki.net/index.php?QUARTER%20CENTURY%20DUELIST%20BOX",
 	"24PR": "https://yugioh-wiki.net/index.php?%A5%D7%A5%ED%A5%E2%A5%AB%A1%BC%A5%C9#JF24",
+	LEDE: "https://yugioh-wiki.net/index.php?LEGACY%20OF%20DESTRUCTION",
 
 	// TCG
 	_AGOV: "https://yugipedia.com/wiki/Age_of_Overlord",
