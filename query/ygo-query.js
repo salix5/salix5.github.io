@@ -209,7 +209,7 @@ const promise_db = fetch(`${domain}/cards.zip`)
 	.then(response => response.blob())
 	.then(JSZip.loadAsync)
 	.then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
-const promise_db2 = fetch(`${domain}/pre-release.cdb`)
+const promise_db2 = fetch(`${domain}/expansions/pre-release.cdb`)
 	.then(response => response.arrayBuffer())
 	.then(buf => new Uint8Array(buf));
 fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
