@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/11/18  
+先行卡更新：24PP、YOS1
+
 23/11/14  
 先行卡更新：24PR、LEDE (1204)
 
