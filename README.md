@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/11/21  
+VJMP(1月)：閃術兵器-S.P.E.C.T.R.A.
+
 23/11/18  
 先行卡更新：24PP、YOS1
 
