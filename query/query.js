@@ -889,7 +889,7 @@ function param_to_condition(params, arg) {
 
 // entrance of query
 function server_analyze1(params) {
-	let qstr0 = stmt_default;
+	let qstr0 = stmt_base;
 	let arg = new Object();
 	arg.$monster = TYPE_MONSTER;
 	arg.$link = TYPE_LINK;
