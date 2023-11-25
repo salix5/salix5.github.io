@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/11/25  
+新增卡包：TW01  
+復刻更新：TW01
+
 23/11/21  
 VJMP(1月)：閃術兵器-S.P.E.C.T.R.A.
 
@@ -104,9 +108,6 @@ VJMP(11月)：征霸龍-烈焰
 VJMP連續訂閱：廢品插座龍、廢品盔甲、魔法妖精 勃艮第  
 新增卡包：WPP4  
 復刻更新：WPP4
-
-23/9/18  
-先行卡更新：TW01
 
 23/9/17  
 復刻更新：TBC1
