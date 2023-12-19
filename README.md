@@ -57,6 +57,11 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/12/19  
+新增卡包：24PR、24PP  
+復刻更新：24PP  
+ゴーティス：游魊
+
 23/11/25  
 新增卡包：TW01  
 復刻更新：TW01
@@ -65,10 +70,10 @@ Ex.
 VJMP(1月)：閃術兵器-S.P.E.C.T.R.A.
 
 23/11/18  
-先行卡更新：24PP、YOS1
+先行卡更新：YOS1
 
 23/11/14  
-先行卡更新：24PR、LEDE (1204)
+先行卡更新：LEDE (1204)
 
 23/10/29  
 更新：MD 11月禁卡表  
