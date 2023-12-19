@@ -239,7 +239,7 @@ function create_rows(card, pack) {
 				link_db_text = `${card.md_name_jp}  (MD)`;
 			else
 				link_db_text = card.en_name;
-			db_url = print_wiki_link(card.id);
+			db_url = print_yp_link(card.id);
 		}
 		else {
 			let pre_pack = pre_id_to_pack(card.id)

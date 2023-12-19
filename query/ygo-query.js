@@ -45,12 +45,12 @@ function print_db_link(cid, request_locale) {
 }
 
 /**
- * print_wiki_link() - Return the link to Yugipedia page.
+ * print_yp_link() - Return the link to Yugipedia page.
  * @param {number} id card id
  * @returns page address
  */
-function print_wiki_link(id) {
-	return `https://yugipedia.com/wiki/${id}`;
+function print_yp_link(id) {
+	return `https://yugipedia.com/wiki/${id.toString().padStart(8, '0')}`;
 }
 
 /**
