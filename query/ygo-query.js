@@ -2,7 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "24PP#3";
+const last_pack = "24PP#4";
 const ID_BLACK_LUSTER_SOLDIER = 5405695;
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
 
