@@ -57,6 +57,10 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/12/23  
+新增卡包：QCDB  
+復刻更新：QCDB
+
 23/12/19  
 新增卡包：24PR、24PP  
 復刻更新：24PP  
