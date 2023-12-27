@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+23/12/27  
+メメント：冥銘途
+
 23/12/23  
 新增卡包：QCDB  
 復刻更新：QCDB
