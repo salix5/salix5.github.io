@@ -57,6 +57,9 @@ Ex.
 [字段對照表](https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing)
 
 ## 更新紀錄
+24/1/6  
+P.U.N.K.（パンク）：龐克  
+
 24/1/4  
 YOS1：合體術式-交閃零式
 
