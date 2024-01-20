@@ -3,10 +3,13 @@
 const load_md = true;
 const load_prerelease = true;
 const last_pack = "QCDB#6";
-const ID_BLACK_LUSTER_SOLDIER = 5405695;
-const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
 
-const select_all = `SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id`;
+// special ID
+const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
+const ID_BLACK_LUSTER_SOLDIER = 5405695;
+const CID_BLACK_LUSTER_SOLDIER = 19092;
+
+const select_all = `SELECT datas.id, ot, alias, setcode, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id`;
 const select_id = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id`;
 
 const base_filter = ` AND datas.id != ${ID_TYLER_THE_GREAT_WARRIOR} AND NOT type & ${TYPE_TOKEN}`;
@@ -22,10 +25,39 @@ let SQL = null;
 const db_list = [];
 
 /**
+ * @typedef {Object} Card
+ * @property {number} id
+ * @property {number} ot
+ * @property {number} alias
+ * @property {number} setcode
+ * @property {number} real_id - The id of real card
+ * 
+ * @property {number} type
+ * @property {number} color - Card color for sorting
+ * @property {number} atk
+ * @property {number} def
+ * @property {number} level
+ * @property {number} scale
+ * @property {number} race
+ * @property {number} attribute
+ * 
+ * @property {string} tw_name
+ * @property {string} desc
+ * 
+ * @property {number} [cid]
+ * @property {string} [en_name]
+ * @property {string} [jp_name]
+ * @property {string} [kr_name]
+ * @property {string} [md_name]
+ * @property {string} [md_name_en]
+ * @property {string} [md_name_jp]
+ */
+
+/**
  * query() - Query cards and push into ret.
  * @param {string} qstr sqlite command
- * @param {object} arg binding object
- * @param {Array} ret result
+ * @param {Object} arg binding object
+ * @param {Card[]} ret result
  */
 function query(qstr, arg, ret) {
 	ret.length = 0;
@@ -38,7 +70,7 @@ function query(qstr, arg, ret) {
  * print_db_link() - Return the link to DB page.
  * @param {number} cid 
  * @param {string} request_locale 
- * @returns page address
+ * @returns URL
  */
 function print_db_link(cid, request_locale) {
 	return `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${cid}&request_locale=${request_locale}`;
@@ -46,8 +78,8 @@ function print_db_link(cid, request_locale) {
 
 /**
  * print_yp_link() - Return the link to Yugipedia page.
- * @param {number} id card id
- * @returns page address
+ * @param {number} id
+ * @returns URL
  */
 function print_yp_link(id) {
 	return `https://yugipedia.com/wiki/${id.toString().padStart(8, '0')}`;
@@ -64,8 +96,8 @@ function print_qa_link(cid) {
 
 /**
  * is_alternative() - Check if the card is an alternative artwork card.
- * @param {object} card card object
- * @returns boolean result
+ * @param {Card} card
+ * @returns 
  */
 function is_alternative(card) {
 	if (card.id === ID_BLACK_LUSTER_SOLDIER)
@@ -76,8 +108,8 @@ function is_alternative(card) {
 
 /**
  * is_released() - Check if the card has an official card name.
- * @param {object} card card object
- * @returns boolean result
+ * @param {Card} card 
+ * @returns 
  */
 function is_released(card) {
 	return !!(card.jp_name || card.en_name);
@@ -99,7 +131,7 @@ function setcode_condition(setcode) {
 
 /**
  * print_data() - Print the card data (without Link Marker).
- * @param {object} card card object
+ * @param {Card} card
  * @param {string} newline newline char
  * @returns card data
  */
