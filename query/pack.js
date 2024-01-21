@@ -1,7 +1,7 @@
 "use strict";
 const pre_release = {
 	VJMP: 100200001,
-	YOS1: 100215001,
+	YOS1: 100296001,
 	YO08: 100216001,
 
 	LEDE: 101204001,
