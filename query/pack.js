@@ -9,6 +9,7 @@ const pre_release = {
 
 	// TCG
 	MZMI: 100217001,
+	_PHNI: 101203001,
 };
 
 const wiki_link = {
@@ -21,4 +22,5 @@ const wiki_link = {
 
 	// TCG
 	MZMI: "https://yugipedia.com/wiki/Maze_of_Millennia",
+	_PHNI: "https://yugipedia.com/wiki/Phantom_Nightmare",
 };
