@@ -299,8 +299,8 @@ function create_rows(card, pack) {
 	let lfstr_o = '';
 	let lfstr_m = '';
 	let seperator = '';
-	if (ltable[card.real_id] !== undefined)
-		lfstr_o = `OCG：${print_limit(ltable[card.real_id])}`;
+	if (ltable_ocg[card.real_id] !== undefined)
+		lfstr_o = `OCG：${print_limit(ltable_ocg[card.real_id])}`;
 	if (ltable_md[card.real_id] !== undefined) {
 		lfstr_m = `MD：${print_limit(ltable_md[card.real_id])}`;
 	}
