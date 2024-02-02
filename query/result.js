@@ -296,19 +296,24 @@ function create_rows(card, pack) {
 	div_alias.appendChild(div_id);
 
 	// limit
-	let lfstr_o = '';
-	let lfstr_m = '';
-	let seperator = '';
+	let lfstr_ocg = '';
+	let lfstr_tcg = '';
+	let lfstr_md = '';
 	if (ltable_ocg[card.real_id] !== undefined)
-		lfstr_o = `OCG：${print_limit(ltable_ocg[card.real_id])}`;
-	if (ltable_md[card.real_id] !== undefined) {
-		lfstr_m = `MD：${print_limit(ltable_md[card.real_id])}`;
-	}
-	if (lfstr_o && lfstr_m)
-		seperator = ' / ';
-	if (lfstr_o || lfstr_m) {
+		lfstr_ocg = `OCG：${print_limit(ltable_ocg[card.real_id])}`;
+	else
+		lfstr_ocg = `OCG：-`;
+	if (ltable_tcg[card.real_id] !== undefined)
+		lfstr_tcg = `TCG：${print_limit(ltable_tcg[card.real_id])}`;
+	else
+		lfstr_tcg = `TCG：-`;
+	if (ltable_md[card.real_id] !== undefined)
+		lfstr_md = `MD：${print_limit(ltable_md[card.real_id])}`;
+	else
+		lfstr_md = `MD：-`;
+	if (ltable_ocg[card.real_id] !== undefined || ltable_tcg[card.real_id] !== undefined || ltable_md[card.real_id] !== undefined) {
 		let div_limit = document.createElement('div');
-		div_limit.innerHTML = `${lfstr_o}${seperator}${lfstr_m}`;
+		div_limit.innerHTML = `${lfstr_ocg} / ${lfstr_tcg} / ${lfstr_md}`;
 		div_alias.appendChild(div_limit);
 	}
 	cell_data.appendChild(div_alias);
