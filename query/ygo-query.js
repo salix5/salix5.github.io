@@ -261,7 +261,8 @@ const name_table_jp = Object.create(null);
 const name_table_en = Object.create(null);
 const pack_list = Object.create(null);
 const setname = Object.create(null);
-const ltable = Object.create(null);
+const ltable_ocg = Object.create(null);
+const ltable_tcg = Object.create(null);
 
 if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
@@ -269,7 +270,8 @@ if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
 	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
 	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
-	Object.assign(ltable, JSON.parse(localStorage.getItem("ltable")));
+	Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
+	Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
 }
 else {
 	localStorage.clear();
@@ -278,7 +280,8 @@ else {
 	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data)));
 	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
 	fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
-	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable, data)));
+	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
+	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
 }
 
 // MD
@@ -302,7 +305,8 @@ const db_ready = Promise.all(fetch_list)
 				localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
 				localStorage.setItem("pack_list", JSON.stringify(pack_list));
 				localStorage.setItem("setname", JSON.stringify(setname));
-				localStorage.setItem("ltable", JSON.stringify(ltable));
+				localStorage.setItem("ltable_ocg", JSON.stringify(ltable_ocg));
+				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));
 				localStorage.setItem("last_pack", last_pack);
 			} catch (ex) {
 			}
