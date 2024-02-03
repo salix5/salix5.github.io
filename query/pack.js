@@ -5,7 +5,7 @@ const pre_release = {
 	YO08: 100216001,
 
 	LEDE: 101204001,
-	TDPR: 100218001,
+	TDPR: 100017001,
 
 	// TCG
 	MZMI: 100217001,
