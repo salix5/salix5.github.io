@@ -5,6 +5,7 @@ const pre_release = {
 	YO08: 100216001,
 
 	LEDE: 101204001,
+	INFO: 101205001,
 	TDPR: 100017001,
 
 	// TCG
@@ -18,6 +19,7 @@ const wiki_link = {
 	YO08: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 
 	LEDE: "https://yugioh-wiki.net/index.php?LEGACY%20OF%20DESTRUCTION",
+	INFO: "https://yugioh-wiki.net/index.php?INFINITE%20FORBIDDEN",
 	TDPR: "https://yugioh-wiki.net/index.php?%A5%D7%A5%ED%A5%E2%A5%AB%A1%BC%A5%C9#LEGEND_PROMO",
 
 	// TCG
