@@ -2,7 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "LEDE#4";
+const last_pack = "LEDE#5";
 
 // special ID
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
