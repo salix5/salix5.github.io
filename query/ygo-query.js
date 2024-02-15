@@ -2,7 +2,7 @@
 "use strict";
 const load_md = true;
 const load_prerelease = true;
-const last_pack = "LEDE#6";
+const last_pack = "LEDE#8";
 
 // special ID
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
@@ -319,7 +319,7 @@ function pack_cmd(pack) {
 	let cmd = "";
 	cmd = ` AND (0`;
 	for (let i = 0; i < pack.length; ++i) {
-		if (pack[i] !== 0 && pack[i] !== 1)
+		if (pack[i] && pack[i] !== 1)
 			cmd += ` OR datas.id=${pack[i]}`;
 	}
 	cmd += `)`;
