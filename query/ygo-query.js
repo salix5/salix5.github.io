@@ -326,6 +326,40 @@ function pack_cmd(pack) {
 	return cmd;
 }
 
+const extra_setcode = {
+	8512558: [0x8f, 0x54, 0x59, 0x82, 0x13a],
+};
+
+/**
+ * Set `card.setcode` from int64.
+ * @param {Card} card 
+ * @param {bigint} setcode 
+ */
+function set_setcode(card, setcode) {
+	while (setcode) {
+		if (setcode & 0xffffn) {
+			card.setcode.push(Number(setcode & 0xffffn));
+		}
+		setcode = setcode >> 16n;
+	}
+}
+
+/**
+ * Check if `card.setode` contains `value`.
+ * @param {Card} card 
+ * @param {number} value 
+ * @returns
+ */
+function is_setcode(card, value) {
+	let settype = value & 0x0fff;
+	let setsubtype = value & 0xf000;
+	for (const x of card.setcode) {
+		if ((x & 0x0fff) === settype && (x & 0xf000 & setsubtype) === setsubtype)
+			return true;
+	}
+	return false;
+}
+
 // query cards in db
 function query_db(db, qstr, arg, ret) {
 	if (!db)
@@ -344,14 +378,13 @@ function query_db(db, qstr, arg, ret) {
 	}
 
 	while (stmt.step()) {
-		let cdata = stmt.getAsObject();
+		let cdata = stmt.getAsObject(null, { useBigInt: true });
 		let card = Object.create(null);
-
 		for (const [column, value] of Object.entries(cdata)) {
 			switch (column) {
 				case 'setcode':
 					card.setcode = [];
-					/*if (value) {
+					if (value) {
 						if (extra_setcode[card.id]) {
 							for (const x of extra_setcode[card.id]) {
 								card.setcode.push(x);
@@ -360,7 +393,7 @@ function query_db(db, qstr, arg, ret) {
 						else {
 							set_setcode(card, value);
 						}
-					}*/
+					}
 					break;
 				case 'type':
 					card[column] = Number(value);
