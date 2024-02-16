@@ -29,7 +29,7 @@ const db_list = [];
  * @property {number} id
  * @property {number} ot
  * @property {number} alias
- * @property {number} setcode
+ * @property {number[]} setcode
  * @property {number} real_id - The id of real card
  * 
  * @property {number} type
@@ -349,8 +349,21 @@ function query_db(db, qstr, arg, ret) {
 
 		for (const [column, value] of Object.entries(cdata)) {
 			switch (column) {
+				case 'setcode':
+					card.setcode = [];
+					if (value) {
+						if (extra_setcode[card.id]) {
+							for (const x of extra_setcode[card.id]) {
+								card.setcode.push(x);
+							}
+						}
+						else {
+							set_setcode(card, value);
+						}
+					}
+					break;
 				case 'type':
-					card[column] = value;
+					card[column] = Number(value);
 					if (card.type & TYPE_MONSTER) {
 						if (!(card.type & TYPE_EXTRA)) {
 							if (card.type & TYPE_TOKEN)
@@ -408,14 +421,17 @@ function query_db(db, qstr, arg, ret) {
 					}
 					break;
 				case 'level':
-					card.level = value & 0xff;
-					card.scale = (value >> 24) & 0xff;
+					card.level = Number(value) & 0xff;
+					card.scale = (Number(value) >>> 24) & 0xff;
 					break;
 				case 'name':
 					card.tw_name = value;
 					break;
 				default:
-					card[column] = value;
+					if (typeof value === 'bigint')
+						card[column] = Number(value);
+					else
+						card[column] = value;
 					break;
 			}
 		}
