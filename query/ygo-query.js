@@ -1,7 +1,5 @@
-// dependency: sql.js, JSZIP
 "use strict";
-const load_md = true;
-const load_prerelease = true;
+// dependency: sql.js, JSZIP
 const last_pack = "LEDE#8";
 
 // special ID
@@ -39,15 +37,14 @@ fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
 	.then(([sql, file1, file2]) => {
 		SQL = sql;
 		db_list.push(new SQL.Database(file1));
-		if (load_prerelease)
-			db_list.push(new SQL.Database(file2));
-		return true;
+		db_list.push(new SQL.Database(file2));
 	}));
 
 // JSON
 const cid_table = Object.create(null);
 const name_table_jp = Object.create(null);
 const name_table_en = Object.create(null);
+const name_table_kr = Object.create(null);
 const pack_list = Object.create(null);
 const setname = Object.create(null);
 const ltable_ocg = Object.create(null);
@@ -78,12 +75,10 @@ const ltable_md = Object.create(null);
 const md_name = Object.create(null);
 const md_name_jp = Object.create(null);
 const md_name_en = Object.create(null);
-if (load_md) {
-	fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
-	fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
-	fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => Object.assign(md_name_jp, data)));
-	fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
-}
+fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
+fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
+fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => Object.assign(md_name_jp, data)));
+fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
 
 const db_ready = Promise.all(fetch_list)
 	.then(() => {
@@ -288,7 +283,7 @@ function query_db(db, qstr, arg, ret) {
 			else if (md_name_en[card.cid])
 				card.md_name_en = md_name_en[card.cid];
 
-			if (name_table_kr && name_table_kr[card.cid])
+			if (name_table_kr[card.cid])
 				card.kr_name = name_table_kr[card.cid];
 
 			if (md_name[card.cid])
