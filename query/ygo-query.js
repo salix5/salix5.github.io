@@ -1,4 +1,4 @@
-﻿// dependency: sql.js, JSZIP
+// dependency: sql.js, JSZIP
 "use strict";
 const load_md = true;
 const load_prerelease = true;
@@ -23,6 +23,84 @@ const stmt_no_alias = `${select_id}${base_filter} AND alias == 0`;
 
 let SQL = null;
 const db_list = [];
+
+const domain = "https://salix5.github.io/cdb";
+const fetch_list = [];
+// sqlite
+const config = { locateFile: filename => `./dist/${filename}` };
+const promise_db = fetch(`${domain}/cards.zip`)
+	.then(response => response.blob())
+	.then(JSZip.loadAsync)
+	.then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
+const promise_db2 = fetch(`${domain}/expansions/pre-release.cdb`)
+	.then(response => response.arrayBuffer())
+	.then(buf => new Uint8Array(buf));
+fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
+	.then(([sql, file1, file2]) => {
+		SQL = sql;
+		db_list.push(new SQL.Database(file1));
+		if (load_prerelease)
+			db_list.push(new SQL.Database(file2));
+		return true;
+	}));
+
+// JSON
+const cid_table = Object.create(null);
+const name_table_jp = Object.create(null);
+const name_table_en = Object.create(null);
+const pack_list = Object.create(null);
+const setname = Object.create(null);
+const ltable_ocg = Object.create(null);
+const ltable_tcg = Object.create(null);
+
+if (localStorage.getItem("last_pack") === last_pack) {
+	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
+	Object.assign(name_table_jp, JSON.parse(localStorage.getItem("name_table")));
+	Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
+	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
+	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
+	Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
+	Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
+}
+else {
+	localStorage.clear();
+	fetch_list.push(fetch(`text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data)));
+	fetch_list.push(fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table_jp, data)));
+	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data)));
+	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
+	fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
+	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
+	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
+}
+
+// MD
+const ltable_md = Object.create(null);
+const md_name = Object.create(null);
+const md_name_jp = Object.create(null);
+const md_name_en = Object.create(null);
+if (load_md) {
+	fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
+	fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
+	fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => Object.assign(md_name_jp, data)));
+	fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
+}
+
+const db_ready = Promise.all(fetch_list)
+	.then(() => {
+		if (!localStorage.getItem("last_pack")) {
+			try {
+				localStorage.setItem("cid_table", JSON.stringify(cid_table));
+				localStorage.setItem("name_table", JSON.stringify(name_table_jp));
+				localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
+				localStorage.setItem("pack_list", JSON.stringify(pack_list));
+				localStorage.setItem("setname", JSON.stringify(setname));
+				localStorage.setItem("ltable_ocg", JSON.stringify(ltable_ocg));
+				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));
+				localStorage.setItem("last_pack", last_pack);
+			} catch (ex) {
+			}
+		}
+	});
 
 /**
  * @typedef {Object} Card
@@ -234,85 +312,6 @@ function print_data(card, newline) {
 }
 
 
-
-const domain = "https://salix5.github.io/cdb";
-const fetch_list = [];
-// sqlite
-const config = { locateFile: filename => `./dist/${filename}` };
-const promise_db = fetch(`${domain}/cards.zip`)
-	.then(response => response.blob())
-	.then(JSZip.loadAsync)
-	.then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
-const promise_db2 = fetch(`${domain}/expansions/pre-release.cdb`)
-	.then(response => response.arrayBuffer())
-	.then(buf => new Uint8Array(buf));
-fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
-	.then(([sql, file1, file2]) => {
-		SQL = sql;
-		db_list.push(new SQL.Database(file1));
-		if (load_prerelease)
-			db_list.push(new SQL.Database(file2));
-		return true;
-	}));
-
-// JSON
-const cid_table = Object.create(null);
-const name_table_jp = Object.create(null);
-const name_table_en = Object.create(null);
-const pack_list = Object.create(null);
-const setname = Object.create(null);
-const ltable_ocg = Object.create(null);
-const ltable_tcg = Object.create(null);
-
-if (localStorage.getItem("last_pack") === last_pack) {
-	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
-	Object.assign(name_table_jp, JSON.parse(localStorage.getItem("name_table")));
-	Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
-	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
-	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
-	Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
-	Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
-}
-else {
-	localStorage.clear();
-	fetch_list.push(fetch(`text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data)));
-	fetch_list.push(fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table_jp, data)));
-	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data)));
-	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
-	fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
-	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
-	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
-}
-
-// MD
-const ltable_md = Object.create(null);
-const md_name = Object.create(null);
-const md_name_jp = Object.create(null);
-const md_name_en = Object.create(null);
-if (load_md) {
-	fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
-	fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
-	fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => Object.assign(md_name_jp, data)));
-	fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
-}
-
-const db_ready = Promise.all(fetch_list)
-	.then(() => {
-		if (!localStorage.getItem("last_pack")) {
-			try {
-				localStorage.setItem("cid_table", JSON.stringify(cid_table));
-				localStorage.setItem("name_table", JSON.stringify(name_table_jp));
-				localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
-				localStorage.setItem("pack_list", JSON.stringify(pack_list));
-				localStorage.setItem("setname", JSON.stringify(setname));
-				localStorage.setItem("ltable_ocg", JSON.stringify(ltable_ocg));
-				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));
-				localStorage.setItem("last_pack", last_pack);
-			} catch (ex) {
-			}
-			return true;
-		}
-	});
 
 // print condition for cards in pack
 function pack_cmd(pack) {
