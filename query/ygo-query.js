@@ -351,7 +351,7 @@ function query_db(db, qstr, arg, ret) {
 			switch (column) {
 				case 'setcode':
 					card.setcode = [];
-					if (value) {
+					/*if (value) {
 						if (extra_setcode[card.id]) {
 							for (const x of extra_setcode[card.id]) {
 								card.setcode.push(x);
@@ -360,7 +360,7 @@ function query_db(db, qstr, arg, ret) {
 						else {
 							set_setcode(card, value);
 						}
-					}
+					}*/
 					break;
 				case 'type':
 					card[column] = Number(value);
