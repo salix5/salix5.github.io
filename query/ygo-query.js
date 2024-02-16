@@ -306,22 +306,22 @@ function query(qstr, arg, ret) {
 		query_db(db, qstr, arg, ret);
 	}
 	// pack_id
+	const inv_pack = Object.create(null);
 	if (arg.pack && pack_list[arg.pack]) {
-		const inv_pack = Object.create(null);
 		for (let i = 0; i < pack_list[arg.pack].length; ++i) {
 			if (pack_list[arg.pack][i] && pack_list[arg.pack][i] !== 1)
 				inv_pack[pack_list[arg.pack][i]] = i;
 		}
-		for (const card of ret) {
-			if (card.id <= 99999999) {
-				if (inv_pack[card.id])
-					card.pack_id = inv_pack[card.id];
-				else
-					card.pack_id = null;
-			}
-			else {
-				card.pack_id = card.id % 1000;
-			}
+	}
+	for (const card of ret) {
+		if (card.id <= 99999999) {
+			if (Number.isSafeInteger(inv_pack[card.id]))
+				card.pack_id = inv_pack[card.id];
+			else
+				card.pack_id = null;
+		}
+		else {
+			card.pack_id = card.id % 1000;
 		}
 	}
 }
