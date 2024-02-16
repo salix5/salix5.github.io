@@ -131,6 +131,174 @@ const db_ready = Promise.all(fetch_list)
  * @property {string} [md_name_jp]
  */
 
+const extra_setcode = {
+	8512558: [0x8f, 0x54, 0x59, 0x82, 0x13a],
+};
+
+/**
+ * Set `card.setcode` from int64.
+ * @param {Card} card 
+ * @param {bigint} setcode 
+ */
+function set_setcode(card, setcode) {
+	while (setcode) {
+		if (setcode & 0xffffn) {
+			card.setcode.push(Number(setcode & 0xffffn));
+		}
+		setcode = setcode >> 16n;
+	}
+}
+
+/**
+ * Check if `card.setode` contains `value`.
+ * @param {Card} card 
+ * @param {number} value 
+ * @returns
+ */
+function is_setcode(card, value) {
+	const settype = value & 0x0fff;
+	const setsubtype = value & 0xf000;
+	for (const x of card.setcode) {
+		if ((x & 0x0fff) === settype && (x & 0xf000 & setsubtype) === setsubtype)
+			return true;
+	}
+	return false;
+}
+
+/**
+ * Query cards from `db` using statement `qstr` and binding object `arg`, and put the results in `ret`.
+ * scale = level >> 24
+ * @param {initSqlJs.Database} db 
+ * @param {string} qstr 
+ * @param {Object} arg 
+ * @param {Card[]} ret  
+ */
+function query_db(db, qstr, arg, ret) {
+	if (!db)
+		return;
+
+	const stmt = db.prepare(qstr);
+	stmt.bind(arg);
+	while (stmt.step()) {
+		const cdata = stmt.getAsObject(null, { useBigInt: true });
+		const card = Object.create(null);
+		for (const [column, value] of Object.entries(cdata)) {
+			switch (column) {
+				case 'setcode':
+					card.setcode = [];
+					if (value) {
+						if (extra_setcode[card.id]) {
+							for (const x of extra_setcode[card.id]) {
+								card.setcode.push(x);
+							}
+						}
+						else {
+							set_setcode(card, value);
+						}
+					}
+					break;
+				case 'type':
+					card[column] = Number(value);
+					if (card.type & TYPE_MONSTER) {
+						if (!(card.type & TYPE_EXTRA)) {
+							if (card.type & TYPE_TOKEN)
+								card.color = 0;
+							else if (card.type & TYPE_NORMAL)
+								card.color = 1;
+							else if (card.type & TYPE_RITUAL)
+								card.color = 3;
+							else if (card.type & TYPE_EFFECT)
+								card.color = 2;
+							else
+								card.color = -1;
+						}
+						else {
+							if (card.type & TYPE_FUSION)
+								card.color = 4;
+							else if (card.type & TYPE_SYNCHRO)
+								card.color = 5;
+							else if (card.type & TYPE_XYZ)
+								card.color = 6;
+							else if (card.type & TYPE_LINK)
+								card.color = 7;
+							else
+								card.color = -1;
+						}
+					}
+					else if (card.type & TYPE_SPELL) {
+						if (card.type === TYPE_SPELL)
+							card.color = 10;
+						else if (card.type & TYPE_QUICKPLAY)
+							card.color = 11;
+						else if (card.type & TYPE_CONTINUOUS)
+							card.color = 12;
+						else if (card.type & TYPE_EQUIP)
+							card.color = 13;
+						else if (card.type & TYPE_RITUAL)
+							card.color = 14;
+						else if (card.type & TYPE_FIELD)
+							card.color = 15;
+						else
+							card.color = -1;
+					}
+					else if (card.type & TYPE_TRAP) {
+						if (card.type === TYPE_TRAP)
+							card.color = 20;
+						else if (card.type & TYPE_CONTINUOUS)
+							card.color = 21;
+						else if (card.type & TYPE_COUNTER)
+							card.color = 22;
+						else
+							card.color = -1;
+					}
+					else {
+						card.color = -1;
+					}
+					break;
+				case 'level':
+					card.level = Number(value) & 0xff;
+					card.scale = (Number(value) >>> 24) & 0xff;
+					break;
+				case 'name':
+					card.tw_name = value;
+					break;
+				default:
+					if (typeof value === 'bigint')
+						card[column] = Number(value);
+					else
+						card[column] = value;
+					break;
+			}
+		}
+		// extra column
+		if ('id' in card && 'alias' in card) {
+			card.real_id = is_alternative(card) ? card.alias : card.id;
+		}
+		if ('real_id' in card && typeof cid_table[card.real_id] === 'number') {
+			card.cid = cid_table[card.real_id];
+		}
+		if ('cid' in card && 'tw_name' in card) {
+			if (name_table_jp[card.cid])
+				card.jp_name = name_table_jp[card.cid];
+			else if (md_name_jp[card.cid])
+				card.md_name_jp = md_name_jp[card.cid];
+
+			if (name_table_en[card.cid])
+				card.en_name = name_table_en[card.cid];
+			else if (md_name_en[card.cid])
+				card.md_name_en = md_name_en[card.cid];
+
+			if (name_table_kr && name_table_kr[card.cid])
+				card.kr_name = name_table_kr[card.cid];
+
+			if (md_name[card.cid])
+				card.md_name = md_name[card.cid];
+		}
+		ret.push(card);
+	}
+	stmt.free();
+}
+
 /**
  * query() - Query cards and push into ret.
  * @param {string} qstr sqlite command
@@ -141,6 +309,25 @@ function query(qstr, arg, ret) {
 	ret.length = 0;
 	for (const db of db_list) {
 		query_db(db, qstr, arg, ret);
+	}
+	// pack_id
+	if (arg.pack && pack_list[arg.pack]) {
+		const inv_pack = Object.create(null);
+		for (let i = 0; i < pack_list[arg.pack].length; ++i) {
+			if (pack_list[arg.pack][i] && pack_list[arg.pack][i] !== 1)
+				inv_pack[pack_list[arg.pack][i]] = i;
+		}
+		for (const card of ret) {
+			if (card.id <= 99999999) {
+				if (inv_pack[card.id])
+					card.pack_id = inv_pack[card.id];
+				else
+					card.pack_id = null;
+			}
+			else {
+				card.pack_id = card.id % 1000;
+			}
+		}
 	}
 }
 
@@ -323,183 +510,4 @@ function pack_cmd(pack) {
 	}
 	cmd += `)`;
 	return cmd;
-}
-
-const extra_setcode = {
-	8512558: [0x8f, 0x54, 0x59, 0x82, 0x13a],
-};
-
-/**
- * Set `card.setcode` from int64.
- * @param {Card} card 
- * @param {bigint} setcode 
- */
-function set_setcode(card, setcode) {
-	while (setcode) {
-		if (setcode & 0xffffn) {
-			card.setcode.push(Number(setcode & 0xffffn));
-		}
-		setcode = setcode >> 16n;
-	}
-}
-
-/**
- * Check if `card.setode` contains `value`.
- * @param {Card} card 
- * @param {number} value 
- * @returns
- */
-function is_setcode(card, value) {
-	let settype = value & 0x0fff;
-	let setsubtype = value & 0xf000;
-	for (const x of card.setcode) {
-		if ((x & 0x0fff) === settype && (x & 0xf000 & setsubtype) === setsubtype)
-			return true;
-	}
-	return false;
-}
-
-// query cards in db
-function query_db(db, qstr, arg, ret) {
-	if (!db)
-		return;
-
-	let stmt = db.prepare(qstr);
-	stmt.bind(arg);
-
-	// pack_id
-	let inv_pack = Object.create(null);
-	if (arg.pack && pack_list[arg.pack]) {
-		for (let i = 0; i < pack_list[arg.pack].length; ++i) {
-			if (pack_list[arg.pack][i] !== 0 && pack_list[arg.pack][i] !== 1)
-				inv_pack[pack_list[arg.pack][i]] = i;
-		}
-	}
-
-	while (stmt.step()) {
-		let cdata = stmt.getAsObject(null, { useBigInt: true });
-		let card = Object.create(null);
-		for (const [column, value] of Object.entries(cdata)) {
-			switch (column) {
-				case 'setcode':
-					card.setcode = [];
-					if (value) {
-						if (extra_setcode[card.id]) {
-							for (const x of extra_setcode[card.id]) {
-								card.setcode.push(x);
-							}
-						}
-						else {
-							set_setcode(card, value);
-						}
-					}
-					break;
-				case 'type':
-					card[column] = Number(value);
-					if (card.type & TYPE_MONSTER) {
-						if (!(card.type & TYPE_EXTRA)) {
-							if (card.type & TYPE_TOKEN)
-								card.color = 0;
-							else if (card.type & TYPE_NORMAL)
-								card.color = 1;
-							else if (card.type & TYPE_RITUAL)
-								card.color = 3;
-							else if (card.type & TYPE_EFFECT)
-								card.color = 2;
-							else
-								card.color = -1;
-						}
-						else {
-							if (card.type & TYPE_FUSION)
-								card.color = 4;
-							else if (card.type & TYPE_SYNCHRO)
-								card.color = 5;
-							else if (card.type & TYPE_XYZ)
-								card.color = 6;
-							else if (card.type & TYPE_LINK)
-								card.color = 7;
-							else
-								card.color = -1;
-						}
-					}
-					else if (card.type & TYPE_SPELL) {
-						if (card.type === TYPE_SPELL)
-							card.color = 10;
-						else if (card.type & TYPE_QUICKPLAY)
-							card.color = 11;
-						else if (card.type & TYPE_CONTINUOUS)
-							card.color = 12;
-						else if (card.type & TYPE_EQUIP)
-							card.color = 13;
-						else if (card.type & TYPE_RITUAL)
-							card.color = 14;
-						else if (card.type & TYPE_FIELD)
-							card.color = 15;
-						else
-							card.color = -1;
-					}
-					else if (card.type & TYPE_TRAP) {
-						if (card.type === TYPE_TRAP)
-							card.color = 20;
-						else if (card.type & TYPE_CONTINUOUS)
-							card.color = 21;
-						else if (card.type & TYPE_COUNTER)
-							card.color = 22;
-						else
-							card.color = -1;
-					}
-					else {
-						card.color = -1;
-					}
-					break;
-				case 'level':
-					card.level = Number(value) & 0xff;
-					card.scale = (Number(value) >>> 24) & 0xff;
-					break;
-				case 'name':
-					card.tw_name = value;
-					break;
-				default:
-					if (typeof value === 'bigint')
-						card[column] = Number(value);
-					else
-						card[column] = value;
-					break;
-			}
-		}
-		// extra column
-		if ('id' in card && 'alias' in card) {
-			card.real_id = is_alternative(card) ? card.alias : card.id;
-		}
-		if ('real_id' in card && typeof cid_table[card.real_id] === 'number') {
-			card.cid = cid_table[card.real_id];
-		}
-		if ('cid' in card && 'tw_name' in card) {
-			if (name_table_jp[card.cid])
-				card.jp_name = name_table_jp[card.cid];
-			else if (md_name_jp[card.cid])
-				card.md_name_jp = md_name_jp[card.cid];
-
-			if (name_table_en[card.cid])
-				card.en_name = name_table_en[card.cid];
-			else if (md_name_en[card.cid])
-				card.md_name_en = md_name_en[card.cid];
-
-			if (md_name[card.cid])
-				card.md_name = md_name[card.cid];
-		}
-
-		// pack_id
-		if (card.id <= 99999999) {
-			if (arg.pack && pack_list[arg.pack])
-				card.pack_id = inv_pack[card.id];
-			else
-				card.pack_id = null;
-		}
-		else {
-			card.pack_id = card.id % 1000;
-		}
-		ret.push(card);
-	}
-	stmt.free();
 }
