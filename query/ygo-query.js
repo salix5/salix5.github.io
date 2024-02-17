@@ -137,11 +137,13 @@ const extra_setcode = {
  * @param {bigint} setcode 
  */
 function set_setcode(card, setcode) {
+	const mask = BigInt(0xffff);
+	const len = BigInt(16);
 	while (setcode) {
-		if (setcode & 0xffffn) {
-			card.setcode.push(Number(setcode & 0xffffn));
+		if (setcode & mask) {
+			card.setcode.push(Number(setcode & mask));
 		}
-		setcode = setcode >> 16n;
+		setcode = setcode >> len;
 	}
 }
 
