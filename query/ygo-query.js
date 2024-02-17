@@ -126,6 +126,7 @@ const db_ready = Promise.all(fetch_list)
  * @property {string} [md_name_jp]
  */
 
+const use_bigint = !!(window.BigInt);
 const extra_setcode = {
 	8512558: [0x8f, 0x54, 0x59, 0x82, 0x13a],
 };
@@ -175,13 +176,13 @@ function query_db(db, qstr, arg, ret) {
 	const stmt = db.prepare(qstr);
 	stmt.bind(arg);
 	while (stmt.step()) {
-		const cdata = stmt.getAsObject(null, { useBigInt: true });
+		const cdata = use_bigint ? stmt.getAsObject(null, { useBigInt: true }) : stmt.getAsObject();
 		const card = Object.create(null);
 		for (const [column, value] of Object.entries(cdata)) {
 			switch (column) {
 				case 'setcode':
 					card.setcode = [];
-					if (value) {
+					if (use_bigint && value) {
 						if (extra_setcode[card.id]) {
 							for (const x of extra_setcode[card.id]) {
 								card.setcode.push(x);
