@@ -2,7 +2,7 @@
 function url_query() {
 	if (window.location.search.substring(1) === "")
 		return;
-	let params = new URLSearchParams(window.location.search);
+	const params = new URLSearchParams(window.location.search);
 	server_analyze1(params);
 }
 
