@@ -27,20 +27,10 @@ const cb_exclude = document.getElementsByName("exclude");
 const cb_attr = document.getElementsByName("attr");
 const cb_race = document.getElementsByName("race");
 
-const cb_mtype_reset = document.getElementById("mtype_reset");
-const cb_exclude_reset = document.getElementById("exclude_reset");
-const cb_attr_reset = document.getElementById("attr_reset");
-const cb_race_reset = document.getElementById("race_reset");
-
-const row_lv = document.getElementById("row_lv");
-const row_sc = document.getElementById("row_sc");
-const row_attr = document.getElementById("row_attr");
-const row_race = document.getElementById("row_race");
-const row_atk = document.getElementById("row_atk");
-const row_def = document.getElementById("row_def");
-const row_subtype = document.getElementById("row_subtype");
-const row_exclude = document.getElementById("row_exclude");
-const row_button = document.getElementById("row_button");
+const subtype_reset = document.getElementById("subtype_reset");
+const exclude_reset = document.getElementById("exclude_reset");
+const attr_reset = document.getElementById("attr_reset");
+const race_reset = document.getElementById("race_reset");
 
 const form1 = document.getElementById("form1");
 const button1 = document.getElementById("button1");
@@ -59,21 +49,17 @@ function clear_cb(name) {
 	}
 }
 
-cb_mtype_reset.addEventListener("change", function (event) {
+subtype_reset.addEventListener("click", function (event) {
 	clear_cb("mtype");
-	this.checked = false;
 });
-cb_exclude_reset.addEventListener("change", function (event) {
+exclude_reset.addEventListener("click", function (event) {
 	clear_cb("exclude");
-	this.checked = false;
 });
-cb_attr_reset.addEventListener("change", function (event) {
+attr_reset.addEventListener("click", function (event) {
 	clear_cb("attr");
-	this.checked = false;
 });
-cb_race_reset.addEventListener("change", function (event) {
+race_reset.addEventListener("click", function (event) {
 	clear_cb("race");
-	this.checked = false;
 });
 
 window.addEventListener("DOMContentLoaded", function (event) {
