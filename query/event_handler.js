@@ -14,15 +14,14 @@ const text_def1 = document.getElementById("text_def1");
 const text_def2 = document.getElementById("text_def2");
 const text_sum = document.getElementById("text_sum");
 const text_mat = document.getElementById("text_mat");
-const monster_textbox = [text_lv1, text_lv2, text_sc1, text_sc2, text_atk1, text_atk2, text_def1, text_def2, text_sum, text_mat];
+const monster_input = [text_lv1, text_lv2, text_sc1, text_sc2, text_atk1, text_atk2, text_def1, text_def2, text_sum, text_mat];
 
 const select_locale = document.getElementById("select_locale");
 const select_ot = document.getElementById("select_ot");
 const select_type = document.getElementById("select_type");
-
 const select_subtype_op = document.getElementById("select_subtype_op");
 const select_marker_op = document.getElementById("select_marker_op");
-const monster_select = [select_marker_op];
+monster_input.push(select_marker_op);
 
 // 3 div for different type
 const subtype_m = document.getElementById("subtype_m");
@@ -83,11 +82,8 @@ function hide_type(type, status) {
 			for (const row of monster_row) {
 				row.hidden = status;
 			}
-			for (const textbox of monster_textbox) {
-				textbox.disabled = status;
-			}
-			for (const select of monster_select) {
-				select.disabled = status;
+			for (const element of monster_input) {
+				element.disabled = status;
 			}
 			for (const cbname of monster_checkbox) {
 				disable_cb(cbname, status);
