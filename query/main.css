@@ -28,11 +28,11 @@ table.hidden td {
 	padding: 5px 0px;
 }
 
-tr.row_button {
+.align_center {
 	text-align: center;
 }
 
-label.clear {
+.clear {
 	color: Red;
 }
 
@@ -142,7 +142,7 @@ hr {
 	transform: rotate(135deg);
 }
 
-button {
+button.submit {
 	padding: 5px 20px;
 }
 

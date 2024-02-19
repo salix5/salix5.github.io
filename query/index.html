@@ -131,137 +131,157 @@
 	</td>
 	</tr>
 	
-	<tr id="row_mat"><td>素材</td><td><input type="search" id="text_mat" name="mat" maxlength="50"></td></tr>
+	<tr class="monster_property"><td>素材</td><td><input type="search" id="text_mat" name="mat" maxlength="50"></td></tr>
 	
-	<tr id="row_attr"><td>屬性</td>
-	<td>
-	<input type="checkbox" id="attr1" name="attr" value="1"><label for="attr1">地</label>
-	<input type="checkbox" id="attr2" name="attr" value="2"><label for="attr2">水</label>
-	<input type="checkbox" id="attr3" name="attr" value="3"><label for="attr3">炎</label>
-	<input type="checkbox" id="attr4" name="attr" value="4"><label for="attr4">風</label><br>
-	<input type="checkbox" id="attr5" name="attr" value="5"><label for="attr5">光</label>
-	<input type="checkbox" id="attr6" name="attr" value="6"><label for="attr6">闇</label>
-	<input type="checkbox" id="attr7" name="attr" value="7"><label for="attr7">神</label>
-	<input type="checkbox" id="attr_reset"><label for="attr_reset" class="clear">✗</label>
+	<tr class="monster_property">
+		<td>屬性</td>
+		<td><button id="attr_reset" class="clear" type="button">✗</button></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
+	<input type="checkbox" id="attr1" name="attr" value="1"><label for="attr1">地屬性</label>
+	<input type="checkbox" id="attr2" name="attr" value="2"><label for="attr2">水屬性</label>
+	<input type="checkbox" id="attr3" name="attr" value="3"><label for="attr3">炎屬性</label>
+	<input type="checkbox" id="attr4" name="attr" value="4"><label for="attr4">風屬性</label><br>
+	<input type="checkbox" id="attr5" name="attr" value="5"><label for="attr5">光屬性</label>
+	<input type="checkbox" id="attr6" name="attr" value="6"><label for="attr6">闇屬性</label>
+	<input type="checkbox" id="attr7" name="attr" value="7"><label for="attr7">神屬性</label>
 	</td>
 	</tr>
 	
-	<tr id="row_race"><td>種族</td>
-	<td>
-	<input type="checkbox" id="race1" name="race" value="1"><label for="race1">水　</label>
-	<input type="checkbox" id="race2" name="race" value="2"><label for="race2">炎　</label>
-	<input type="checkbox" id="race3" name="race" value="3"><label for="race3">雷　</label>
-	<input type="checkbox" id="race4" name="race" value="4"><label for="race4">龍　</label><br>
-	<input type="checkbox" id="race5" name="race" value="5"><label for="race5">獸　</label>
-	<input type="checkbox" id="race6" name="race" value="6"><label for="race6">魚　</label>
-	<input type="checkbox" id="race7" name="race" value="7"><label for="race7">天使</label>
-	<input type="checkbox" id="race8" name="race" value="8"><label for="race8">惡魔</label><br>
-	<input type="checkbox" id="race9" name="race" value="9"><label for="race9">不死</label>
-	<input type="checkbox" id="race10" name="race" value="10"><label for="race10">戰士</label>
-	<input type="checkbox" id="race11" name="race" value="11"><label for="race11">恐龍</label>
-	<input type="checkbox" id="race12" name="race" value="12"><label for="race12">鳥獸</label><br>
-	<input type="checkbox" id="race13" name="race" value="13"><label for="race13">昆蟲</label>
-	<input type="checkbox" id="race14" name="race" value="14"><label for="race14">植物</label>
-	<input type="checkbox" id="race15" name="race" value="15"><label for="race15">海龍</label>
-	<input type="checkbox" id="race16" name="race" value="16"><label for="race16">岩石</label><br>
-	<input type="checkbox" id="race17" name="race" value="17"><label for="race17">機械</label>
-	<input type="checkbox" id="race18" name="race" value="18"><label for="race18">超能</label>
-	<input type="checkbox" id="race19" name="race" value="19"><label for="race19">幻龍</label><br>
+	<tr class="monster_property">
+		<td>種族</td>
+		<td><button id="race_reset" class="clear" type="button">✗</button></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
+	<input type="checkbox" id="race1" name="race" value="1"><label for="race1">水&emsp;&nbsp;</label>
+	<input type="checkbox" id="race2" name="race" value="2"><label for="race2">炎&emsp;&nbsp;</label>
+	<input type="checkbox" id="race3" name="race" value="3"><label for="race3">雷&emsp;&nbsp;</label>
+	<input type="checkbox" id="race4" name="race" value="4"><label for="race4">龍&emsp;&nbsp;</label>
+	<input type="checkbox" id="race5" name="race" value="5"><label for="race5">獸&emsp;</label><span class="invisible">&emsp;&emsp;</span><br>
+	<input type="checkbox" id="race6" name="race" value="6"><label for="race6">魚&emsp;&nbsp;</label>
+	<input type="checkbox" id="race7" name="race" value="7"><label for="race7">天使&nbsp;</label>
+	<input type="checkbox" id="race8" name="race" value="8"><label for="race8">惡魔&nbsp;</label>
+	<input type="checkbox" id="race9" name="race" value="9"><label for="race9">不死&nbsp;</label>
+	<input type="checkbox" id="race10" name="race" value="10"><label for="race10">戰士&nbsp;</label><br>
+	<input type="checkbox" id="race11" name="race" value="11"><label for="race11">恐龍&nbsp;</label>
+	<input type="checkbox" id="race12" name="race" value="12"><label for="race12">鳥獸&nbsp;</label>
+	<input type="checkbox" id="race13" name="race" value="13"><label for="race13">昆蟲&nbsp;</label>
+	<input type="checkbox" id="race14" name="race" value="14"><label for="race14">植物&nbsp;</label>
+	<input type="checkbox" id="race15" name="race" value="15"><label for="race15">海龍&nbsp;</label><br>
+	<input type="checkbox" id="race16" name="race" value="16"><label for="race16">岩石&nbsp;</label>
+	<input type="checkbox" id="race17" name="race" value="17"><label for="race17">機械&nbsp;</label>
+	<input type="checkbox" id="race18" name="race" value="18"><label for="race18">超能&nbsp;</label>
+	<input type="checkbox" id="race19" name="race" value="19"><label for="race19">幻龍&nbsp;</label><br>
 	<input type="checkbox" id="race20" name="race" value="20"><label for="race20">魔法使</label>
 	<input type="checkbox" id="race21" name="race" value="21"><label for="race21">獸戰士</label>
-	<input type="checkbox" id="race22" name="race" value="22"><label for="race22">爬蟲類</label><br>
-	<input type="checkbox" id="race23" name="race" value="23"><label for="race23">幻神獸</label>
+	<input type="checkbox" id="race22" name="race" value="22"><label for="race22">爬蟲類</label>
+	<input type="checkbox" id="race23" name="race" value="23"><label for="race23">幻神獸</label><br>
 	<input type="checkbox" id="race24" name="race" value="24"><label for="race24">創造神</label>
-	<input type="checkbox" id="race25" name="race" value="25"><label for="race25">電子界</label><br>
+	<input type="checkbox" id="race25" name="race" value="25"><label for="race25">電子界</label>
 	<input type="checkbox" id="race26" name="race" value="26"><label for="race26">幻想魔</label>
-	<input type="checkbox" id="race_reset"><label for="race_reset" class="clear">✗　　</label>
 	</td>
 	</tr>
 	
-	<tr id="row_subtype" hidden><td>類型</td>
-	<td>
+	<tr class="row_subtype" hidden>
+		<td>類型</td>
+		<td>
+			<span id="subtype_operator">
+				<select id="select_subtype_op" name="mtype_operator" disabled>
+					<option value="0">OR</option>
+					<option value="1">AND</option>
+				</select>
+				&emsp;
+			</span>
+			<button id="subtype_reset" class="clear" type="button">✗</button>
+		</td>
+	</tr>
+	<tr class="row_subtype" hidden><td colspan="2">
 	<div id="subtype_m" hidden>
-		<div>
-			<select id="select_subtype_op" name="mtype_operator" disabled>
-				<option value="0">OR</option>
-				<option value="1">AND</option>
-			</select>
-		</div>
-		<input type="checkbox" id="mtype1" name="mtype" value="1"><label for="mtype1" class="F">融合</label>
-		<input type="checkbox" id="mtype2" name="mtype" value="2"><label for="mtype2" class="S">同步</label>
-		<input type="checkbox" id="mtype3" name="mtype" value="3"><label for="mtype3" class="X">超量</label>　　
-		<input type="checkbox" id="mtype4" name="mtype" value="4"><label for="mtype4" class="L">連結</label><br>
-		<input type="checkbox" id="mtype5" name="mtype" value="5"><label for="mtype5">通常</label>
-		<input type="checkbox" id="mtype6" name="mtype" value="6"><label for="mtype6">效果</label>
-		<input type="checkbox" id="mtype7" name="mtype" value="7"><label for="mtype7">儀式</label>　　
-		<input type="checkbox" id="mtype8" name="mtype" value="8"><label for="mtype8">靈擺</label><br>
-		<input type="checkbox" id="mtype9" name="mtype" value="9"><label for="mtype9">卡通</label>
-		<input type="checkbox" id="mtype10" name="mtype" value="10"><label for="mtype10">靈魂</label>
-		<input type="checkbox" id="mtype11" name="mtype" value="11"><label for="mtype11">聯合</label>　　
-		<input type="checkbox" id="mtype12" name="mtype" value="12"><label for="mtype12">二重</label><br>
-		<input type="checkbox" id="mtype13" name="mtype" value="13"><label for="mtype13">協調</label>
-		<input type="checkbox" id="mtype14" name="mtype" value="14"><label for="mtype14">反轉</label>
+		<input type="checkbox" id="mtype1" name="mtype" value="1"><label for="mtype1" class="F">融合&nbsp;</label>
+		<input type="checkbox" id="mtype2" name="mtype" value="2"><label for="mtype2" class="S">同步&nbsp;</label>
+		<input type="checkbox" id="mtype3" name="mtype" value="3"><label for="mtype3" class="X">超量&nbsp;</label>
+		<input type="checkbox" id="mtype4" name="mtype" value="4"><label for="mtype4" class="L">連結&nbsp;</label>
+		<input type="checkbox" id="mtype5" name="mtype" value="5"><label for="mtype5">通常&nbsp;</label><br>
+		<input type="checkbox" id="mtype6" name="mtype" value="6"><label for="mtype6">效果&nbsp;</label>
+		<input type="checkbox" id="mtype7" name="mtype" value="7"><label for="mtype7">儀式&nbsp;</label>
+		<input type="checkbox" id="mtype8" name="mtype" value="8"><label for="mtype8">靈擺&nbsp;</label>
+		<input type="checkbox" id="mtype9" name="mtype" value="9"><label for="mtype9">卡通&nbsp;</label>
+		<input type="checkbox" id="mtype10" name="mtype" value="10"><label for="mtype10">靈魂&nbsp;</label><br>
+		<input type="checkbox" id="mtype11" name="mtype" value="11"><label for="mtype11">聯合&nbsp;</label>
+		<input type="checkbox" id="mtype12" name="mtype" value="12"><label for="mtype12">二重&nbsp;</label>
+		<input type="checkbox" id="mtype13" name="mtype" value="13"><label for="mtype13">協調&nbsp;</label>
+		<input type="checkbox" id="mtype14" name="mtype" value="14"><label for="mtype14">反轉&nbsp;</label>
 		<input type="checkbox" id="mtype15" name="mtype" value="15"><label for="mtype15">特殊召喚</label>
-		<input type="checkbox" id="mtype_reset"><label for="mtype_reset" class="clear">✗　</label>
 	</div>
 	<div id="subtype_s" hidden>
-		<input type="checkbox" id="stype1" name="stype" value="1"><label for="stype1">通常　</label>
-		<input type="checkbox" id="stype2" name="stype" value="2"><label for="stype2">速攻　</label>
-		<input type="checkbox" id="stype3" name="stype" value="3"><label for="stype3">永續　</label>
-		<input type="checkbox" id="stype4" name="stype" value="4"><label for="stype4">裝備　</label><br>
-		<input type="checkbox" id="stype5" name="stype" value="5"><label for="stype5">儀式　</label>
-		<input type="checkbox" id="stype6" name="stype" value="6"><label for="stype6">場地　</label>
-		<input type="checkbox" id="stype_reset"><label for="stype_reset" class="clear">✗　　</label>
+		<input type="checkbox" id="stype1" name="stype" value="1"><label for="stype1">通常&nbsp;</label>
+		<input type="checkbox" id="stype2" name="stype" value="2"><label for="stype2">速攻&nbsp;</label>
+		<input type="checkbox" id="stype3" name="stype" value="3"><label for="stype3">永續&nbsp;</label>
+		<input type="checkbox" id="stype4" name="stype" value="4"><label for="stype4">裝備&nbsp;</label>
+		<input type="checkbox" id="stype5" name="stype" value="5"><label for="stype5">儀式</label><span class="invisible">&emsp;&emsp;</span><br>
+		<input type="checkbox" id="stype6" name="stype" value="6"><label for="stype6">場地&nbsp;</label>
 	</div>
 	<div id="subtype_t" hidden>
-		<input type="checkbox" id="ttype1" name="ttype" value="1"><label for="ttype1">通常　</label>
-		<input type="checkbox" id="ttype2" name="ttype" value="2"><label for="ttype2">永續　</label>
-		<input type="checkbox" id="ttype3" name="ttype" value="3"><label for="ttype3">反擊　</label>
-		<input type="checkbox" id="ttype_reset"><label for="ttype_reset" class="clear">✗　　</label><br>
+		<input type="checkbox" id="ttype1" name="ttype" value="1"><label for="ttype1">通常&nbsp;</label>
+		<input type="checkbox" id="ttype2" name="ttype" value="2"><label for="ttype2">永續&nbsp;</label>
+		<input type="checkbox" id="ttype3" name="ttype" value="3"><label for="ttype3">反擊&nbsp;</label>
+		<input type="checkbox" class="invisible" disabled><span class="invisible">&emsp;&emsp;&nbsp;</span>
+		<input type="checkbox" class="invisible" disabled><span class="invisible">&emsp;&emsp;&emsp;&emsp;</span>
 	</div>
 	</td>
 	</tr>
 	
-	<tr id="row_exclude" hidden><td>排除</td>
-	<td>
-		<input type="checkbox" id="exclude_type1" name="exclude" value="1"><label for="exclude_type1" class="F">融合</label>
-		<input type="checkbox" id="exclude_type2" name="exclude" value="2"><label for="exclude_type2" class="S">同步</label>
-		<input type="checkbox" id="exclude_type3" name="exclude" value="3"><label for="exclude_type3" class="X">超量</label>　　
-		<input type="checkbox" id="exclude_type4" name="exclude" value="4"><label for="exclude_type4" class="L">連結</label><br>
-		<input type="checkbox" id="exclude_type5" name="exclude" value="5"><label for="exclude_type5">通常</label>
-		<input type="checkbox" id="exclude_type6" name="exclude" value="6"><label for="exclude_type6">效果</label>
-		<input type="checkbox" id="exclude_type7" name="exclude" value="7"><label for="exclude_type7">儀式</label>　　
-		<input type="checkbox" id="exclude_type8" name="exclude" value="8"><label for="exclude_type8">靈擺</label><br>
-		<input type="checkbox" id="exclude_type9" name="exclude" value="9"><label for="exclude_type9">卡通</label>
-		<input type="checkbox" id="exclude_type10" name="exclude" value="10"><label for="exclude_type10">靈魂</label>
-		<input type="checkbox" id="exclude_type11" name="exclude" value="11"><label for="exclude_type11">聯合</label>　　
-		<input type="checkbox" id="exclude_type12" name="exclude" value="12"><label for="exclude_type12">二重</label><br>
-		<input type="checkbox" id="exclude_type13" name="exclude" value="13"><label for="exclude_type13">協調</label>
-		<input type="checkbox" id="exclude_type14" name="exclude" value="14"><label for="exclude_type14">反轉</label>
+	<tr class="row_exclude" hidden>
+		<td>排除</td>
+		<td><button id="exclude_reset" class="clear" type="button">✗</button></td>
+	</tr>
+	<tr class="row_exclude" hidden><td colspan="2">
+		<input type="checkbox" id="exclude_type1" name="exclude" value="1"><label for="exclude_type1" class="F">融合&nbsp;</label>
+		<input type="checkbox" id="exclude_type2" name="exclude" value="2"><label for="exclude_type2" class="S">同步&nbsp;</label>
+		<input type="checkbox" id="exclude_type3" name="exclude" value="3"><label for="exclude_type3" class="X">超量&nbsp;</label>
+		<input type="checkbox" id="exclude_type4" name="exclude" value="4"><label for="exclude_type4" class="L">連結&nbsp;</label>
+		<input type="checkbox" id="exclude_type5" name="exclude" value="5"><label for="exclude_type5">通常&nbsp;</label><br>
+		<input type="checkbox" id="exclude_type6" name="exclude" value="6"><label for="exclude_type6">效果&nbsp;</label>
+		<input type="checkbox" id="exclude_type7" name="exclude" value="7"><label for="exclude_type7">儀式&nbsp;</label>
+		<input type="checkbox" id="exclude_type8" name="exclude" value="8"><label for="exclude_type8">靈擺&nbsp;</label>
+		<input type="checkbox" id="exclude_type9" name="exclude" value="9"><label for="exclude_type9">卡通&nbsp;</label>
+		<input type="checkbox" id="exclude_type10" name="exclude" value="10"><label for="exclude_type10">靈魂&nbsp;</label><br>
+		<input type="checkbox" id="exclude_type11" name="exclude" value="11"><label for="exclude_type11">聯合&nbsp;</label>
+		<input type="checkbox" id="exclude_type12" name="exclude" value="12"><label for="exclude_type12">二重&nbsp;</label>
+		<input type="checkbox" id="exclude_type13" name="exclude" value="13"><label for="exclude_type13">協調&nbsp;</label>
+		<input type="checkbox" id="exclude_type14" name="exclude" value="14"><label for="exclude_type14">反轉&nbsp;</label>
 		<input type="checkbox" id="exclude_type15" name="exclude" value="15"><label for="exclude_type15">特殊召喚</label>
-		<input type="checkbox" id="exclude_reset"><label for="exclude_reset" class="clear">✗　</label>
 	</td>
 	</tr>
 	
-	<tr id="row_lv"><td>星數</td>
-	<td>
+	<tr class="monster_property">
+		<td>星數</td>
+		<td></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
 	<input type="number" id="text_lv1" name="lv1" min="1" max="13" style="width: 3em" >
 	～
 	<input type="number" id="text_lv2" name="lv2" min="1" max="13" style="width: 3em" >
 	</td>
 	</tr>
 	
-	<tr id="row_sc"><td>刻度</td>
-	<td>
+	<tr class="monster_property">
+		<td>刻度</td>
+		<td></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
 	<input type="number" id="text_sc1" name="sc1" min="0" max="13" style="width: 3em" >
 	～
 	<input type="number" id="text_sc2" name="sc2" min="0" max="13" style="width: 3em" >
 	</td>
 	</tr>
 	
-	<tr id="row_marker"><td>標記</td>
-	<td>
-	<input type="checkbox" id="marker1" name="marker" value="1"> <input type="checkbox" id="marker2" name="marker"  value="2"> <input type="checkbox" id="marker3" name="marker"  value="3">
+	<tr class="monster_property">
+		<td>連結</td>
+		<td><button id="marker_reset" class="clear" type="button">✗</button></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
+	<input type="checkbox" id="marker1" name="marker" value="1"> <input type="checkbox" id="marker2" name="marker" value="2"> <input type="checkbox" id="marker3" name="marker"  value="3">
 		<select id="select_marker_op" name="marker_operator">
 			<option value="0">OR</option>
 			<option value="1">AND</option>
@@ -271,33 +291,42 @@
 	</td>
 	</tr>
 	
-	<tr id="row_atk"><td>攻擊力</td>
-	<td>
+	<tr class="monster_property">
+		<td>攻擊力</td>
+		<td></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
 	<input type="number" id="text_atk1" name="atk1" min="-1" max="100000" style="width: 5em">
 	～
-	<input type="number" id="text_atk2" name="atk2" min="0" max="100000" style="width: 5em"> (-1: ?)
+	<input type="number" id="text_atk2" name="atk2" min="0" max="100000" style="width: 5em"> (-1 = ?)
 	</td>
 	</tr>
 	
-	<tr id="row_def"><td>守備力</td>
-	<td>
+	<tr class="monster_property">
+		<td>守備力</td>
+		<td></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
 	<input type="number" id="text_def1" name="def1" min="-2" max="100000" style="width: 5em">
 	～
-	<input type="number" id="text_def2" name="def2" min="0" max="100000" style="width: 5em"> (-2: 攻守相等)
+	<input type="number" id="text_def2" name="def2" min="0" max="100000" style="width: 5em"> (-2 = 攻守相等)
 	</td>
 	</tr>
 	
-	<tr id="row_sum"><td>總和</td>
-	<td>
+	<tr class="monster_property">
+		<td>總和</td>
+		<td></td>
+	</tr>
+	<tr class="monster_property"><td colspan="2">
 	<input type="number" id="text_sum" name="sum" min="0" max="100000" style="width: 5em">
 	</td>
 	</tr>
 	
-	<tr class="row_button">
+	<tr class="align_center">
 		<td colspan="2">
-		<button id="button1" disabled>搜尋</button>
-		　　　　　　
-		<button id="button2" type="reset" disabled>重設</button>
+		<button id="button1" class="submit" disabled>搜尋</button>
+		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<button id="button2" class="submit" type="reset" disabled>重設</button>
 		</td>
 	</tr>
 	</table>
@@ -310,12 +339,13 @@
 		<select id="select_page"></select>
 	</div>
 	
-	<script src="dist/sql-wasm.js"></script>
-	<script src="dist/jszip.min.js"></script>
 	<script src="constant.js"></script>
 	<script src="pack.js"></script>
-	<script src="ygo-query.js"></script>
 	<script src="event_handler.js"></script>
+	
+	<script src="dist/sql-wasm.js"></script>
+	<script src="dist/jszip.min.js"></script>
+	<script src="ygo-query.js"></script>
 	<script src="submit_query.js"></script>
 	<script src="query.js"></script>
 	<script src="result.js"></script>

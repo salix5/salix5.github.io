@@ -1,4 +1,5 @@
 "use strict";
+const MAX_WIDTH = 900;
 // type
 const TYPE_MONSTER = 0x1;
 const TYPE_SPELL = 0x2;
