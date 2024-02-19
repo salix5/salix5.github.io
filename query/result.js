@@ -1,6 +1,4 @@
 "use strict";
-
-const MAX_WIDTH = 900;
 const MAX_RESULT_LEN = 200;
 var result_per_page = 50;
 var current_params = null;

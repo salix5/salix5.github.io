@@ -42,26 +42,16 @@ const cb_attr = document.getElementsByName("attr");
 const cb_race = document.getElementsByName("race");
 const monster_checkbox = ["marker", "attr", "race"];
 
-const cb_mtype_reset = document.getElementById("mtype_reset");
-const cb_exclude_reset = document.getElementById("exclude_reset");
-const cb_stype_reset = document.getElementById("stype_reset");
-const cb_ttype_reset = document.getElementById("ttype_reset");
-const cb_attr_reset = document.getElementById("attr_reset");
-const cb_race_reset = document.getElementById("race_reset");
+const subtype_operator = document.getElementById("subtype_operator");
+const subtype_reset = document.getElementById("subtype_reset");
+const exclude_reset = document.getElementById("exclude_reset");
+const attr_reset = document.getElementById("attr_reset");
+const race_reset = document.getElementById("race_reset");
+const marker_reset = document.getElementById("marker_reset");
 
-const row_subtype = document.getElementById("row_subtype");
-const row_exclude = document.getElementById("row_exclude");
-
-const row_attr = document.getElementById("row_attr");
-const row_race = document.getElementById("row_race");
-const row_lv = document.getElementById("row_lv");
-const row_sc = document.getElementById("row_sc");
-const row_marker = document.getElementById("row_marker");
-const row_atk = document.getElementById("row_atk");
-const row_def = document.getElementById("row_def");
-const row_sum = document.getElementById("row_sum");
-const row_mat = document.getElementById("row_mat");
-const monster_row = [row_attr, row_race, row_lv, row_sc, row_marker, row_atk, row_def, row_sum, row_mat];
+const row_subtype = document.getElementsByClassName("row_subtype");
+const row_exclude = document.getElementsByClassName("row_exclude");
+const monster_row = document.getElementsByClassName("monster_property");
 
 const form1 = document.getElementById("form1");
 const row_button = document.getElementById("row_button");
@@ -104,20 +94,25 @@ function hide_type(type, status) {
 			}
 			break;
 		case 1:
-			row_subtype.hidden = status;
-			row_exclude.hidden = status;
+			for (const row of row_subtype)
+				row.hidden = status;
+			for (const row of row_exclude)
+				row.hidden = status;
+			subtype_operator.hidden = status;
 			subtype_m.hidden = status;
+			select_subtype_op.disabled = status;
 			disable_cb("mtype", status);
 			disable_cb("exclude", status);
-			select_subtype_op.disabled = status;
 			break;
 		case 2:
-			row_subtype.hidden = status;
+			for (const row of row_subtype)
+				row.hidden = status;
 			subtype_s.hidden = status;
 			disable_cb("stype", status);
 			break;
 		case 3:
-			row_subtype.hidden = status;
+			for (const row of row_subtype)
+				row.hidden = status;
 			subtype_t.hidden = status;
 			disable_cb("ttype", status);
 			break;
@@ -127,7 +122,7 @@ function hide_type(type, status) {
 }
 
 select_type.addEventListener("change", function (event) {
-	switch (this.value) {
+	switch (event.currentTarget.value) {
 		case "1":
 			hide_type(2, true);
 			hide_type(3, true);
@@ -155,29 +150,22 @@ select_type.addEventListener("change", function (event) {
 	}
 });
 
-cb_mtype_reset.addEventListener("change", function (event) {
+subtype_reset.addEventListener("click", function (event) {
 	clear_cb("mtype");
-	this.checked = false;
-});
-cb_exclude_reset.addEventListener("change", function (event) {
-	clear_cb("exclude");
-	this.checked = false;
-});
-cb_stype_reset.addEventListener("change", function (event) {
 	clear_cb("stype");
-	this.checked = false;
-});
-cb_ttype_reset.addEventListener("change", function (event) {
 	clear_cb("ttype");
-	this.checked = false;
 });
-cb_attr_reset.addEventListener("change", function (event) {
+exclude_reset.addEventListener("click", function (event) {
+	clear_cb("exclude");
+});
+attr_reset.addEventListener("click", function (event) {
 	clear_cb("attr");
-	this.checked = false;
 });
-cb_race_reset.addEventListener("change", function (event) {
+race_reset.addEventListener("click", function (event) {
 	clear_cb("race");
-	this.checked = false;
+});
+marker_reset.addEventListener("click", function (event) {
+	clear_cb("marker");
 });
 
 form1.addEventListener("reset", function (event) {
