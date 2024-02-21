@@ -1,6 +1,6 @@
 "use strict";
 // dependency: sql.js, JSZIP
-const last_pack = "LEDE#8";
+const last_pack = "LEDE#9";
 
 // special ID
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
