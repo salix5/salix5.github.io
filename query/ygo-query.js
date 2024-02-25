@@ -1,6 +1,6 @@
 "use strict";
 // dependency: sql.js, JSZIP
-const last_pack = "LEDE#9";
+const last_pack = "QCCU#1";
 
 // special ID
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
@@ -46,7 +46,6 @@ const name_table_jp = Object.create(null);
 const name_table_en = Object.create(null);
 const name_table_kr = Object.create(null);
 const pack_list = Object.create(null);
-const setname = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
 
@@ -55,7 +54,6 @@ if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(name_table_jp, JSON.parse(localStorage.getItem("name_table")));
 	Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
 	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
-	Object.assign(setname, JSON.parse(localStorage.getItem("setname")));
 	Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
 	Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
 }
@@ -65,16 +63,17 @@ else {
 	fetch_list.push(fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table_jp, data)));
 	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data)));
 	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
-	fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
 	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
 	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
 }
 
 // MD
+const setname = Object.create(null);
 const ltable_md = Object.create(null);
 const md_name = Object.create(null);
 const md_name_jp = Object.create(null);
 const md_name_en = Object.create(null);
+fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
 fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
 fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
 fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => Object.assign(md_name_jp, data)));
