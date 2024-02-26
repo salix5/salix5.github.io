@@ -285,7 +285,7 @@ function create_rows(card, pack) {
 		let link_faq = document.createElement('a');
 		link_faq.href = faq_url;
 		link_faq.target = '_blank';
-		link_faq.rel = 'noreferrer';
+		link_faq.rel = 'noreferrer nofollow';
 		link_faq.textContent = print_id(card.real_id, card.type, pack, card.pack_id);
 		div_id.appendChild(link_faq);
 	}
