@@ -231,12 +231,7 @@ function create_rows(card, pack) {
 			db_url = print_db_link(card.cid, request_locale);
 		}
 		else if (card.cid === 0) {
-			if (card.jp_name)
-				link_db_text = card.jp_name;
-			else if (card.md_name_jp)
-				link_db_text = `${card.md_name_jp}  (MD)`;
-			else
-				link_db_text = card.en_name;
+			link_db_text = card.en_name;
 			db_url = print_yp_link(card.id);
 		}
 		else {
@@ -252,15 +247,21 @@ function create_rows(card, pack) {
 				str_pack = pre_pack;
 			}
 			link_db_text = `${str_site}: ${str_pack}`;
-			db_url = wiki_link[pre_pack];
+			if (wiki_link[pre_pack])
+				db_url = wiki_link[pre_pack];
 		}
 		let div_db = document.createElement('div');
-		let link_db = document.createElement('a');
-		link_db.href = db_url;
-		link_db.target = '_blank';
-		link_db.rel = 'noreferrer';
-		link_db.textContent = link_db_text;
-		div_db.appendChild(link_db);
+		if (db_url) {
+			let link_db = document.createElement('a');
+			link_db.href = db_url;
+			link_db.target = '_blank';
+			link_db.rel = 'noreferrer nofollow';
+			link_db.textContent = link_db_text;
+			div_db.appendChild(link_db);
+		}
+		else {
+			div_db.textContent = link_db_text;
+		}
 		div_alias.appendChild(div_db);
 		if ((card.jp_name || card.md_name_jp) && (card.en_name || card.md_name_en)) {
 			let div_en = document.createElement('div');
