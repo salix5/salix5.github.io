@@ -845,8 +845,10 @@ function param_to_condition(params, arg) {
 			arg.$marker = marker;
 			is_monster = true;
 		}
-		if (arg.$ctype === 0 && is_monster)
-			qstr += " AND type & $monster";
+		if (arg.$ctype === 0 && is_monster) {
+			qstr += " AND type & $ctype";
+			arg.$ctype = TYPE_MONSTER;
+		}
 	}
 
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
@@ -891,10 +893,8 @@ function param_to_condition(params, arg) {
 function server_analyze1(params) {
 	let qstr0 = stmt_base;
 	let arg = new Object();
-	arg.$monster = TYPE_MONSTER;
 	arg.$link = TYPE_LINK;
 	arg.$pendulum = TYPE_PENDULUM;
-	arg.$token = TYPE_TOKEN;
 
 	let valid_params = server_validate1(params);
 	let condition = param_to_condition(valid_params, arg);
@@ -922,13 +922,9 @@ function get_single_card(cdata) {
 	if (!cdata)
 		return [null, 0];
 
-	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
-	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND type & $monster AND NOT type & ($token | $ext)";
+	let qstr0 = `${stmt_default} AND type & $monster AND NOT type & $ext`;
 	let arg = new Object();
 	arg.$monster = TYPE_MONSTER;
-	arg.$link = TYPE_LINK;
-	arg.$pendulum = TYPE_PENDULUM;
-	arg.$token = TYPE_TOKEN;
 	arg.$ext = TYPE_EXTRA;
 
 	let qstr = "";
@@ -1013,13 +1009,10 @@ function server_analyze2(params) {
 		return;
 	}
 
-	let qstr0 = "SELECT datas.id, ot, alias, type, atk, def, level, attribute, race, name, desc FROM datas, texts";
-	qstr0 += " WHERE datas.id == texts.id AND abs(datas.id - alias) >= 10 AND NOT type & ($token | $ext)";
+	let qstr0 = `${stmt_default} AND NOT type & $ext`;
 	let arg = new Object();
-	arg.$monster = TYPE_MONSTER;
 	arg.$link = TYPE_LINK;
 	arg.$pendulum = TYPE_PENDULUM;
-	arg.$token = TYPE_TOKEN;
 	arg.$ext = TYPE_EXTRA;
 
 	params.set("begin", card_begin.id);
