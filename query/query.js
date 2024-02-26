@@ -723,6 +723,7 @@ function param_to_condition(params, arg) {
 		// def, exclude link monsters
 		if (params.has("def1") || params.has("def2") || params.has("defm") || params.has("sum")) {
 			qstr += " AND NOT type & $link";
+			arg.$link = TYPE_LINK;
 			is_monster = true;
 		}
 
@@ -786,6 +787,7 @@ function param_to_condition(params, arg) {
 		// scale, pendulum monster only
 		if (params.has("sc1") || params.has("sc2")) {
 			qstr += " AND type & $pendulum";
+			arg.$pendulum = TYPE_PENDULUM;
 			is_monster = true;
 		}
 		if (params.has("sc1")) {
@@ -834,6 +836,7 @@ function param_to_condition(params, arg) {
 		}
 		if (marker) {
 			qstr += " AND type & $link";
+			arg.$link = TYPE_LINK;
 			if (params.get("marker_operator") === "1") {
 				select_marker_op.value = "1";
 				qstr += " AND def & $marker == $marker";
@@ -892,10 +895,7 @@ function param_to_condition(params, arg) {
 // entrance of query
 function server_analyze1(params) {
 	let qstr0 = stmt_base;
-	let arg = new Object();
-	arg.$link = TYPE_LINK;
-	arg.$pendulum = TYPE_PENDULUM;
-
+	let arg = Object.create(null);
 	let valid_params = server_validate1(params);
 	let condition = param_to_condition(valid_params, arg);
 
@@ -1010,9 +1010,7 @@ function server_analyze2(params) {
 	}
 
 	let qstr0 = `${stmt_default} AND NOT type & $ext`;
-	let arg = new Object();
-	arg.$link = TYPE_LINK;
-	arg.$pendulum = TYPE_PENDULUM;
+	let arg = Object.create(null);
 	arg.$ext = TYPE_EXTRA;
 
 	params.set("begin", card_begin.id);
