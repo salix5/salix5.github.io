@@ -45,10 +45,10 @@ fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
 const cid_table = Object.create(null);
 const name_table_jp = Object.create(null);
 const name_table_en = Object.create(null);
-const name_table_kr = Object.create(null);
 const pack_list = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
+const name_table_kr = Object.create(null);
 
 if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
@@ -88,7 +88,6 @@ const db_ready = Promise.all(fetch_list)
 				localStorage.setItem("name_table", JSON.stringify(name_table_jp));
 				localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
 				localStorage.setItem("pack_list", JSON.stringify(pack_list));
-				localStorage.setItem("setname", JSON.stringify(setname));
 				localStorage.setItem("ltable_ocg", JSON.stringify(ltable_ocg));
 				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));
 				localStorage.setItem("last_pack", last_pack);
