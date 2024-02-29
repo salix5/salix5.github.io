@@ -12,14 +12,14 @@
 	<form id="form1" action="/query/" autocomplete="off">
 	<table class="hidden">
 	<tr><td>密碼</td><td><input type="number" id="text_id" name="code" min="1" max="102000000"></td></tr>
-	<tr><td>卡名</td><td><input type="search" id="text_name" name="cname" maxlength="100">
+	<tr><td>卡名</td><td><input type="search" id="text_name" name="cname" maxlength="200">
 	<select id="select_locale" name="locale">
 		<option value="">OCG</option>
 		<option value="en">TCG</option>
 	</select>
 	</td></tr>
-	<tr><td>效果</td><td><input type="search" id="text_effect" name="desc" maxlength="500"></td></tr>
-	<tr><td>關鍵字</td><td><input type="search" id="text_keyword" name="keyword" maxlength="500"></td></tr>
+	<tr><td>效果</td><td><input type="search" id="text_effect" name="desc" maxlength="200"></td></tr>
+	<tr><td>關鍵字</td><td><input type="search" id="text_keyword" name="keyword" maxlength="200"></td></tr>
 	
 	<tr><td>卡包</td>
 	<td>
@@ -267,12 +267,23 @@
 	
 	<tr class="monster_property">
 		<td>刻度</td>
-		<td></td>
+		<td><button id="scale_reset" class="clear" type="button">✗</button></td></td>
 	</tr>
 	<tr class="monster_property"><td colspan="2">
-	<input type="number" id="text_sc1" name="sc1" min="0" max="13" style="width: 3em" >
-	～
-	<input type="number" id="text_sc2" name="sc2" min="0" max="13" style="width: 3em" >
+		<input type="checkbox" id="scale0" name="scale" value="0"><label for="scale0">0&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale1" name="scale" value="1"><label for="scale1">1&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale2" name="scale" value="2"><label for="scale2">2&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale3" name="scale" value="3"><label for="scale3">3&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale4" name="scale" value="4"><label for="scale4">4&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale5" name="scale" value="5"><label for="scale5">5&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale6" name="scale" value="6"><label for="scale6">6&nbsp;&nbsp;&nbsp;</label><br>
+		<input type="checkbox" id="scale7" name="scale" value="7"><label for="scale7">7&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale8" name="scale" value="8"><label for="scale8">8&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale9" name="scale" value="9"><label for="scale9">9&nbsp;&nbsp;&nbsp;</label>
+		<input type="checkbox" id="scale10" name="scale" value="10"><label for="scale10">10&nbsp;</label>
+		<input type="checkbox" id="scale11" name="scale" value="11"><label for="scale11">11&nbsp;</label>
+		<input type="checkbox" id="scale12" name="scale" value="12"><label for="scale12">12&nbsp;</label>
+		<input type="checkbox" id="scale13" name="scale" value="13"><label for="scale13">13&nbsp;</label>
 	</td>
 	</tr>
 	
