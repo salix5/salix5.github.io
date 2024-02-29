@@ -6,15 +6,13 @@ const text_keyword = document.getElementById("text_keyword");
 
 const text_lv1 = document.getElementById("text_lv1");
 const text_lv2 = document.getElementById("text_lv2");
-const text_sc1 = document.getElementById("text_sc1");
-const text_sc2 = document.getElementById("text_sc2");
 const text_atk1 = document.getElementById("text_atk1");
 const text_atk2 = document.getElementById("text_atk2");
 const text_def1 = document.getElementById("text_def1");
 const text_def2 = document.getElementById("text_def2");
 const text_sum = document.getElementById("text_sum");
 const text_mat = document.getElementById("text_mat");
-const monster_input = [text_lv1, text_lv2, text_sc1, text_sc2, text_atk1, text_atk2, text_def1, text_def2, text_sum, text_mat];
+const monster_input = [text_lv1, text_lv2, text_atk1, text_atk2, text_def1, text_def2, text_sum, text_mat];
 
 const select_locale = document.getElementById("select_locale");
 const select_ot = document.getElementById("select_ot");
@@ -39,7 +37,8 @@ const cb_ttype = document.getElementsByName("ttype");
 const cb_marker = document.getElementsByName("marker");
 const cb_attr = document.getElementsByName("attr");
 const cb_race = document.getElementsByName("race");
-const monster_checkbox = ["marker", "attr", "race"];
+const cb_scale = document.getElementsByName("scale");
+const monster_checkbox = ["marker", "attr", "race", "scale"];
 
 const subtype_operator = document.getElementById("subtype_operator");
 const subtype_reset = document.getElementById("subtype_reset");
@@ -47,6 +46,7 @@ const exclude_reset = document.getElementById("exclude_reset");
 const attr_reset = document.getElementById("attr_reset");
 const race_reset = document.getElementById("race_reset");
 const marker_reset = document.getElementById("marker_reset");
+const scale_reset = document.getElementById("scale_reset");
 
 const row_subtype = document.getElementsByClassName("row_subtype");
 const row_exclude = document.getElementsByClassName("row_exclude");
@@ -159,6 +159,9 @@ attr_reset.addEventListener("click", function (event) {
 });
 race_reset.addEventListener("click", function (event) {
 	clear_cb("race");
+});
+scale_reset.addEventListener("click", function (event) {
+	clear_cb("scale");
 });
 marker_reset.addEventListener("click", function (event) {
 	clear_cb("marker");
