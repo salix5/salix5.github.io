@@ -1,20 +1,21 @@
 "use strict";
-// max of int32: 10 digit
-const MAX_DIGIT = 10;
-
 const LOCALE_LIMIT = 2;
-const PACK_LIMIT = 5;
 const NAME_LIMIT = 100;
-const DESC_LIMIT = 500;
+const MAX_STRING_LEN = 10;
+const MAX_TEXT_LEN = 200;
 
 const result = [];
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
-const re_bad_escape = /\$(?![%_])/g;
-const re_all_digit = /^\d+$/;
+const re_bad_escape = /\$(?![%_])/;
+const re_special = /[\$%_]/;
+
 const re_id = /^\d{1,9}$/;
 const re_value = /^\d{1,2}$/;
+const re_pack = /^_?\w{4}$/;
+const re_number = /^-?\d+$/;
+
 const re_atkfr = /^-?\d{1,6}$/;
 const re_atkto = /^\d{1,6}$/;
 const re_mod = /^\d{1,3}$/;
@@ -25,17 +26,16 @@ const mtype_list = [
 	TYPE_SYNCHRO,
 	TYPE_XYZ,
 	TYPE_LINK,
-
 	TYPE_NORMAL,
+
 	TYPE_EFFECT,
 	TYPE_RITUAL,
 	TYPE_PENDULUM,
-
 	TYPE_TOON,
 	TYPE_SPIRIT,
+
 	TYPE_UNION,
 	TYPE_DUAL,
-
 	TYPE_TUNER,
 	TYPE_FLIP,
 	TYPE_SPSUMMON,
@@ -46,17 +46,16 @@ const exclude_list = [
 	TYPE_SYNCHRO,
 	TYPE_XYZ,
 	TYPE_LINK,
-
 	TYPE_NORMAL,
+
 	TYPE_EFFECT,
 	TYPE_RITUAL,
 	TYPE_PENDULUM,
-
 	TYPE_TOON,
 	TYPE_SPIRIT,
+
 	TYPE_UNION,
 	TYPE_DUAL,
-
 	TYPE_TUNER,
 	TYPE_FLIP,
 	TYPE_SPSUMMON,
@@ -67,7 +66,6 @@ const stype_list = [
 	TYPE_QUICKPLAY,
 	TYPE_CONTINUOUS,
 	TYPE_EQUIP,
-
 	TYPE_RITUAL,
 	TYPE_FIELD,
 ];
@@ -129,6 +127,41 @@ const marker_list = [
 	LINK_MARKER_BOTTOM,
 	LINK_MARKER_BOTTOM_RIGHT,
 ];
+
+const form_keys = Object.create(null);
+Object.assign(form_keys, {
+	"cname": 1,
+	"locale": 1,
+	"desc": 1,
+	"keyword": 1,
+	"pack": 1,
+	"type": 1,
+	"stype": 1,
+	"ttype": 1,
+	"page": 1,
+
+	"mtype": 2,
+	"mtype_operator": 2,
+	"exclude": 2,
+	"attr": 2,
+	"race": 2,
+	"lv1": 2,
+	"lv2": 2,
+	"scale": 2,
+	"sc1": 2,
+	"sc2": 2,
+	"atk1": 2,
+	"atk2": 2,
+	"atkm": 2,
+	"def1": 2,
+	"def2": 2,
+	"defm": 2,
+	"sum": 2,
+
+	"mat": 3,
+	"marker": 3,
+	"marker_operator": 3,
+});
 
 const cid_to_id = inverse_mapping(cid_table);
 
@@ -197,38 +230,85 @@ function is_pack(x) {
 		case "t":
 			return true;
 		default:
-			return /^_?\w{4}$/.test(x) && !!(pack_list[x] || pre_release[x]);
+			return re_pack.test(x) && !!(pack_list[x] || pre_release[x]);
 	}
 }
 
-function is_valid(x, type) {
-	let len = 0;
-	switch (type) {
-		case "mtype":
-			len = mtype_list.length;
-			break;
-		case "exclude":
-			len = exclude_list.length;
-			break;
-		case "stype":
-			len = stype_list.length;
-			break;
-		case "ttype":
-			len = ttype_list.length;
-			break;
-		case "attr":
-			len = attr_list.length;
-			break;
-		case "race":
-			len = race_list.length;
-			break;
-		case "marker":
-			len = marker_list.length;
-			break;
-		default:
-			break;
+function check_checkbox(params, name, min = 1) {
+	const node_list = document.getElementsByName(name);
+	if (node_list.length === 0) {
+		params.delete(name);
+		return;
 	}
-	return re_value.test(x) && Number.parseInt(x) <= len;
+	const values = params.getAll(name);
+	params.delete(name);
+	for (const value of values) {
+		if (value.length === 0 || value.length > MAX_STRING_LEN)
+			continue;
+		if (!re_value.test(value) || params.has(name, value))
+			continue;
+		let x = parseInt(value);
+		if (x >= min && x <= min + node_list.length - 1)
+			params.append(name, value);
+	}
+}
+
+function check_text(params, key) {
+	const value = params.get(key);
+	if (value === null)
+		return false;
+	if (value.length === 0 || value.length > MAX_TEXT_LEN || re_bad_escape.test(value)) {
+		params.delete(key);
+		return false;
+	}
+	else {
+		params.set(key, value);
+		return true;
+	}
+}
+
+function check_normal_text(params, key) {
+	let value = params.get(key);
+	if (value === null)
+		return false;
+	if (value.length === 0 || value.length > MAX_TEXT_LEN || re_special.test(value)) {
+		params.delete(key);
+		return false;
+	}
+	else {
+		params.set(key, value);
+		return true;
+	}
+}
+
+function check_entry(params, key) {
+	const value = params.get(key);
+	if (value === null)
+		return false;
+	if (value.length === 0 || value.length > MAX_STRING_LEN) {
+		params.delete(key);
+		return false;
+	}
+	return true;
+}
+
+function check_value(params, key, min, max) {
+	if (!check_entry(params, key))
+		return false;
+	const value = params.get(key);
+	if (!re_number.test(value)) {
+		params.delete(key);
+		return false;
+	}
+	const x = Number.parseInt(value);
+	if (Number.isSafeInteger(x) && x >= min && x <= max) {
+		params.set(key, value);
+		return true
+	}
+	else {
+		params.delete(key);
+		return false;
+	}
 }
 
 function check_str(val, limit) {
@@ -239,238 +319,157 @@ function check_str(val, limit) {
 }
 
 /**
- * server_validate1() - Validate the input of query.
+ * validate common keys
+ * @param {URLSearchParams} params 
+ */
+function validate_params(params) {
+	if (check_text(params, "keyword")) {
+		params.delete("cname");
+		params.delete("locale");
+		params.delete("desc");
+	}
+	else if (check_text(params, "cname")) {
+		switch (params.get("locale")) {
+			case "en":
+				params.set("locale", "en");
+				break;
+			default:
+				params.delete("locale");
+				break;
+		}
+		check_text(params, "desc");
+	}
+	else {
+		params.delete("locale");
+		check_text(params, "desc");
+	}
+	check_entry(params, "pack");
+	const pack = params.get("pack");
+	if (pack && is_pack(pack)) {
+		params.set("pack", pack);
+	}
+	else {
+		params.delete("pack");
+	}
+	switch (params.get("type")) {
+		case "1":
+			params.set("type", "1");
+			params.delete("stype");
+			params.delete("ttype");
+			check_checkbox(params, "mtype");
+			if (params.get("mtype_operator") === "1")
+				params.set("mtype_operator", "1");
+			else
+				params.set("mtype_operator", "0");
+			check_checkbox(params, "exclude");
+			break;
+		case "2":
+			params.set("type", "2");
+			params.delete("mtype");
+			params.delete("mtype_operator");
+			params.delete("exclude");
+			params.delete("ttype");
+			check_checkbox(params, "stype");
+			break;
+		case "3":
+			params.set("type", "3");
+			params.delete("mtype");
+			params.delete("mtype_operator");
+			params.delete("exclude");
+			params.delete("stype");
+			check_checkbox(params, "ttype");
+			break;
+		default:
+			params.delete("type");
+			params.delete("mtype");
+			params.delete("mtype_operator");
+			params.delete("exclude");
+			params.delete("stype");
+			params.delete("ttype");
+			break;
+	}
+	if (params.get("type") === null || params.get("type") === "1") {
+		check_normal_text(params, "mat");
+		check_checkbox(params, "attr");
+		check_checkbox(params, "race");
+		check_value(params, "lv1", 1, 13);
+		check_value(params, "lv2", 1, 13);
+		check_checkbox(params, "scale", 0);
+		if (params.has("scale")) {
+			params.delete("sc1");
+			params.delete("sc2");
+		}
+		else {
+			check_value(params, "sc1", 0, 13);
+			check_value(params, "sc2", 0, 13);
+		}
+		check_checkbox(params, "marker");
+		if (params.has("marker")) {
+			if (params.get("marker_operator") === "1")
+				params.set("marker_operator", "1");
+			else
+				params.set("marker_operator", "0");
+		}
+		else {
+			params.delete("marker_operator");
+		}
+		check_value(params, "atk1", -1, 100000);
+		const atk1 = Number.parseInt(params.get("atk1"));
+		if (atk1 < 0) {
+			params.delete("atk2");
+			params.delete("atkm");
+			params.delete("sum");
+		}
+		else {
+			check_value(params, "atk2", 0, 100000);
+			check_value(params, "atkm", 0, 999);
+		}
+		check_value(params, "def1", -2, 100000);
+		const def1 = Number.parseInt(params.get("def1"));
+		if (def1 < 0) {
+			params.delete("def2");
+			params.delete("defm");
+			params.delete("sum");
+		}
+		else {
+			check_value(params, "def2", 0, 100000);
+			check_value(params, "defm", 0, 999);
+		}
+		check_value(params, "sum", 0, 100000);
+	}
+	else {
+		for (const [key, value] of Object.entries(form_keys)) {
+			if (value >= 2)
+				params.delete(key);
+		}
+	}
+	check_value(params, "page", 1, 1000);
+}
+
+/**
+ * Validate the input of query.
  * @param {URLSearchParams} params original params
  * @returns validated params
  */
 function server_validate1(params) {
-	let valid_params = new URLSearchParams();
-	// id, primary key
-	if (params.get("code") && re_id.test(params.get("code"))) {
-		valid_params.set("code", params.get("code"));
+	check_value(params, "id", 1, 102000000);
+	const id = params.get("code");
+	if (id) {
+		const valid_params = new URLSearchParams();
+		valid_params.set("code", id);
+		return valid_params;
 	}
 	else {
-		let keyword = '';
-		if (params.get("keyword"))
-			keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
-		let cname = '';
-		if (params.get("cname"))
-			cname = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
-		let locale = '';
-		if (params.get("locale"))
-			locale = check_str(params.get("locale"), LOCALE_LIMIT);
-		let desc = '';
-		if (params.get("desc"))
-			desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
-		if (keyword) {
-			valid_params.set("keyword", keyword);
+		validate_params(params);
+		for (const key of params.keys()) {
+			if (!form_keys[key])
+				params.delete(key);
 		}
-		else {
-			if (cname)
-				valid_params.set("cname", cname);
-			if (is_locale(locale))
-				valid_params.set("locale", locale);
-			if (desc)
-				valid_params.set("desc", desc);
-		}
-
-		let pack = '';
-		if (params.get("pack"))
-			pack = check_str(params.get("pack"), PACK_LIMIT);
-		if (is_pack(pack))
-			valid_params.set("pack", pack);
-
-		let monster_type = false;
-		switch (params.get("type")) {
-			case "1":
-				valid_params.set("type", "1");
-				for (const val of params.getAll("mtype")) {
-					if (is_valid(val, "mtype"))
-						valid_params.append("mtype", val);
-				}
-				if (params.get("mtype_operator") === "1")
-					valid_params.set("mtype_operator", "1");
-				else
-					valid_params.set("mtype_operator", "0");
-				for (const val of params.getAll("exclude")) {
-					if (is_valid(val, "exclude"))
-						valid_params.append("exclude", val);
-				}
-				monster_type = true;
-				break;
-			case "2":
-				valid_params.set("type", "2");
-				for (const val of params.getAll("stype")) {
-					if (is_valid(val, "stype"))
-						valid_params.append("stype", val);
-				}
-				break;
-			case "3":
-				valid_params.set("type", "3");
-				for (const val of params.getAll("ttype")) {
-					if (is_valid(val, "ttype"))
-						valid_params.append("ttype", val);
-				}
-				break;
-			default:
-				monster_type = true;
-				break;
-		}
-
-		if (monster_type) {
-			let mat = '';
-			if (params.get("mat"))
-				mat = check_str(params.get("mat"), NAME_LIMIT).replace(/(^|[^\$])[%_]/g, "");
-			if (mat)
-				valid_params.set("mat", mat);
-			// attr
-			for (const val of params.getAll("attr")) {
-				if (is_valid(val, "attr"))
-					valid_params.append("attr", val);
-			}
-			// race
-			for (const val of params.getAll("race")) {
-				if (is_valid(val, "race"))
-					valid_params.append("race", val);
-			}
-			// lv, scale
-			if (params.get("lv1") && re_value.test(params.get("lv1")))
-				valid_params.set("lv1", params.get("lv1"));
-			if (params.get("lv2") && re_value.test(params.get("lv2")))
-				valid_params.set("lv2", params.get("lv2"));
-			if (params.get("sc1") && re_value.test(params.get("sc1")))
-				valid_params.set("sc1", params.get("sc1"));
-			if (params.get("sc2") && re_value.test(params.get("sc2")))
-				valid_params.set("sc2", params.get("sc2"));
-
-			for (const val of params.getAll("marker")) {
-				if (is_valid(val, "marker"))
-					valid_params.append("marker", val);
-			}
-			if (params.get("marker_operator") === "1")
-				valid_params.set("marker_operator", "1");
-			else
-				valid_params.set("marker_operator", "0");
-
-			let atk1 = params.get("atk1");
-			let atk2 = params.get("atk2");
-			let atkm = params.get("atkm");
-			if (atk1 && is_atkfr(atk1))
-				valid_params.set("atk1", atk1);
-			if (atk2 && is_atkto(atk2))
-				valid_params.set("atk2", atk2);
-			if (atkm && re_mod.test(atkm))
-				valid_params.set("atkm", atkm);
-			let def1 = params.get("def1");
-			let def2 = params.get("def2");
-			let defm = params.get("defm");
-			if (def1 && is_deffr(def1))
-				valid_params.set("def1", def1);
-			if (def2 && is_defto(def2))
-				valid_params.set("def2", def2);
-			if (defm && re_mod.test(defm))
-				valid_params.set("defm", defm);
-			let sum = params.get("sum");
-			if (sum && is_atkto(sum))
-				valid_params.set("sum", sum);
-		}
+		return params;
 	}
-	// page
-	if (params.get("page") && re_page.test(params.get("page")))
-		valid_params.set("page", params.get("page"));
-	return valid_params;
 }
 
-function server_validate2(params) {
-	let valid_params = new URLSearchParams();
-	valid_params.set("begin", params.get("begin"));
-	valid_params.set("end", params.get("end"));
-
-	let keyword = '';
-	if (params.get("keyword"))
-		keyword = check_str(params.get("keyword"), DESC_LIMIT).replace(re_bad_escape, "");
-	let cname = '';
-	if (params.get("cname"))
-		cname = check_str(params.get("cname"), NAME_LIMIT).replace(re_bad_escape, "");
-	let locale = '';
-	if (params.get("locale"))
-		locale = check_str(params.get("locale"), LOCALE_LIMIT);
-	let desc = '';
-	if (params.get("desc"))
-		desc = check_str(params.get("desc"), DESC_LIMIT).replace(re_bad_escape, "");
-	if (keyword) {
-		valid_params.set("keyword", keyword);
-	}
-	else {
-		if (cname)
-			valid_params.set("cname", cname);
-		if (is_locale(locale))
-			valid_params.set("locale", locale);
-		if (desc)
-			valid_params.set("desc", desc);
-	}
-	let pack = '';
-	if (params.get("pack"))
-		pack = check_str(params.get("pack"), PACK_LIMIT);
-	if (is_pack(pack))
-		valid_params.set("pack", pack);
-
-	valid_params.set("type", "1");
-	for (const val of params.getAll("mtype")) {
-		if (is_valid(val, "mtype"))
-			valid_params.append("mtype", val);
-	}
-	if (params.get("mtype_operator") === "1")
-		valid_params.set("mtype_operator", "1");
-	else
-		valid_params.set("mtype_operator", "0");
-	for (const val of params.getAll("exclude")) {
-		if (is_valid(val, "exclude"))
-			valid_params.append("exclude", val);
-	}
-
-	// attr
-	for (const val of params.getAll("attr")) {
-		if (is_valid(val, "attr"))
-			valid_params.append("attr", val);
-	}
-	// race
-	for (const val of params.getAll("race")) {
-		if (is_valid(val, "race"))
-			valid_params.append("race", val);
-	}
-	// lv, scale
-	if (params.get("lv1") && re_value.test(params.get("lv1")))
-		valid_params.set("lv1", params.get("lv1"));
-	if (params.get("lv2") && re_value.test(params.get("lv2")))
-		valid_params.set("lv2", params.get("lv2"));
-	if (params.get("sc1") && re_value.test(params.get("sc1")))
-		valid_params.set("sc1", params.get("sc1"));
-	if (params.get("sc2") && re_value.test(params.get("sc2")))
-		valid_params.set("sc2", params.get("sc2"));
-
-	let atk1 = params.get("atk1");
-	let atk2 = params.get("atk2");
-	if (atk1 && is_atkfr(atk1))
-		valid_params.set("atk1", atk1);
-	if (atk2 && is_atkto(atk2))
-		valid_params.set("atk2", atk2);
-	let def1 = params.get("def1");
-	let def2 = params.get("def2");
-	if (def1 && is_deffr(def1))
-		valid_params.set("def1", def1);
-	if (def2 && is_defto(def2))
-		valid_params.set("def2", def2);
-	let sum = params.get("sum");
-	if (sum && is_atkto(sum))
-		valid_params.set("sum", sum);
-	// page
-	if (params.get("page") && re_page.test(params.get("page")))
-		valid_params.set("page", params.get("page"));
-	return valid_params;
-}
-
-// legal string -> sqlite literal
+// string -> wildcard literal
 function string_to_literal(str) {
 	return re_wildcard.test(str) ? str : `%${str}%`;
 }
@@ -785,22 +784,30 @@ function param_to_condition(params, arg) {
 		}
 
 		// scale, pendulum monster only
-		if (params.has("sc1") || params.has("sc2")) {
+		if (params.has("scale") || params.has("sc1") || params.has("sc2")) {
 			qstr += " AND type & $pendulum";
 			arg.$pendulum = TYPE_PENDULUM;
 			is_monster = true;
 		}
+		if (params.has("scale")) {
+			let scale_condtion = "0";
+			let index = 0;
+			for (const value of params.getAll("scale")) {
+				const scale = Number.parseInt(value);
+				cb_scale[scale].checked = true;
+				scale_condtion += ` OR (level >> 24 & 0xff) == $scale${index}`;
+				arg[`$scale${index}`] = scale;
+				++index;
+			}
+			qstr += ` AND (${scale_condtion})`;
+		}
 		if (params.has("sc1")) {
-			let sc1 = Number.parseInt(params.get("sc1"));
-			text_sc1.value = sc1;
-			qstr += " AND (level >> 24 & 0xff) >= $sc1";
-			arg.$sc1 = sc1;
+			qstr += " AND (level >> 24 & 0xff) >= $scacle_from";
+			arg.$scacle_from = Number.parseInt(params.get("sc1"));
 		}
 		if (params.has("sc2")) {
-			let sc2 = Number.parseInt(params.get("sc2"));
-			text_sc2.value = sc2;
-			qstr += " AND (level >> 24 & 0xff) <= $sc2";
-			arg.$sc2 = sc2;
+			qstr += " AND (level >> 24 & 0xff) <= $scacle_to";
+			arg.$scacle_to = Number.parseInt(params.get("sc1"));
 		}
 
 		// attr, race
@@ -894,11 +901,10 @@ function param_to_condition(params, arg) {
 
 // entrance of query
 function server_analyze1(params) {
-	let qstr0 = stmt_base;
-	let arg = Object.create(null);
-	let valid_params = server_validate1(params);
-	let condition = param_to_condition(valid_params, arg);
-
+	const qstr0 = stmt_base;
+	const arg = Object.create(null);
+	const valid_params = server_validate1(params);
+	const condition = param_to_condition(valid_params, arg);
 	result.length = 0;
 	if (condition) {
 		let qstr_final = `${qstr0}${condition};`;
@@ -964,7 +970,11 @@ function get_single_card(cdata) {
 	return [null, list_tmp.length];
 }
 
-// entrance of small world
+/**
+ * entrance of small world
+ * @param {URLSearchParams} params 
+ * @returns 
+ */
 function server_analyze2(params) {
 	// id or name
 	let cdata1 = check_str(params.get("begin"), NAME_LIMIT);
@@ -1015,8 +1025,25 @@ function server_analyze2(params) {
 
 	params.set("begin", card_begin.id);
 	params.set("end", card_end.id);
-	let valid_params = server_validate2(params);
-	let condition = param_to_condition(valid_params, arg);
+	params.set("type", "1");
+	params.delete("mtype", "1");
+	params.delete("mtype", "2");
+	params.delete("mtype", "3");
+	params.delete("mtype", "4");
+	params.delete("exclude", "1");
+	params.delete("exclude", "2");
+	params.delete("exclude", "3");
+	params.delete("exclude", "4");
+	for (const [key, value] of Object.entries(form_keys)) {
+		if (value == 3)
+			params.delete(key);
+	}
+	validate_params(params);
+	for (const key of params.keys()) {
+		if (key !== !"begin" && key !== "end" && !form_keys[key])
+			params.delete(key);
+	}
+	let condition = param_to_condition(params, arg);
 	let qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
 	arg.$race_begin = card_begin.race;
 	arg.$attr_begin = card_begin.attribute;
@@ -1030,5 +1057,5 @@ function server_analyze2(params) {
 	arg.$atk_end = card_end.atk;
 	arg.$def_end = card_end.def;
 	query(qstr_final, arg, result);
-	show_result(valid_params);
+	show_result(params);
 }
