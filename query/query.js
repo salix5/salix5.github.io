@@ -565,7 +565,7 @@ function process_name(locale, name_string, arg) {
 function param_to_condition(params, arg) {
 	let qstr = "";
 	// id, primary key
-	let id = Number.parseInt(params.get("code"), 10);
+	const id = Number.parseInt(params.get("code"), 10);
 	if (id) {
 		text_id.value = id;
 		qstr += " AND datas.id == $id;";
@@ -575,7 +575,7 @@ function param_to_condition(params, arg) {
 
 	qstr += artwork_filter;
 	// pack
-	let pack = params.get("pack");
+	const pack = params.get("pack");
 	if (pack === "o") {
 		qstr += " AND datas.ot != 2";
 	}
@@ -601,13 +601,12 @@ function param_to_condition(params, arg) {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_MONSTER;
 			for (const val of params.getAll("mtype")) {
-				let idx = Number.parseInt(val) - 1;
+				const idx = Number.parseInt(val) - 1;
 				subtype |= mtype_list[idx];
 				if (cb_mtype[idx].type === "checkbox")
 					cb_mtype[idx].checked = true;
 			}
 			if (subtype) {
-				let mtype_operator = params.get("mtype_operator");
 				if (params.get("mtype_operator") === "1") {
 					select_subtype_op.value = "1";
 					qstr += " AND type & $mtype == $mtype";
@@ -619,7 +618,7 @@ function param_to_condition(params, arg) {
 				arg.$mtype = subtype;
 			}
 			for (const val of params.getAll("exclude")) {
-				let idx = Number.parseInt(val) - 1;
+				const idx = Number.parseInt(val) - 1;
 				exc |= exclude_list[idx];
 				if (cb_exclude[idx].type === "checkbox")
 					cb_exclude[idx].checked = true;
@@ -633,7 +632,7 @@ function param_to_condition(params, arg) {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_SPELL;
 			for (const val of params.getAll("stype")) {
-				let idx = Number.parseInt(val) - 1;
+				const idx = Number.parseInt(val) - 1;
 				subtype |= stype_list[idx];
 				cb_stype[idx].checked = true;
 			}
@@ -657,7 +656,7 @@ function param_to_condition(params, arg) {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_TRAP;
 			for (const val of params.getAll("ttype")) {
-				let idx = Number.parseInt(val) - 1;
+				const idx = Number.parseInt(val) - 1;
 				subtype |= ttype_list[idx];
 				cb_ttype[idx].checked = true;
 			}
@@ -684,7 +683,7 @@ function param_to_condition(params, arg) {
 	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
 		let is_monster = false;
 		// mat
-		let mat = params.get("mat");
+		const mat = params.get("mat");
 		if (mat) {
 			text_mat.value = mat;
 			qstr += " AND (desc LIKE $mat1 ESCAPE '$' OR desc LIKE $mat2 ESCAPE '$' OR desc LIKE $mat3 ESCAPE '$')";
@@ -780,14 +779,14 @@ function param_to_condition(params, arg) {
 
 		// lv, rank, link
 		if (params.has("lv1")) {
-			let lv1 = Number.parseInt(params.get("lv1"));
+			const lv1 = Number.parseInt(params.get("lv1"));
 			text_lv1.value = lv1;
 			is_monster = true;
 			qstr += " AND (level & 0xff) >= $lv1";
 			arg.$lv1 = lv1;
 		}
 		if (params.has("lv2")) {
-			let lv2 = Number.parseInt(params.get("lv2"));
+			const lv2 = Number.parseInt(params.get("lv2"));
 			text_lv2.value = lv2;
 			is_monster = true;
 			qstr += " AND (level & 0xff) <= $lv2";
@@ -824,7 +823,7 @@ function param_to_condition(params, arg) {
 		// attr, race
 		let attr = 0;
 		for (const val of params.getAll("attr")) {
-			let idx = Number.parseInt(val) - 1;
+			const idx = Number.parseInt(val) - 1;
 			attr |= attr_list[idx];
 			cb_attr[idx].checked = true;
 		}
@@ -836,7 +835,7 @@ function param_to_condition(params, arg) {
 
 		let race = 0;
 		for (const val of params.getAll("race")) {
-			let idx = Number.parseInt(val) - 1;
+			const idx = Number.parseInt(val) - 1;
 			race |= race_list[idx];
 			cb_race[idx].checked = true;
 		}
@@ -848,7 +847,7 @@ function param_to_condition(params, arg) {
 		// marker
 		let marker = 0;
 		for (const val of params.getAll("marker")) {
-			let idx = Number.parseInt(val) - 1;
+			const idx = Number.parseInt(val) - 1;
 			marker |= marker_list[idx];
 			cb_marker[idx].checked = true;
 		}
@@ -873,7 +872,7 @@ function param_to_condition(params, arg) {
 	}
 
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
-	let locale = params.get("locale");
+	const locale = params.get("locale");
 	switch (locale) {
 		case "en":
 			select_locale.value = locale;
@@ -883,7 +882,7 @@ function param_to_condition(params, arg) {
 			select_locale.value = "";
 			break;
 	}
-	let keyword = params.get("keyword");
+	const keyword = params.get("keyword");
 	let name_cmd = process_name(locale, keyword, arg);
 	if (name_cmd) {
 		// keyword
@@ -893,14 +892,14 @@ function param_to_condition(params, arg) {
 	}
 	else {
 		// name
-		let name = params.get("cname");
+		const name = params.get("cname");
 		name_cmd = process_name(locale, name, arg);
 		if (name_cmd) {
 			text_name.value = name;
 			qstr += ` AND (${name_cmd})`;
 		}
 		// desc
-		let desc = params.get("desc");
+		const desc = params.get("desc");
 		if (desc) {
 			text_effect.value = desc;
 			qstr += ` AND ${desc_str}`;
@@ -918,7 +917,7 @@ function server_analyze1(params) {
 	const condition = param_to_condition(valid_params, arg);
 	result.length = 0;
 	if (condition) {
-		let qstr_final = `${qstr0}${condition};`;
+		const qstr_final = `${qstr0}${condition};`;
 		query(qstr_final, arg, result);
 	}
 	if (result.length === 1)
@@ -927,11 +926,11 @@ function server_analyze1(params) {
 }
 
 function get_sw_str(x) {
-	let sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str3 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) == $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
-	let sw_str4 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk == $atk_${x} AND def != $def_${x}`;
-	let sw_str5 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def == $def_${x}`;
+	const sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	const sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	const sw_str3 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) == $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
+	const sw_str4 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk == $atk_${x} AND def != $def_${x}`;
+	const sw_str5 = ` OR race != $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def == $def_${x}`;
 	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
 }
 
@@ -939,17 +938,17 @@ function get_single_card(cdata) {
 	if (!cdata)
 		return [null, 0];
 
-	let qstr0 = `${stmt_default} AND type & $monster AND NOT type & $ext`;
-	let arg = new Object();
+	const qstr0 = `${stmt_default} AND type & $monster AND NOT type & $ext`;
+	const arg = new Object();
 	arg.$monster = TYPE_MONSTER;
 	arg.$ext = TYPE_EXTRA;
 
 	let qstr = "";
-	let list_tmp = [];
+	const list_tmp = [];
 
 
 	if (re_id.test(cdata)) {
-		let id = Number.parseInt(cdata);
+		const id = Number.parseInt(cdata);
 		qstr = `${qstr0} AND datas.id == $id;`;
 		arg.$id = id;
 		query(qstr, arg, list_tmp);
@@ -963,9 +962,9 @@ function get_single_card(cdata) {
 	if (list_tmp.length === 1)
 		return [list_tmp[0], list_tmp.length];
 
-	let cid = Object.keys(name_table_jp).find(key => name_table_jp[key] ? toHalfWidth(name_table_jp[key]) === toHalfWidth(cdata) : false);
+	const cid = Object.keys(name_table_jp).find(key => name_table_jp[key] ? toHalfWidth(name_table_jp[key]) === toHalfWidth(cdata) : false);
 	if (cid) {
-		let nid = cid_to_id[cid];
+		const nid = cid_to_id[cid];
 		qstr = `${qstr0} AND datas.id == $nid;`;
 		arg.$nid = nid;
 		query(qstr, arg, list_tmp);
