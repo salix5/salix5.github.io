@@ -1,6 +1,4 @@
 "use strict";
-const LOCALE_LIMIT = 2;
-const NAME_LIMIT = 100;
 const MAX_STRING_LEN = 10;
 const MAX_TEXT_LEN = 200;
 
@@ -15,11 +13,6 @@ const re_id = /^\d{1,9}$/;
 const re_value = /^\d{1,2}$/;
 const re_pack = /^_?\w{4}$/;
 const re_number = /^-?\d+$/;
-
-const re_atkfr = /^-?\d{1,6}$/;
-const re_atkto = /^\d{1,6}$/;
-const re_mod = /^\d{1,3}$/;
-const re_page = /^\d{1,3}$/;
 
 const mtype_list = [
 	TYPE_FUSION,
@@ -200,26 +193,6 @@ function is_locale(x) {
 		default:
 			return false;
 	}
-}
-
-function is_atkfr(x) {
-	return re_atkfr.test(x) && Number.parseInt(x) >= -1;
-}
-
-function is_atkto(x) {
-	return re_atkto.test(x);
-}
-
-function is_deffr(x) {
-	return re_atkfr.test(x) && Number.parseInt(x) >= -2;
-}
-
-function is_defto(x) {
-	return re_atkto.test(x);
-}
-
-function is_range_mode(fr) {
-	return fr === null || fr >= 0;
 }
 
 function is_pack(x) {
@@ -575,10 +548,12 @@ function param_to_condition(params, arg) {
 	// pack
 	const pack = params.get("pack");
 	if (pack === "o") {
-		qstr += " AND datas.ot != 2";
+		qstr += " AND datas.ot != $tcg";
+		arg.$tcg = 2;
 	}
 	else if (pack === "t") {
-		qstr += " AND datas.ot == 2";
+		qstr += " AND datas.ot == $tcg";
+		arg.$tcg = 2;
 	}
 	else if (pack_list[pack]) {
 		qstr += pack_cmd(pack_list[pack]);
@@ -692,39 +667,32 @@ function param_to_condition(params, arg) {
 		}
 
 		// atk
-		let atk1 = null;
 		if (params.has("atk1")) {
-			atk1 = Number.parseInt(params.get("atk1"));
+			const atk1 = Number.parseInt(params.get("atk1"));
 			text_atk1.value = atk1;
 			is_monster = true;
 			if (atk1 === -1) {
-				qstr += " AND atk == -2";
+				qstr += " AND atk == $unknown";
+				arg.$unknown = -2;
 			}
 			else {
 				qstr += " AND atk >= $atk1";
 				arg.$atk1 = atk1;
 			}
 		}
-		if (is_range_mode(atk1)) {
-			if (params.has("atk2")) {
-				let atk2 = Number.parseInt(params.get("atk2"));
-				text_atk2.value = atk2;
-				is_monster = true;
-				if (atk1 === null) {
-					qstr += " AND atk >= 0 AND atk <= $atk2";
-					arg.$atk2 = atk2;
-				}
-				else {
-					qstr += " AND atk <= $atk2";
-					arg.$atk2 = atk2;
-				}
-			}
-			if (params.has("atkm")) {
-				let atk_mod = Number.parseInt(params.get("atkm"));
-				qstr += " AND atk % 1000 == $atkm";
-				arg.$atkm = atk_mod;
-				is_monster = true;
-			}
+		if (params.has("atk2")) {
+			const atk2 = Number.parseInt(params.get("atk2"));
+			text_atk2.value = atk2;
+			is_monster = true;
+			qstr += " AND atk >= $zero AND atk <= $atk2";
+			arg.$zero = 0;
+			arg.$atk2 = atk2;
+		}
+		if (params.has("atkm")) {
+			const atk_mod = Number.parseInt(params.get("atkm"));
+			qstr += " AND atk % 1000 == $atkm";
+			arg.$atkm = atk_mod;
+			is_monster = true;
 		}
 
 		// def, exclude link monsters
@@ -733,46 +701,40 @@ function param_to_condition(params, arg) {
 			arg.$link = TYPE_LINK;
 			is_monster = true;
 		}
-
-		let def1 = null;
 		if (params.has("def1")) {
-			def1 = Number.parseInt(params.get("def1"));
+			const def1 = Number.parseInt(params.get("def1"));
 			text_def1.value = def1;
 			if (def1 === -1) {
-				qstr += " AND def == -2";
+				qstr += " AND def == $unknown";
+				arg.$unknown = -2;
 			}
 			else if (def1 === -2) {
-				qstr += " AND def == atk AND def >= 0";
+				qstr += " AND def == atk AND def >= $zero";
+				arg.$zero = 0;
 			}
 			else {
 				qstr += " AND def >= $def1";
 				arg.$def1 = def1;
 			}
 		}
-		if (is_range_mode(def1)) {
-			if (params.has("def2")) {
-				let def2 = Number.parseInt(params.get("def2"));
-				text_def2.value = def2;
-				if (def1 === null) {
-					qstr += " AND def >= 0 AND def <= $def2";
-					arg.$def2 = def2;
-				}
-				else {
-					qstr += " AND def <= $def2";
-					arg.$def2 = def2;
-				}
-			}
-			if (params.has("defm")) {
-				let def_mod = Number.parseInt(params.get("defm"));
-				qstr += " AND def % 1000 == $defm";
-				arg.$defm = def_mod;
-			}
-			if (params.has("sum")) {
-				let sum = Number.parseInt(params.get("sum"));
-				text_sum.value = sum;
-				qstr += " AND atk != -2 AND def != -2 AND atk + def == $sum";
-				arg.$sum = sum;
-			}
+		if (params.has("def2")) {
+			const def2 = Number.parseInt(params.get("def2"));
+			text_def2.value = def2;
+			qstr += " AND def >= $zero AND def <= $def2";
+			arg.$zero = 0;
+			arg.$def2 = def2;
+		}
+		if (params.has("defm")) {
+			const def_mod = Number.parseInt(params.get("defm"));
+			qstr += " AND def % 1000 == $defm";
+			arg.$defm = def_mod;
+		}
+		if (params.has("sum")) {
+			const sum = Number.parseInt(params.get("sum"));
+			text_sum.value = sum;
+			qstr += " AND atk != $unknown AND def != $unknown AND atk + def == $sum";
+			arg.$unknown = -2;
+			arg.$sum = sum;
 		}
 
 		// lv, rank, link
@@ -780,14 +742,16 @@ function param_to_condition(params, arg) {
 			const lv1 = Number.parseInt(params.get("lv1"));
 			text_lv1.value = lv1;
 			is_monster = true;
-			qstr += " AND (level & 0xff) >= $lv1";
+			qstr += " AND (level & $mask) >= $lv1";
+			arg.$mask = 0xff;
 			arg.$lv1 = lv1;
 		}
 		if (params.has("lv2")) {
 			const lv2 = Number.parseInt(params.get("lv2"));
 			text_lv2.value = lv2;
 			is_monster = true;
-			qstr += " AND (level & 0xff) <= $lv2";
+			qstr += " AND (level & $mask) <= $lv2";
+			arg.$mask = 0xff;
 			arg.$lv2 = lv2;
 		}
 
@@ -803,18 +767,24 @@ function param_to_condition(params, arg) {
 			for (const value of params.getAll("scale")) {
 				const scale = Number.parseInt(value);
 				cb_scale[scale].checked = true;
-				scale_condtion += ` OR (level >> 24 & 0xff) == $scale${index}`;
+				scale_condtion += ` OR (level >> $offset & $mask) == $scale${index}`;
 				arg[`$scale${index}`] = scale;
 				++index;
 			}
 			qstr += ` AND (${scale_condtion})`;
+			arg.$offset = 24;
+			arg.$mask = 0xff;
 		}
 		if (params.has("sc1")) {
-			qstr += " AND (level >> 24 & 0xff) >= $scacle_from";
+			qstr += " AND (level >> $offset & $mask) >= $scacle_from";
+			arg.$offset = 24;
+			arg.$mask = 0xff;
 			arg.$scacle_from = Number.parseInt(params.get("sc1"));
 		}
 		if (params.has("sc2")) {
-			qstr += " AND (level >> 24 & 0xff) <= $scacle_to";
+			qstr += " AND (level >> $offset & $mask) <= $scacle_to";
+			arg.$offset = 24;
+			arg.$mask = 0xff;
 			arg.$scacle_to = Number.parseInt(params.get("sc1"));
 		}
 
