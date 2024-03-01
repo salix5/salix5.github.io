@@ -297,7 +297,7 @@ function query_db(db, qstr, arg, ret) {
 }
 
 /**
- * query() - Query cards and push into ret.
+ * Query cards and push into ret.
  * @param {string} qstr sqlite command
  * @param {Object} arg binding object
  * @param {Card[]} ret result
@@ -329,7 +329,7 @@ function query(qstr, arg, ret) {
 }
 
 /**
- * print_db_link() - Return the link to DB page.
+ * Return the link to DB page.
  * @param {number} cid 
  * @param {string} request_locale 
  * @returns URL
@@ -339,7 +339,7 @@ function print_db_link(cid, request_locale) {
 }
 
 /**
- * print_yp_link() - Return the link to Yugipedia page.
+ * Return the link to Yugipedia page.
  * @param {number} id
  * @returns URL
  */
@@ -348,7 +348,7 @@ function print_yp_link(id) {
 }
 
 /**
- * print_qa_link() - Return the link to Q&A page.
+ * Return the link to Q&A page.
  * @param {number} cid database id
  * @returns page address
  */
@@ -357,7 +357,7 @@ function print_qa_link(cid) {
 }
 
 /**
- * is_alternative() - Check if the card is an alternative artwork card.
+ * Check if the card is an alternative artwork card.
  * @param {Card} card
  * @returns 
  */
@@ -369,7 +369,7 @@ function is_alternative(card) {
 }
 
 /**
- * is_released() - Check if the card has an official card name.
+ * Check if the card has an official card name.
  * @param {Card} card 
  * @returns 
  */
@@ -378,7 +378,7 @@ function is_released(card) {
 }
 
 /**
- * setcode_condition() - Generate the setcode condition of a statement.
+ * Generate the setcode condition of a statement.
  * @param {number|string} setcode setcode or binding string
  * @returns setcode condition
  */
@@ -392,7 +392,7 @@ function setcode_condition(setcode) {
 }
 
 /**
- * print_data() - Print the card data (without Link Marker).
+ * Print the card data (without Link Marker).
  * @param {Card} card
  * @param {string} newline newline char
  * @returns card data
