@@ -252,17 +252,22 @@ function check_checkbox(params, name, min = 1) {
 	}
 }
 
+/**
+ * @param {URLSearchParams} params 
+ * @param {string} key 
+ * @returns 
+ */
 function check_text(params, key) {
 	const value = params.get(key);
 	if (value === null)
-		return false;
+		return "";
 	if (value.length === 0 || value.length > MAX_TEXT_LEN || re_bad_escape.test(value)) {
 		params.delete(key);
-		return false;
+		return "";
 	}
 	else {
 		params.set(key, value);
-		return true;
+		return value;
 	}
 }
 
@@ -308,13 +313,6 @@ function check_value(params, key, min, max) {
 		params.delete(key);
 		return false;
 	}
-}
-
-function check_str(val, limit) {
-	if (typeof val !== "string" || val.length > limit)
-		return "";
-	else
-		return val;
 }
 
 /**
@@ -980,43 +978,40 @@ function get_single_card(cdata) {
  */
 function server_analyze2(params) {
 	// id or name
-	let cdata1 = check_str(params.get("begin"), NAME_LIMIT);
-	text_id1.value = cdata1;
-	let ret1 = get_single_card(cdata1);
-	let card_begin = ret1[0];
-	let result_len1 = ret1[1];
+	const cdata1 = check_text(params, "begin");
+	if (cdata1)
+		text_id1.value = cdata1;
+	const cdata2 = check_text(params, "end");
+	if (cdata2)
+		text_id2.value = cdata2;
 
-	let cdata2 = check_str(params.get("end"), NAME_LIMIT);
-	text_id2.value = cdata2;
-	let ret2 = get_single_card(cdata2);
-	let card_end = ret2[0];
-	let result_len2 = ret2[1];
-
+	const [card_begin, result_len1] = get_single_card(cdata1);
 	if (result_len1 > 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
+		const row0 = table_result.insertRow(-1);
+		const cell0 = row0.insertCell(-1);
 		table_result.style.border = "1px solid black";
 		cell0.textContent = "起點數量太多。";
 		return;
 	}
 	else if (result_len1 < 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
+		const row0 = table_result.insertRow(-1);
+		const cell0 = row0.insertCell(-1);
 		table_result.style.border = "1px solid black";
 		cell0.textContent = "找不到起點。";
 		return;
 	}
 
+	const [card_end, result_len2] = get_single_card(cdata2);
 	if (result_len2 > 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
+		const row0 = table_result.insertRow(-1);
+		const cell0 = row0.insertCell(-1);
 		table_result.style.border = "1px solid black";
 		cell0.textContent = "終點數量太多。";
 		return;
 	}
 	else if (result_len2 < 1) {
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
+		const row0 = table_result.insertRow(-1);
+		const cell0 = row0.insertCell(-1);
 		table_result.style.border = "1px solid black";
 		cell0.textContent = "找不到終點。";
 		return;
@@ -1036,7 +1031,7 @@ function server_analyze2(params) {
 	const arg = Object.create(null);
 	arg.$ext = TYPE_EXTRA;
 	const condition = param_to_condition(valid_params, arg);
-	let qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
+	const qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
 	arg.$race_begin = card_begin.race;
 	arg.$attr_begin = card_begin.attribute;
 	arg.$lv_begin = card_begin.level;
