@@ -321,8 +321,23 @@ function check_str(val, limit) {
 /**
  * validate common keys
  * @param {URLSearchParams} params 
+ * @param {boolean} extra_monster
  */
-function validate_params(params) {
+function validate_params(params, extra_monster) {
+	if (!extra_monster) {
+		params.delete("mtype", "1");
+		params.delete("mtype", "2");
+		params.delete("mtype", "3");
+		params.delete("mtype", "4");
+		params.delete("exclude", "1");
+		params.delete("exclude", "2");
+		params.delete("exclude", "3");
+		params.delete("exclude", "4");
+		for (const [key, value] of Object.entries(form_keys)) {
+			if (value == 3)
+				params.delete(key);
+		}
+	}
 	if (check_text(params, "keyword")) {
 		params.delete("cname");
 		params.delete("locale");
@@ -403,15 +418,12 @@ function validate_params(params) {
 			check_value(params, "sc1", 0, 13);
 			check_value(params, "sc2", 0, 13);
 		}
-		check_checkbox(params, "marker");
-		if (params.has("marker")) {
+		if (extra_monster) {
+			check_checkbox(params, "marker");
 			if (params.get("marker_operator") === "1")
 				params.set("marker_operator", "1");
 			else
 				params.set("marker_operator", "0");
-		}
-		else {
-			params.delete("marker_operator");
 		}
 		check_value(params, "atk1", -1, 100000);
 		const atk1 = Number.parseInt(params.get("atk1"));
@@ -460,7 +472,7 @@ function server_validate1(params) {
 		return valid_params;
 	}
 	else {
-		validate_params(params);
+		validate_params(params, true);
 		for (const key of params.keys()) {
 			if (!form_keys[key])
 				params.delete(key);
@@ -1026,21 +1038,9 @@ function server_analyze2(params) {
 	params.set("begin", card_begin.id);
 	params.set("end", card_end.id);
 	params.set("type", "1");
-	params.delete("mtype", "1");
-	params.delete("mtype", "2");
-	params.delete("mtype", "3");
-	params.delete("mtype", "4");
-	params.delete("exclude", "1");
-	params.delete("exclude", "2");
-	params.delete("exclude", "3");
-	params.delete("exclude", "4");
-	for (const [key, value] of Object.entries(form_keys)) {
-		if (value == 3)
-			params.delete(key);
-	}
-	validate_params(params);
+	validate_params(params, false);
 	for (const key of params.keys()) {
-		if (key !== !"begin" && key !== "end" && !form_keys[key])
+		if (key !== "begin" && key !== "end" && !form_keys[key])
 			params.delete(key);
 	}
 	let condition = param_to_condition(params, arg);
