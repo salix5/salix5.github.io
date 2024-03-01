@@ -107,8 +107,8 @@ function compare_id(a, b) {
 }
 
 function compare_card() {
-	const name = current_params.get("cname");
-	const locale = current_params.get("locale");
+	const name = check_text(current_params, "cname");
+	const locale = check_text(current_params, "locale");
 	const zh_collator = new Intl.Collator('zh-Hant');
 
 	return function (a, b) {
