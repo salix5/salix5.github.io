@@ -873,15 +873,8 @@ function param_to_condition(params, arg) {
 
 	const desc_str = "desc LIKE $desc ESCAPE '$'";
 	const locale = params.get("locale");
-	switch (locale) {
-		case "en":
-			select_locale.value = locale;
-			break;
-		default:
-			locale = "";
-			select_locale.value = "";
-			break;
-	}
+	if (locale)
+		select_locale.value = locale;
 	const keyword = params.get("keyword");
 	let name_cmd = process_name(locale, keyword, arg);
 	if (name_cmd) {
