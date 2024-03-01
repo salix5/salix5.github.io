@@ -138,11 +138,11 @@ Object.assign(form_keys, {
 	"type": 1,
 	"stype": 1,
 	"ttype": 1,
-	"page": 1,
-
 	"mtype": 2,
 	"mtype_operator": 2,
 	"exclude": 2,
+
+	"mat": 3,
 	"attr": 2,
 	"race": 2,
 	"lv1": 2,
@@ -150,6 +150,8 @@ Object.assign(form_keys, {
 	"scale": 2,
 	"sc1": 2,
 	"sc2": 2,
+	"marker": 3,
+	"marker_operator": 3,
 	"atk1": 2,
 	"atk2": 2,
 	"atkm": 2,
@@ -157,10 +159,7 @@ Object.assign(form_keys, {
 	"def2": 2,
 	"defm": 2,
 	"sum": 2,
-
-	"mat": 3,
-	"marker": 3,
-	"marker_operator": 3,
+	"page": 1,
 });
 
 const cid_to_id = inverse_mapping(cid_table);
@@ -464,21 +463,21 @@ function validate_params(params, extra_monster) {
  * @returns validated params
  */
 function server_validate1(params) {
+	const valid_params = new URLSearchParams();
 	check_value(params, "id", 1, 102000000);
 	const id = params.get("code");
 	if (id) {
-		const valid_params = new URLSearchParams();
 		valid_params.set("code", id);
-		return valid_params;
 	}
 	else {
 		validate_params(params, true);
-		for (const key of params.keys()) {
-			if (!form_keys[key])
-				params.delete(key);
+		for (const key of Object.keys(form_keys)) {
+			for (const value of params.getAll(key)) {
+				valid_params.append(key, value);
+			}
 		}
-		return params;
 	}
+	return valid_params;
 }
 
 // string -> wildcard literal
@@ -1031,19 +1030,20 @@ function server_analyze2(params) {
 		return;
 	}
 
-	let qstr0 = `${stmt_default} AND NOT type & $ext`;
-	let arg = Object.create(null);
-	arg.$ext = TYPE_EXTRA;
-
-	params.set("begin", card_begin.id);
-	params.set("end", card_end.id);
 	params.set("type", "1");
 	validate_params(params, false);
-	for (const key of params.keys()) {
-		if (key !== "begin" && key !== "end" && !form_keys[key])
-			params.delete(key);
+	const valid_params = new URLSearchParams();
+	valid_params.set("begin", card_begin.id);
+	valid_params.set("end", card_end.id);
+	for (const key of Object.keys(form_keys)) {
+		for (const value of params.getAll(key)) {
+			valid_params.append(key, value);
+		}
 	}
-	let condition = param_to_condition(params, arg);
+	const qstr0 = `${stmt_default} AND NOT type & $ext`;
+	const arg = Object.create(null);
+	arg.$ext = TYPE_EXTRA;
+	const condition = param_to_condition(valid_params, arg);
 	let qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
 	arg.$race_begin = card_begin.race;
 	arg.$attr_begin = card_begin.attribute;
@@ -1057,5 +1057,5 @@ function server_analyze2(params) {
 	arg.$atk_end = card_end.atk;
 	arg.$def_end = card_end.def;
 	query(qstr_final, arg, result);
-	show_result(params);
+	show_result(valid_params);
 }
