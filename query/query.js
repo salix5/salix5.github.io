@@ -486,7 +486,7 @@ function string_to_literal(str) {
 }
 
 /**
- * process_name() - Generate the name condition of a statement.
+ * Generate the name condition of a statement.
  * @param {string} locale 
  * @param {string} name_string 
  * @param {Object} arg 
@@ -557,7 +557,7 @@ function process_name(locale, name_string, arg) {
 }
 
 /**
- * param_to_condition() - Parse param into sqlite statement condition.
+ * Parse param into sqlite statement condition.
  * @param {URLSearchParams} params 
  * @param {Object} arg 
  * @returns sqlite statement condition

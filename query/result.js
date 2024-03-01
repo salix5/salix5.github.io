@@ -93,7 +93,7 @@ function print_limit(limit) {
 }
 
 /**
- * is_equal() - case-insensitive equal
+ * case-insensitive equal
  * @param {string} a 
  * @param {string} b 
  * @returns boolean result
