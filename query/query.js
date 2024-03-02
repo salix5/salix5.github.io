@@ -2,6 +2,7 @@
 const MAX_STRING_LEN = 10;
 const MAX_TEXT_LEN = 200;
 
+let current_stmt = "";
 const result = [];
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
@@ -883,6 +884,7 @@ function server_analyze1(params) {
 	result.length = 0;
 	if (condition) {
 		const qstr_final = `${qstr0}${condition};`;
+		current_stmt = qstr_final;
 		query(qstr_final, arg, result);
 	}
 	if (result.length === 1)
@@ -1017,6 +1019,7 @@ function server_analyze2(params) {
 	arg.$lv_end = card_end.level;
 	arg.$atk_end = card_end.atk;
 	arg.$def_end = card_end.def;
+	current_stmt = qstr_final;
 	query(qstr_final, arg, result);
 	show_result(valid_params);
 }
