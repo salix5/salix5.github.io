@@ -49,6 +49,7 @@ const pack_list = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
 const name_table_kr = Object.create(null);
+let cid_to_id = null;
 
 if (localStorage.getItem("last_pack") === last_pack) {
 	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
@@ -82,6 +83,7 @@ fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).
 
 const db_ready = Promise.all(fetch_list)
 	.then(() => {
+		cid_to_id = inverse_mapping(cid_table);
 		if (!localStorage.getItem("last_pack")) {
 			try {
 				localStorage.setItem("cid_table", JSON.stringify(cid_table));
@@ -95,7 +97,6 @@ const db_ready = Promise.all(fetch_list)
 			}
 		}
 	});
-const cid_to_id = inverse_mapping(cid_table);
 
 /**
  * @typedef {Object} Card
