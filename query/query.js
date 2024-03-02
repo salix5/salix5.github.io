@@ -906,7 +906,7 @@ function get_single_card(cdata) {
 		return [null, 0];
 
 	const qstr0 = `${stmt_default} AND type & $monster AND NOT type & $ext`;
-	const arg = new Object();
+	const arg = Object.create(null);
 	arg.$monster = TYPE_MONSTER;
 	arg.$ext = TYPE_EXTRA;
 
