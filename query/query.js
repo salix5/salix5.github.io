@@ -570,7 +570,7 @@ function param_to_condition(params, arg) {
 	let subtype = 0;
 	let exc = 0;
 	switch (params.get("type")) {
-		case "1":
+		case "1": {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_MONSTER;
 			for (const val of params.getAll("mtype")) {
@@ -579,15 +579,20 @@ function param_to_condition(params, arg) {
 				if (cb_mtype[idx].type === "checkbox")
 					cb_mtype[idx].checked = true;
 			}
+			let mtype_operator = 0;
+			if (params.get("mtype_operator") === "1") {
+				mtype_operator = 1;
+				select_subtype_op.value = "1";
+			}
+			else {
+				mtype_operator = 0;
+				select_subtype_op.value = "0";
+			}
 			if (subtype) {
-				if (params.get("mtype_operator") === "1") {
-					select_subtype_op.value = "1";
+				if (mtype_operator)
 					qstr += " AND type & $mtype == $mtype";
-				}
-				else {
-					select_subtype_op.value = "0";
+				else
 					qstr += " AND type & $mtype";
-				}
 				arg.$mtype = subtype;
 			}
 			for (const val of params.getAll("exclude")) {
@@ -601,13 +606,15 @@ function param_to_condition(params, arg) {
 				arg.$exclude = exc;
 			}
 			break;
-		case "2":
+		}
+		case "2": {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_SPELL;
 			for (const val of params.getAll("stype")) {
 				const idx = Number.parseInt(val) - 1;
 				subtype |= stype_list[idx];
-				cb_stype[idx].checked = true;
+				if (cb_stype)
+					cb_stype[idx].checked = true;
 			}
 			if (subtype) {
 				if (subtype & TYPE_NORMAL) {
@@ -625,13 +632,15 @@ function param_to_condition(params, arg) {
 				}
 			}
 			break;
-		case "3":
+		}
+		case "3": {
 			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_TRAP;
 			for (const val of params.getAll("ttype")) {
 				const idx = Number.parseInt(val) - 1;
 				subtype |= ttype_list[idx];
-				cb_ttype[idx].checked = true;
+				if (cb_ttype)
+					cb_ttype[idx].checked = true;
 			}
 			if (subtype) {
 				if (subtype & TYPE_NORMAL) {
@@ -649,6 +658,7 @@ function param_to_condition(params, arg) {
 				}
 			}
 			break;
+		}
 		default:
 			break;
 	}
@@ -814,22 +824,27 @@ function param_to_condition(params, arg) {
 		}
 		// marker
 		let marker = 0;
+		let marker_operator = 0;
 		for (const val of params.getAll("marker")) {
 			const idx = Number.parseInt(val) - 1;
 			marker |= marker_list[idx];
 			cb_marker[idx].checked = true;
 		}
+		if (params.get("marker_operator") === "1") {
+			marker_operator = 1;
+			select_marker_op.value = "1";
+		}
+		else {
+			marker_operator = 0;
+			select_marker_op.value = "0";
+		}
 		if (marker) {
 			qstr += " AND type & $link";
 			arg.$link = TYPE_LINK;
-			if (params.get("marker_operator") === "1") {
-				select_marker_op.value = "1";
+			if (marker_operator)
 				qstr += " AND def & $marker == $marker";
-			}
-			else {
-				select_marker_op.value = "0";
+			else
 				qstr += " AND def & $marker";
-			}
 			arg.$marker = marker;
 			is_monster = true;
 		}
