@@ -95,6 +95,7 @@ const db_ready = Promise.all(fetch_list)
 			}
 		}
 	});
+const cid_to_id = inverse_mapping(cid_table);
 
 /**
  * @typedef {Object} Card
@@ -493,6 +494,27 @@ function print_data(card, newline) {
 		data = `[${mtype}${subtype}]${newline}`;
 	}
 	return data;
+}
+
+/**
+ * Create the inverse mapping of `table`.
+ * @param {Object} table 
+ * @param {boolean} numeric_key
+ * @returns {Object}
+ */
+function inverse_mapping(table, numeric_key = true) {
+	const inverse = Object.create(null);
+	for (const [key, value] of Object.entries(table)) {
+		if (inverse[value]) {
+			console.error('non-invertible', `${key}: ${value}`);
+			return Object.create(null);
+		}
+		if (numeric_key)
+			inverse[value] = Number.parseInt(key);
+		else
+			inverse[value] = key;
+	}
+	return inverse;
 }
 
 
