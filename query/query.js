@@ -453,12 +453,11 @@ function string_to_literal(str) {
 function process_name(locale, name_string, arg) {
 	if (!name_string)
 		return '';
-	const setcode_str = ` OR ${setcode_condition('$setcode')}`;
 	let name_cmd = '';
 	switch (locale) {
-		case 'en':
-			let en_list = [];
-			let en_name = name_string.toLowerCase();
+		case 'en': {
+			const en_list = [];
+			const en_name = name_string.toLowerCase();
 			for (const [cid, name] of Object.entries(name_table_en)) {
 				if (name.toLowerCase().includes(en_name))
 					en_list.push(cid_to_id[cid]);
@@ -471,7 +470,8 @@ function process_name(locale, name_string, arg) {
 			for (let i = 0; i < en_list.length; ++i)
 				name_cmd += ` OR datas.id=${en_list[i]}`;
 			break;
-		default:
+		}
+		default: {
 			name_cmd = '0';
 			let is_setname = false;
 			// zh, setcode
@@ -480,10 +480,11 @@ function process_name(locale, name_string, arg) {
 				mapObj['$%'] = '%';
 				mapObj['$_'] = '_';
 				let zh_name = name_string.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
-				for (const [key, value] of Object.entries(setname)) {
-					if (key.toLowerCase() === zh_name) {
+				for (const [keyword, value] of Object.entries(setname)) {
+					if (keyword.toLowerCase() === zh_name) {
+						const setcode = Number.parseInt(value);
+						const setcode_str = ` OR ${setcode_condition(setcode, arg)}`;
 						name_cmd += setcode_str;
-						arg.$setcode = value;
 						is_setname = true;
 						break;
 					}
@@ -496,8 +497,8 @@ function process_name(locale, name_string, arg) {
 			arg.$kanji = `%※${string_to_literal(name_string)}`;
 			// ja, name
 			if (!is_setname) {
-				let jp_list = [];
-				let jp_name = toHalfWidth(name_string);
+				const jp_list = [];
+				const jp_name = toHalfWidth(name_string);
 				for (const [cid, name] of Object.entries(name_table_jp)) {
 					if (toHalfWidth(name).includes(jp_name))
 						jp_list.push(cid_to_id[cid]);
@@ -510,6 +511,7 @@ function process_name(locale, name_string, arg) {
 					name_cmd += ` OR datas.id=${jp_list[i]}`;
 			}
 			break;
+		}
 	}
 	return name_cmd;
 }
