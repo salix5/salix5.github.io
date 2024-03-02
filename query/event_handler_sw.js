@@ -15,7 +15,6 @@ const text_sum = document.getElementById("text_sum");
 
 const select_locale = document.getElementById("select_locale");
 const select_ot = document.getElementById("select_ot");
-const select_type = null;
 const select_subtype_op = document.getElementById("select_subtype_op");
 
 const subtype_m = document.getElementById("subtype_m");
