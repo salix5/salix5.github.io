@@ -50,6 +50,9 @@ Ex.
 
 
 ## 更新紀錄
+24/2/23  
+復刻更新：QCCU (side:UNITY)
+
 24/2/15  
 TCG特有卡：PHNI-EN
 
