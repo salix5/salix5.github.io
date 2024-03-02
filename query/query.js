@@ -155,8 +155,6 @@ Object.assign(form_keys, {
 	"page": 1,
 });
 
-const cid_to_id = inverse_mapping(cid_table);
-
 /**
  * toHalfWidth()
  * @param {string} str
@@ -173,17 +171,6 @@ function toHalfWidth(str) {
  */
 function toFullWidth(str) {
 	return str.replace(/[A-Za-z0-9]/g, (s) => String.fromCharCode(s.charCodeAt(0) + 0xFEE0));
-}
-
-function inverse_mapping(table) {
-	const inverse = Object.create(null);
-	for (const [key, value] of Object.entries(table)) {
-		if (inverse[value]) {
-			return null;
-		}
-		inverse[value] = key;
-	}
-	return inverse;
 }
 
 function is_locale(x) {
@@ -219,7 +206,7 @@ function check_checkbox(params, name, min = 1) {
 			continue;
 		if (!re_value.test(value) || params.has(name, value))
 			continue;
-		let x = parseInt(value);
+		let x = Number.parseInt(value);
 		if (x >= min && x <= min + node_list.length - 1)
 			params.append(name, value);
 	}
