@@ -1,6 +1,7 @@
 'use strict';
-var text1 = document.getElementById('text1');
-var div1 = document.getElementById('div1');
+const text1 = document.getElementById('text1');
+const div1 = document.getElementById('div1');
+const button1 = document.getElementById('button1');
 button1.onclick = check;
 
 const err = 0.05;
@@ -24,8 +25,10 @@ function check(e) {
 	let acc = 0;
 	let i = 0;
 	let n = Number.parseInt(text1.value);
-	if (Number.isNaN(n) || n < 6 || n > 200) {
-		div1.innerHTML = '請輸入6~200之間的數值';
+	if (!Number.isSafeInteger(n) || n < 10 || n > 200) {
+		div1.innerHTML = '請輸入10~200的整數';
+		text1.value = '';
+		text1.focus();
 		return;
 	}
 
@@ -35,5 +38,5 @@ function check(e) {
 			break;
 	}
 	--i;
-	div1.innerHTML = `拒絕域：正面${i}次以下或${n-i}次以上`;
+	div1.innerHTML = `拒絕域：正面${i}次以下或${n - i}次以上`;
 }
