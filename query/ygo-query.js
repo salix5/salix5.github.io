@@ -48,7 +48,7 @@ const name_table_en = Object.create(null);
 const pack_list = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
-const name_table_kr = Object.create(null);
+const name_table_kr = null;
 let cid_to_id = null;
 
 if (localStorage.getItem("last_pack") === last_pack) {
@@ -187,79 +187,17 @@ function query_db(db, qstr, arg, ret) {
 					card.setcode = [];
 					if (use_bigint && value) {
 						if (extra_setcode[card.id]) {
-							for (const x of extra_setcode[card.id]) {
+							for (const x of extra_setcode[card.id])
 								card.setcode.push(x);
-							}
 						}
 						else {
 							set_setcode(card, value);
 						}
 					}
 					break;
-				case 'type':
-					card[column] = Number(value);
-					if (card.type & TYPE_MONSTER) {
-						if (!(card.type & TYPE_EXTRA)) {
-							if (card.type & TYPE_TOKEN)
-								card.color = 0;
-							else if (card.type & TYPE_NORMAL)
-								card.color = 1;
-							else if (card.type & TYPE_RITUAL)
-								card.color = 3;
-							else if (card.type & TYPE_EFFECT)
-								card.color = 2;
-							else
-								card.color = -1;
-						}
-						else {
-							if (card.type & TYPE_FUSION)
-								card.color = 4;
-							else if (card.type & TYPE_SYNCHRO)
-								card.color = 5;
-							else if (card.type & TYPE_XYZ)
-								card.color = 6;
-							else if (card.type & TYPE_LINK)
-								card.color = 7;
-							else
-								card.color = -1;
-						}
-					}
-					else if (card.type & TYPE_SPELL) {
-						if (card.type === TYPE_SPELL)
-							card.color = 10;
-						else if (card.type & TYPE_QUICKPLAY)
-							card.color = 11;
-						else if (card.type & TYPE_CONTINUOUS)
-							card.color = 12;
-						else if (card.type & TYPE_EQUIP)
-							card.color = 13;
-						else if (card.type & TYPE_RITUAL)
-							card.color = 14;
-						else if (card.type & TYPE_FIELD)
-							card.color = 15;
-						else
-							card.color = -1;
-					}
-					else if (card.type & TYPE_TRAP) {
-						if (card.type === TYPE_TRAP)
-							card.color = 20;
-						else if (card.type & TYPE_CONTINUOUS)
-							card.color = 21;
-						else if (card.type & TYPE_COUNTER)
-							card.color = 22;
-						else
-							card.color = -1;
-					}
-					else {
-						card.color = -1;
-					}
-					break;
 				case 'level':
 					card.level = Number(value) & 0xff;
 					card.scale = (Number(value) >> 24) & 0xff;
-					break;
-				case 'name':
-					card.tw_name = value;
 					break;
 				default:
 					if (typeof value === 'bigint')
@@ -276,26 +214,94 @@ function query_db(db, qstr, arg, ret) {
 		if ('real_id' in card && Number.isSafeInteger(cid_table[card.real_id])) {
 			card.cid = cid_table[card.real_id];
 		}
-		if ('cid' in card && 'tw_name' in card) {
-			if (name_table_jp[card.cid])
-				card.jp_name = name_table_jp[card.cid];
-			else if (md_name_jp[card.cid])
-				card.md_name_jp = md_name_jp[card.cid];
-
-			if (name_table_en[card.cid])
-				card.en_name = name_table_en[card.cid];
-			else if (md_name_en[card.cid])
-				card.md_name_en = md_name_en[card.cid];
-
-			if (name_table_kr[card.cid])
-				card.kr_name = name_table_kr[card.cid];
-
-			if (md_name[card.cid])
-				card.md_name = md_name[card.cid];
-		}
 		ret.push(card);
 	}
 	stmt.free();
+}
+
+function finalize(card, index_table) {
+	if (card.type & TYPE_MONSTER) {
+		if (!(card.type & TYPE_EXTRA)) {
+			if (card.type & TYPE_TOKEN)
+				card.color = 0;
+			else if (card.type & TYPE_NORMAL)
+				card.color = 1;
+			else if (card.type & TYPE_RITUAL)
+				card.color = 3;
+			else if (card.type & TYPE_EFFECT)
+				card.color = 2;
+			else
+				card.color = -1;
+		}
+		else {
+			if (card.type & TYPE_FUSION)
+				card.color = 4;
+			else if (card.type & TYPE_SYNCHRO)
+				card.color = 5;
+			else if (card.type & TYPE_XYZ)
+				card.color = 6;
+			else if (card.type & TYPE_LINK)
+				card.color = 7;
+			else
+				card.color = -1;
+		}
+	}
+	else if (card.type & TYPE_SPELL) {
+		if (card.type === TYPE_SPELL)
+			card.color = 10;
+		else if (card.type & TYPE_QUICKPLAY)
+			card.color = 11;
+		else if (card.type & TYPE_CONTINUOUS)
+			card.color = 12;
+		else if (card.type & TYPE_EQUIP)
+			card.color = 13;
+		else if (card.type & TYPE_RITUAL)
+			card.color = 14;
+		else if (card.type & TYPE_FIELD)
+			card.color = 15;
+		else
+			card.color = -1;
+	}
+	else if (card.type & TYPE_TRAP) {
+		if (card.type === TYPE_TRAP)
+			card.color = 20;
+		else if (card.type & TYPE_CONTINUOUS)
+			card.color = 21;
+		else if (card.type & TYPE_COUNTER)
+			card.color = 22;
+		else
+			card.color = -1;
+	}
+	else {
+		card.color = -1;
+	}
+	card.tw_name = card.name;
+	delete card.name;
+	if (card.cid) {
+		if (name_table_jp[card.cid])
+			card.jp_name = name_table_jp[card.cid];
+		else if (md_name_jp[card.cid])
+			card.md_name_jp = md_name_jp[card.cid];
+
+		if (name_table_en[card.cid])
+			card.en_name = name_table_en[card.cid];
+		else if (md_name_en[card.cid])
+			card.md_name_en = md_name_en[card.cid];
+
+		if (name_table_kr && name_table_kr[card.cid])
+			card.kr_name = name_table_kr[card.cid];
+
+		if (md_name[card.cid])
+			card.md_name = md_name[card.cid];
+	}
+	// pack index
+	if (card.id <= 99999999) {
+		if (index_table && index_table[card.id])
+			card.pack_id = index_table[card.id];
+	}
+	else {
+		card.pack_id = card.id % 1000;
+	}
 }
 
 /**
@@ -309,24 +315,17 @@ function query(qstr, arg) {
 	for (const db of db_list) {
 		query_db(db, qstr, arg, ret);
 	}
-	// pack_id
-	const inv_pack = Object.create(null);
+	let index_table = null;
 	if (arg.pack && pack_list[arg.pack]) {
-		for (let i = 0; i < pack_list[arg.pack].length; ++i) {
-			if (pack_list[arg.pack][i] && pack_list[arg.pack][i] !== 1)
-				inv_pack[pack_list[arg.pack][i]] = i;
+		index_table = Object.create(null);
+		const pack = pack_list[arg.pack];
+		for (let i = 0; i < pack.length; ++i) {
+			if (pack[i] && pack[i] !== 1)
+				index_table[pack[i]] = i;
 		}
 	}
 	for (const card of ret) {
-		if (card.id <= 99999999) {
-			if (Number.isSafeInteger(inv_pack[card.id]))
-				card.pack_id = inv_pack[card.id];
-			else
-				card.pack_id = null;
-		}
-		else {
-			card.pack_id = card.id % 1000;
-		}
+		finalize(card, index_table);
 	}
 	return ret;
 }
