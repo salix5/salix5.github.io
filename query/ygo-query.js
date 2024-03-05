@@ -302,10 +302,10 @@ function query_db(db, qstr, arg, ret) {
  * Query cards and push into ret.
  * @param {string} qstr sqlite command
  * @param {Object} arg binding object
- * @param {Card[]} ret result
+ * @returns {Card[]}
  */
-function query(qstr, arg, ret) {
-	ret.length = 0;
+function query(qstr, arg) {
+	const ret = [];
 	for (const db of db_list) {
 		query_db(db, qstr, arg, ret);
 	}
@@ -328,6 +328,7 @@ function query(qstr, arg, ret) {
 			card.pack_id = card.id % 1000;
 		}
 	}
+	return ret;
 }
 
 /**
