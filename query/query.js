@@ -817,15 +817,13 @@ function param_to_condition(params, arg) {
 		for (const val of params.getAll("marker")) {
 			const idx = Number.parseInt(val) - 1;
 			marker |= marker_list[idx];
-			cb_marker[idx].checked = true;
+			if (cb_marker)
+				cb_marker[idx].checked = true;
 		}
 		if (params.get("marker_operator") === "1") {
 			marker_operator = 1;
-			select_marker_op.value = "1";
-		}
-		else {
-			marker_operator = 0;
-			select_marker_op.value = "0";
+			if (select_marker_op)
+				select_marker_op.value = "1";
 		}
 		if (marker) {
 			qstr += " AND type & $link";
