@@ -1,6 +1,6 @@
 "use strict";
 // dependency: sql.js, JSZIP
-const last_pack = "QCCU#1";
+const last_pack = "QCCU#2";
 
 // special ID
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
@@ -8,7 +8,7 @@ const ID_BLACK_LUSTER_SOLDIER = 5405695;
 const CID_BLACK_LUSTER_SOLDIER = 19092;
 const CARD_ARTWORK_VERSIONS_OFFSET = 20;
 
-const select_all = `SELECT datas.id, ot, alias, setcode, type, atk, def, level, attribute, race, name, desc FROM datas, texts WHERE datas.id == texts.id`;
+const select_all = `SELECT datas.id, ot, alias, setcode, type, atk, def, level, attribute, race, name, "desc" FROM datas, texts WHERE datas.id == texts.id`;
 const select_id = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id`;
 
 const base_filter = ` AND datas.id != ${ID_TYLER_THE_GREAT_WARRIOR} AND NOT type & ${TYPE_TOKEN}`;
