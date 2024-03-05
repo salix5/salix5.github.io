@@ -55,18 +55,24 @@ function print_pack_number(pack, index) {
 	return `${str_pack}-${str_ot}${str_index}`;
 }
 
-function print_id(id, type, pack, pack_id) {
-	let str_id = id.toString().padStart(8, '0');
+/**
+ * Print the card id.
+ * @param {Card} card 
+ * @param {string} pack 
+ * @returns 
+ */
+function print_id(card, pack) {
+	const str_id = card.id.toString().padStart(8, '0');
 	let link_text = '';
 
-	if (type & TYPE_TOKEN) {
+	if (card.type & TYPE_TOKEN) {
 		link_text = 'token';
 	}
-	else if (pack) {
-		link_text = print_pack_number(pack, pack_id);
+	else if (pack && 'pack_index' in card) {
+		link_text = print_pack_number(pack, card.pack_index);
 	}
-	else if (id > 99999999) {
-		link_text = print_pack_number(pre_id_to_pack(id), pack_id);
+	else if (card.id > 99999999) {
+		link_text = print_pack_number(pre_id_to_pack(card.id), card.pack_index);
 	}
 	else {
 		link_text = str_id;
@@ -103,7 +109,7 @@ function is_equal(a, b) {
 }
 
 function compare_id(a, b) {
-	return a.pack_id - b.pack_id;
+	return a.pack_index - b.pack_index;
 }
 
 function compare_card() {
@@ -286,11 +292,11 @@ function create_rows(card, pack) {
 		link_faq.href = faq_url;
 		link_faq.target = '_blank';
 		link_faq.rel = 'noreferrer nofollow';
-		link_faq.textContent = print_id(card.real_id, card.type, pack, card.pack_id);
+		link_faq.textContent = print_id(card, pack);
 		div_id.appendChild(link_faq);
 	}
 	else {
-		div_id.textContent = print_id(card.real_id, card.type, pack, card.pack_id);
+		div_id.textContent = print_id(card, pack);
 	}
 	div_alias.appendChild(div_id);
 

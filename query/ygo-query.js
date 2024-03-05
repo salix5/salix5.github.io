@@ -107,13 +107,13 @@ const db_ready = Promise.all(fetch_list)
  * @property {number} real_id - The id of real card
  * 
  * @property {number} type
- * @property {number} color - Card color for sorting
  * @property {number} atk
  * @property {number} def
  * @property {number} level
  * @property {number} scale
  * @property {number} race
  * @property {number} attribute
+ * @property {number} color - Card color for sorting
  * 
  * @property {string} tw_name
  * @property {string} desc
@@ -125,6 +125,7 @@ const db_ready = Promise.all(fetch_list)
  * @property {string} [md_name]
  * @property {string} [md_name_en]
  * @property {string} [md_name_jp]
+ * @property {number} [pack_index]
  */
 
 const use_bigint = !!(window.BigInt);
@@ -297,10 +298,10 @@ function finalize(card, index_table) {
 	// pack index
 	if (card.id <= 99999999) {
 		if (index_table && index_table[card.id])
-			card.pack_id = index_table[card.id];
+			card.pack_index = index_table[card.id];
 	}
 	else {
-		card.pack_id = card.id % 1000;
+		card.pack_index = card.id % 1000;
 	}
 }
 
