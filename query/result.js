@@ -376,7 +376,7 @@ function create_rows(card, pack) {
 	}
 }
 
-function show_result(params) {
+function show_result(params, result) {
 	table_result.innerHTML = "";
 	select_page.innerHTML = "";
 	div_page.hidden = true;
