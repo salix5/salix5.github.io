@@ -3,7 +3,6 @@ const MAX_STRING_LEN = 10;
 const MAX_TEXT_LEN = 200;
 
 let current_stmt = "";
-const result = [];
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
@@ -877,19 +876,15 @@ function param_to_condition(params, arg) {
 
 // entrance of query
 function server_analyze1(params) {
-	const qstr0 = stmt_base;
 	const arg = Object.create(null);
 	const valid_params = server_validate1(params);
 	const condition = param_to_condition(valid_params, arg);
-	result.length = 0;
-	if (condition) {
-		const qstr_final = `${qstr0}${condition};`;
-		current_stmt = qstr_final;
-		query(qstr_final, arg, result);
-	}
+	const qstr_final = `${stmt_base}${condition};`;
+	current_stmt = qstr_final;
+	const result = query(qstr_final, arg);
 	if (result.length === 1)
 		document.title = result[0].tw_name;
-	show_result(valid_params);
+	show_result(valid_params, result);
 }
 
 function get_sw_str(x) {
@@ -909,42 +904,39 @@ function get_single_card(cdata) {
 	const arg = Object.create(null);
 	arg.$monster = TYPE_MONSTER;
 	arg.$ext = TYPE_EXTRA;
-
 	let qstr = "";
-	const list_tmp = [];
-
 
 	if (re_id.test(cdata)) {
 		const id = Number.parseInt(cdata);
 		qstr = `${qstr0} AND datas.id == $id;`;
 		arg.$id = id;
-		query(qstr, arg, list_tmp);
-		if (list_tmp.length === 1)
-			return [list_tmp[0], list_tmp.length];
+		const list1 = query(qstr, arg);
+		if (list1.length === 1)
+			return [list1[0], 1];
 	}
 
 	qstr = `${qstr0} AND name == $exact;`;
 	arg.$exact = cdata;
-	query(qstr, arg, list_tmp);
-	if (list_tmp.length === 1)
-		return [list_tmp[0], list_tmp.length];
+	const list2 = query(qstr, arg);
+	if (list2.length === 1)
+		return [list2[0], 1];
 
 	const cid = Object.keys(name_table_jp).find(key => name_table_jp[key] ? toHalfWidth(name_table_jp[key]) === toHalfWidth(cdata) : false);
 	if (cid) {
 		const nid = cid_to_id[cid];
 		qstr = `${qstr0} AND datas.id == $nid;`;
 		arg.$nid = nid;
-		query(qstr, arg, list_tmp);
-		if (list_tmp.length === 1)
-			return [list_tmp[0], list_tmp.length];
+		const list3 = query(qstr, arg);
+		if (list3.length === 1)
+			return [list3[0], 1];
 	}
 
 	qstr = `${qstr0} AND name LIKE $fuzzy ESCAPE '$';`;
 	arg.$fuzzy = string_to_literal(cdata);
-	query(qstr, arg, list_tmp);
-	if (list_tmp.length === 1)
-		return [list_tmp[0], list_tmp.length];
-	return [null, list_tmp.length];
+	const list4 = query(qstr, arg);
+	if (list4.length === 1)
+		return [list4[0], 1];
+	return [null, list4.length];
 }
 
 /**
@@ -1020,6 +1012,6 @@ function server_analyze2(params) {
 	arg.$atk_end = card_end.atk;
 	arg.$def_end = card_end.def;
 	current_stmt = qstr_final;
-	query(qstr_final, arg, result);
-	show_result(valid_params);
+	const result = query(qstr_final, arg);
+	show_result(valid_params, result);
 }
