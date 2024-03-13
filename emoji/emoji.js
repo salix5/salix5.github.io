@@ -1,6 +1,7 @@
 'use strict';
 const text1 = document.getElementById('text1');
 const div_link = document.getElementById('div_link');
+const div_date = document.getElementById('div_date');
 const re_id = /<(a?):[^:]+:(\d+)>/
 
 text1.value = '';
@@ -20,5 +21,13 @@ function create_url(e) {
 		link1.rel = 'noreferrer nofollow';
 		link1.textContent = url;
 		div_link.appendChild(link1);
+		if (window.BigInt) {
+			const snowflake = BigInt(id);
+			const offset = BigInt(22);
+			const base = BigInt(1420070400000);
+			const timestamp = Number((snowflake >> offset) + base);
+			const birth = new Date(timestamp);
+			div_date.textContent = `生於：${birth.toLocaleString()}`;
+		}
 	}
 }
