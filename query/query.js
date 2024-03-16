@@ -458,7 +458,7 @@ function process_name(locale, name_string, arg) {
 		case 'en': {
 			const en_list = [];
 			const en_name = name_string.toLowerCase();
-			for (const [cid, name] of name_table['en']) {
+			for (const [cid, name] of complete_name_table['en']) {
 				if (name.toLowerCase().includes(en_name))
 					en_list.push(cid_to_id.get(cid));
 				if (en_list.length > MAX_RESULT_LEN) {
@@ -499,7 +499,7 @@ function process_name(locale, name_string, arg) {
 			if (!is_setname) {
 				const jp_list = [];
 				const jp_name = toHalfWidth(name_string);
-				for (const [cid, name] of name_table['ja']) {
+				for (const [cid, name] of complete_name_table['ja']) {
 					if (toHalfWidth(name).includes(jp_name))
 						jp_list.push(cid_to_id.get(cid));
 					if (jp_list.length > MAX_RESULT_LEN) {
@@ -920,7 +920,7 @@ function get_single_card(cdata) {
 		return [list2[0], 1];
 
 	let target_cid = 0;
-	for (const [cid, name] of name_table['ja']) {
+	for (const [cid, name] of complete_name_table['ja']) {
 		if (toHalfWidth(name) === toHalfWidth(cdata))
 			target_cid = cid;
 	}

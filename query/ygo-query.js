@@ -53,6 +53,8 @@ game_name['ja'] = 'md_name_jp';
 let cid_table = null
 const name_table = Object.create(null);
 const md_table = Object.create(null);
+const complete_name_table = Object.create(null);
+
 const setname = Object.create(null);
 const ltable_md = Object.create(null);
 fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(entries => { name_table['md'] = new Map(entries) }));
@@ -95,6 +97,19 @@ const db_ready = Promise.all(fetch_list)
 		cid_table = new Map(cid_entries);
 		name_table['ja'] = new Map(jp_entries);
 		name_table['en'] = new Map(en_entries);
+		for (const locale of Object.keys(official_name)) {
+			const table1 = new Map(name_table[locale]);
+			if (md_table[locale]) {
+				for (const [cid, name] of md_table[locale]) {
+					if (table1.has(cid)) {
+						console.error(`duplicate cid: md_table[${locale}]`, cid);
+						continue;
+					}
+					table1.set(cid, name);
+				}
+			}
+			complete_name_table[locale] = table1;
+		}
 		cid_to_id = inverse_mapping(cid_table);
 		if (!from_local) {
 			try {
