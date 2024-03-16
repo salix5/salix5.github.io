@@ -230,7 +230,7 @@ function create_rows(card, pack) {
 			if (card.jp_name)
 				link_db_text = card.jp_name;
 			else if (card.md_name_jp)
-				link_db_text = `${card.md_name_jp}  (MD)`;
+				link_db_text = `${card.md_name_jp}`;
 			else
 				link_db_text = card.en_name;
 			let request_locale = (card.ot === 2) ? 'en' : 'ja';
