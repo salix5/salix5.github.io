@@ -1,6 +1,6 @@
 "use strict";
 // dependency: sql.js, JSZIP
-const last_pack = "QCCU#3";
+const last_pack = "QCCU#4";
 
 // special ID
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
@@ -41,54 +41,66 @@ fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
 		db_list.push(new SQL.Database(file2));
 	}));
 
-// JSON
-const cid_table = Object.create(null);
-const name_table_jp = Object.create(null);
-const name_table_en = Object.create(null);
+
+const official_name = Object.create(null);
+official_name['en'] = 'en_name';
+official_name['ja'] = 'jp_name';
+
+const game_name = Object.create(null);
+game_name['en'] = 'md_name_en';
+game_name['ja'] = 'md_name_jp';
+
+let cid_table = null
+const name_table = Object.create(null);
+const md_table = Object.create(null);
+const setname = Object.create(null);
+const ltable_md = Object.create(null);
+fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(entries => { name_table['md'] = new Map(entries) }));
+fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(entries => { md_table['ja'] = new Map(entries) }));
+fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(entries => { md_table['en'] = new Map(entries) }));
+fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
+fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
+
+// local
+let cid_entries = null;
+let jp_entries = null;
+let en_entries = null;
 const pack_list = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
-const name_table_kr = null;
-let cid_to_id = null;
-
 if (localStorage.getItem("last_pack") === last_pack) {
-	Object.assign(cid_table, JSON.parse(localStorage.getItem("cid_table")));
-	Object.assign(name_table_jp, JSON.parse(localStorage.getItem("name_table")));
-	Object.assign(name_table_en, JSON.parse(localStorage.getItem("name_table_en")));
+	cid_entries = JSON.parse(localStorage.getItem("cid_table"));
+	jp_entries = JSON.parse(localStorage.getItem("name_table_jp"));
+	en_entries = JSON.parse(localStorage.getItem("name_table_en"));
 	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
 	Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
 	Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
 }
-else {
+const from_local = !!(cid_entries && jp_entries && en_entries);
+if (!from_local) {
 	localStorage.clear();
-	fetch_list.push(fetch(`text/cid.json`).then(response => response.json()).then(data => Object.assign(cid_table, data)));
-	fetch_list.push(fetch(`text/name_table.json`).then(response => response.json()).then(data => Object.assign(name_table_jp, data)));
-	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(name_table_en, data)));
+	fetch_list.push(fetch(`text/cid_table.json`).then(response => response.json()).then(entries => cid_entries = entries));
+	fetch_list.push(fetch(`text/name_table_jp.json`).then(response => response.json()).then(entries => jp_entries = entries));
+	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(entries => en_entries = entries));
 	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
 	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
 	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
 }
 
-// MD
-const setname = Object.create(null);
-const ltable_md = Object.create(null);
-const md_name = Object.create(null);
-const md_name_jp = Object.create(null);
-const md_name_en = Object.create(null);
-fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
-fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
-fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(data => Object.assign(md_name, data)));
-fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => Object.assign(md_name_jp, data)));
-fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => Object.assign(md_name_en, data)));
-
+let cid_to_id = null;
+//let name_table_jp = null
+let name_table_en = null
 const db_ready = Promise.all(fetch_list)
 	.then(() => {
+		cid_table = new Map(cid_entries);
+		name_table['ja'] = new Map(jp_entries);
+		name_table['en'] = new Map(en_entries);
 		cid_to_id = inverse_mapping(cid_table);
-		if (!localStorage.getItem("last_pack")) {
+		if (!from_local) {
 			try {
-				localStorage.setItem("cid_table", JSON.stringify(cid_table));
-				localStorage.setItem("name_table", JSON.stringify(name_table_jp));
-				localStorage.setItem("name_table_en", JSON.stringify(name_table_en));
+				localStorage.setItem("cid_table", JSON.stringify(Array.from(cid_table)));
+				localStorage.setItem("name_table_jp", JSON.stringify(Array.from(name_table['ja'])));
+				localStorage.setItem("name_table_en", JSON.stringify(Array.from(name_table['en'])));
 				localStorage.setItem("pack_list", JSON.stringify(pack_list));
 				localStorage.setItem("ltable_ocg", JSON.stringify(ltable_ocg));
 				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));
@@ -167,11 +179,11 @@ function is_setcode(card, value) {
 }
 
 /**
- * Query cards from `db` using statement `qstr` and binding object `arg`, and put the results in `ret`.
+ * Query cards from `db` with statement `qstr` and binding object `arg` and put them in `ret`.
  * @param {initSqlJs.Database} db 
  * @param {string} qstr 
  * @param {Object} arg 
- * @param {Card[]} ret  
+ * @param {Object[]} ret  
  */
 function query_db(db, qstr, arg, ret) {
 	if (!db)
@@ -212,8 +224,8 @@ function query_db(db, qstr, arg, ret) {
 		if ('id' in card && 'alias' in card) {
 			card.real_id = is_alternative(card) ? card.alias : card.id;
 		}
-		if ('real_id' in card && Number.isSafeInteger(cid_table[card.real_id])) {
-			card.cid = cid_table[card.real_id];
+		if ('real_id' in card && cid_table.has(card.real_id)) {
+			card.cid = cid_table.get(card.real_id);
 		}
 		ret.push(card);
 	}
@@ -279,21 +291,14 @@ function finalize(card, index_table) {
 	card.tw_name = card.name;
 	delete card.name;
 	if (card.cid) {
-		if (name_table_jp[card.cid])
-			card.jp_name = name_table_jp[card.cid];
-		else if (md_name_jp[card.cid])
-			card.md_name_jp = md_name_jp[card.cid];
-
-		if (name_table_en[card.cid])
-			card.en_name = name_table_en[card.cid];
-		else if (md_name_en[card.cid])
-			card.md_name_en = md_name_en[card.cid];
-
-		if (name_table_kr && name_table_kr[card.cid])
-			card.kr_name = name_table_kr[card.cid];
-
-		if (md_name[card.cid])
-			card.md_name = md_name[card.cid];
+		for (const [locale, prop] of Object.entries(official_name)) {
+			if (name_table[locale].has(card.cid))
+				card[prop] = name_table[locale].get(card.cid);
+			else if (md_table[locale] && md_table[locale].has(card.cid))
+				card[game_name[locale]] = md_table[locale].get(card.cid);
+		}
+		if (name_table['md'].has(card.cid))
+			card.md_name = name_table['md'].get(card.cid);
 	}
 	// pack index
 	if (card.id <= 99999999) {
@@ -507,21 +512,17 @@ function print_data(card, newline) {
 
 /**
  * Create the inverse mapping of `table`.
- * @param {Object} table 
- * @param {boolean} numeric_key
- * @returns {Object}
+ * @param {Map} table 
+ * @returns 
  */
-function inverse_mapping(table, numeric_key = true) {
-	const inverse = Object.create(null);
-	for (const [key, value] of Object.entries(table)) {
-		if (inverse[value]) {
+function inverse_mapping(table) {
+	const inverse = new Map();
+	for (const [key, value] of table) {
+		if (inverse.has(value)) {
 			console.error('non-invertible', `${key}: ${value}`);
-			return Object.create(null);
+			return (new Map());
 		}
-		if (numeric_key)
-			inverse[value] = Number.parseInt(key);
-		else
-			inverse[value] = key;
+		inverse.set(value, key);
 	}
 	return inverse;
 }

@@ -458,9 +458,9 @@ function process_name(locale, name_string, arg) {
 		case 'en': {
 			const en_list = [];
 			const en_name = name_string.toLowerCase();
-			for (const [cid, name] of Object.entries(name_table_en)) {
+			for (const [cid, name] of name_table['en']) {
 				if (name.toLowerCase().includes(en_name))
-					en_list.push(cid_to_id[cid]);
+					en_list.push(cid_to_id.get(cid));
 				if (en_list.length > MAX_RESULT_LEN) {
 					en_list.length = 0;
 					break;
@@ -499,9 +499,9 @@ function process_name(locale, name_string, arg) {
 			if (!is_setname) {
 				const jp_list = [];
 				const jp_name = toHalfWidth(name_string);
-				for (const [cid, name] of Object.entries(name_table_jp)) {
+				for (const [cid, name] of name_table['ja']) {
 					if (toHalfWidth(name).includes(jp_name))
-						jp_list.push(cid_to_id[cid]);
+						jp_list.push(cid_to_id.get(cid));
 					if (jp_list.length > MAX_RESULT_LEN) {
 						jp_list.length = 0;
 						break;
@@ -919,9 +919,13 @@ function get_single_card(cdata) {
 	if (list2.length === 1)
 		return [list2[0], 1];
 
-	const cid = Object.keys(name_table_jp).find(key => name_table_jp[key] ? toHalfWidth(name_table_jp[key]) === toHalfWidth(cdata) : false);
-	if (cid) {
-		const nid = cid_to_id[cid];
+	let target_cid = 0;
+	for (const [cid, name] of name_table['ja']) {
+		if (toHalfWidth(name) === toHalfWidth(cdata))
+			target_cid = cid;
+	}
+	if (target_cid) {
+		const nid = cid_to_id.get(target_cid);
 		qstr = `${qstr0} AND datas.id == $nid;`;
 		arg.$nid = nid;
 		const list3 = query(qstr, arg);
