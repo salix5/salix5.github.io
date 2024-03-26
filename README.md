@@ -50,6 +50,9 @@ Ex.
 
 
 ## 更新紀錄
+24/3/26  
+復刻更新：QCCP (side:PRIDE)
+
 24/2/23  
 復刻更新：QCCU (side:UNITY)
 
