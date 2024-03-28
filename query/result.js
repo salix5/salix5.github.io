@@ -277,9 +277,9 @@ function create_rows(card, pack) {
 				div_en.textContent = `${card.md_name_en}  (MD)`;
 			div_alias.appendChild(div_en);
 		}
-		if (card.md_name) {
+		if (card.md_rarity) {
 			let div_md = document.createElement('div');
-			div_md.textContent = `MD：${card.md_name}`;
+			div_md.textContent = `MD：✅`;
 			div_alias.appendChild(div_md);
 		}
 	}

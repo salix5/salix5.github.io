@@ -36,13 +36,14 @@ game_name['en'] = 'md_name_en';
 game_name['ja'] = 'md_name_jp';
 
 let cid_table = null
+const md_card_list = Object.create(null);
 const name_table = Object.create(null);
 const md_table = Object.create(null);
 const complete_name_table = Object.create(null);
 
 const setname = Object.create(null);
 const ltable_md = Object.create(null);
-fetch_list.push(fetch(`text/md_name.json`).then(response => response.json()).then(entries => { name_table['md'] = new Map(entries) }));
+fetch_list.push(fetch(`text/CardList.json`).then(response => response.json()).then(data => Object.assign(md_card_list, data)));
 fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(entries => { md_table['ja'] = new Map(entries) }));
 fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(entries => { md_table['en'] = new Map(entries) }));
 fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
