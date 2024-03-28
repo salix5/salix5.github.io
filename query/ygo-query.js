@@ -39,10 +39,10 @@ const stmt_no_alias = `${select_id}${base_filter} AND alias == 0`;
  * @property {string} desc
  * 
  * @property {number} [cid]
+ * @property {number} [md_rarity]
  * @property {string} [en_name]
  * @property {string} [jp_name]
  * @property {string} [kr_name]
- * @property {string} [md_name]
  * @property {string} [md_name_en]
  * @property {string} [md_name_jp]
  * @property {number} [pack_index]
@@ -205,8 +205,8 @@ function finalize(card, index_table) {
 			else if (md_table[locale] && md_table[locale].has(card.cid))
 				card[game_name[locale]] = md_table[locale].get(card.cid);
 		}
-		if (name_table['md'].has(card.cid))
-			card.md_name = name_table['md'].get(card.cid);
+		if (md_card_list[card.cid])
+			card.md_rarity = md_card_list[card.cid];
 	}
 	// pack index
 	if (card.id <= 99999999) {
