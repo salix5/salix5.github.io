@@ -175,6 +175,10 @@ function is_real(id, type) {
 	return id <= 99999999 && !(type & TYPE_TOKEN);
 }
 
+/**
+ * @param {Card} card 
+ * @param {string} pack 
+ */
 function create_rows(card, pack) {
 	let row_pic = table_result.insertRow(-1);
 	let cell_pic = row_pic.insertCell(-1);
@@ -279,7 +283,7 @@ function create_rows(card, pack) {
 		}
 		if (card.md_rarity) {
 			let div_md = document.createElement('div');
-			div_md.textContent = `MD：✅`;
+			div_md.textContent = `MD：${rarity[card.md_rarity]}`;
 			div_alias.appendChild(div_md);
 		}
 	}
