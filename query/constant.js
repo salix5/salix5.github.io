@@ -183,3 +183,10 @@ const marker_char = {
 
 	default: '⬜',
 };
+
+const rarity = {
+	1: 'N',
+	2: 'R',
+	3: 'SR',
+	4: 'UR',
+}
