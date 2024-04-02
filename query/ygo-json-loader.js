@@ -1,6 +1,13 @@
 "use strict";
 const last_pack = "QCCP#1";
 
+function object_to_map(obj) {
+	const map = new Map();
+	for (const [key, value] of Object.entries(obj))
+		map.set(Number.parseInt(key), value);
+	return map;
+}
+
 let SQL = null;
 const db_list = [];
 const domain = "https://salix5.github.io/cdb";
@@ -44,43 +51,49 @@ const complete_name_table = Object.create(null);
 const setname = Object.create(null);
 const ltable_md = Object.create(null);
 fetch_list.push(fetch(`text/CardList.json`).then(response => response.json()).then(data => Object.assign(md_card_list, data)));
-fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(entries => { md_table['ja'] = new Map(entries) }));
-fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(entries => { md_table['en'] = new Map(entries) }));
+fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => { md_table['ja'] = object_to_map(data) }));
+fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => { md_table['en'] = object_to_map(data) }));
 fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
 fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
 
 // local
-let cid_entries = null;
-let jp_entries = null;
-let en_entries = null;
+const cid_object = Object.create(null);
+const jp_object = Object.create(null);
+const en_object = Object.create(null);
 const pack_list = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
+const from_local = false;
 if (localStorage.getItem("last_pack") === last_pack) {
-	cid_entries = JSON.parse(localStorage.getItem("cid_table"));
-	jp_entries = JSON.parse(localStorage.getItem("name_table_jp"));
-	en_entries = JSON.parse(localStorage.getItem("name_table_en"));
-	Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
-	Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
-	Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
+	try {
+		Object.assign(cid_object, JSON.parse(localStorage.getItem("cid_table")));
+		Object.assign(jp_object, JSON.parse(localStorage.getItem("name_table_jp")));
+		Object.assign(en_object, JSON.parse(localStorage.getItem("name_table_en")));
+		Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
+		Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
+		Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
+		from_local = true;
+	}
+	catch (ex) {
+		localStorage.removeItem("last_pack");
+	}
 }
-const from_local = !!(cid_entries && jp_entries && en_entries);
 if (!from_local) {
 	localStorage.clear();
-	fetch_list.push(fetch(`text/cid_table.json`).then(response => response.json()).then(entries => cid_entries = entries));
-	fetch_list.push(fetch(`text/name_table_jp.json`).then(response => response.json()).then(entries => jp_entries = entries));
-	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(entries => en_entries = entries));
+	fetch_list.push(fetch(`text/cid_table.json`).then(response => response.json()).then(data => Object.assign(cid_object, data)));
+	fetch_list.push(fetch(`text/name_table_jp.json`).then(response => response.json()).then(data => Object.assign(jp_object, data)));
+	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(en_object, data)));
 	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
 	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
 	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
 }
 
-let cid_to_id = null;
+let id_to_cid = null;
 const db_ready = Promise.all(fetch_list)
 	.then(() => {
-		cid_table = new Map(cid_entries);
-		name_table['ja'] = new Map(jp_entries);
-		name_table['en'] = new Map(en_entries);
+		cid_table = object_to_map(cid_object);
+		name_table['ja'] = object_to_map(jp_object);
+		name_table['en'] = object_to_map(en_object);
 		for (const locale of Object.keys(official_name)) {
 			const table1 = new Map(name_table[locale]);
 			if (md_table[locale]) {
@@ -90,12 +103,12 @@ const db_ready = Promise.all(fetch_list)
 			}
 			complete_name_table[locale] = table1;
 		}
-		cid_to_id = inverse_mapping(cid_table);
+		id_to_cid = inverse_mapping(cid_table);
 		if (!from_local) {
 			try {
-				localStorage.setItem("cid_table", JSON.stringify(Array.from(cid_table)));
-				localStorage.setItem("name_table_jp", JSON.stringify(Array.from(name_table['ja'])));
-				localStorage.setItem("name_table_en", JSON.stringify(Array.from(name_table['en'])));
+				localStorage.setItem("cid_table", JSON.stringify(cid_object));
+				localStorage.setItem("name_table_jp", JSON.stringify(jp_object));
+				localStorage.setItem("name_table_en", JSON.stringify(en_object));
 				localStorage.setItem("pack_list", JSON.stringify(pack_list));
 				localStorage.setItem("ltable_ocg", JSON.stringify(ltable_ocg));
 				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));

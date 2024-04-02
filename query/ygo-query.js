@@ -132,8 +132,8 @@ function query_db(db, qstr, arg, ret) {
 		if ('id' in card && 'alias' in card) {
 			card.real_id = is_alternative(card) ? card.alias : card.id;
 		}
-		if ('real_id' in card && cid_table.has(card.real_id)) {
-			card.cid = cid_table.get(card.real_id);
+		if ('real_id' in card && id_to_cid.has(card.real_id)) {
+			card.cid = id_to_cid.get(card.real_id);
 		}
 		ret.push(card);
 	}
