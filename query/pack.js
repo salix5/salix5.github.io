@@ -8,6 +8,7 @@ const pre_release = {
 	INFO: 101205000,
 	DP29: 100220001,
 	CF01: 100221001,
+	AC04: 100222001,
 
 	// TCG
 };
@@ -21,6 +22,7 @@ const wiki_link = {
 	INFO: "https://yugioh-wiki.net/index.php?INFINITE%20FORBIDDEN",
 	DP29: "https://yugioh-wiki.net/index.php?%A5%C7%A5%E5%A5%A8%A5%EA%A5%B9%A5%C8%A5%D1%A5%C3%A5%AF%A1%DD%B5%B1%B8%F7%A4%CE%A5%C7%A5%E5%A5%A8%A5%EA%A5%B9%A5%C8%CA%D4%A1%DD",
 	CF01: "https://yugioh-wiki.net/index.php?COMPLETE%20FILE%20%A1%DD%C7%F2%A4%CE%CA%AA%B8%EC%A1%DD",
+	AC04: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202024",
 
 	// TCG
 };
