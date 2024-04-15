@@ -11,6 +11,7 @@ const pre_release = {
 	AC04: 100222001,
 
 	// TCG
+	_LEDE: 101204001,
 };
 
 const wiki_link = {
@@ -25,4 +26,5 @@ const wiki_link = {
 	AC04: "https://yugioh-wiki.net/index.php?ANIMATION%20CHRONICLE%202024",
 
 	// TCG
+	_LEDE: "https://yugipedia.com/wiki/Legacy_of_Destruction",
 };
