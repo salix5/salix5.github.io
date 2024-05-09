@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "INFO#2";
+const last_pack = "INFO#3";
 
 function object_to_map(obj) {
 	const map = new Map();
