@@ -386,13 +386,17 @@ function create_rows(card, pack) {
 	}
 }
 
+/**
+ * @param {URLSearchParams} params 
+ * @param {Card[]} result 
+ */
 function show_result(params, result) {
 	table_result.innerHTML = "";
 	select_page.innerHTML = "";
 	div_page.hidden = true;
 	const total_pages = Math.ceil(result.length / result_per_page);
 	const page = params.get("page") ? Number.parseInt(params.get("page"), 10) : 1;
-	const pack = params.get("pack");
+	let pack = params.get("pack");
 	if (pack === "o" || pack === "t" || !is_pack(pack))
 		pack = null;
 	if (total_pages && page <= total_pages) {
