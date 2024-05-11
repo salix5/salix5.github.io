@@ -24,7 +24,7 @@ function print_pack_number(pack, index) {
 		str_pack = pack;
 		str_ot = 'JP';
 	}
-	let cat = str_pack.substring(0, 2);
+	const cat = str_pack.substring(0, 2);
 
 	// index
 	if (pack === 'WPP2' && index > 70) {
@@ -77,7 +77,7 @@ function print_id(card, pack) {
 	else {
 		link_text = str_id;
 	}
-	return `${link_text}`;
+	return link_text;
 }
 
 function print_ad(x) {
@@ -119,8 +119,8 @@ function compare_card() {
 
 	return function (a, b) {
 		if (locale === 'en') {
-			let match1 = (a.en_name && is_equal(a.en_name, name)) || (a.md_name_en && is_equal(a.md_name_en, name));
-			let match2 = (b.en_name && is_equal(b.en_name, name)) || (b.md_name_en && is_equal(b.md_name_en, name));
+			const match1 = (a.en_name && is_equal(a.en_name, name)) || (a.md_name_en && is_equal(a.md_name_en, name));
+			const match2 = (b.en_name && is_equal(b.en_name, name)) || (b.md_name_en && is_equal(b.md_name_en, name));
 			if (match1 && match2)
 				return 0;
 			else if (match1)
@@ -129,8 +129,8 @@ function compare_card() {
 				return 1;
 		}
 		else {
-			let match1 = (a.jp_name && is_equal(a.jp_name, name)) || (a.md_name_jp && is_equal(a.md_name_jp, name));
-			let match2 = (b.jp_name && is_equal(b.jp_name, name)) || (b.md_name_jp && is_equal(b.md_name_jp, name));
+			const match1 = (a.jp_name && is_equal(a.jp_name, name)) || (a.md_name_jp && is_equal(a.md_name_jp, name));
+			const match2 = (b.jp_name && is_equal(b.jp_name, name)) || (b.md_name_jp && is_equal(b.md_name_jp, name));
 			if (is_equal(a.tw_name, name) && is_equal(b.tw_name, name))
 				return 0;
 			else if (is_equal(a.tw_name, name))
@@ -390,15 +390,15 @@ function show_result(params, result) {
 	table_result.innerHTML = "";
 	select_page.innerHTML = "";
 	div_page.hidden = true;
-	let total_pages = Math.ceil(result.length / result_per_page);
-	let page = params.get("page") ? Number.parseInt(params.get("page"), 10) : 1;
-	let pack = params.get("pack");
+	const total_pages = Math.ceil(result.length / result_per_page);
+	const page = params.get("page") ? Number.parseInt(params.get("page"), 10) : 1;
+	const pack = params.get("pack");
 	if (pack === "o" || pack === "t" || !is_pack(pack))
 		pack = null;
 	if (total_pages && page <= total_pages) {
 		current_params = params;
-		let index_begin = result_per_page * (page - 1);
-		let index_end = Math.min(result_per_page * page - 1, result.length - 1);
+		const index_begin = result_per_page * (page - 1);
+		const index_end = Math.min(result_per_page * page - 1, result.length - 1);
 		if (pack)
 			result.sort(compare_id);
 		else
@@ -420,8 +420,8 @@ function show_result(params, result) {
 	}
 	else {
 		current_params = null;
-		let row0 = table_result.insertRow(-1);
-		let cell0 = row0.insertCell(-1);
+		const row0 = table_result.insertRow(-1);
+		const cell0 = row0.insertCell(-1);
 		table_result.style.border = "1px solid black";
 		cell0.textContent = "沒有符合搜尋的項目。";
 	}
