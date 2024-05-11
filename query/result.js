@@ -180,8 +180,8 @@ function is_real(id, type) {
  * @param {string} pack 
  */
 function create_rows(card, pack) {
-	let row_pic = table_result.insertRow(-1);
-	let cell_pic = row_pic.insertCell(-1);
+	const row_pic = table_result.insertRow(-1);
+	const cell_pic = row_pic.insertCell(-1);
 	cell_pic.className = 'pic';
 	if (window.innerWidth > MAX_WIDTH) {
 		cell_pic.style.width = '30%';
@@ -191,7 +191,7 @@ function create_rows(card, pack) {
 	else {
 		cell_pic.style.width = '35%';
 	}
-	let img_card = document.createElement('img');
+	const img_card = document.createElement('img');
 	img_card.className = 'pic';
 	if (card.id <= 99999999)
 		img_card.src = `https://salix5.github.io/query-data/pics/${card.id}.jpg`;
@@ -200,8 +200,8 @@ function create_rows(card, pack) {
 	img_card.onerror = imgError;
 
 	if (is_real(card.id, card.type)) {
-		let params = new URLSearchParams({ "code": card.id.toString().padStart(8, '0') });
-		let link_id = document.createElement('a');
+		const params = new URLSearchParams({ "code": card.id.toString().padStart(8, '0') });
+		const link_id = document.createElement('a');
 		link_id.href = `https://salix5.github.io/query/?${params.toString()}`;
 		link_id.target = '_blank';
 		link_id.appendChild(img_card);
@@ -211,18 +211,18 @@ function create_rows(card, pack) {
 		cell_pic.appendChild(img_card);
 	}
 
-	let cell_data = row_pic.insertCell(-1);
+	const cell_data = row_pic.insertCell(-1);
 	cell_data.className = "data";
 
-	let div_name = document.createElement('div');
-	let st = document.createElement('strong');
+	const div_name = document.createElement('div');
+	const st = document.createElement('strong');
 	st.textContent = card.tw_name;
 	div_name.appendChild(st);
 	if (card.ot === 2)
 		div_name.insertAdjacentHTML('beforeend', '<img src="icon/tcg.png" height="20" width="40">');
 	cell_data.appendChild(div_name);
 
-	let div_alias = document.createElement('div');
+	const div_alias = document.createElement('div');
 	div_alias.className = 'minor';
 
 	// db link
@@ -237,7 +237,7 @@ function create_rows(card, pack) {
 				link_db_text = `${card.md_name_jp}`;
 			else
 				link_db_text = card.en_name;
-			let request_locale = (card.ot === 2) ? 'en' : 'ja';
+			const request_locale = (card.ot === 2) ? 'en' : 'ja';
 			db_url = print_db_link(card.cid, request_locale);
 		}
 		else if (card.cid === 0) {
@@ -245,7 +245,7 @@ function create_rows(card, pack) {
 			db_url = print_yp_link(card.id);
 		}
 		else {
-			let pre_pack = pre_id_to_pack(card.id)
+			const pre_pack = pre_id_to_pack(card.id)
 			let str_site = '';
 			let str_pack = '';
 			if (pre_pack.charAt(0) === '_') {
@@ -260,9 +260,9 @@ function create_rows(card, pack) {
 			if (wiki_link[pre_pack])
 				db_url = wiki_link[pre_pack];
 		}
-		let div_db = document.createElement('div');
+		const div_db = document.createElement('div');
 		if (db_url) {
-			let link_db = document.createElement('a');
+			const link_db = document.createElement('a');
 			link_db.href = db_url;
 			link_db.target = '_blank';
 			link_db.rel = 'noreferrer nofollow';
@@ -274,7 +274,7 @@ function create_rows(card, pack) {
 		}
 		div_alias.appendChild(div_db);
 		if ((card.jp_name || card.md_name_jp) && (card.en_name || card.md_name_en)) {
-			let div_en = document.createElement('div');
+			const div_en = document.createElement('div');
 			if (card.en_name)
 				div_en.textContent = card.en_name;
 			else
@@ -282,27 +282,27 @@ function create_rows(card, pack) {
 			div_alias.appendChild(div_en);
 		}
 		if (card.md_rarity) {
-			let div_md = document.createElement('div');
+			const div_md = document.createElement('div');
 			div_md.textContent = `MD：${rarity[card.md_rarity]}`;
 			div_alias.appendChild(div_md);
 		}
 	}
 
 	// id
-	let div_id = document.createElement('div');
+	const div_id = document.createElement('div');
+	div_id.textContent = print_id(card, pack);
+	div_alias.appendChild(div_id);
 	if (card.cid && card.ot !== 2) {
-		let faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
-		let link_faq = document.createElement('a');
+		const div_qa = document.createElement('div');
+		const faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
+		const link_faq = document.createElement('a');
 		link_faq.href = faq_url;
 		link_faq.target = '_blank';
 		link_faq.rel = 'noreferrer nofollow';
-		link_faq.textContent = print_id(card, pack);
-		div_id.appendChild(link_faq);
+		link_faq.textContent = 'Q&A';
+		div_qa.appendChild(link_faq);
+		div_alias.appendChild(div_qa);
 	}
-	else {
-		div_id.textContent = print_id(card, pack);
-	}
-	div_alias.appendChild(div_id);
 
 	// limit
 	let lfstr_ocg = '';
@@ -321,16 +321,16 @@ function create_rows(card, pack) {
 	else
 		lfstr_md = `MD：-`;
 	if (ltable_ocg[card.real_id] !== undefined || ltable_tcg[card.real_id] !== undefined || ltable_md[card.real_id] !== undefined) {
-		let div_limit = document.createElement('div');
+		const div_limit = document.createElement('div');
 		div_limit.innerHTML = `${lfstr_ocg} / ${lfstr_tcg} / ${lfstr_md}`;
 		div_alias.appendChild(div_limit);
 	}
 	cell_data.appendChild(div_alias);
 
-	let row_effect = table_result.insertRow(-1);
-	let cell_effect = row_effect.insertCell(-1);
+	const row_effect = table_result.insertRow(-1);
+	const cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
-	let div_stat = document.createElement('div');
+	const div_stat = document.createElement('div');
 	div_stat.className = 'stat';
 	div_stat.innerHTML = `${print_data(card, '<br>')}`;
 	cell_effect.appendChild(div_stat);
@@ -365,7 +365,7 @@ function create_rows(card, pack) {
 			else
 				marker_text += marker_char.default;
 		}
-		let div_marker = document.createElement("div");
+		const div_marker = document.createElement("div");
 		div_marker.innerHTML = marker_text;
 		cell_effect.appendChild(div_marker);
 	}
@@ -377,7 +377,7 @@ function create_rows(card, pack) {
 	mapObj['<'] = '&lt;';
 	mapObj['>'] = '&gt;';
 	mapObj['"'] = '&quot;';
-	let div_desc = document.createElement('div');
+	const div_desc = document.createElement('div');
 	div_desc.innerHTML = card.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x]);
 	cell_effect.appendChild(div_desc);
 
