@@ -367,8 +367,7 @@ function print_data(card, newline) {
 			subtype += `/${type_name[TYPE_EFFECT]}`;
 		data = `[${mtype}${subtype}]${newline}`;
 
-		let lv = card.level;
-		data += `${lvstr}${lv == 0 ? '?' : lv}`;
+		data += `${lvstr}${card.level === 0 ? '?' : card.level}`;
 		if (card.attribute)
 			data += `/${attribute_name[card.attribute]}`;
 		else
