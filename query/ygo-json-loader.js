@@ -1,5 +1,13 @@
 "use strict";
 const last_pack = "DP29#1";
+const unknown_index = {
+	100220201: 36,
+	100220202: 38,
+	100220203: 39,
+	100220204: 40,
+	100220205: 41,
+	100220206: 42,
+};
 
 function object_to_map(obj) {
 	const map = new Map();

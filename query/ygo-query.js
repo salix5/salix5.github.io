@@ -140,7 +140,7 @@ function query_db(db, qstr, arg, ret) {
 	stmt.free();
 }
 
-function finalize(card, index_table) {
+function edit_card(card) {
 	if (card.type & TYPE_MONSTER) {
 		if (!(card.type & TYPE_EXTRA)) {
 			if (card.type & TYPE_TOKEN)
@@ -208,13 +208,19 @@ function finalize(card, index_table) {
 		if (md_card_list[card.cid])
 			card.md_rarity = md_card_list[card.cid];
 	}
+}
+
+function create_index(card, index_table) {
 	// pack index
 	if (card.id <= 99999999) {
 		if (index_table && index_table[card.id])
 			card.pack_index = index_table[card.id];
 	}
 	else {
-		card.pack_index = card.id % 1000;
+		if (card.id % 1000 > 200 && unknown_index[card.id])
+			card.pack_index = unknown_index[card.id];
+		else
+			card.pack_index = card.id % 1000;
 	}
 }
 
@@ -239,7 +245,8 @@ function query(qstr, arg) {
 		}
 	}
 	for (const card of ret) {
-		finalize(card, index_table);
+		edit_card(card);
+		create_index(card, index_table);
 	}
 	return ret;
 }
