@@ -1,6 +1,10 @@
 "use strict";
 const last_pack = "AC04#1";
 const unknown_index = {
+	100222201: 11,
+	100222202: 14,
+	100222203: 17,
+	100222204: 26,
 };
 
 function object_to_map(obj) {
