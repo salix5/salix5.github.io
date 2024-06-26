@@ -102,12 +102,17 @@ function print_limit(limit) {
  * case-insensitive equal
  * @param {string} a 
  * @param {string} b 
- * @returns boolean result
+ * @returns 
  */
 function is_equal(a, b) {
 	return toHalfWidth(a.toLowerCase()) === toHalfWidth(b.toLowerCase());
 }
 
+/**
+ * @param {Card} a 
+ * @param {Card} b 
+ * @returns 
+ */
 function compare_id(a, b) {
 	return a.pack_index - b.pack_index;
 }
