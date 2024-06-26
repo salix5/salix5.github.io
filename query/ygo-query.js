@@ -91,12 +91,12 @@ function is_setcode(card, value) {
  * @param {initSqlJs.Database} db 
  * @param {string} qstr 
  * @param {Object} arg 
- * @param {Object[]} ret  
  */
-function query_db(db, qstr, arg, ret) {
+function query_db(db, qstr, arg) {
 	if (!db)
-		return;
+		return [];
 
+	const ret = [];
 	const stmt = db.prepare(qstr);
 	stmt.bind(arg);
 	while (stmt.step()) {
@@ -138,6 +138,7 @@ function query_db(db, qstr, arg, ret) {
 		ret.push(card);
 	}
 	stmt.free();
+	return ret;
 }
 
 function edit_card(card) {
@@ -248,7 +249,8 @@ function create_index(result, pack_name) {
 function query(qstr, arg) {
 	const ret = [];
 	for (const db of db_list) {
-		query_db(db, qstr, arg, ret);
+		const result = query_db(db, qstr, arg);
+		ret.push(...result);
 	}
 	for (const card of ret) {
 		edit_card(card);
