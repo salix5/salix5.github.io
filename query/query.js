@@ -121,8 +121,7 @@ const marker_list = [
 	LINK_MARKER_BOTTOM_RIGHT,
 ];
 
-const form_keys = Object.create(null);
-Object.assign(form_keys, {
+const key_type = {
 	"cname": 1,
 	"locale": 1,
 	"desc": 1,
@@ -153,7 +152,7 @@ Object.assign(form_keys, {
 	"defm": 2,
 	"sum": 2,
 	"page": 1,
-});
+}
 
 /**
  * toHalfWidth()
@@ -290,7 +289,7 @@ function validate_params(params, extra_monster) {
 		params.delete("exclude", "2");
 		params.delete("exclude", "3");
 		params.delete("exclude", "4");
-		for (const [key, value] of Object.entries(form_keys)) {
+		for (const [key, value] of Object.entries(key_type)) {
 			if (value == 3)
 				params.delete(key);
 		}
@@ -407,7 +406,7 @@ function validate_params(params, extra_monster) {
 		check_value(params, "sum", 0, 100000);
 	}
 	else {
-		for (const [key, value] of Object.entries(form_keys)) {
+		for (const [key, value] of Object.entries(key_type)) {
 			if (value >= 2)
 				params.delete(key);
 		}
@@ -429,7 +428,7 @@ function server_validate1(params) {
 	}
 	else {
 		validate_params(params, true);
-		for (const key of Object.keys(form_keys)) {
+		for (const key of Object.keys(key_type)) {
 			for (const value of params.getAll(key)) {
 				valid_params.append(key, value);
 			}
@@ -992,7 +991,7 @@ function server_analyze2(params) {
 	const valid_params = new URLSearchParams();
 	valid_params.set("begin", card_begin.id);
 	valid_params.set("end", card_end.id);
-	for (const key of Object.keys(form_keys)) {
+	for (const key of Object.keys(key_type)) {
 		for (const value of params.getAll(key)) {
 			valid_params.append(key, value);
 		}
