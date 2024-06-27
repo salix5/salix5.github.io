@@ -211,32 +211,17 @@ function edit_card(card) {
 	}
 }
 
-/**
- * @param {Card[]} result 
- * @param {string} pack_name 
- * @returns 
- */
-function create_index(result, pack_name) {
-	if (!pack_list[pack_name])
-		return;
-	const index_table = new Map();
-	const pack = pack_list[pack_name];
-	for (let i = 0; i < pack.length; ++i) {
-		if (pack[i] > 1)
-			index_table.set(pack[i], i);
+function create_index(card, index_table) {
+	// pack index
+	if (card.id <= 99999999) {
+		if (index_table && index_table[card.id])
+			card.pack_index = index_table[card.id];
 	}
-	for (const card of result) {
-		// pack index
-		if (card.id <= 99999999) {
-			if (index_table.has(card.id))
-				card.pack_index = index_table.get(card.id);
-		}
-		else {
-			if (card.id % 1000 > 200 && unknown_index[card.id])
-				card.pack_index = unknown_index[card.id];
-			else
-				card.pack_index = card.id % 1000;
-		}
+	else {
+		if (card.id % 1000 > 200 && unknown_index[card.id])
+			card.pack_index = unknown_index[card.id];
+		else
+			card.pack_index = card.id % 1000;
 	}
 }
 
@@ -252,11 +237,19 @@ function query(qstr, arg) {
 		const result = query_db(db, qstr, arg);
 		ret.push(...result);
 	}
+	let index_table = null;
+	if (arg.pack && pack_list[arg.pack]) {
+		index_table = Object.create(null);
+		const pack = pack_list[arg.pack];
+		for (let i = 0; i < pack.length; ++i) {
+			if (pack[i] && pack[i] !== 1)
+				index_table[pack[i]] = i;
+		}
+	}
 	for (const card of ret) {
 		edit_card(card);
+		create_index(card, index_table);
 	}
-	if (arg.pack)
-		create_index(ret, arg.pack);
 	return ret;
 }
 
