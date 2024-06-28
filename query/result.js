@@ -65,7 +65,7 @@ function pre_id_to_pack(id) {
 
 function print_pre_id(id) {
 	const index = unknown_index.has(id) ? unknown_index.get(id) : id % 1000;
-	return print_pack_number(pre_id_to_pack(card.id), index);
+	return print_pack_number(pre_id_to_pack(id), index);
 }
 
 /**
