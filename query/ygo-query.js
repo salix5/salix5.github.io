@@ -214,8 +214,8 @@ function edit_card(card) {
 function create_index(card, index_table) {
 	// pack index
 	if (card.id <= 99999999) {
-		if (index_table && index_table[card.id])
-			card.pack_index = index_table[card.id];
+		if (index_table.has(card.id))
+			card.pack_index = index_table.get(card.id);
 	}
 	else {
 		if (card.id % 1000 > 200 && unknown_index[card.id])
@@ -237,13 +237,12 @@ function query(qstr, arg) {
 		const result = query_db(db, qstr, arg);
 		ret.push(...result);
 	}
-	let index_table = null;
+	const index_table = new Map();
 	if (arg.pack && pack_list[arg.pack]) {
-		index_table = Object.create(null);
 		const pack = pack_list[arg.pack];
 		for (let i = 0; i < pack.length; ++i) {
-			if (pack[i] && pack[i] !== 1)
-				index_table[pack[i]] = i;
+			if (pack[i] > 1)
+				index_table.set(pack[i], i);
 		}
 	}
 	for (const card of ret) {
