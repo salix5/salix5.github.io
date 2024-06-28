@@ -55,6 +55,19 @@ function print_pack_number(pack, index) {
 	return `${str_pack}-${str_ot}${str_index}`;
 }
 
+function pre_id_to_pack(id) {
+	for (const [key, value] of Object.entries(pre_release)) {
+		if (id >= value && id <= value + 998)
+			return key;
+	}
+	return 'XXXX';
+}
+
+function print_pre_id(id) {
+	const index = unknown_index.has(id) ? unknown_index.get(id) : id % 1000;
+	return print_pack_number(pre_id_to_pack(card.id), index);
+}
+
 /**
  * Print the card id.
  * @param {Card} card 
@@ -72,7 +85,7 @@ function print_id(card, pack) {
 		link_text = print_pack_number(pack, card.pack_index);
 	}
 	else if (card.id > 99999999) {
-		link_text = print_pack_number(pre_id_to_pack(card.id), card.pack_index);
+		link_text = print_pre_id(card.id);
 	}
 	else {
 		link_text = str_id;
@@ -161,14 +174,6 @@ function compare_card() {
 function imgError(event) {
 	this.onerror = null;
 	this.src = "icon/unknown.jpg";
-}
-
-function pre_id_to_pack(id) {
-	for (const [key, value] of Object.entries(pre_release)) {
-		if (id >= value && id <= value + 998)
-			return key;
-	}
-	return 'XXXX';
 }
 
 function is_real(id, type) {
