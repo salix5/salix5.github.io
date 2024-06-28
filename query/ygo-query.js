@@ -211,17 +211,22 @@ function edit_card(card) {
 	}
 }
 
-function create_index(card, index_table) {
-	// pack index
-	if (card.id <= 99999999) {
-		if (index_table.has(card.id))
-			card.pack_index = index_table.get(card.id);
+/**
+ * @param {Card[]} result 
+ * @param {string} pack_name 
+ * @returns 
+ */
+function create_index(result, pack_name) {
+	if (!pack_list[pack_name])
+		return;
+	const index_table = new Map();
+	const pack = pack_list[pack_name];
+	for (let i = 0; i < pack.length; ++i) {
+		if (pack[i] > 1)
+			index_table.set(pack[i], i);
 	}
-	else {
-		if (card.id % 1000 > 200 && unknown_index[card.id])
-			card.pack_index = unknown_index[card.id];
-		else
-			card.pack_index = card.id % 1000;
+	for (const card of result) {
+		card.pack_index = index_table.get(card.id);
 	}
 }
 
@@ -237,18 +242,11 @@ function query(qstr, arg) {
 		const result = query_db(db, qstr, arg);
 		ret.push(...result);
 	}
-	const index_table = new Map();
-	if (arg.pack && pack_list[arg.pack]) {
-		const pack = pack_list[arg.pack];
-		for (let i = 0; i < pack.length; ++i) {
-			if (pack[i] > 1)
-				index_table.set(pack[i], i);
-		}
-	}
 	for (const card of ret) {
 		edit_card(card);
-		create_index(card, index_table);
 	}
+	if (arg.pack && pack_list[arg.pack])
+		create_index(ret, arg.pack);
 	return ret;
 }
 
