@@ -7,6 +7,7 @@ const pre_release = {
 	ROTA: 101206000,
 	DBCB: 100223000,
 	SD47: 100224000,
+	YO09: 100225000,
 
 	// TCG
 	_INFO: 101205000,
@@ -20,6 +21,7 @@ const wiki_link = {
 	ROTA: "https://yugioh-wiki.net/index.php?RAGE%20OF%20THE%20ABYSS",
 	DBCB: "https://yugioh-wiki.net/index.php?%A5%C7%A5%C3%A5%AD%A5%D3%A5%EB%A5%C9%A5%D1%A5%C3%A5%AF%20%A5%AF%A5%ED%A5%B9%A5%AA%A1%BC%A5%D0%A1%BC%A1%A6%A5%D6%A5%EC%A5%A4%A5%AB%A1%BC%A5%BA",
 	SD47: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%C0%C4%A4%AD%B4%E3%A4%CE%B8%F7%CE%D7%A1%DD",
+	YO09: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 
 	// TCG
 	_INFO: "https://yugipedia.com/wiki/The_Infinite_Forbidden",
