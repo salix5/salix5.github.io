@@ -153,3 +153,30 @@ button.submit {
 .transparent {
 	opacity: 0;
 }
+
+input[type="checkbox"] {
+	display: none;
+}
+
+input:checked+.button {
+	background: #5e7380;
+	color: #fff;
+}
+
+.button {
+	display: inline-block;
+	margin: 0 5px 5px 0;
+	padding: 5px 8px;
+	background: #ddd;
+	color: #333;
+	cursor: pointer;
+}
+
+.button:hover {
+	background: #bbb;
+	color: #fff;
+}
+
+#checkbox .round {
+	border-radius: 5px;
+}
