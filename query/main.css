@@ -166,10 +166,8 @@ input:checked+.button {
 .button {
 	display: inline-block;
 	margin: 0 5px 5px 0;
-	padding: 5px 8px;
+	padding: 5px 10px;
 	background: #ddd;
-	color: #333;
-	cursor: pointer;
 }
 
 .button:hover {
@@ -177,6 +175,11 @@ input:checked+.button {
 	color: #fff;
 }
 
-#checkbox .round {
-	border-radius: 5px;
+#row_marker .marker {
+	margin: 0 3px 3px 0;
+	padding: 2px 5px;
+}
+
+#row_marker input:checked+.marker {
+	background: Red
 }

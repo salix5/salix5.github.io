@@ -144,13 +144,13 @@
 		<td><button id="attr_reset" class="clear" type="button">✗</button></td>
 	</tr>
 	<tr class="monster_property"><td colspan="2">
-	<label><input type="checkbox" id="attr1" name="attr" value="1"><span class="button">地</span></label>
-	<label><input type="checkbox" id="attr2" name="attr" value="2"><span class="button">水</span></label>
-	<label><input type="checkbox" id="attr3" name="attr" value="3"><span class="button">炎</span></label>
-	<label><input type="checkbox" id="attr4" name="attr" value="4"><span class="button">風</span></label>
-	<label><input type="checkbox" id="attr5" name="attr" value="5"><span class="button">光</span></label>
-	<label><input type="checkbox" id="attr6" name="attr" value="6"><span class="button">闇</span></label>
-	<label><input type="checkbox" id="attr7" name="attr" value="7"><span class="button">神</span></label>
+		<label><input type="checkbox" id="attr1" name="attr" value="1"><span class="button">地</span></label>
+		<label><input type="checkbox" id="attr2" name="attr" value="2"><span class="button">水</span></label>
+		<label><input type="checkbox" id="attr3" name="attr" value="3"><span class="button">炎</span></label>
+		<label><input type="checkbox" id="attr4" name="attr" value="4"><span class="button">風</span></label>
+		<label><input type="checkbox" id="attr5" name="attr" value="5"><span class="button">光</span></label>
+		<label><input type="checkbox" id="attr6" name="attr" value="6"><span class="button">闇</span></label>
+		<label><input type="checkbox" id="attr7" name="attr" value="7"><span class="button">神</span></label>
 	</td>
 	</tr>
 	
@@ -164,7 +164,7 @@
 			<label><input type="checkbox" id="race2" name="race" value="2"><span class="button">炎&emsp;</span></label>
 			<label><input type="checkbox" id="race3" name="race" value="3"><span class="button">雷&emsp;</span></label>
 			<label><input type="checkbox" id="race4" name="race" value="4"><span class="button">龍&emsp;</span></label>
-			<label><input type="checkbox" id="race5" name="race" value="5"><span class="button">獸&emsp;</span></label>
+			<label><input type="checkbox" id="race5" name="race" value="5"><span class="button">獸&emsp;</span></label><span class="invisible">&emsp;&emsp;</span>
 		</div>
 		<div>
 			<label><input type="checkbox" id="race6" name="race" value="6"><span class="button">魚&emsp;</span></label>
@@ -181,7 +181,7 @@
 			<label><input type="checkbox" id="race15" name="race" value="15"><span class="button">海龍</span></label>
 		</div>
 		<div>
-		<label><input type="checkbox" id="race16" name="race" value="16"><span class="button">岩石</span></label>
+			<label><input type="checkbox" id="race16" name="race" value="16"><span class="button">岩石</span></label>
 			<label><input type="checkbox" id="race17" name="race" value="17"><span class="button">機械</span></label>
 			<label><input type="checkbox" id="race18" name="race" value="18"><span class="button">超能</span></label>
 			<label><input type="checkbox" id="race19" name="race" value="19"><span class="button">幻龍</span></label>
@@ -215,36 +215,46 @@
 	</tr>
 	<tr class="row_subtype" hidden><td colspan="2">
 	<div id="subtype_m" hidden>
-		<input type="checkbox" id="mtype1" name="mtype" value="1"><label for="mtype1" class="F">融合&nbsp;</label>
-		<input type="checkbox" id="mtype2" name="mtype" value="2"><label for="mtype2" class="S">同步&nbsp;</label>
-		<input type="checkbox" id="mtype3" name="mtype" value="3"><label for="mtype3" class="X">超量&nbsp;</label>
-		<input type="checkbox" id="mtype4" name="mtype" value="4"><label for="mtype4" class="L">連結&nbsp;</label>
-		<input type="checkbox" id="mtype5" name="mtype" value="5"><label for="mtype5">通常&nbsp;</label><br>
-		<input type="checkbox" id="mtype6" name="mtype" value="6"><label for="mtype6">效果&nbsp;</label>
-		<input type="checkbox" id="mtype7" name="mtype" value="7"><label for="mtype7">儀式&nbsp;</label>
-		<input type="checkbox" id="mtype8" name="mtype" value="8"><label for="mtype8">靈擺&nbsp;</label>
-		<input type="checkbox" id="mtype9" name="mtype" value="9"><label for="mtype9">卡通&nbsp;</label>
-		<input type="checkbox" id="mtype10" name="mtype" value="10"><label for="mtype10">靈魂&nbsp;</label><br>
-		<input type="checkbox" id="mtype11" name="mtype" value="11"><label for="mtype11">聯合&nbsp;</label>
-		<input type="checkbox" id="mtype12" name="mtype" value="12"><label for="mtype12">二重&nbsp;</label>
-		<input type="checkbox" id="mtype13" name="mtype" value="13"><label for="mtype13">協調&nbsp;</label>
-		<input type="checkbox" id="mtype14" name="mtype" value="14"><label for="mtype14">反轉&nbsp;</label>
-		<input type="checkbox" id="mtype15" name="mtype" value="15"><label for="mtype15">特殊召喚</label>
+		<div>
+			<label><input type="checkbox" id="mtype1" name="mtype" value="1"><span class="button">融合</span></label>
+			<label><input type="checkbox" id="mtype2" name="mtype" value="2"><span class="button">同步</span></label>
+			<label><input type="checkbox" id="mtype3" name="mtype" value="3"><span class="button">超量</span></label>
+			<label><input type="checkbox" id="mtype4" name="mtype" value="4"><span class="button">連結</span></label>
+			<label><input type="checkbox" id="mtype5" name="mtype" value="5"><span class="button">通常</span></label>
+		</div>
+		<div>
+			<label><input type="checkbox" id="mtype6" name="mtype" value="6"><span class="button">效果</span></label>
+			<label><input type="checkbox" id="mtype7" name="mtype" value="7"><span class="button">儀式</span></label>
+			<label><input type="checkbox" id="mtype8" name="mtype" value="8"><span class="button">靈擺</span></label>
+			<label><input type="checkbox" id="mtype9" name="mtype" value="9"><span class="button">卡通</span></label>
+			<label><input type="checkbox" id="mtype10" name="mtype" value="10"><span class="button">靈魂</span></label>
+		</div>
+		<div>
+			<label><input type="checkbox" id="mtype11" name="mtype" value="11"><span class="button">聯合</span></label>
+			<label><input type="checkbox" id="mtype12" name="mtype" value="12"><span class="button">二重</span></label>
+			<label><input type="checkbox" id="mtype13" name="mtype" value="13"><span class="button">協調</span></label>
+			<label><input type="checkbox" id="mtype14" name="mtype" value="14"><span class="button">反轉</span></label>
+			<label><input type="checkbox" id="mtype15" name="mtype" value="15"><span class="button">特殊召喚</span></label>
+		</div>
 	</div>
 	<div id="subtype_s" hidden>
-		<input type="checkbox" id="stype1" name="stype" value="1"><label for="stype1">通常&nbsp;</label>
-		<input type="checkbox" id="stype2" name="stype" value="2"><label for="stype2">速攻&nbsp;</label>
-		<input type="checkbox" id="stype3" name="stype" value="3"><label for="stype3">永續&nbsp;</label>
-		<input type="checkbox" id="stype4" name="stype" value="4"><label for="stype4">裝備&nbsp;</label>
-		<input type="checkbox" id="stype5" name="stype" value="5"><label for="stype5">儀式</label><span class="invisible">&emsp;&emsp;</span><br>
-		<input type="checkbox" id="stype6" name="stype" value="6"><label for="stype6">場地&nbsp;</label>
+		<div>
+			<label><input type="checkbox" id="stype1" name="stype" value="1"><span class="button">通常</span></label>
+			<label><input type="checkbox" id="stype2" name="stype" value="2"><span class="button">速攻</span></label>
+			<label><input type="checkbox" id="stype3" name="stype" value="3"><span class="button">永續</span></label>
+			<label><input type="checkbox" id="stype4" name="stype" value="4"><span class="button">裝備</span></label>
+			<label><input type="checkbox" id="stype5" name="stype" value="5"><span class="button">儀式</span></label><span class="invisible">&emsp;&emsp;</span>
+		</div>
+		<div>
+			<label><input type="checkbox" id="stype6" name="stype" value="6"><span class="button">場地</span></label>
+		</div>
 	</div>
 	<div id="subtype_t" hidden>
-		<input type="checkbox" id="ttype1" name="ttype" value="1"><label for="ttype1">通常&nbsp;</label>
-		<input type="checkbox" id="ttype2" name="ttype" value="2"><label for="ttype2">永續&nbsp;</label>
-		<input type="checkbox" id="ttype3" name="ttype" value="3"><label for="ttype3">反擊&nbsp;</label>
-		<input type="checkbox" id="ttype_ph1" class="invisible" disabled><span class="invisible">&emsp;&emsp;&nbsp;</span>
-		<input type="checkbox" id="ttype_ph2" class="invisible" disabled><span class="invisible">&emsp;&emsp;&emsp;&emsp;</span>
+		<label><input type="checkbox" id="ttype1" name="ttype" value="1"><span class="button">通常</span></label>
+		<label><input type="checkbox" id="ttype2" name="ttype" value="2"><span class="button">永續</span></label>
+		<label><input type="checkbox" id="ttype3" name="ttype" value="3"><span class="button">反擊</span></label>
+		<span class="button invisible">&emsp;&emsp;</span>
+		<span class="button invisible">&emsp;&emsp;&emsp;&emsp;</span>
 	</div>
 	</td>
 	</tr>
@@ -254,21 +264,27 @@
 		<td><button id="exclude_reset" class="clear" type="button">✗</button></td>
 	</tr>
 	<tr class="row_exclude" hidden><td colspan="2">
-		<input type="checkbox" id="exclude_type1" name="exclude" value="1"><label for="exclude_type1" class="F">融合&nbsp;</label>
-		<input type="checkbox" id="exclude_type2" name="exclude" value="2"><label for="exclude_type2" class="S">同步&nbsp;</label>
-		<input type="checkbox" id="exclude_type3" name="exclude" value="3"><label for="exclude_type3" class="X">超量&nbsp;</label>
-		<input type="checkbox" id="exclude_type4" name="exclude" value="4"><label for="exclude_type4" class="L">連結&nbsp;</label>
-		<input type="checkbox" id="exclude_type5" name="exclude" value="5"><label for="exclude_type5">通常&nbsp;</label><br>
-		<input type="checkbox" id="exclude_type6" name="exclude" value="6"><label for="exclude_type6">效果&nbsp;</label>
-		<input type="checkbox" id="exclude_type7" name="exclude" value="7"><label for="exclude_type7">儀式&nbsp;</label>
-		<input type="checkbox" id="exclude_type8" name="exclude" value="8"><label for="exclude_type8">靈擺&nbsp;</label>
-		<input type="checkbox" id="exclude_type9" name="exclude" value="9"><label for="exclude_type9">卡通&nbsp;</label>
-		<input type="checkbox" id="exclude_type10" name="exclude" value="10"><label for="exclude_type10">靈魂&nbsp;</label><br>
-		<input type="checkbox" id="exclude_type11" name="exclude" value="11"><label for="exclude_type11">聯合&nbsp;</label>
-		<input type="checkbox" id="exclude_type12" name="exclude" value="12"><label for="exclude_type12">二重&nbsp;</label>
-		<input type="checkbox" id="exclude_type13" name="exclude" value="13"><label for="exclude_type13">協調&nbsp;</label>
-		<input type="checkbox" id="exclude_type14" name="exclude" value="14"><label for="exclude_type14">反轉&nbsp;</label>
-		<input type="checkbox" id="exclude_type15" name="exclude" value="15"><label for="exclude_type15">特殊召喚</label>
+		<div>
+			<label><input type="checkbox" id="exclude_type1" name="exclude" value="1"><span class="button">融合</span></label>
+			<label><input type="checkbox" id="exclude_type2" name="exclude" value="2"><span class="button">同步</span></label>
+			<label><input type="checkbox" id="exclude_type3" name="exclude" value="3"><span class="button">超量</span></label>
+			<label><input type="checkbox" id="exclude_type4" name="exclude" value="4"><span class="button">連結</span></label>
+			<label><input type="checkbox" id="exclude_type5" name="exclude" value="5"><span class="button">通常</span></label>
+		</div>
+		<div>
+			<label><input type="checkbox" id="exclude_type6" name="exclude" value="6"><span class="button">效果</span></label>
+			<label><input type="checkbox" id="exclude_type7" name="exclude" value="7"><span class="button">儀式</span></label>
+			<label><input type="checkbox" id="exclude_type8" name="exclude" value="8"><span class="button">靈擺</span></label>
+			<label><input type="checkbox" id="exclude_type9" name="exclude" value="9"><span class="button">卡通</span></label>
+			<label><input type="checkbox" id="exclude_type10" name="exclude" value="10"><span class="button">靈魂</span></label>
+		</div>
+		<div>
+			<label><input type="checkbox" id="exclude_type11" name="exclude" value="11"><span class="button">聯合</span></label>
+			<label><input type="checkbox" id="exclude_type12" name="exclude" value="12"><span class="button">二重</span></label>
+			<label><input type="checkbox" id="exclude_type13" name="exclude" value="13"><span class="button">協調</span></label>
+			<label><input type="checkbox" id="exclude_type14" name="exclude" value="14"><span class="button">反轉</span></label>
+			<label><input type="checkbox" id="exclude_type15" name="exclude" value="15"><span class="button">特殊召喚</span></label>
+		</div>
 	</td>
 	</tr>
 	
@@ -288,20 +304,24 @@
 		<td><button id="scale_reset" class="clear" type="button">✗</button></td></td>
 	</tr>
 	<tr class="monster_property"><td colspan="2" id="checkbox">
-		<label><input type="checkbox" id="scale0" name="scale" value="0"><span class="button">0&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale1" name="scale" value="1"><span class="button">1&nbsp;&nbsp;</label>
-		<label><input type="checkbox" id="scale2" name="scale" value="2"><span class="button">2&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale3" name="scale" value="3"><span class="button">3&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale4" name="scale" value="4"><span class="button">4&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale5" name="scale" value="5"><span class="button">5&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale6" name="scale" value="6"><span class="button">6&nbsp;&nbsp;</span></label><br>
-		<label><input type="checkbox" id="scale7" name="scale" value="7"><span class="button">7&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale8" name="scale" value="8"><span class="button">8&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale9" name="scale" value="9"><span class="button">9&nbsp;&nbsp;</span></label>
-		<label><input type="checkbox" id="scale10" name="scale" value="10"><span class="button">10</span></label>
-		<label><input type="checkbox" id="scale11" name="scale" value="11"><span class="button">11</span></label>
-		<label><input type="checkbox" id="scale12" name="scale" value="12"><span class="button">12</span></label>
-		<label><input type="checkbox" id="scale13" name="scale" value="13"><span class="button">13</span></label>
+		<div>
+			<label><input type="checkbox" id="scale0" name="scale" value="0"><span class="button">0&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale1" name="scale" value="1"><span class="button">1&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale2" name="scale" value="2"><span class="button">2&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale3" name="scale" value="3"><span class="button">3&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale4" name="scale" value="4"><span class="button">4&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale5" name="scale" value="5"><span class="button">5&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale6" name="scale" value="6"><span class="button">6&nbsp;&nbsp;</span></label>
+		</div>
+		<div>
+			<label><input type="checkbox" id="scale7" name="scale" value="7"><span class="button">7&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale8" name="scale" value="8"><span class="button">8&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale9" name="scale" value="9"><span class="button">9&nbsp;&nbsp;</span></label>
+			<label><input type="checkbox" id="scale10" name="scale" value="10"><span class="button">10</span></label>
+			<label><input type="checkbox" id="scale11" name="scale" value="11"><span class="button">11</span></label>
+			<label><input type="checkbox" id="scale12" name="scale" value="12"><span class="button">12</span></label>
+			<label><input type="checkbox" id="scale13" name="scale" value="13"><span class="button">13</span></label>
+		</div>
 	</td>
 	</tr>
 	
@@ -309,14 +329,20 @@
 		<td>連結</td>
 		<td><button id="marker_reset" class="clear" type="button">✗</button></td>
 	</tr>
-	<tr class="monster_property"><td colspan="2">
-	<input type="checkbox" id="marker1" name="marker" value="1"> <input type="checkbox" id="marker2" name="marker" value="2"> <input type="checkbox" id="marker3" name="marker"  value="3">
-		<select id="select_marker_op" name="marker_operator">
-			<option value="0">OR</option>
-			<option value="1">AND</option>
-		</select><br>
-		<input type="checkbox" id="marker4" name="marker" value="4"> <input type="checkbox" id="marker_ph" class="invisible" disabled> <input type="checkbox" id="marker5" name="marker" value="5"><br>
-		<input type="checkbox" id="marker6" name="marker" value="6"> <input type="checkbox" id="marker7" name="marker" value="7"> <input type="checkbox" id="marker8" name="marker" value="8">
+	<tr class="monster_property" id="row_marker"><td colspan="2">
+		<div>
+			<label><input type="checkbox" id="marker1" name="marker" value="1"><span class="button marker">&emsp;</span></label><label><input type="checkbox" id="marker2" name="marker" value="2"><span class="button marker">&emsp;</span></label><label><input type="checkbox" id="marker3" name="marker" value="3"><span class="button marker">&emsp;</span></label>
+			<select id="select_marker_op" name="marker_operator">
+				<option value="0">OR</option>
+				<option value="1">AND</option>
+			</select>
+		</div>
+		<div>
+			<label><input type="checkbox" id="marker4" name="marker" value="4"><span class="button marker">&emsp;</span></label><span class="marker invisible">&emsp;</span><label><input type="checkbox" id="marker5" name="marker" value="5"><span class="button marker">&emsp;</span></label>
+		</div>
+		<div>
+			<label><input type="checkbox" id="marker6" name="marker" value="6"><span class="button marker">&emsp;</span></label><label><input type="checkbox" id="marker7" name="marker" value="7"><span class="button marker">&emsp;</span></label><label><input type="checkbox" id="marker8" name="marker" value="8"><span class="button marker">&emsp;</span></label>
+		</div>
 	</td>
 	</tr>
 	
