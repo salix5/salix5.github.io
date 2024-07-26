@@ -1,7 +1,16 @@
 "use strict";
 const last_pack = "AC04#8";
-const unknown_index = new Map();
-unknown_index.set(100222201, 11);
+const unknown_index = {
+	101206201: 1,
+	101206202: 2,
+	101206203: 3,
+	101206204: 41,
+	101206205: 42,
+	101206206: 48,
+	101206207: 49,
+	101206208: 68,
+	101206209: 69,
+};
 
 function object_to_map(obj) {
 	const map = new Map();
