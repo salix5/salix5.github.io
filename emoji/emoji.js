@@ -32,7 +32,7 @@ function create_url(e) {
 	else if (result) {
 		const id = result[2];
 		const ext = (result[1] === 'a') ? 'gif' : 'webp';
-		const size = 64;
+		const size = 48;
 		const url = `https://cdn.discordapp.com/emojis/${id}.${ext}?size=${size}&quality=lossless`;
 		const link1 = document.createElement('a');
 		link1.href = url;
