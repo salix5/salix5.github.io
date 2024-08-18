@@ -10,6 +10,7 @@ const pre_release = {
 	SUDA: 101207000,
 
 	// TCG
+	YCSW: 100226000,
 };
 
 const wiki_link = {
@@ -23,4 +24,5 @@ const wiki_link = {
 	SUDA: "https://yugioh-wiki.net/index.php?SUPREME%20DARKNESS",
 
 	// TCG
+	YCSW: "https://yugipedia.com/wiki/Anotherverse_Solaria",
 };
