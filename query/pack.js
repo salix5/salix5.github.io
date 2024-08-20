@@ -11,6 +11,7 @@ const pre_release = {
 
 	// TCG
 	YCSW: 100226000,
+	_ROTA: 101206000,
 };
 
 const wiki_link = {
@@ -25,4 +26,5 @@ const wiki_link = {
 
 	// TCG
 	YCSW: "https://yugipedia.com/wiki/Anotherverse_Solaria",
+	_ROTA: "https://yugipedia.com/wiki/Rage_of_the_Abyss",
 };
