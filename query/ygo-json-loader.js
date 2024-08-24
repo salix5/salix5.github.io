@@ -1,15 +1,6 @@
 "use strict";
-const last_pack = "ROTA#6";
+const last_pack = "DBCB#1";
 const unknown_index = {
-	101206201: 1,
-	101206202: 2,
-	101206203: 3,
-	101206204: 41,
-	101206205: 42,
-	101206206: 48,
-	101206207: 49,
-	101206208: 68,
-	101206209: 69,
 };
 
 function object_to_map(obj) {
