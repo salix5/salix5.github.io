@@ -97,7 +97,6 @@ TCG特有卡：INFO-EN
 24/4/27  
 新增卡包：INFO (1205)  
 復刻更新：INFO (1205)  
-TCG特有卡：LEDE-EN
 
 24/4/10  
 タキオン：時空  
@@ -113,9 +112,6 @@ TCG特有卡：LEDE-EN
 
 24/2/23  
 復刻更新：QCCU (side:UNITY)
-
-24/2/15  
-TCG特有卡：PHNI-EN
 
 24/2/3  
 新增卡包：TDPR  
