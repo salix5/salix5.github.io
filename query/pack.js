@@ -7,6 +7,7 @@ const pre_release = {
 	TW02: 100227000,
 	SUDA: 101207000,
 	"24TP": 100230000,
+	QCTB: 100229000,
 
 	// TCG
 	_ROTA: 101206000,
@@ -20,6 +21,7 @@ const wiki_link = {
 	TW02: "https://yugioh-wiki.net/index.php?TERMINAL%20WORLD%202",
 	SUDA: "https://yugioh-wiki.net/index.php?SUPREME%20DARKNESS",
 	"24TP": "https://yugioh-wiki.net/index.php?%A5%C8%A1%BC%A5%CA%A5%E1%A5%F3%A5%C8%A5%D1%A5%C3%A5%AF2024%20Vol.4",
+	QCTB: "https://yugioh-wiki.net/index.php?QUARTER%20CENTURY%20TRINITY%20BOX",
 
 	// TCG
 	_ROTA: "https://yugipedia.com/wiki/Rage_of_the_Abyss",
