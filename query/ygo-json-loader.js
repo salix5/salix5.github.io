@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "SUDA#2";
+const last_pack = "SUDA#3";
 const unknown_index = {
 };
 
@@ -51,10 +51,12 @@ const complete_name_table = Object.create(null);
 
 const setname = Object.create(null);
 const ltable_md = Object.create(null);
+const md_card_list = Object.create(null);
 fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => { md_table['ja'] = object_to_map(data) }));
 fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => { md_table['en'] = object_to_map(data) }));
 fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
 fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
+fetch_list.push(fetch(`text/CardList.json`).then(response => response.json()).then(data => Object.assign(md_card_list, data)));
 
 // local
 const cid_object = Object.create(null);
@@ -63,7 +65,6 @@ const en_object = Object.create(null);
 const pack_list = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
-const md_card_list = Object.create(null);
 const from_local = false;
 if (localStorage.getItem("last_pack") === last_pack) {
 	try {
@@ -73,7 +74,6 @@ if (localStorage.getItem("last_pack") === last_pack) {
 		Object.assign(pack_list, JSON.parse(localStorage.getItem("pack_list")));
 		Object.assign(ltable_ocg, JSON.parse(localStorage.getItem("ltable_ocg")));
 		Object.assign(ltable_tcg, JSON.parse(localStorage.getItem("ltable_tcg")));
-		Object.assign(md_card_list, JSON.parse(localStorage.getItem("md_card_list")));
 		from_local = true;
 	}
 	catch (ex) {
@@ -88,7 +88,6 @@ if (!from_local) {
 	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
 	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
 	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
-	fetch_list.push(fetch(`text/CardList.json`).then(response => response.json()).then(data => Object.assign(md_card_list, data)));
 }
 
 let id_to_cid = null;
@@ -115,7 +114,6 @@ const db_ready = Promise.all(fetch_list)
 				localStorage.setItem("pack_list", JSON.stringify(pack_list));
 				localStorage.setItem("ltable_ocg", JSON.stringify(ltable_ocg));
 				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));
-				localStorage.setItem("md_card_list", JSON.stringify(md_card_list));
 				localStorage.setItem("last_pack", last_pack);
 			} catch (ex) {
 			}
