@@ -5,8 +5,8 @@ const pre_release = {
 
 	YO09: 100225000,
 	TW02: 100227000,
-	SUDA: 101207000,
 	QCTB: 100229000,
+	ALIN: 101208000,
 
 	// TCG
 };
@@ -17,8 +17,8 @@ const wiki_link = {
 
 	YO09: "https://yugioh-wiki.net/index.php?%BD%F1%C0%D2%C9%D5%C2%B0%A5%AB%A1%BC%A5%C9#YO",
 	TW02: "https://yugioh-wiki.net/index.php?TERMINAL%20WORLD%202",
-	SUDA: "https://yugioh-wiki.net/index.php?SUPREME%20DARKNESS",
 	QCTB: "https://yugioh-wiki.net/index.php?QUARTER%20CENTURY%20TRINITY%20BOX",
+	ALIN: "https://yugioh-wiki.net/index.php?ALLIANCE%20INSIGHT",
 
 	// TCG
 };
