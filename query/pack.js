@@ -7,6 +7,8 @@ const pre_release = {
 	TW02: 100227000,
 	QCTB: 100229000,
 	ALIN: 101208000,
+	"25PR": 100232000,
+	"25PP": 100233000,
 
 	// TCG
 };
@@ -19,6 +21,8 @@ const wiki_link = {
 	TW02: "https://yugioh-wiki.net/index.php?TERMINAL%20WORLD%202",
 	QCTB: "https://yugioh-wiki.net/index.php?QUARTER%20CENTURY%20TRINITY%20BOX",
 	ALIN: "https://yugioh-wiki.net/index.php?ALLIANCE%20INSIGHT",
+	"25PR": "https://yugioh-wiki.net/index.php?%A5%D7%A5%ED%A5%E2%A5%AB%A1%BC%A5%C9#JF25",
+	"25PP": "https://yugioh-wiki.net/index.php?PREMIUM%20PACK#PP2025",
 
 	// TCG
 };
