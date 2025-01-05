@@ -10,12 +10,12 @@ function object_to_map(obj) {
 	return map;
 }
 
+const domain = "https://salix5.github.io/cdb";
 let SQL = null;
 const db_list = [];
-const domain = "https://salix5.github.io/cdb";
 const fetch_list = [];
 // sqlite
-const config = { locateFile: filename => `./dist/${filename}` };
+const promise_sql = initSqlJs({ locateFile: filename => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/${filename}` });
 const promise_db = fetch(`${domain}/cards.zip`)
 	.then(response => response.blob())
 	.then(JSZip.loadAsync)
