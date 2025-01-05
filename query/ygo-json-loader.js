@@ -23,7 +23,7 @@ const promise_db = fetch(`${domain}/cards.zip`)
 const promise_db2 = fetch(`${domain}/expansions/pre-release.cdb`)
 	.then(response => response.arrayBuffer())
 	.then(buf => new Uint8Array(buf));
-fetch_list.push(Promise.all([initSqlJs(config), promise_db, promise_db2])
+fetch_list.push(Promise.all([promise_sql, promise_db, promise_db2])
 	.then(([sql, file1, file2]) => {
 		SQL = sql;
 		db_list.push(new SQL.Database(file1));
