@@ -299,7 +299,7 @@ function create_rows(card, pack) {
 	div_alias.appendChild(div_id);
 	if (card.cid && card.ot !== 2) {
 		const div_qa = document.createElement('div');
-		const faq_url = `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${card.cid}&request_locale=ja`;
+		const faq_url = print_qa_link(card.cid);
 		const link_faq = document.createElement('a');
 		link_faq.href = faq_url;
 		link_faq.target = '_blank';
