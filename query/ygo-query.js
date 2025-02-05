@@ -17,6 +17,7 @@ const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM
 const stmt_base = `${select_all}${base_filter}`;
 const stmt_default = `${select_all}${physical_filter}`;
 const stmt_no_alias = `${select_id}${base_filter} AND alias == 0`;
+const regexp_mention = `(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)`;
 
 /**
  * @typedef {Object} Card
