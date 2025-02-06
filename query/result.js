@@ -186,19 +186,11 @@ function is_real(id, type) {
 function text_link(name) {
 	if (name.endsWith('衍生物'))
 		return `<a href="/query/?desc=${name}" target="_blank">${name}</a>`;
+	if (replace_name[name] === null)
+		return name;
+	if (replace_name[name])
+		return `<a href="/query/?cname=${replace_name[name]}" target="_blank">${name}</a>`;
 	return `<a href="/query/?cname=${name}" target="_blank">${name}</a>`;
-}
-
-
-/**
- * @param {string} x 
- */
-function replace_text(x) {
-	if (replace_name[x] === null)
-		return x;
-	if (replace_name[x])
-		return text_link(replace_name[x]);
-	return text_link(x);
 }
 
 /**
@@ -405,7 +397,7 @@ function create_rows(card, pack) {
 	mapObj['"'] = '&quot;';
 	let desc = card.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x]);
 	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM))
-		desc = desc.replace(/(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g, replace_text);
+		desc = desc.replace(/(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g, text_link);
 	const div_desc = document.createElement('div');
 	div_desc.innerHTML = desc;
 	cell_effect.appendChild(div_desc);
