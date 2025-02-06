@@ -48,6 +48,7 @@ let cid_table = null
 const name_table = Object.create(null);
 const md_table = Object.create(null);
 const complete_name_table = Object.create(null);
+const replace_name = Object.create(null);
 
 const setname = Object.create(null);
 const ltable_md = Object.create(null);
@@ -57,6 +58,7 @@ fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).
 fetch_list.push(fetch(`text/setname.json`).then(response => response.json()).then(data => Object.assign(setname, data)));
 fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
 fetch_list.push(fetch(`text/CardList.json`).then(response => response.json()).then(data => Object.assign(md_card_list, data)));
+fetch_list.push(fetch(`text/replace_name.json`).then(response => response.json()).then(data => Object.assign(replace_name, data)));
 
 // local
 const cid_object = Object.create(null);
