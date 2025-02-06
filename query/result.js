@@ -186,9 +186,19 @@ function is_real(id, type) {
 function text_link(name) {
 	if (name.endsWith('衍生物'))
 		return `<a href="/query/?desc=${name}" target="_blank">${name}</a>`;
-	else if (name.length > 7)
-		return name;
 	return `<a href="/query/?cname=${name}" target="_blank">${name}</a>`;
+}
+
+
+/**
+ * @param {string} x 
+ */
+function replace_text(x) {
+	if (replace_name[x] === null)
+		return x;
+	if (replace_name[x])
+		return text_link(replace_name[x]);
+	return text_link(x);
 }
 
 /**
@@ -393,8 +403,9 @@ function create_rows(card, pack) {
 	mapObj['<'] = '&lt;';
 	mapObj['>'] = '&gt;';
 	mapObj['"'] = '&quot;';
-	const desc = card.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x])
-		.replace(/(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g, text_link);
+	let desc = card.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x]);
+	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM))
+		desc = desc.replace(/(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g, replace_text);
 	const div_desc = document.createElement('div');
 	div_desc.innerHTML = desc;
 	cell_effect.appendChild(div_desc);
