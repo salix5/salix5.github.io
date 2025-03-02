@@ -21,7 +21,7 @@ function twos_complement(x) {
  * @returns 
  */
 function print_bit(x) {
-	return (x >>> 0).toString(2).padStart(32, '0');
+	return (x >>> 0).toString(16).toUpperCase().padStart(8, '0');
 }
 
 /**
