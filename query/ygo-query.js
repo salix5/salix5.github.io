@@ -20,27 +20,52 @@ const stmt_no_alias = `${select_id}${base_filter} AND alias == 0`;
 const regexp_mention = `(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)`;
 
 /**
- * @typedef {Object} Card
+ * @typedef {Object} Record
  * @property {number} id
  * @property {number} ot
  * @property {number} alias
  * @property {number[]} setcode
- * @property {number} real_id - The id of real card
+ * @property {number} type
+ * @property {number} atk
+ * @property {number} def
+ * @property {number} level
+ * @property {number} race
+ * @property {number} attribute
+ * @property {number} scale
+ * 
+ * @property {string} name
+ * @property {string} desc
+ */
+
+/**
+ * @typedef {Object} CardText
+ * @property {string} desc
+ * @property {string} [db_desc]
+ */
+
+/**
+ * @typedef {Object} Card
+ * @property {number} id
+ * @property {number} ot
+ * @property {number} alias
+ * @property {number} artid
+ * @property {number[]} setcode
  * 
  * @property {number} type
  * @property {number} atk
  * @property {number} def
  * @property {number} level
- * @property {number} scale
  * @property {number} race
  * @property {number} attribute
+ * @property {number} [scale]
  * @property {number} color - Card color for sorting
  * 
  * @property {string} tw_name
- * @property {string} desc
+ * @property {CardText} text
  * 
  * @property {number} [cid]
  * @property {number} [md_rarity]
+ * @property {string} [ae_name]
  * @property {string} [en_name]
  * @property {string} [jp_name]
  * @property {string} [kr_name]
@@ -129,13 +154,6 @@ function query_db(db, qstr, arg) {
 					break;
 			}
 		}
-		// extra column
-		if ('id' in card && 'alias' in card) {
-			card.real_id = is_alternative(card) ? card.alias : card.id;
-		}
-		if ('real_id' in card && id_to_cid.has(card.real_id)) {
-			card.cid = id_to_cid.get(card.real_id);
-		}
 		ret.push(card);
 	}
 	stmt.free();
@@ -198,8 +216,23 @@ function edit_card(card) {
 	else {
 		card.color = -1;
 	}
+	if (is_alternative(card)) {
+		card.artid = card.id;
+		card.id = card.alias;
+		card.alias = 0;
+	}
+	else {
+		card.artid = 0;
+	}
+	if (id_to_cid.has(card.id))
+		card.cid = id_to_cid.get(card.id);
+	if (!(card.type & TYPE_PENDULUM))
+		delete card.scale;
 	card.tw_name = card.name;
 	delete card.name;
+	card.text = Object.create(null);
+	card.text.desc = card.desc;
+	delete card.desc;
 	if (card.cid) {
 		for (const [locale, prop] of Object.entries(official_name)) {
 			if (name_table[locale].has(card.cid))
@@ -281,7 +314,7 @@ function print_qa_link(cid) {
 
 /**
  * Check if the card is an alternative artwork card.
- * @param {Card} card
+ * @param {Record} card
  * @returns 
  */
 function is_alternative(card) {
