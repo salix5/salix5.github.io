@@ -490,7 +490,7 @@ function process_name(locale, name_string, arg) {
 				}
 			}
 			// zh, name
-			name_cmd += ` OR name LIKE $name ESCAPE '$' OR desc LIKE $kanji ESCAPE '$'`;
+			name_cmd += ` OR name LIKE $name ESCAPE '$' OR "desc" LIKE $kanji ESCAPE '$'`;
 			name_cmd += ` OR alias IN (${stmt_no_alias} AND name LIKE $name ESCAPE '$')`;
 			arg.$name = string_to_literal(name_string);
 			arg.$kanji = `%※${string_to_literal(name_string)}`;
@@ -657,7 +657,7 @@ function param_to_condition(params, arg) {
 		const mat = params.get("mat");
 		if (mat) {
 			text_mat.value = mat;
-			qstr += " AND (desc LIKE $mat1 ESCAPE '$' OR desc LIKE $mat2 ESCAPE '$' OR desc LIKE $mat3 ESCAPE '$')";
+			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
 			arg.$mat1 = `%${mat}+%`;
 			arg.$mat2 = `%+${mat}%`;
 			arg.$mat3 = `%${mat}×%`;
@@ -840,7 +840,7 @@ function param_to_condition(params, arg) {
 		}
 	}
 
-	const desc_str = "desc LIKE $desc ESCAPE '$'";
+	const desc_str = `"desc" LIKE $desc ESCAPE '$'`;
 	const locale = params.get("locale");
 	if (locale)
 		select_locale.value = locale;
