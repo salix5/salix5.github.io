@@ -92,7 +92,7 @@ if (!from_local) {
 	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
 }
 
-let id_to_cid = null;
+let id_to_cid = new Map();
 const db_ready = Promise.all(fetch_list)
 	.then(() => {
 		cid_table = object_to_map(cid_object);

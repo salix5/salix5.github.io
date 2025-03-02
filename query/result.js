@@ -326,19 +326,29 @@ function create_rows(card, pack) {
 	let lfstr_ocg = '';
 	let lfstr_tcg = '';
 	let lfstr_md = '';
-	if (ltable_ocg[card.real_id] !== undefined)
-		lfstr_ocg = `OCG：${print_limit(ltable_ocg[card.real_id])}`;
-	else
+	let show_lflist = false;
+	if (Number.isSafeInteger(ltable_ocg[card.id])) {
+		lfstr_ocg = `OCG：${print_limit(ltable_ocg[card.id])}`;
+		show_lflist = true;
+	}
+	else {
 		lfstr_ocg = `OCG：-`;
-	if (ltable_tcg[card.real_id] !== undefined)
-		lfstr_tcg = `TCG：${print_limit(ltable_tcg[card.real_id])}`;
-	else
+	}
+	if (Number.isSafeInteger(ltable_tcg[card.id])) {
+		lfstr_tcg = `TCG：${print_limit(ltable_tcg[card.id])}`;
+		show_lflist = true;
+	}
+	else {
 		lfstr_tcg = `TCG：-`;
-	if (ltable_md[card.real_id] !== undefined)
-		lfstr_md = `MD：${print_limit(ltable_md[card.real_id])}`;
-	else
+	}
+	if (Number.isSafeInteger(ltable_md[card.id])) {
+		lfstr_md = `MD：${print_limit(ltable_md[card.id])}`;
+		show_lflist = true;
+	}
+	else {
 		lfstr_md = `MD：-`;
-	if (ltable_ocg[card.real_id] !== undefined || ltable_tcg[card.real_id] !== undefined || ltable_md[card.real_id] !== undefined) {
+	}
+	if (show_lflist) {
 		const div_limit = document.createElement('div');
 		div_limit.innerHTML = `${lfstr_ocg} / ${lfstr_tcg} / ${lfstr_md}`;
 		div_alias.appendChild(div_limit);
@@ -395,7 +405,7 @@ function create_rows(card, pack) {
 	mapObj['<'] = '&lt;';
 	mapObj['>'] = '&gt;';
 	mapObj['"'] = '&quot;';
-	let desc = card.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x]);
+	let desc = card.text.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x]);
 	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM))
 		desc = desc.replace(/(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g, text_link);
 	const div_desc = document.createElement('div');
