@@ -10,6 +10,7 @@ const pre_release = {
 
 	// TCG
 	_SUDA: 101207000,
+	MZTM: 100237000,
 };
 
 const wiki_link = {
@@ -23,4 +24,5 @@ const wiki_link = {
 
 	// TCG
 	_SUDA: "https://yugipedia.com/wiki/Supreme_Darkness",
+	MZTM: "https://yugipedia.com/wiki/Maze_of_the_Master",
 };
