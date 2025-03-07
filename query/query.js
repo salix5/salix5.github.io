@@ -1,6 +1,7 @@
 "use strict";
 const MAX_STRING_LEN = 10;
 const MAX_TEXT_LEN = 200;
+const MAX_RESULT_LEN = 500;
 
 let current_stmt = "";
 
