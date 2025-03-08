@@ -528,12 +528,12 @@ function param_to_condition(params, arg) {
 	const id = Number.parseInt(params.get("code"), 10);
 	if (id) {
 		text_id.value = id;
-		qstr += " AND datas.id == $id;";
+		qstr += " AND datas.id == $id";
 		arg.$id = id;
 		return qstr;
 	}
 
-	qstr += artwork_filter;
+	qstr += no_alt_filter;
 	// pack
 	const pack = params.get("pack");
 	if (pack === "o") {
