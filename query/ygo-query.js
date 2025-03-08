@@ -5,19 +5,37 @@ const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
 const ID_BLACK_LUSTER_SOLDIER = 5405695;
 const CID_BLACK_LUSTER_SOLDIER = 19092;
 const CARD_ARTWORK_VERSIONS_OFFSET = 20;
+const MAX_CARD_ID = 99999999;
 
 const select_all = `SELECT datas.id, ot, alias, setcode, type, atk, def, level, attribute, race, name, "desc" FROM datas, texts WHERE datas.id == texts.id`;
 const select_id = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id`;
+const select_name = `SELECT datas.id, name FROM datas, texts WHERE datas.id == texts.id`;
 
-const base_filter = ` AND datas.id != ${ID_TYLER_THE_GREAT_WARRIOR} AND NOT type & ${TYPE_TOKEN}`;
-const artwork_filter = ` AND (datas.id == ${ID_BLACK_LUSTER_SOLDIER} OR abs(datas.id - alias) >= ${CARD_ARTWORK_VERSIONS_OFFSET})`;
-const physical_filter = `${base_filter}${artwork_filter}`;
-const effect_filter = ` AND (NOT type & ${TYPE_NORMAL} OR type & ${TYPE_PENDULUM})`;
+const base_filter = ` AND datas.id != $tyler AND NOT type & $token`;
+const no_alt_filter = ` AND (datas.id == $luster OR abs(datas.id - alias) >= $artwork_offset)`;
+const default_filter = `${base_filter}${no_alt_filter}`;
+const effect_filter = ` AND (NOT type & $normal OR type & $pendulum)`;
 
 const stmt_base = `${select_all}${base_filter}`;
-const stmt_default = `${select_all}${physical_filter}`;
-const stmt_no_alias = `${select_id}${base_filter} AND alias == 0`;
+const stmt_default = `${select_all}${default_filter}`;
+const stmt_no_alias = `${select_id}${base_filter} AND alias == $zero`;
 const regexp_mention = `(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)`;
+
+const arg_default = {
+	__proto__: null,
+	$tyler: ID_TYLER_THE_GREAT_WARRIOR,
+	$luster: ID_BLACK_LUSTER_SOLDIER,
+	$artwork_offset: CARD_ARTWORK_VERSIONS_OFFSET,
+	$zero: 0,
+	$ub: MAX_CARD_ID,
+	$monster: TYPE_MONSTER,
+	$spell: TYPE_SPELL,
+	$trap: TYPE_TRAP,
+	$extra: TYPE_EXTRA,
+	$token: TYPE_TOKEN,
+	$normal: TYPE_NORMAL,
+	$pendulum: TYPE_PENDULUM,
+};
 
 /**
  * @typedef {Object} Record
