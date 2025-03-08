@@ -4,6 +4,7 @@ const MAX_TEXT_LEN = 200;
 const MAX_RESULT_LEN = 500;
 
 let current_stmt = "";
+let current_arg = null;
 
 //re_wildcard = /(?<!\$)[%_]/ (lookbehind)
 const re_wildcard = /(^|[^\$])[%_]/;
@@ -874,12 +875,13 @@ function param_to_condition(params, arg) {
 
 // entrance of query
 function server_analyze1(params) {
-	const arg = Object.create(null);
+	const arg_final = { __proto__: null, ...arg_default };
 	const valid_params = server_validate1(params);
-	const condition = param_to_condition(valid_params, arg);
-	const qstr_final = `${stmt_base}${condition};`;
-	current_stmt = qstr_final;
-	const result = query(qstr_final, arg);
+	const condition = param_to_condition(valid_params, arg_final);
+	const stmt_final = `${stmt_base}${condition};`;
+	current_stmt = stmt_final;
+	current_arg = arg_final;
+	const result = query(stmt_final, arg_final);
 	if (result.length === 1)
 		document.title = result[0].tw_name;
 	show_result(valid_params, result);
@@ -997,23 +999,23 @@ function server_analyze2(params) {
 			valid_params.append(key, value);
 		}
 	}
-	const qstr0 = `${stmt_default} AND NOT type & $ext`;
-	const arg = Object.create(null);
-	arg.$ext = TYPE_EXTRA;
-	const condition = param_to_condition(valid_params, arg);
-	const qstr_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
-	arg.$race_begin = card_begin.race;
-	arg.$attr_begin = card_begin.attribute;
-	arg.$lv_begin = card_begin.level;
-	arg.$atk_begin = card_begin.atk;
-	arg.$def_begin = card_begin.def;
+	const qstr0 = `${stmt_default} AND NOT type & $extra`;
+	const arg_final = { __proto__: null, ...arg_default };
+	const condition = param_to_condition(valid_params, arg_final);
+	const stmt_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
+	arg_final.$race_begin = card_begin.race;
+	arg_final.$attr_begin = card_begin.attribute;
+	arg_final.$lv_begin = card_begin.level;
+	arg_final.$atk_begin = card_begin.atk;
+	arg_final.$def_begin = card_begin.def;
 
-	arg.$race_end = card_end.race;
-	arg.$attr_end = card_end.attribute;
-	arg.$lv_end = card_end.level;
-	arg.$atk_end = card_end.atk;
-	arg.$def_end = card_end.def;
-	current_stmt = qstr_final;
-	const result = query(qstr_final, arg);
+	arg_final.$race_end = card_end.race;
+	arg_final.$attr_end = card_end.attribute;
+	arg_final.$lv_end = card_end.level;
+	arg_final.$atk_end = card_end.atk;
+	arg_final.$def_end = card_end.def;
+	current_stmt = stmt_final;
+	current_arg = arg_final;
+	const result = query(stmt_final, arg_final);
 	show_result(valid_params, result);
 }
