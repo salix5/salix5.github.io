@@ -19,7 +19,7 @@ const promise_sql = initSqlJs({ locateFile: filename => `https://cdnjs.cloudflar
 const promise_db = fetch(`${domain}/cards.zip`)
 	.then(response => response.blob())
 	.then(JSZip.loadAsync)
-	.then(zip_file => zip_file.files["cards.cdb"].async("uint8array"));
+	.then(zip_file => zip_file.file("cards.cdb").async("uint8array"));
 const promise_db2 = fetch(`${domain}/expansions/pre-release.cdb`)
 	.then(response => response.arrayBuffer())
 	.then(buf => new Uint8Array(buf));
