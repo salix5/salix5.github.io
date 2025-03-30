@@ -30,13 +30,6 @@ const cb_race = document.getElementsByName("race");
 const cb_scale = document.getElementsByName("scale");
 const monster_checkbox = ["marker", "attr", "race", "scale"];
 
-const subtype_reset = document.getElementById("subtype_reset");
-const exclude_reset = document.getElementById("exclude_reset");
-const attr_reset = document.getElementById("attr_reset");
-const race_reset = document.getElementById("race_reset");
-const marker_reset = document.getElementById("marker_reset");
-const scale_reset = document.getElementById("scale_reset");
-
 const row_subtype = document.getElementsByClassName("row_subtype");
 const subtype_m = document.getElementById("subtype_m");
 const subtype_s = document.getElementById("subtype_s");
@@ -137,24 +130,24 @@ select_type.addEventListener("change", function (event) {
 	}
 });
 
-subtype_reset.addEventListener("click", function (event) {
+document.getElementById("subtype_reset").addEventListener("click", function (event) {
 	clear_cb("mtype");
 	clear_cb("stype");
 	clear_cb("ttype");
 });
-exclude_reset.addEventListener("click", function (event) {
+document.getElementById("exclude_reset").addEventListener("click", function (event) {
 	clear_cb("exclude");
 });
-attr_reset.addEventListener("click", function (event) {
+document.getElementById("attr_reset").addEventListener("click", function (event) {
 	clear_cb("attr");
 });
-race_reset.addEventListener("click", function (event) {
+document.getElementById("race_reset").addEventListener("click", function (event) {
 	clear_cb("race");
 });
-scale_reset.addEventListener("click", function (event) {
+document.getElementById("scale_reset").addEventListener("click", function (event) {
 	clear_cb("scale");
 });
-marker_reset.addEventListener("click", function (event) {
+document.getElementById("marker_reset").addEventListener("click", function (event) {
 	clear_cb("marker");
 });
 
