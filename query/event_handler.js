@@ -12,14 +12,12 @@ const text_def1 = document.getElementById("text_def1");
 const text_def2 = document.getElementById("text_def2");
 const text_sum = document.getElementById("text_sum");
 const text_mat = document.getElementById("text_mat");
-const monster_input = [text_lv1, text_lv2, text_atk1, text_atk2, text_def1, text_def2, text_sum, text_mat];
 
 const select_locale = document.getElementById("select_locale");
 const select_ot = document.getElementById("select_ot");
 const select_type = document.getElementById("select_type");
 const select_subtype_op = document.getElementById("select_subtype_op");
 const select_marker_op = document.getElementById("select_marker_op");
-monster_input.push(select_marker_op);
 
 const cb_mtype = document.getElementsByName("mtype");
 const cb_exclude = document.getElementsByName("exclude");
@@ -76,7 +74,7 @@ function hide_type(type, hidden) {
 			for (const row of document.getElementsByClassName("monster_row")) {
 				row.hidden = hidden;
 			}
-			for (const element of monster_input) {
+			for (const element of document.getElementsByClassName("monster_input")) {
 				element.disabled = hidden;
 			}
 			for (const cbname of monster_checkbox) {
