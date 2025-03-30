@@ -148,7 +148,10 @@
 	</td>
 	</tr>
 	
-	<tr class="monster_row"><td>素材</td><td><input type="search" id="text_mat" name="mat" maxlength="50"></td></tr>
+	<tr class="monster_row">
+		<td>素材</td>
+		<td><input type="search" id="text_mat" name="mat" class="monster_input" maxlength="50"></td>
+	</tr>
 	
 	<tr class="monster_row">
 		<td>屬性</td>
@@ -343,7 +346,7 @@
 	<tr class="monster_row" id="row_marker"><td colspan="2">
 		<div>
 			<label><input type="checkbox" id="marker1" name="marker" value="1"><span class="button marker">&emsp;</span></label><label><input type="checkbox" id="marker2" name="marker" value="2"><span class="button marker">&emsp;</span></label><label><input type="checkbox" id="marker3" name="marker" value="3"><span class="button marker">&emsp;</span></label>
-			<select id="select_marker_op" name="marker_operator">
+			<select id="select_marker_op" name="marker_operator" class="monster_input">
 				<option value="0">OR</option>
 				<option value="1">AND</option>
 			</select>
@@ -361,31 +364,34 @@
 		<td>攻擊力</td>
 		<td></td>
 	</tr>
-	<tr class="monster_row"><td colspan="2">
-	<input type="number" id="text_atk1" name="atk1" min="-1" max="100000" style="width: 5em">
-	～
-	<input type="number" id="text_atk2" name="atk2" min="0" max="100000" style="width: 5em"> (-1 = ?)
-	</td>
+	<tr class="monster_row">
+		<td colspan="2">
+			<input type="number" id="text_atk1" name="atk1" class="monster_input" min="-1" max="100000" style="width: 5em">
+			～
+			<input type="number" id="text_atk2" name="atk2" class="monster_input" min="0" max="100000" style="width: 5em"> (-1 = ?)
+		</td>
 	</tr>
 	
 	<tr class="monster_row">
 		<td>守備力</td>
 		<td></td>
 	</tr>
-	<tr class="monster_row"><td colspan="2">
-	<input type="number" id="text_def1" name="def1" min="-2" max="100000" style="width: 5em">
-	～
-	<input type="number" id="text_def2" name="def2" min="0" max="100000" style="width: 5em"> (-2 = 攻守相等)
-	</td>
+	<tr class="monster_row">
+		<td colspan="2">
+			<input type="number" id="text_def1" name="def1" class="monster_input" min="-2" max="100000" style="width: 5em">
+			～
+			<input type="number" id="text_def2" name="def2" class="monster_input" min="0" max="100000" style="width: 5em"> (-2 = 攻守相等)
+		</td>
 	</tr>
 	
 	<tr class="monster_row">
 		<td>總和</td>
 		<td></td>
 	</tr>
-	<tr class="monster_row"><td colspan="2">
-	<input type="number" id="text_sum" name="sum" min="0" max="100000" style="width: 5em">
-	</td>
+	<tr class="monster_row">
+		<td colspan="2">
+			<input type="number" id="text_sum" name="sum" class="monster_input" min="0" max="100000" style="width: 5em">
+		</td>
 	</tr>
 	
 	<tr class="align_center">
