@@ -139,6 +139,7 @@ const key_type = {
 	"mat": 3,
 	"attr": 2,
 	"race": 2,
+	"level": 2,
 	"lv1": 2,
 	"lv2": 2,
 	"scale": 2,
@@ -365,9 +366,16 @@ function validate_params(params, extra_monster) {
 		check_normal_text(params, "mat");
 		check_checkbox(params, "attr");
 		check_checkbox(params, "race");
-		check_value(params, "lv1", 1, 13);
-		check_value(params, "lv2", 1, 13);
+		check_checkbox(params, "level", 0);
 		check_checkbox(params, "scale", 0);
+		if (params.has("level")) {
+			params.delete("lv1");
+			params.delete("lv2");
+		}
+		else {
+			check_value(params, "lv1", 0, 13);
+			check_value(params, "lv2", 0, 13);
+		}
 		if (params.has("scale")) {
 			params.delete("sc1");
 			params.delete("sc2");
@@ -736,18 +744,30 @@ function param_to_condition(params, arg) {
 		}
 
 		// lv, rank, link
+		if (params.has("level") || params.has("lv1") || params.has("lv2")) {
+			arg.$ctype = TYPE_MONSTER;
+		}
+		if (params.has("level")) {
+			let level_condtion = "0";
+			let index = 0;
+			for (const value of params.getAll("level")) {
+				const level = Number.parseInt(value);
+				cb_level[level].checked = true;
+				level_condtion += ` OR (level & $mask) == $level${index}`;
+				arg[`$level${index}`] = level;
+				++index;
+			}
+			qstr += ` AND (${level_condtion})`;
+			arg.$mask = 0xff;
+		}
 		if (params.has("lv1")) {
 			const lv1 = Number.parseInt(params.get("lv1"));
-			text_lv1.value = lv1;
-			arg.$ctype = TYPE_MONSTER;
 			qstr += " AND (level & $mask) >= $lv1";
 			arg.$mask = 0xff;
 			arg.$lv1 = lv1;
 		}
 		if (params.has("lv2")) {
 			const lv2 = Number.parseInt(params.get("lv2"));
-			text_lv2.value = lv2;
-			arg.$ctype = TYPE_MONSTER;
 			qstr += " AND (level & $mask) <= $lv2";
 			arg.$mask = 0xff;
 			arg.$lv2 = lv2;
