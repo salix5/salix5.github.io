@@ -22,7 +22,6 @@ const stmt_no_alias = `${select_id}${base_filter} AND alias == $zero`;
 const regexp_mention = `(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)`;
 
 const arg_default = {
-	__proto__: null,
 	$tyler: ID_TYLER_THE_GREAT_WARRIOR,
 	$luster: ID_BLACK_LUSTER_SOLDIER,
 	$artwork_offset: CARD_ARTWORK_VERSIONS_OFFSET,
