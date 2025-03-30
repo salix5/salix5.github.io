@@ -26,14 +26,7 @@ const arg_default = {
 	$luster: ID_BLACK_LUSTER_SOLDIER,
 	$artwork_offset: CARD_ARTWORK_VERSIONS_OFFSET,
 	$zero: 0,
-	$ub: MAX_CARD_ID,
-	$monster: TYPE_MONSTER,
-	$spell: TYPE_SPELL,
-	$trap: TYPE_TRAP,
-	$extra: TYPE_EXTRA,
 	$token: TYPE_TOKEN,
-	$normal: TYPE_NORMAL,
-	$pendulum: TYPE_PENDULUM,
 };
 
 /**
