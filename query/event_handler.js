@@ -4,8 +4,6 @@ const text_name = document.getElementById("text_name");
 const text_effect = document.getElementById("text_effect");
 const text_keyword = document.getElementById("text_keyword");
 
-const text_lv1 = document.getElementById("text_lv1");
-const text_lv2 = document.getElementById("text_lv2");
 const text_atk1 = document.getElementById("text_atk1");
 const text_atk2 = document.getElementById("text_atk2");
 const text_def1 = document.getElementById("text_def1");
@@ -27,8 +25,9 @@ const cb_ttype = document.getElementsByName("ttype");
 const cb_marker = document.getElementsByName("marker");
 const cb_attr = document.getElementsByName("attr");
 const cb_race = document.getElementsByName("race");
+const cb_level = document.getElementsByName("level");
 const cb_scale = document.getElementsByName("scale");
-const monster_checkbox = ["marker", "attr", "race", "scale"];
+const monster_checkbox = ["marker", "attr", "race", "level", "scale"];
 
 const row_subtype = document.getElementsByClassName("row_subtype");
 const subtype_m = document.getElementById("subtype_m");
@@ -143,6 +142,9 @@ document.getElementById("attr_reset").addEventListener("click", function (event)
 });
 document.getElementById("race_reset").addEventListener("click", function (event) {
 	clear_cb("race");
+});
+document.getElementById("level_reset").addEventListener("click", function (event) {
+	clear_cb("level");
 });
 document.getElementById("scale_reset").addEventListener("click", function (event) {
 	clear_cb("scale");
