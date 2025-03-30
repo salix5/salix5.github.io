@@ -561,7 +561,6 @@ function param_to_condition(params, arg) {
 	let exc = 0;
 	switch (params.get("type")) {
 		case "1": {
-			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_MONSTER;
 			for (const val of params.getAll("mtype")) {
 				const idx = Number.parseInt(val) - 1;
@@ -654,7 +653,6 @@ function param_to_condition(params, arg) {
 	}
 
 	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
-		let is_monster = false;
 		// mat
 		const mat = params.get("mat");
 		if (mat) {
@@ -663,14 +661,14 @@ function param_to_condition(params, arg) {
 			arg.$mat1 = `%${mat}+%`;
 			arg.$mat2 = `%+${mat}%`;
 			arg.$mat3 = `%${mat}×%`;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 		}
 
 		// atk
 		if (params.has("atk1")) {
 			const atk1 = Number.parseInt(params.get("atk1"));
 			text_atk1.value = atk1;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 			if (atk1 === -1) {
 				qstr += " AND atk == $unknown";
 				arg.$unknown = -2;
@@ -683,7 +681,7 @@ function param_to_condition(params, arg) {
 		if (params.has("atk2")) {
 			const atk2 = Number.parseInt(params.get("atk2"));
 			text_atk2.value = atk2;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 			qstr += " AND atk >= $zero AND atk <= $atk2";
 			arg.$zero = 0;
 			arg.$atk2 = atk2;
@@ -692,14 +690,14 @@ function param_to_condition(params, arg) {
 			const atk_mod = Number.parseInt(params.get("atkm"));
 			qstr += " AND atk % 1000 == $atkm";
 			arg.$atkm = atk_mod;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 		}
 
 		// def, exclude link monsters
 		if (params.has("def1") || params.has("def2") || params.has("defm") || params.has("sum")) {
 			qstr += " AND NOT type & $link";
 			arg.$link = TYPE_LINK;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 		}
 		if (params.has("def1")) {
 			const def1 = Number.parseInt(params.get("def1"));
@@ -741,7 +739,7 @@ function param_to_condition(params, arg) {
 		if (params.has("lv1")) {
 			const lv1 = Number.parseInt(params.get("lv1"));
 			text_lv1.value = lv1;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 			qstr += " AND (level & $mask) >= $lv1";
 			arg.$mask = 0xff;
 			arg.$lv1 = lv1;
@@ -749,7 +747,7 @@ function param_to_condition(params, arg) {
 		if (params.has("lv2")) {
 			const lv2 = Number.parseInt(params.get("lv2"));
 			text_lv2.value = lv2;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 			qstr += " AND (level & $mask) <= $lv2";
 			arg.$mask = 0xff;
 			arg.$lv2 = lv2;
@@ -759,7 +757,7 @@ function param_to_condition(params, arg) {
 		if (params.has("scale") || params.has("sc1") || params.has("sc2")) {
 			qstr += " AND type & $pendulum";
 			arg.$pendulum = TYPE_PENDULUM;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 		}
 		if (params.has("scale")) {
 			let scale_condtion = "0";
@@ -798,7 +796,7 @@ function param_to_condition(params, arg) {
 		if (attr) {
 			qstr += " AND attribute & $attr";
 			arg.$attr = attr;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 		}
 
 		let race = 0;
@@ -810,7 +808,7 @@ function param_to_condition(params, arg) {
 		if (race) {
 			qstr += " AND race & $race";
 			arg.$race = race;
-			is_monster = true;
+			arg.$ctype = TYPE_MONSTER;
 		}
 		// marker
 		let marker = 0;
@@ -834,11 +832,10 @@ function param_to_condition(params, arg) {
 			else
 				qstr += " AND def & $marker";
 			arg.$marker = marker;
-			is_monster = true;
-		}
-		if (arg.$ctype === 0 && is_monster) {
-			qstr += " AND type & $ctype";
 			arg.$ctype = TYPE_MONSTER;
+		}
+		if (arg.$ctype === TYPE_MONSTER) {
+			qstr += " AND type & $ctype";
 		}
 	}
 
