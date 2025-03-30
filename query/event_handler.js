@@ -21,14 +21,6 @@ const select_subtype_op = document.getElementById("select_subtype_op");
 const select_marker_op = document.getElementById("select_marker_op");
 monster_input.push(select_marker_op);
 
-// 3 div for different type
-const subtype_m = document.getElementById("subtype_m");
-const subtype_s = document.getElementById("subtype_s");
-const subtype_t = document.getElementById("subtype_t");
-
-const stype1 = document.getElementById("stype1");
-const ttype1 = document.getElementById("ttype1");
-
 const cb_mtype = document.getElementsByName("mtype");
 const cb_exclude = document.getElementsByName("exclude");
 const cb_stype = document.getElementsByName("stype");
@@ -49,6 +41,11 @@ const marker_reset = document.getElementById("marker_reset");
 const scale_reset = document.getElementById("scale_reset");
 
 const row_subtype = document.getElementsByClassName("row_subtype");
+const subtype_m = document.getElementById("subtype_m");
+const subtype_s = document.getElementById("subtype_s");
+const subtype_t = document.getElementById("subtype_t");
+const stype1 = document.getElementById("stype1");
+const ttype1 = document.getElementById("ttype1");
 const row_exclude = document.getElementsByClassName("row_exclude");
 const monster_row = document.getElementsByClassName("monster_property");
 
@@ -76,41 +73,41 @@ function disable_cb(name, status) {
 	}
 }
 
-function hide_type(type, status) {
+function hide_type(type, hidden) {
 	switch (type) {
 		case 0:
 			for (const row of monster_row) {
-				row.hidden = status;
+				row.hidden = hidden;
 			}
 			for (const element of monster_input) {
-				element.disabled = status;
+				element.disabled = hidden;
 			}
 			for (const cbname of monster_checkbox) {
-				disable_cb(cbname, status);
+				disable_cb(cbname, hidden);
 			}
 			break;
 		case 1:
 			for (const row of row_subtype)
-				row.hidden = status;
+				row.hidden = hidden;
 			for (const row of row_exclude)
-				row.hidden = status;
-			subtype_operator.hidden = status;
-			subtype_m.hidden = status;
-			select_subtype_op.disabled = status;
-			disable_cb("mtype", status);
-			disable_cb("exclude", status);
+				row.hidden = hidden;
+			subtype_operator.hidden = hidden;
+			subtype_m.hidden = hidden;
+			select_subtype_op.disabled = hidden;
+			disable_cb("mtype", hidden);
+			disable_cb("exclude", hidden);
 			break;
 		case 2:
 			for (const row of row_subtype)
-				row.hidden = status;
-			subtype_s.hidden = status;
-			disable_cb("stype", status);
+				row.hidden = hidden;
+			subtype_s.hidden = hidden;
+			disable_cb("stype", hidden);
 			break;
 		case 3:
 			for (const row of row_subtype)
-				row.hidden = status;
-			subtype_t.hidden = status;
-			disable_cb("ttype", status);
+				row.hidden = hidden;
+			subtype_t.hidden = hidden;
+			disable_cb("ttype", hidden);
 			break;
 		default:
 			break;
