@@ -901,21 +901,22 @@ function get_single_card(cdata) {
 		return [null, 0];
 
 	const qstr0 = `${stmt_default} AND type & $monster AND NOT type & $ext`;
-	const arg = Object.create(null);
-	arg.$monster = TYPE_MONSTER;
-	arg.$ext = TYPE_EXTRA;
-	let qstr = "";
+	const arg = {
+		...arg_default,
+		$monster: TYPE_MONSTER,
+		$ext: TYPE_EXTRA,
+	};
 
 	if (re_id.test(cdata)) {
 		const id = Number.parseInt(cdata);
-		qstr = `${qstr0} AND datas.id == $id;`;
+		const qstr = `${qstr0} AND datas.id == $id;`;
 		arg.$id = id;
 		const list1 = query(qstr, arg);
 		if (list1.length === 1)
 			return [list1[0], 1];
 	}
 
-	qstr = `${qstr0} AND name == $exact;`;
+	let qstr = `${qstr0} AND name == $exact;`;
 	arg.$exact = cdata;
 	const list2 = query(qstr, arg);
 	if (list2.length === 1)
@@ -1000,7 +1001,10 @@ function server_analyze2(params) {
 		}
 	}
 	const qstr0 = `${stmt_default} AND NOT type & $extra`;
-	const arg_final = { ...arg_default };
+	const arg_final = {
+		...arg_default,
+		$extra: TYPE_EXTRA,
+	};
 	const condition = param_to_condition(valid_params, arg_final);
 	const stmt_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
 	arg_final.$race_begin = card_begin.race;
