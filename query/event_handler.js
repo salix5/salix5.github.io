@@ -47,7 +47,6 @@ const subtype_t = document.getElementById("subtype_t");
 const stype1 = document.getElementById("stype1");
 const ttype1 = document.getElementById("ttype1");
 const row_exclude = document.getElementsByClassName("row_exclude");
-const monster_row = document.getElementsByClassName("monster_property");
 
 const form1 = document.getElementById("form1");
 const row_button = document.getElementById("row_button");
@@ -67,8 +66,7 @@ function clear_cb(name) {
 }
 
 function disable_cb(name, status) {
-	let cb_list = document.getElementsByName(name);
-	for (const cb of cb_list) {
+	for (const cb of document.getElementsByName(name)) {
 		cb.disabled = status;
 	}
 }
@@ -76,7 +74,7 @@ function disable_cb(name, status) {
 function hide_type(type, hidden) {
 	switch (type) {
 		case 0:
-			for (const row of monster_row) {
+			for (const row of document.getElementsByClassName("monster_row")) {
 				row.hidden = hidden;
 			}
 			for (const element of monster_input) {
