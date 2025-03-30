@@ -32,7 +32,6 @@ const cb_race = document.getElementsByName("race");
 const cb_scale = document.getElementsByName("scale");
 const monster_checkbox = ["marker", "attr", "race", "scale"];
 
-const subtype_operator = document.getElementById("subtype_operator");
 const subtype_reset = document.getElementById("subtype_reset");
 const exclude_reset = document.getElementById("exclude_reset");
 const attr_reset = document.getElementById("attr_reset");
@@ -89,7 +88,7 @@ function hide_type(type, hidden) {
 				row.hidden = hidden;
 			for (const row of row_exclude)
 				row.hidden = hidden;
-			subtype_operator.hidden = hidden;
+			document.getElementById("subtype_operator").hidden = hidden;
 			subtype_m.hidden = hidden;
 			select_subtype_op.disabled = hidden;
 			disable_cb("mtype", hidden);
