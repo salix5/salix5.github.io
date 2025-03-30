@@ -56,8 +56,7 @@ const select_page = document.getElementById("select_page");
 const table_result = document.getElementById("table_result");
 
 function clear_cb(name) {
-	let cb_list = document.getElementsByName(name);
-	for (const cb of cb_list) {
+	for (const cb of document.getElementsByName(name)) {
 		cb.checked = false;
 	}
 }
