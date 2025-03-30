@@ -875,7 +875,7 @@ function param_to_condition(params, arg) {
 
 // entrance of query
 function server_analyze1(params) {
-	const arg_final = { __proto__: null, ...arg_default };
+	const arg_final = { ...arg_default };
 	const valid_params = server_validate1(params);
 	const condition = param_to_condition(valid_params, arg_final);
 	const stmt_final = `${stmt_base}${condition};`;
@@ -1000,7 +1000,7 @@ function server_analyze2(params) {
 		}
 	}
 	const qstr0 = `${stmt_default} AND NOT type & $extra`;
-	const arg_final = { __proto__: null, ...arg_default };
+	const arg_final = { ...arg_default };
 	const condition = param_to_condition(valid_params, arg_final);
 	const stmt_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
 	arg_final.$race_begin = card_begin.race;
