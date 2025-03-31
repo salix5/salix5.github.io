@@ -573,8 +573,8 @@ function param_to_condition(params, arg) {
 			for (const val of params.getAll("mtype")) {
 				const idx = Number.parseInt(val) - 1;
 				subtype |= mtype_list[idx];
-				if (cb_mtype[idx].type === "checkbox")
-					cb_mtype[idx].checked = true;
+				if (document.getElementsByName("mtype")[idx].type === "checkbox")
+					document.getElementsByName("mtype")[idx].checked = true;
 			}
 			let mtype_operator = 0;
 			if (params.get("mtype_operator") === "1") {
@@ -595,8 +595,8 @@ function param_to_condition(params, arg) {
 			for (const val of params.getAll("exclude")) {
 				const idx = Number.parseInt(val) - 1;
 				exc |= exclude_list[idx];
-				if (cb_exclude[idx].type === "checkbox")
-					cb_exclude[idx].checked = true;
+				if (document.getElementsByName("exclude")[idx].type === "checkbox")
+					document.getElementsByName("exclude")[idx].checked = true;
 			}
 			if (exc) {
 				qstr += " AND NOT type & $exclude";
@@ -610,8 +610,8 @@ function param_to_condition(params, arg) {
 			for (const val of params.getAll("stype")) {
 				const idx = Number.parseInt(val) - 1;
 				subtype |= stype_list[idx];
-				if (cb_stype)
-					cb_stype[idx].checked = true;
+				if (document.getElementsByName("stype").length)
+					document.getElementsByName("stype")[idx].checked = true;
 			}
 			if (subtype) {
 				if (subtype & TYPE_NORMAL) {
@@ -636,8 +636,8 @@ function param_to_condition(params, arg) {
 			for (const val of params.getAll("ttype")) {
 				const idx = Number.parseInt(val) - 1;
 				subtype |= ttype_list[idx];
-				if (cb_ttype)
-					cb_ttype[idx].checked = true;
+				if (document.getElementsByName("ttype").length)
+					document.getElementsByName("ttype")[idx].checked = true;
 			}
 			if (subtype) {
 				if (subtype & TYPE_NORMAL) {
