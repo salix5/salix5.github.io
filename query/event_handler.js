@@ -33,12 +33,9 @@ const row_subtype = document.getElementsByClassName("row_subtype");
 const subtype_m = document.getElementById("subtype_m");
 const subtype_s = document.getElementById("subtype_s");
 const subtype_t = document.getElementById("subtype_t");
-const stype1 = document.getElementById("stype1");
-const ttype1 = document.getElementById("ttype1");
 const row_exclude = document.getElementsByClassName("row_exclude");
 
 const form1 = document.getElementById("form1");
-const row_button = document.getElementById("row_button");
 const button1 = document.getElementById("button1");
 const button2 = document.getElementById("button2");
 
