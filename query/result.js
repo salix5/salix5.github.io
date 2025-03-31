@@ -175,8 +175,8 @@ function imgError(event) {
 	this.src = "icon/unknown.jpg";
 }
 
-function is_real(id, type) {
-	return id <= 99999999 && !(type & TYPE_TOKEN);
+function is_formal(id, type) {
+	return id <= MAX_CARD_ID && !(type & TYPE_TOKEN);
 }
 
 /**
@@ -216,7 +216,7 @@ function create_rows(card, pack) {
 		img_card.src = `../cdb/expansions/pics/${card.id}.jpg`;
 	img_card.onerror = imgError;
 
-	if (is_real(card.id, card.type)) {
+	if (is_formal(card.id, card.type)) {
 		const params = new URLSearchParams({ "code": card.id.toString().padStart(8, '0') });
 		const link_id = document.createElement('a');
 		link_id.href = `https://salix5.github.io/query/?${params.toString()}`;
