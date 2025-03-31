@@ -1,17 +1,4 @@
 "use strict";
-const text_id = document.getElementById("text_id");
-const text_name = document.getElementById("text_name");
-const text_effect = document.getElementById("text_effect");
-const text_keyword = document.getElementById("text_keyword");
-
-const text_atk1 = document.getElementById("text_atk1");
-const text_atk2 = document.getElementById("text_atk2");
-const text_def1 = document.getElementById("text_def1");
-const text_def2 = document.getElementById("text_def2");
-const text_sum = document.getElementById("text_sum");
-const text_mat = document.getElementById("text_mat");
-
-const select_locale = document.getElementById("select_locale");
 const select_ot = document.getElementById("select_ot");
 const select_type = document.getElementById("select_type");
 const select_subtype_op = document.getElementById("select_subtype_op");
@@ -30,14 +17,12 @@ const cb_scale = document.getElementsByName("scale");
 const monster_checkbox = ["marker", "attr", "race", "level", "scale"];
 
 const row_subtype = document.getElementsByClassName("row_subtype");
+const subtype_operator = document.getElementById("subtype_operator");
 const subtype_m = document.getElementById("subtype_m");
 const subtype_s = document.getElementById("subtype_s");
 const subtype_t = document.getElementById("subtype_t");
 const row_exclude = document.getElementsByClassName("row_exclude");
-
 const form1 = document.getElementById("form1");
-const button1 = document.getElementById("button1");
-const button2 = document.getElementById("button2");
 
 const div_count = document.getElementById("div_count");
 const div_page = document.getElementById("div_page");
@@ -74,7 +59,7 @@ function hide_type(type, hidden) {
 				row.hidden = hidden;
 			for (const row of row_exclude)
 				row.hidden = hidden;
-			document.getElementById("subtype_operator").hidden = hidden;
+			subtype_operator.hidden = hidden;
 			subtype_m.hidden = hidden;
 			select_subtype_op.disabled = hidden;
 			disable_cb("mtype", hidden);
