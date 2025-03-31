@@ -554,11 +554,13 @@ function param_to_condition(params, arg) {
 		arg.$tcg = 2;
 	}
 	else if (pack_list[pack]) {
-		qstr += pack_cmd(pack_list[pack]);
+		qstr += pack_cmd(pack_list[pack], arg);
 		arg.pack = pack;
 	}
 	else if (pre_release[pack]) {
-		qstr += ` AND datas.id>=${pre_release[pack]} AND datas.id<=${pre_release[pack] + 998}`;
+		qstr += " AND datas.id>=$begin AND datas.id<=$end";
+		arg.$begin = pre_release[pack];
+		arg.$end = pre_release[pack] + 998;
 		arg.pack = pack;
 	}
 	document.getElementById("select_pack").value = pack;
