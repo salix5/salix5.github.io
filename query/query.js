@@ -536,7 +536,7 @@ function param_to_condition(params, arg) {
 	// id, primary key
 	const id = Number.parseInt(params.get("code"), 10);
 	if (id) {
-		text_id.value = id;
+		document.getElementById("text_id").value = id;
 		qstr += " AND datas.id == $id";
 		arg.$id = id;
 		return qstr;
@@ -664,7 +664,7 @@ function param_to_condition(params, arg) {
 		// mat
 		const mat = params.get("mat");
 		if (mat) {
-			text_mat.value = mat;
+			document.getElementById("text_mat").value = mat;
 			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
 			arg.$mat1 = `%${mat}+%`;
 			arg.$mat2 = `%+${mat}%`;
@@ -675,7 +675,7 @@ function param_to_condition(params, arg) {
 		// atk
 		if (params.has("atk1")) {
 			const atk1 = Number.parseInt(params.get("atk1"));
-			text_atk1.value = atk1;
+			document.getElementById("text_atk1").value = atk1;
 			arg.$ctype = TYPE_MONSTER;
 			if (atk1 === -1) {
 				qstr += " AND atk == $unknown";
@@ -688,7 +688,7 @@ function param_to_condition(params, arg) {
 		}
 		if (params.has("atk2")) {
 			const atk2 = Number.parseInt(params.get("atk2"));
-			text_atk2.value = atk2;
+			document.getElementById("text_atk2").value = atk2;
 			arg.$ctype = TYPE_MONSTER;
 			qstr += " AND atk >= $zero AND atk <= $atk2";
 			arg.$zero = 0;
@@ -709,7 +709,7 @@ function param_to_condition(params, arg) {
 		}
 		if (params.has("def1")) {
 			const def1 = Number.parseInt(params.get("def1"));
-			text_def1.value = def1;
+			document.getElementById("text_def1").value = def1;
 			if (def1 === -1) {
 				qstr += " AND def == $unknown";
 				arg.$unknown = -2;
@@ -725,7 +725,7 @@ function param_to_condition(params, arg) {
 		}
 		if (params.has("def2")) {
 			const def2 = Number.parseInt(params.get("def2"));
-			text_def2.value = def2;
+			document.getElementById("text_def2").value.value = def2;
 			qstr += " AND def >= $zero AND def <= $def2";
 			arg.$zero = 0;
 			arg.$def2 = def2;
@@ -737,7 +737,7 @@ function param_to_condition(params, arg) {
 		}
 		if (params.has("sum")) {
 			const sum = Number.parseInt(params.get("sum"));
-			text_sum.value = sum;
+			document.getElementById("text_sum").value = sum;
 			qstr += " AND atk != $unknown AND def != $unknown AND atk + def == $sum";
 			arg.$unknown = -2;
 			arg.$sum = sum;
@@ -862,12 +862,12 @@ function param_to_condition(params, arg) {
 	const desc_str = `"desc" LIKE $desc ESCAPE '$'`;
 	const locale = params.get("locale");
 	if (locale)
-		select_locale.value = locale;
+		document.getElementById("select_locale").value = locale;
 	const keyword = params.get("keyword");
 	let name_cmd = process_name(locale, keyword, arg);
 	if (name_cmd) {
 		// keyword
-		text_keyword.value = keyword;
+		document.getElementById("text_keyword").value = keyword;
 		qstr += ` AND (${name_cmd} OR ${desc_str})`;
 		arg.$desc = string_to_literal(keyword);
 	}
@@ -876,13 +876,13 @@ function param_to_condition(params, arg) {
 		const name = params.get("cname");
 		name_cmd = process_name(locale, name, arg);
 		if (name_cmd) {
-			text_name.value = name;
+			document.getElementById("text_name").value = name;
 			qstr += ` AND (${name_cmd})`;
 		}
 		// desc
 		const desc = params.get("desc");
 		if (desc) {
-			text_effect.value = desc;
+			document.getElementById("text_effect").value = desc;
 			qstr += ` AND ${desc_str}`;
 			arg.$desc = string_to_literal(desc);
 		}
@@ -970,10 +970,10 @@ function server_analyze2(params) {
 	// id or name
 	const cdata1 = check_text(params, "begin");
 	if (cdata1)
-		text_id1.value = cdata1;
+		document.getElementById("text_id1").value = cdata1;
 	const cdata2 = check_text(params, "end");
 	if (cdata2)
-		text_id2.value = cdata2;
+		document.getElementById("text_id2").value = cdata2;
 
 	const [card_begin, result_len1] = get_single_card(cdata1);
 	if (result_len1 > 1) {
