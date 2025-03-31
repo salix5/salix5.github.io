@@ -145,18 +145,13 @@ window.addEventListener("DOMContentLoaded", function (event) {
 		table_result.style.width = "100%";
 	}
 
-	let params = new URLSearchParams(window.location.search);
-	switch (params.get("type")) {
+	const params = new URLSearchParams(window.location.search);
+	const ctype = params.get("ctype");
+	switch (ctype) {
 		case "1":
-			select_type.value = "1";
-			select_type.dispatchEvent(new Event("change"));
-			break;
 		case "2":
-			select_type.value = "2";
-			select_type.dispatchEvent(new Event("change"));
-			break;
 		case "3":
-			select_type.value = "3";
+			select_type.value = ctype;
 			select_type.dispatchEvent(new Event("change"));
 			break;
 		default:

@@ -129,7 +129,7 @@ const key_type = {
 	"desc": 1,
 	"keyword": 1,
 	"pack": 1,
-	"type": 1,
+	"ctype": 1,
 	"stype": 1,
 	"ttype": 1,
 	"mtype": 2,
@@ -325,9 +325,9 @@ function validate_params(params, extra_monster) {
 	else {
 		params.delete("pack");
 	}
-	switch (params.get("type")) {
+	switch (params.get("ctype")) {
 		case "1":
-			params.set("type", "1");
+			params.set("ctype", "1");
 			params.delete("stype");
 			params.delete("ttype");
 			check_checkbox(params, "mtype");
@@ -338,7 +338,7 @@ function validate_params(params, extra_monster) {
 			check_checkbox(params, "exclude");
 			break;
 		case "2":
-			params.set("type", "2");
+			params.set("ctype", "2");
 			params.delete("mtype");
 			params.delete("mtype_operator");
 			params.delete("exclude");
@@ -346,7 +346,7 @@ function validate_params(params, extra_monster) {
 			check_checkbox(params, "stype");
 			break;
 		case "3":
-			params.set("type", "3");
+			params.set("ctype", "3");
 			params.delete("mtype");
 			params.delete("mtype_operator");
 			params.delete("exclude");
@@ -354,7 +354,7 @@ function validate_params(params, extra_monster) {
 			check_checkbox(params, "ttype");
 			break;
 		default:
-			params.delete("type");
+			params.delete("ctype");
 			params.delete("mtype");
 			params.delete("mtype_operator");
 			params.delete("exclude");
@@ -362,7 +362,7 @@ function validate_params(params, extra_monster) {
 			params.delete("ttype");
 			break;
 	}
-	if (params.get("type") === null || params.get("type") === "1") {
+	if (params.get("ctype") === null || params.get("ctype") === "1") {
 		check_normal_text(params, "mat");
 		check_checkbox(params, "attr");
 		check_checkbox(params, "race");
@@ -567,7 +567,7 @@ function param_to_condition(params, arg) {
 	arg.$ctype = 0;
 	let subtype = 0;
 	let exc = 0;
-	switch (params.get("type")) {
+	switch (params.get("ctype")) {
 		case "1": {
 			arg.$ctype = TYPE_MONSTER;
 			for (const val of params.getAll("mtype")) {
@@ -1007,7 +1007,7 @@ function server_analyze2(params) {
 		return;
 	}
 
-	params.set("type", "1");
+	params.set("ctype", "1");
 	validate_params(params, false);
 	const valid_params = new URLSearchParams();
 	valid_params.set("begin", card_begin.id);
