@@ -476,8 +476,10 @@ function process_name(locale, name_string, arg) {
 				}
 			}
 			name_cmd = '0';
-			for (let i = 0; i < en_list.length; ++i)
-				name_cmd += ` OR datas.id=${en_list[i]}`;
+			for (let i = 0; i < en_list.length; ++i) {
+				name_cmd += ` OR datas.id=@e${i}`;
+				arg[`@e${i}`] = en_list[i];
+			}
 			break;
 		}
 		default: {
@@ -516,8 +518,10 @@ function process_name(locale, name_string, arg) {
 						break;
 					}
 				}
-				for (let i = 0; i < jp_list.length; ++i)
-					name_cmd += ` OR datas.id=${jp_list[i]}`;
+				for (let i = 0; i < jp_list.length; ++i) {
+					name_cmd += ` OR datas.id=@j${i}`;
+					arg[`@j${i}`] = jp_list[i];
+				}
 			}
 			break;
 		}
