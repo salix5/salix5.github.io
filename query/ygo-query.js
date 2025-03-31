@@ -124,19 +124,17 @@ function is_setcode(card, value) {
 
 /**
  * Query cards from `db` with statement `qstr` and binding object `arg` and put them in `ret`.
- * @param {initSqlJs.Database} db 
+ * @param {Database} db 
  * @param {string} qstr 
  * @param {Object} arg 
  */
 function query_db(db, qstr, arg) {
-	if (!db)
-		return [];
-
 	const ret = [];
 	const stmt = db.prepare(qstr);
 	stmt.bind(arg);
+	const option = use_bigint ? [null, { useBigInt: true }] : [];
 	while (stmt.step()) {
-		const cdata = use_bigint ? stmt.getAsObject(null, { useBigInt: true }) : stmt.getAsObject();
+		const cdata = stmt.getAsObject(...option);
 		const card = Object.create(null);
 		for (const [column, value] of Object.entries(cdata)) {
 			switch (column) {
