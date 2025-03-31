@@ -8,6 +8,6 @@ function url_query() {
 
 db_ready.then(() => {
 	url_query();
-	button1.disabled = false;
-	button2.disabled = false;
+	document.getElementById("button1").disabled = false;
+	document.getElementById("button2").disabled = false;
 });
