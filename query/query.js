@@ -841,8 +841,8 @@ function param_to_condition(params, arg) {
 		}
 		if (params.get("marker_operator") === "1") {
 			marker_operator = 1;
-			if (select_marker_op)
-				select_marker_op.value = "1";
+			if (document.getElementById("select_marker_op"))
+				document.getElementById("select_marker_op").value = "1";
 		}
 		if (marker) {
 			qstr += " AND type & $link";
