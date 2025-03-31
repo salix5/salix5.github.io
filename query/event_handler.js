@@ -1,5 +1,4 @@
 "use strict";
-const select_ot = document.getElementById("select_ot");
 const select_type = document.getElementById("select_type");
 const select_subtype_op = document.getElementById("select_subtype_op");
 
