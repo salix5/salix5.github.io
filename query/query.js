@@ -561,7 +561,7 @@ function param_to_condition(params, arg) {
 		qstr += ` AND datas.id>=${pre_release[pack]} AND datas.id<=${pre_release[pack] + 998}`;
 		arg.pack = pack;
 	}
-	select_ot.value = pack;
+	document.getElementById("select_pack").value = pack;
 
 	// type
 	arg.$ctype = 0;
