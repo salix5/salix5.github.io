@@ -485,13 +485,13 @@ function inverse_mapping(table) {
 
 
 // print condition for cards in pack
-function pack_cmd(pack) {
-	let cmd = "";
-	cmd = ` AND (0`;
+function pack_cmd(pack, arg) {
+	let cmd = "0";
 	for (let i = 0; i < pack.length; ++i) {
-		if (pack[i] && pack[i] !== 1)
-			cmd += ` OR datas.id=${pack[i]}`;
+		if (pack[i] && pack[i] !== 1) {
+			cmd += ` OR datas.id=@p${i}`;
+			arg[`@p${i}`] = pack[i];
+		}
 	}
-	cmd += `)`;
-	return cmd;
+	return ` AND (${cmd})`;
 }
