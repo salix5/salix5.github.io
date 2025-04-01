@@ -123,7 +123,7 @@ const marker_list = [
 	LINK_MARKER_BOTTOM_RIGHT,
 ];
 
-const key_type = {
+const interface_type = {
 	"cname": 1,
 	"locale": 1,
 	"desc": 1,
@@ -132,11 +132,11 @@ const key_type = {
 	"ctype": 1,
 	"stype": 1,
 	"ttype": 1,
+	"page": 1,
+
 	"mtype": 2,
 	"mtype_operator": 2,
 	"exclude": 2,
-
-	"mat": 3,
 	"attr": 2,
 	"race": 2,
 	"level": 2,
@@ -145,8 +145,6 @@ const key_type = {
 	"scale": 2,
 	"sc1": 2,
 	"sc2": 2,
-	"marker": 3,
-	"marker_operator": 3,
 	"atk1": 2,
 	"atk2": 2,
 	"atkm": 2,
@@ -154,7 +152,10 @@ const key_type = {
 	"def2": 2,
 	"defm": 2,
 	"sum": 2,
-	"page": 1,
+
+	"mat": 3,
+	"marker": 3,
+	"marker_operator": 3,
 }
 
 /**
@@ -206,9 +207,11 @@ function check_checkbox(params, name, min = 1) {
 	for (const value of values) {
 		if (value.length === 0 || value.length > MAX_STRING_LEN)
 			continue;
-		if (!re_value.test(value) || params.has(name, value))
+		if (!re_value.test(value))
 			continue;
-		let x = Number.parseInt(value);
+		if (params.has(name, value))
+			continue;
+		const x = Number.parseInt(value);
 		if (x >= min && x <= min + node_list.length - 1)
 			params.append(name, value);
 	}
@@ -248,9 +251,9 @@ function check_normal_text(params, key) {
 }
 
 function check_entry(params, key) {
-	const value = params.get(key);
-	if (value === null)
+	if (!params.has(key))
 		return false;
+	const value = params.get(key);
 	if (value.length === 0 || value.length > MAX_STRING_LEN) {
 		params.delete(key);
 		return false;
@@ -292,8 +295,8 @@ function validate_params(params, extra_monster) {
 		params.delete("exclude", "2");
 		params.delete("exclude", "3");
 		params.delete("exclude", "4");
-		for (const [key, value] of Object.entries(key_type)) {
-			if (value == 3)
+		for (const [key, type] of Object.entries(interface_type)) {
+			if (type == 3)
 				params.delete(key);
 		}
 	}
@@ -416,8 +419,8 @@ function validate_params(params, extra_monster) {
 		check_value(params, "sum", 0, 100000);
 	}
 	else {
-		for (const [key, value] of Object.entries(key_type)) {
-			if (value >= 2)
+		for (const [key, type] of Object.entries(interface_type)) {
+			if (type == 2 || type == 3)
 				params.delete(key);
 		}
 	}
@@ -438,7 +441,7 @@ function server_validate1(params) {
 	}
 	else {
 		validate_params(params, true);
-		for (const key of Object.keys(key_type)) {
+		for (const key of Object.keys(interface_type)) {
 			for (const value of params.getAll(key)) {
 				valid_params.append(key, value);
 			}
@@ -1018,7 +1021,7 @@ function server_analyze2(params) {
 	const valid_params = new URLSearchParams();
 	valid_params.set("begin", card_begin.id);
 	valid_params.set("end", card_end.id);
-	for (const key of Object.keys(key_type)) {
+	for (const key of Object.keys(interface_type)) {
 		for (const value of params.getAll(key)) {
 			valid_params.append(key, value);
 		}
