@@ -304,7 +304,7 @@ function validate_params(params, extra_monster) {
 		params.delete("exclude", "3");
 		params.delete("exclude", "4");
 		for (const [key, type] of Object.entries(interface_type)) {
-			if (type == 3)
+			if (type === 3)
 				params.delete(key);
 		}
 	}
@@ -341,11 +341,11 @@ function validate_params(params, extra_monster) {
 			params.delete("stype");
 			params.delete("ttype");
 			check_checkbox(params, "mtype");
+			check_checkbox(params, "exclude");
 			if (params.get("mtype_operator") === "1")
 				params.set("mtype_operator", "1");
 			else
 				params.set("mtype_operator", "0");
-			check_checkbox(params, "exclude");
 			break;
 		case "2":
 			params.set("ctype", "2");
@@ -372,7 +372,7 @@ function validate_params(params, extra_monster) {
 			params.delete("ttype");
 			break;
 	}
-	if (params.get("ctype") === null || params.get("ctype") === "1") {
+	if (!params.has("ctype") || params.get("ctype") === "1") {
 		check_plain_text(params, "mat");
 		check_checkbox(params, "attr");
 		check_checkbox(params, "race");
@@ -394,8 +394,8 @@ function validate_params(params, extra_monster) {
 			check_number(params, "sc1", 0, 13);
 			check_number(params, "sc2", 0, 13);
 		}
-		if (extra_monster) {
-			check_checkbox(params, "marker");
+		check_checkbox(params, "marker");
+		if (params.has("marker")) {
 			if (params.get("marker_operator") === "1")
 				params.set("marker_operator", "1");
 			else
@@ -427,11 +427,18 @@ function validate_params(params, extra_monster) {
 	}
 	else {
 		for (const [key, type] of Object.entries(interface_type)) {
-			if (type == 2 || type == 3)
+			if (type === 2 || type === 3)
 				params.delete(key);
 		}
 	}
 	check_number(params, "page", 1, 1000);
+	const result = new URLSearchParams();
+	for (const key of Object.keys(interface_type)) {
+		for (const value of params.getAll(key)) {
+			result.append(key, value);
+		}
+	}
+	return result;
 }
 
 /**
@@ -440,21 +447,13 @@ function validate_params(params, extra_monster) {
  * @returns validated params
  */
 function server_validate1(params) {
-	const valid_params = new URLSearchParams();
 	check_number(params, "id", 1, 102000000);
-	const id = params.get("code");
-	if (id) {
-		valid_params.set("code", id);
+	if (params.has("code")) {
+		const valid_params = new URLSearchParams();
+		valid_params.set("code", params.get("code"));
+		return valid_params;
 	}
-	else {
-		validate_params(params, true);
-		for (const key of Object.keys(interface_type)) {
-			for (const value of params.getAll(key)) {
-				valid_params.append(key, value);
-			}
-		}
-	}
-	return valid_params;
+	return validate_params(params, true);
 }
 
 // string -> wildcard literal
@@ -1027,15 +1026,9 @@ function server_analyze2(params) {
 	}
 
 	params.set("ctype", "1");
-	validate_params(params, false);
-	const valid_params = new URLSearchParams();
+	const valid_params = validate_params(params, false);
 	valid_params.set("begin", card_begin.id);
 	valid_params.set("end", card_end.id);
-	for (const key of Object.keys(interface_type)) {
-		for (const value of params.getAll(key)) {
-			valid_params.append(key, value);
-		}
-	}
 	const qstr0 = `${stmt_default} AND NOT type & $extra`;
 	const arg_final = {
 		...arg_default,
