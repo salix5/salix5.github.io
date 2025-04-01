@@ -1,5 +1,4 @@
 "use strict";
-const MAX_STRING_LEN = 10;
 const MAX_TEXT_LEN = 200;
 const MAX_RESULT_LEN = 500;
 
@@ -196,6 +195,12 @@ function is_pack(x) {
 	}
 }
 
+/**
+ * @param {URLSearchParams} params 
+ * @param {string} name 
+ * @param {number} min 
+ * @returns 
+ */
 function check_checkbox(params, name, min = 1) {
 	const node_list = document.getElementsByName(name);
 	if (node_list.length === 0) {
@@ -205,8 +210,6 @@ function check_checkbox(params, name, min = 1) {
 	const values = params.getAll(name);
 	params.delete(name);
 	for (const value of values) {
-		if (value.length === 0 || value.length > MAX_STRING_LEN)
-			continue;
 		if (!re_value.test(value))
 			continue;
 		if (params.has(name, value))
@@ -250,6 +253,13 @@ function check_normal_text(params, key) {
 	}
 }
 
+/**
+ * @param {URLSearchParams} params 
+ * @param {string} key 
+ * @param {number} min 
+ * @param {number} max 
+ * @returns 
+ */
 function check_number(params, key, min, max) {
 	if (!params.has(key))
 		return false;
