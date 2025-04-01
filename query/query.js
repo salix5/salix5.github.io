@@ -400,28 +400,25 @@ function validate_params(params, extra_monster) {
 			else
 				params.set("marker_operator", "0");
 		}
+		else {
+			params.delete("marker_operator");
+		}
 		check_number(params, "atk1", -1, 100000);
-		const atk1 = Number.parseInt(params.get("atk1"));
-		if (atk1 < 0) {
+		if (params.has("atk1") && Number.parseInt(params.get("atk1")) < 0) {
 			params.delete("atk2");
 			params.delete("atkm");
 			params.delete("sum");
 		}
-		else {
-			check_number(params, "atk2", 0, 100000);
-			check_number(params, "atkm", 0, 999);
-		}
+		check_number(params, "atk2", 0, 100000);
+		check_number(params, "atkm", 0, 999);
 		check_number(params, "def1", -2, 100000);
-		const def1 = Number.parseInt(params.get("def1"));
-		if (def1 < 0) {
+		if (params.has("def1") && Number.parseInt(params.get("def1")) < 0) {
 			params.delete("def2");
 			params.delete("defm");
 			params.delete("sum");
 		}
-		else {
-			check_number(params, "def2", 0, 100000);
-			check_number(params, "defm", 0, 999);
-		}
+		check_number(params, "def2", 0, 100000);
+		check_number(params, "defm", 0, 999);
 		check_number(params, "sum", 0, 100000);
 	}
 	else {
@@ -446,7 +443,7 @@ function validate_params(params, extra_monster) {
  * @returns validated params
  */
 function server_validate1(params) {
-	check_number(params, "id", 1, 102000000);
+	check_number(params, "code", 1, 102000000);
 	if (params.has("code")) {
 		const valid_params = new URLSearchParams();
 		valid_params.set("code", params.get("code"));
