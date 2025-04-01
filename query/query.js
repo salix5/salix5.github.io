@@ -5,8 +5,7 @@ const MAX_RESULT_LEN = 500;
 let current_stmt = "";
 let current_arg = null;
 
-//re_wildcard = /(?<!\$)[%_]/ (lookbehind)
-const re_wildcard = /(^|[^\$])[%_]/;
+const re_wildcard = /(?<!\$)[%_]/;
 const re_bad_escape = /\$(?![%_])/;
 const re_special = /[\$%_]/;
 
