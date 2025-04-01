@@ -241,18 +241,25 @@ function check_text(params, key) {
 	return true;
 }
 
-function check_normal_text(params, key) {
-	let value = params.get(key);
-	if (value === null)
+/**
+ * @param {URLSearchParams} params 
+ * @param {string} key 
+ * @returns 
+ */
+function check_plain_text(params, key) {
+	if (!params.has(key))
 		return false;
-	if (value.length === 0 || value.length > MAX_TEXT_LEN || re_special.test(value)) {
+	const value = params.get(key);
+	if (value.length === 0 || value.length > MAX_TEXT_LEN) {
 		params.delete(key);
 		return false;
 	}
-	else {
-		params.set(key, value);
-		return true;
+	if (re_special.test(value)) {
+		params.delete(key);
+		return false;
 	}
+	params.set(key, value);
+	return true;
 }
 
 /**
@@ -366,7 +373,7 @@ function validate_params(params, extra_monster) {
 			break;
 	}
 	if (params.get("ctype") === null || params.get("ctype") === "1") {
-		check_normal_text(params, "mat");
+		check_plain_text(params, "mat");
 		check_checkbox(params, "attr");
 		check_checkbox(params, "race");
 		check_checkbox(params, "level", 0);
