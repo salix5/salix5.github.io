@@ -226,17 +226,19 @@ function check_checkbox(params, name, min = 1) {
  * @returns 
  */
 function check_text(params, key) {
+	if (!params.has(key))
+		return false;
 	const value = params.get(key);
-	if (value === null)
-		return "";
-	if (value.length === 0 || value.length > MAX_TEXT_LEN || re_bad_escape.test(value)) {
+	if (value.length === 0 || value.length > MAX_TEXT_LEN) {
 		params.delete(key);
-		return "";
+		return false;
 	}
-	else {
-		params.set(key, value);
-		return value;
+	if (re_bad_escape.test(value)) {
+		params.delete(key);
+		return false;
 	}
+	params.set(key, value);
+	return true;
 }
 
 function check_normal_text(params, key) {
@@ -920,6 +922,10 @@ function get_sw_str(x) {
 	return `(${sw_str1}${sw_str2}${sw_str3}${sw_str4}${sw_str5})`;
 }
 
+/**
+ * @param {string} cdata 
+ * @returns 
+ */
 function get_single_card(cdata) {
 	if (!cdata)
 		return [null, 0];
@@ -974,14 +980,13 @@ function get_single_card(cdata) {
  * @returns 
  */
 function server_analyze2(params) {
+	if (!check_text(params, "begin") || !check_text(params, "end"))
+		return;
 	// id or name
-	const cdata1 = check_text(params, "begin");
-	if (cdata1)
-		document.getElementById("text_id1").value = cdata1;
-	const cdata2 = check_text(params, "end");
-	if (cdata2)
-		document.getElementById("text_id2").value = cdata2;
-
+	const cdata1 = params.get("begin");
+	document.getElementById("text_id1").value = cdata1;
+	const cdata2 = params.get("end");
+	document.getElementById("text_id2").value = cdata2;
 	const [card_begin, result_len1] = get_single_card(cdata1);
 	if (result_len1 > 1) {
 		const row0 = table_result.insertRow(-1);
