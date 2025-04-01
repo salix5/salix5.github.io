@@ -14,7 +14,7 @@ const re_special = /[\$%_]/;
 const re_id = /^\d{1,9}$/;
 const re_value = /^\d{1,2}$/;
 const re_pack = /^_?\w{4}$/;
-const re_number = /^-?\d+$/;
+const re_number = /^-?\d{1,10}$/;
 
 const mtype_list = [
 	TYPE_FUSION,
@@ -192,7 +192,7 @@ function is_pack(x) {
 		case "t":
 			return true;
 		default:
-			return re_pack.test(x) && !!(pack_list[x] || pre_release[x]);
+			return re_pack.test(x) && (pack_list[x] || pre_release[x]);
 	}
 }
 
@@ -250,19 +250,8 @@ function check_normal_text(params, key) {
 	}
 }
 
-function check_entry(params, key) {
+function check_number(params, key, min, max) {
 	if (!params.has(key))
-		return false;
-	const value = params.get(key);
-	if (value.length === 0 || value.length > MAX_STRING_LEN) {
-		params.delete(key);
-		return false;
-	}
-	return true;
-}
-
-function check_value(params, key, min, max) {
-	if (!check_entry(params, key))
 		return false;
 	const value = params.get(key);
 	if (!re_number.test(value)) {
@@ -320,7 +309,6 @@ function validate_params(params, extra_monster) {
 		params.delete("locale");
 		check_text(params, "desc");
 	}
-	check_entry(params, "pack");
 	const pack = params.get("pack");
 	if (pack && is_pack(pack)) {
 		params.set("pack", pack);
@@ -376,16 +364,16 @@ function validate_params(params, extra_monster) {
 			params.delete("lv2");
 		}
 		else {
-			check_value(params, "lv1", 0, 13);
-			check_value(params, "lv2", 0, 13);
+			check_number(params, "lv1", 0, 13);
+			check_number(params, "lv2", 0, 13);
 		}
 		if (params.has("scale")) {
 			params.delete("sc1");
 			params.delete("sc2");
 		}
 		else {
-			check_value(params, "sc1", 0, 13);
-			check_value(params, "sc2", 0, 13);
+			check_number(params, "sc1", 0, 13);
+			check_number(params, "sc2", 0, 13);
 		}
 		if (extra_monster) {
 			check_checkbox(params, "marker");
@@ -394,7 +382,7 @@ function validate_params(params, extra_monster) {
 			else
 				params.set("marker_operator", "0");
 		}
-		check_value(params, "atk1", -1, 100000);
+		check_number(params, "atk1", -1, 100000);
 		const atk1 = Number.parseInt(params.get("atk1"));
 		if (atk1 < 0) {
 			params.delete("atk2");
@@ -402,10 +390,10 @@ function validate_params(params, extra_monster) {
 			params.delete("sum");
 		}
 		else {
-			check_value(params, "atk2", 0, 100000);
-			check_value(params, "atkm", 0, 999);
+			check_number(params, "atk2", 0, 100000);
+			check_number(params, "atkm", 0, 999);
 		}
-		check_value(params, "def1", -2, 100000);
+		check_number(params, "def1", -2, 100000);
 		const def1 = Number.parseInt(params.get("def1"));
 		if (def1 < 0) {
 			params.delete("def2");
@@ -413,10 +401,10 @@ function validate_params(params, extra_monster) {
 			params.delete("sum");
 		}
 		else {
-			check_value(params, "def2", 0, 100000);
-			check_value(params, "defm", 0, 999);
+			check_number(params, "def2", 0, 100000);
+			check_number(params, "defm", 0, 999);
 		}
-		check_value(params, "sum", 0, 100000);
+		check_number(params, "sum", 0, 100000);
 	}
 	else {
 		for (const [key, type] of Object.entries(interface_type)) {
@@ -424,7 +412,7 @@ function validate_params(params, extra_monster) {
 				params.delete(key);
 		}
 	}
-	check_value(params, "page", 1, 1000);
+	check_number(params, "page", 1, 1000);
 }
 
 /**
@@ -434,7 +422,7 @@ function validate_params(params, extra_monster) {
  */
 function server_validate1(params) {
 	const valid_params = new URLSearchParams();
-	check_value(params, "id", 1, 102000000);
+	check_number(params, "id", 1, 102000000);
 	const id = params.get("code");
 	if (id) {
 		valid_params.set("code", id);
