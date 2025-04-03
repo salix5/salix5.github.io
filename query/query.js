@@ -277,14 +277,16 @@ function check_number(params, key, min, max) {
 		return false;
 	}
 	const x = Number.parseInt(value);
-	if (Number.isSafeInteger(x) && x >= min && x <= max) {
-		params.set(key, value);
-		return true
-	}
-	else {
+	if (!Number.isSafeInteger(x)) {
 		params.delete(key);
 		return false;
 	}
+	if (x < min || x > max) {
+		params.delete(key);
+		return false;
+	}
+	params.set(key, value);
+	return true
 }
 
 /**
