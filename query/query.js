@@ -539,18 +539,18 @@ function process_name(locale, name_string, arg) {
 /**
  * Parse param into sqlite statement condition.
  * @param {URLSearchParams} params 
- * @param {Object} arg 
- * @returns sqlite statement condition
+ * @returns {[string, Object]}sqlite statement condition
  */
-function param_to_condition(params, arg) {
+function param_to_condition(params) {
 	let qstr = "";
+	const arg = { ...arg_default };
 	// id, primary key
 	const id = Number.parseInt(params.get("code"), 10);
 	if (id) {
 		document.getElementById("text_id").value = id;
 		qstr += " AND datas.id == $id";
 		arg.$id = id;
-		return qstr;
+		return [qstr, arg];
 	}
 
 	qstr += no_alt_filter;
@@ -900,14 +900,13 @@ function param_to_condition(params, arg) {
 			arg.$desc = string_to_literal(desc);
 		}
 	}
-	return qstr;
+	return [qstr, arg];
 }
 
 // entrance of query
 function server_analyze1(params) {
-	const arg_final = { ...arg_default };
 	const valid_params = server_validate1(params);
-	const condition = param_to_condition(valid_params, arg_final);
+	const [condition, arg_final] = param_to_condition(valid_params);
 	const stmt_final = `${stmt_base}${condition};`;
 	current_stmt = stmt_final;
 	current_arg = arg_final;
@@ -1028,11 +1027,8 @@ function server_analyze2(params) {
 	valid_params.set("begin", card_begin.id);
 	valid_params.set("end", card_end.id);
 	const qstr0 = `${stmt_default} AND NOT type & $extra`;
-	const arg_final = {
-		...arg_default,
-		$extra: TYPE_EXTRA,
-	};
-	const condition = param_to_condition(valid_params, arg_final);
+	const [condition, arg_final] = param_to_condition(valid_params);
+	arg_final.$extra = TYPE_EXTRA;
 	const stmt_final = `${qstr0} AND ${get_sw_str("begin")} AND ${get_sw_str("end")}${condition};`;
 	arg_final.$race_begin = card_begin.race;
 	arg_final.$attr_begin = card_begin.attribute;
