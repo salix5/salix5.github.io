@@ -211,7 +211,7 @@ function create_rows(card, pack) {
 	const img_card = document.createElement('img');
 	img_card.className = 'pic';
 	if (card.id <= 99999999)
-		img_card.src = `https://salix5.github.io/query-data/pics/${card.id}.jpg`;
+		img_card.src = `https://salix5.github.io/query-data/pics/${card.artid ? card.artid : card.id}.jpg`;
 	else
 		img_card.src = `../cdb/expansions/pics/${card.id}.jpg`;
 	img_card.onerror = imgError;
