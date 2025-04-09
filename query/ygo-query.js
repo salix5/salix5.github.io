@@ -168,7 +168,50 @@ function query_db(db, qstr, arg) {
 	return ret;
 }
 
-function edit_card(card) {
+function generate_card(cdata) {
+	let artid = 0;
+	if (is_alternative(cdata)) {
+		artid = cdata.id;
+		cdata.id = cdata.alias;
+		cdata.alias = 0;
+	}
+	/**
+	 * @type {Card}
+	 */
+	const card = Object.create(null);
+	if (id_to_cid.has(cdata.id))
+		card.cid = id_to_cid.get(cdata.id);
+	card.id = cdata.id;
+	card.tw_name = cdata.name;
+	if (card.cid) {
+		for (const [locale, prop] of Object.entries(official_name)) {
+			if (name_table[locale].has(card.cid))
+				card[prop] = name_table[locale].get(card.cid);
+			else if (md_table[locale] && md_table[locale].has(card.cid))
+				card[game_name[locale]] = md_table[locale].get(card.cid);
+		}
+	}
+	for (const [column, value] of Object.entries(cdata)) {
+		switch (column) {
+			case "id":
+			case "name":
+			case "desc":
+				continue;
+			case "scale":
+				if (cdata.type & TYPE_PENDULUM)
+					card[column] = value;
+				break;
+			default:
+				card[column] = value;
+				break;
+		}
+	}
+	if (card.cid && md_card_list[card.cid])
+		card.md_rarity = md_card_list[card.cid];
+	card.text = Object.create(null);
+	card.text.desc = cdata.desc;
+	card.artid = artid;
+	// color
 	if (card.type & TYPE_MONSTER) {
 		if (!(card.type & TYPE_EXTRA)) {
 			if (card.type & TYPE_TOKEN)
@@ -224,33 +267,7 @@ function edit_card(card) {
 	else {
 		card.color = -1;
 	}
-	if (is_alternative(card)) {
-		card.artid = card.id;
-		card.id = card.alias;
-		card.alias = 0;
-	}
-	else {
-		card.artid = 0;
-	}
-	if (id_to_cid.has(card.id))
-		card.cid = id_to_cid.get(card.id);
-	if (!(card.type & TYPE_PENDULUM))
-		delete card.scale;
-	card.tw_name = card.name;
-	delete card.name;
-	card.text = Object.create(null);
-	card.text.desc = card.desc;
-	delete card.desc;
-	if (card.cid) {
-		for (const [locale, prop] of Object.entries(official_name)) {
-			if (name_table[locale].has(card.cid))
-				card[prop] = name_table[locale].get(card.cid);
-			else if (md_table[locale] && md_table[locale].has(card.cid))
-				card[game_name[locale]] = md_table[locale].get(card.cid);
-		}
-		if (md_card_list[card.cid])
-			card.md_rarity = md_card_list[card.cid];
-	}
+	return card;
 }
 
 /**
@@ -276,16 +293,14 @@ function create_index(result, pack_name) {
  * Query cards and push into ret.
  * @param {string} qstr sqlite command
  * @param {Object} arg binding object
- * @returns {Card[]}
+ * @returns 
  */
 function query(qstr, arg) {
 	const ret = [];
 	for (const db of db_list) {
-		const result = query_db(db, qstr, arg);
-		ret.push(...result);
-	}
-	for (const card of ret) {
-		edit_card(card);
+		for (const cdata of query_db(db, qstr, arg)) {
+			ret.push(generate_card(cdata));
+		}
 	}
 	if (arg.pack && pack_list[arg.pack])
 		create_index(ret, arg.pack);
