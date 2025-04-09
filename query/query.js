@@ -151,7 +151,7 @@ const interface_type = {
 	"defm": 2,
 	"sum": 2,
 
-	"mat": 3,
+	"material": 3,
 	"marker": 3,
 	"marker_operator": 3,
 }
@@ -374,7 +374,7 @@ function validate_params(params, extra_monster) {
 			break;
 	}
 	if (!params.has("ctype") || params.get("ctype") === "1") {
-		check_plain_text(params, "mat");
+		check_plain_text(params, "material");
 		check_checkbox(params, "attr");
 		check_checkbox(params, "race");
 		check_checkbox(params, "level", 0);
@@ -674,14 +674,14 @@ function param_to_condition(params) {
 	}
 
 	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
-		// mat
-		const mat = params.get("mat");
-		if (mat) {
-			document.getElementById("text_mat").value = mat;
+		// material
+		const material = params.get("material");
+		if (material) {
+			document.getElementById("text_mat").value = material;
 			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
-			arg.$mat1 = `%${mat}+%`;
-			arg.$mat2 = `%+${mat}%`;
-			arg.$mat3 = `%${mat}×%`;
+			arg.$mat1 = `%${material}+%`;
+			arg.$mat2 = `%+${material}%`;
+			arg.$mat3 = `%${material}×%`;
 			arg.$ctype = TYPE_MONSTER;
 		}
 
