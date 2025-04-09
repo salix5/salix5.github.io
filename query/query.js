@@ -679,9 +679,9 @@ function param_to_condition(params) {
 		if (material) {
 			document.getElementById("text_mat").value = material;
 			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
-			arg.$mat1 = `%${material}+%`;
-			arg.$mat2 = `%+${material}%`;
-			arg.$mat3 = `%${material}×%`;
+			arg.$mat1 = `「${material}」%+%`;
+			arg.$mat2 = `%+「${material}」%`;
+			arg.$mat3 = `%「${material}」×%`;
 			arg.$ctype = TYPE_MONSTER;
 		}
 
