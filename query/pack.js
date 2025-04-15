@@ -9,6 +9,7 @@ const pre_release = {
 	LPG1: 100240000,
 
 	// TCG
+	_ALIN: 101208000,
 };
 
 const wiki_link = {
@@ -21,4 +22,5 @@ const wiki_link = {
 	LPG1: "https://yugioh-wiki.net/index.php?LIMITED%20PACK%20GX%20%A1%DD%A5%AA%A5%B7%A5%EA%A5%B9%A5%EC%A5%C3%A5%C9%A1%DD#card",
 
 	// TCG
+	_ALIN: "https://yugipedia.com/wiki/Alliance_Insight",
 };
