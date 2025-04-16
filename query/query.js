@@ -146,8 +146,8 @@ const interface_type = {
 	"atk_from": 2,
 	"atk_to": 2,
 	"atkm": 2,
-	"def1": 2,
-	"def2": 2,
+	"def_from": 2,
+	"def_to": 2,
 	"defm": 2,
 	"sum": 2,
 
@@ -413,13 +413,13 @@ function validate_params(params, extra_monster) {
 		}
 		check_number(params, "atk_to", 0, 100000);
 		check_number(params, "atkm", 0, 999);
-		check_number(params, "def1", -2, 100000);
-		if (params.has("def1") && Number.parseInt(params.get("def1")) < 0) {
-			params.delete("def2");
+		check_number(params, "def_from", -2, 100000);
+		if (params.has("def_from") && Number.parseInt(params.get("def_from")) < 0) {
+			params.delete("def_to");
 			params.delete("defm");
 			params.delete("sum");
 		}
-		check_number(params, "def2", 0, 100000);
+		check_number(params, "def_to", 0, 100000);
 		check_number(params, "defm", 0, 999);
 		check_number(params, "sum", 0, 100000);
 	}
@@ -715,33 +715,33 @@ function param_to_condition(params) {
 		}
 
 		// def, exclude link monsters
-		if (params.has("def1") || params.has("def2") || params.has("defm") || params.has("sum")) {
+		if (params.has("def_from") || params.has("def_to") || params.has("defm") || params.has("sum")) {
 			qstr += " AND NOT type & $link";
 			arg.$link = TYPE_LINK;
 			arg.$ctype = TYPE_MONSTER;
 		}
-		if (params.has("def1")) {
-			const def1 = Number.parseInt(params.get("def1"));
-			document.getElementById("text_def1").value = def1;
-			if (def1 === -1) {
+		if (params.has("def_from")) {
+			const def_from = Number.parseInt(params.get("def_from"));
+			document.getElementById("text_def1").value = def_from;
+			if (def_from === -1) {
 				qstr += " AND def == $unknown";
 				arg.$unknown = -2;
 			}
-			else if (def1 === -2) {
+			else if (def_from === -2) {
 				qstr += " AND def == atk AND def >= $zero";
 				arg.$zero = 0;
 			}
 			else {
-				qstr += " AND def >= $def1";
-				arg.$def1 = def1;
+				qstr += " AND def >= $def_from";
+				arg.$def_from = def_from;
 			}
 		}
-		if (params.has("def2")) {
-			const def2 = Number.parseInt(params.get("def2"));
-			document.getElementById("text_def2").value.value = def2;
-			qstr += " AND def >= $zero AND def <= $def2";
+		if (params.has("def_to")) {
+			const def_to = Number.parseInt(params.get("def_to"));
+			document.getElementById("text_def2").value.value = def_to;
+			qstr += " AND def >= $zero AND def <= $def_to";
 			arg.$zero = 0;
-			arg.$def2 = def2;
+			arg.$def_to = def_to;
 		}
 		if (params.has("defm")) {
 			const def_mod = Number.parseInt(params.get("defm"));
