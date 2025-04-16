@@ -411,7 +411,13 @@ function validate_params(params, extra_monster) {
 			params.delete("atkm");
 			params.delete("sum");
 		}
-		check_number(params, "atk_to", 0, 100000);
+		check_number(params, "atk_to", -1, 100000);
+		if (params.has("atk_to") && Number.parseInt(params.get("atk_to")) < 0) {
+			params.set("atk_from", params.get("atk_to"));
+			params.delete("atk_to");
+			params.delete("atkm");
+			params.delete("sum");
+		}
 		check_number(params, "atkm", 0, 999);
 		check_number(params, "def_from", -2, 100000);
 		if (params.has("def_from") && Number.parseInt(params.get("def_from")) < 0) {
@@ -419,7 +425,13 @@ function validate_params(params, extra_monster) {
 			params.delete("defm");
 			params.delete("sum");
 		}
-		check_number(params, "def_to", 0, 100000);
+		check_number(params, "def_to", -1, 100000);
+		if (params.has("def_to") && Number.parseInt(params.get("def_to")) < 0) {
+			params.set("def_from", params.get("def_to"));
+			params.delete("def_to");
+			params.delete("defm");
+			params.delete("sum");
+		}
 		check_number(params, "defm", 0, 999);
 		check_number(params, "sum", 0, 100000);
 	}
