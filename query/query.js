@@ -143,8 +143,8 @@ const interface_type = {
 	"scale": 2,
 	"scale_from": 2,
 	"scale_to": 2,
-	"atk1": 2,
-	"atk2": 2,
+	"atk_from": 2,
+	"atk_to": 2,
 	"atkm": 2,
 	"def1": 2,
 	"def2": 2,
@@ -405,13 +405,13 @@ function validate_params(params, extra_monster) {
 		else {
 			params.delete("marker_operator");
 		}
-		check_number(params, "atk1", -1, 100000);
-		if (params.has("atk1") && Number.parseInt(params.get("atk1")) < 0) {
-			params.delete("atk2");
+		check_number(params, "atk_from", -1, 100000);
+		if (params.has("atk_from") && Number.parseInt(params.get("atk_from")) < 0) {
+			params.delete("atk_to");
 			params.delete("atkm");
 			params.delete("sum");
 		}
-		check_number(params, "atk2", 0, 100000);
+		check_number(params, "atk_to", 0, 100000);
 		check_number(params, "atkm", 0, 999);
 		check_number(params, "def1", -2, 100000);
 		if (params.has("def1") && Number.parseInt(params.get("def1")) < 0) {
@@ -686,26 +686,26 @@ function param_to_condition(params) {
 		}
 
 		// atk
-		if (params.has("atk1")) {
-			const atk1 = Number.parseInt(params.get("atk1"));
-			document.getElementById("text_atk1").value = atk1;
+		if (params.has("atk_from")) {
+			const atk_from = Number.parseInt(params.get("atk_from"));
+			document.getElementById("text_atk1").value = atk_from;
 			arg.$ctype = TYPE_MONSTER;
-			if (atk1 === -1) {
+			if (atk_from === -1) {
 				qstr += " AND atk == $unknown";
 				arg.$unknown = -2;
 			}
 			else {
-				qstr += " AND atk >= $atk1";
-				arg.$atk1 = atk1;
+				qstr += " AND atk >= $atk_from";
+				arg.$atk_from = atk_from;
 			}
 		}
-		if (params.has("atk2")) {
-			const atk2 = Number.parseInt(params.get("atk2"));
-			document.getElementById("text_atk2").value = atk2;
+		if (params.has("atk_to")) {
+			const atk_to = Number.parseInt(params.get("atk_to"));
+			document.getElementById("text_atk2").value = atk_to;
 			arg.$ctype = TYPE_MONSTER;
-			qstr += " AND atk >= $zero AND atk <= $atk2";
+			qstr += " AND atk >= $zero AND atk <= $atk_to";
 			arg.$zero = 0;
-			arg.$atk2 = atk2;
+			arg.$atk_to = atk_to;
 		}
 		if (params.has("atkm")) {
 			const atk_mod = Number.parseInt(params.get("atkm"));
