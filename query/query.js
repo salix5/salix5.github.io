@@ -138,11 +138,11 @@ const interface_type = {
 	"attr": 2,
 	"race": 2,
 	"level": 2,
-	"lv1": 2,
-	"lv2": 2,
+	"level_from": 2,
+	"level_to": 2,
 	"scale": 2,
-	"sc1": 2,
-	"sc2": 2,
+	"scale_from": 2,
+	"scale_to": 2,
 	"atk1": 2,
 	"atk2": 2,
 	"atkm": 2,
@@ -380,20 +380,20 @@ function validate_params(params, extra_monster) {
 		check_checkbox(params, "level", 0);
 		check_checkbox(params, "scale", 0);
 		if (params.has("level")) {
-			params.delete("lv1");
-			params.delete("lv2");
+			params.delete("level_from");
+			params.delete("level_to");
 		}
 		else {
-			check_number(params, "lv1", 0, 13);
-			check_number(params, "lv2", 0, 13);
+			check_number(params, "level_from", 0, 13);
+			check_number(params, "level_to", 0, 13);
 		}
 		if (params.has("scale")) {
-			params.delete("sc1");
-			params.delete("sc2");
+			params.delete("scale_from");
+			params.delete("scale_to");
 		}
 		else {
-			check_number(params, "sc1", 0, 13);
-			check_number(params, "sc2", 0, 13);
+			check_number(params, "scale_from", 0, 13);
+			check_number(params, "scale_to", 0, 13);
 		}
 		check_checkbox(params, "marker");
 		if (params.has("marker")) {
@@ -757,7 +757,7 @@ function param_to_condition(params) {
 		}
 
 		// lv, rank, link
-		if (params.has("level") || params.has("lv1") || params.has("lv2")) {
+		if (params.has("level") || params.has("level_from") || params.has("level_to")) {
 			arg.$ctype = TYPE_MONSTER;
 		}
 		if (params.has("level")) {
@@ -773,19 +773,19 @@ function param_to_condition(params) {
 			qstr += ` AND (${level_condtion})`;
 			arg.$mask = 0xff;
 		}
-		if (params.has("lv1")) {
+		if (params.has("level_from")) {
 			qstr += " AND (level & $mask) >= $level_from";
 			arg.$mask = 0xff;
-			arg.$level_from = Number.parseInt(params.get("lv1"));
+			arg.$level_from = Number.parseInt(params.get("level_from"));
 		}
-		if (params.has("lv2")) {
+		if (params.has("level_to")) {
 			qstr += " AND (level & $mask) <= $level_to";
 			arg.$mask = 0xff;
-			arg.$level_to = Number.parseInt(params.get("lv2"));
+			arg.$level_to = Number.parseInt(params.get("level_to"));
 		}
 
 		// scale, pendulum monster only
-		if (params.has("scale") || params.has("sc1") || params.has("sc2")) {
+		if (params.has("scale") || params.has("scale_from") || params.has("scale_to")) {
 			qstr += " AND type & $pendulum";
 			arg.$pendulum = TYPE_PENDULUM;
 			arg.$ctype = TYPE_MONSTER;
@@ -804,17 +804,17 @@ function param_to_condition(params) {
 			arg.$offset = 24;
 			arg.$mask = 0xff;
 		}
-		if (params.has("sc1")) {
+		if (params.has("scale_from")) {
 			qstr += " AND (level >> $offset & $mask) >= $scacle_from";
 			arg.$offset = 24;
 			arg.$mask = 0xff;
-			arg.$scacle_from = Number.parseInt(params.get("sc1"));
+			arg.$scacle_from = Number.parseInt(params.get("scale_from"));
 		}
-		if (params.has("sc2")) {
+		if (params.has("scale_to")) {
 			qstr += " AND (level >> $offset & $mask) <= $scacle_to";
 			arg.$offset = 24;
 			arg.$mask = 0xff;
-			arg.$scacle_to = Number.parseInt(params.get("sc1"));
+			arg.$scacle_to = Number.parseInt(params.get("scale_to"));
 		}
 
 		// attr, race
