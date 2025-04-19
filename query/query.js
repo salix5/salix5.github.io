@@ -293,6 +293,7 @@ function check_number(params, key, min, max) {
  * validate common keys
  * @param {URLSearchParams} params 
  * @param {boolean} extra_monster
+ * @returns 
  */
 function validate_params(params, extra_monster) {
 	if (!extra_monster) {
