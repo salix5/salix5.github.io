@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "DBJH#7";
+const last_pack = "DUAD#1";
 const unknown_index = {
 };
 
