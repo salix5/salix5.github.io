@@ -282,7 +282,7 @@ function create_rows(card, pack) {
 			const link_db = document.createElement('a');
 			link_db.href = db_url;
 			link_db.target = '_blank';
-			link_db.rel = 'noreferrer nofollow';
+			link_db.rel = 'noreferrer';
 			link_db.textContent = link_db_text;
 			div_db.appendChild(link_db);
 		}
@@ -315,7 +315,7 @@ function create_rows(card, pack) {
 		const link_faq = document.createElement('a');
 		link_faq.href = faq_url;
 		link_faq.target = '_blank';
-		link_faq.rel = 'noreferrer nofollow';
+		link_faq.rel = 'noreferrer';
 		link_faq.textContent = 'Q&A';
 		div_qa.appendChild(link_faq);
 		div_alias.appendChild(div_qa);
