@@ -185,6 +185,8 @@ function is_formal(id, type) {
 function text_link(name) {
 	if (name.endsWith('衍生物'))
 		return `<a href="/query/?desc=${name}" target="_blank">${name}</a>`;
+	if (name.length > 30)
+		return name;
 	if (replace_name[name] === null)
 		return name;
 	if (replace_name[name])
