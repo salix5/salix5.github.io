@@ -507,10 +507,10 @@ function process_name(locale, name_string, arg) {
 			let is_setname = false;
 			// zh, setcode
 			if (!re_wildcard.test(name_string)) {
-				const mapObj = Object.create(null);
-				mapObj['$%'] = '%';
-				mapObj['$_'] = '_';
-				let zh_name = name_string.replace(/\$%|\$_/g, (x) => mapObj[x]).toLowerCase();
+				const replace_map = Object.create(null);
+				replace_map['$%'] = '%';
+				replace_map['$_'] = '_';
+				let zh_name = name_string.replace(/\$%|\$_/g, (x) => replace_map[x]).toLowerCase();
 				for (const [keyword, value] of Object.entries(setname)) {
 					if (keyword.toLowerCase() === zh_name) {
 						const setcode = Number.parseInt(value);
