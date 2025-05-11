@@ -426,13 +426,13 @@ function show_result(params, result) {
 	table_result.innerHTML = "";
 	select_page.innerHTML = "";
 	div_page.hidden = true;
+	current_params = params;
 	const total_pages = Math.ceil(result.length / result_per_page);
-	const page = params.get("page") ? Number.parseInt(params.get("page"), 10) : 1;
+	const page = params.has("page") ? Number.parseInt(params.get("page"), 10) : 1;
 	let pack = params.get("pack");
 	if (pack === "o" || pack === "t" || !is_pack(pack))
 		pack = null;
 	if (total_pages && page <= total_pages) {
-		current_params = params;
 		const index_begin = result_per_page * (page - 1);
 		const index_end = Math.min(result_per_page * page - 1, result.length - 1);
 		if (pack)
@@ -455,7 +455,6 @@ function show_result(params, result) {
 		}
 	}
 	else {
-		current_params = null;
 		const row0 = table_result.insertRow(-1);
 		const cell0 = row0.insertCell(-1);
 		table_result.style.border = "1px solid black";
