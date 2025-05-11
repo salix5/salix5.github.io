@@ -693,7 +693,7 @@ function param_to_condition(params) {
 			arg.$mat2 = `%+「${material}」%`;
 			arg.$mat3 = `%「${material}」×%`;
 			arg.$ctype = TYPE_MONSTER;
-			document.getElementById("text_mat").value = material;
+			document.getElementById("text_mat").value = params.get("material");
 		}
 
 		// atk
