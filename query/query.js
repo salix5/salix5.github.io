@@ -684,7 +684,6 @@ function param_to_condition(params) {
 	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
 		// material
 		if (params.has("material")) {
-			document.getElementById("text_mat").value = material;
 			const replace_map = Object.create(null);
 			replace_map['%'] = '$%';
 			replace_map['_'] = '$_';
@@ -694,12 +693,12 @@ function param_to_condition(params) {
 			arg.$mat2 = `%+「${material}」%`;
 			arg.$mat3 = `%「${material}」×%`;
 			arg.$ctype = TYPE_MONSTER;
+			document.getElementById("text_mat").value = material;
 		}
 
 		// atk
 		if (params.has("atk_from")) {
 			const atk_from = Number.parseInt(params.get("atk_from"));
-			document.getElementById("text_atk1").value = atk_from;
 			arg.$ctype = TYPE_MONSTER;
 			if (atk_from === -1) {
 				qstr += " AND atk == $unknown";
@@ -709,14 +708,15 @@ function param_to_condition(params) {
 				qstr += " AND atk >= $atk_from";
 				arg.$atk_from = atk_from;
 			}
+			document.getElementById("text_atk1").value = atk_from;
 		}
 		if (params.has("atk_to")) {
 			const atk_to = Number.parseInt(params.get("atk_to"));
-			document.getElementById("text_atk2").value = atk_to;
 			arg.$ctype = TYPE_MONSTER;
 			qstr += " AND atk >= $zero AND atk <= $atk_to";
 			arg.$zero = 0;
 			arg.$atk_to = atk_to;
+			document.getElementById("text_atk2").value = atk_to;
 		}
 		if (params.has("atkm")) {
 			const atk_mod = Number.parseInt(params.get("atkm"));
@@ -733,7 +733,6 @@ function param_to_condition(params) {
 		}
 		if (params.has("def_from")) {
 			const def_from = Number.parseInt(params.get("def_from"));
-			document.getElementById("text_def1").value = def_from;
 			if (def_from === -1) {
 				qstr += " AND def == $unknown";
 				arg.$unknown = -2;
@@ -746,13 +745,14 @@ function param_to_condition(params) {
 				qstr += " AND def >= $def_from";
 				arg.$def_from = def_from;
 			}
+			document.getElementById("text_def1").value = def_from;
 		}
 		if (params.has("def_to")) {
 			const def_to = Number.parseInt(params.get("def_to"));
-			document.getElementById("text_def2").value.value = def_to;
 			qstr += " AND def >= $zero AND def <= $def_to";
 			arg.$zero = 0;
 			arg.$def_to = def_to;
+			document.getElementById("text_def2").value.value = def_to;
 		}
 		if (params.has("defm")) {
 			const def_mod = Number.parseInt(params.get("defm"));
@@ -761,10 +761,10 @@ function param_to_condition(params) {
 		}
 		if (params.has("sum")) {
 			const sum = Number.parseInt(params.get("sum"));
-			document.getElementById("text_sum").value = sum;
 			qstr += " AND atk >= $zero AND def >= $zero AND atk + def == $sum";
 			arg.$zero = 0;
 			arg.$sum = sum;
+			document.getElementById("text_sum").value = sum;
 		}
 
 		// lv, rank, link
@@ -776,10 +776,10 @@ function param_to_condition(params) {
 			let index = 0;
 			for (const value of params.getAll("level")) {
 				const level = Number.parseInt(value);
-				cb_level[level].checked = true;
 				level_condtion += ` OR (level & $mask) == $level${index}`;
 				arg[`$level${index}`] = level;
 				index++;
+				cb_level[level].checked = true;
 			}
 			qstr += ` AND (${level_condtion})`;
 			arg.$mask = 0xff;
@@ -806,10 +806,10 @@ function param_to_condition(params) {
 			let index = 0;
 			for (const value of params.getAll("scale")) {
 				const scale = Number.parseInt(value);
-				cb_scale[scale].checked = true;
 				scale_condtion += ` OR (level >> $offset & $mask) == $scale${index}`;
 				arg[`$scale${index}`] = scale;
 				index++;
+				cb_scale[scale].checked = true;
 			}
 			qstr += ` AND (${scale_condtion})`;
 			arg.$offset = 24;
