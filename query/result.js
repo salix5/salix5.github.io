@@ -400,13 +400,13 @@ function create_rows(card, pack) {
 	}
 	cell_effect.appendChild(document.createElement('hr'));
 
-	const mapObj = Object.create(null);
-	mapObj['\r\n'] = '<br>';
-	mapObj['&'] = '&amp;';
-	mapObj['<'] = '&lt;';
-	mapObj['>'] = '&gt;';
-	mapObj['"'] = '&quot;';
-	let desc = card.text.desc.replace(/\r\n|&|<|>|"/g, (x) => mapObj[x]);
+	const replace_map = Object.create(null);
+	replace_map['\r\n'] = '<br>';
+	replace_map['&'] = '&amp;';
+	replace_map['<'] = '&lt;';
+	replace_map['>'] = '&gt;';
+	replace_map['"'] = '&quot;';
+	let desc = card.text.desc.replace(/\r\n|&|<|>|"/g, (x) => replace_map[x]);
 	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM))
 		desc = desc.replace(/(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g, text_link);
 	const div_desc = document.createElement('div');
