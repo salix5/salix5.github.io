@@ -6,7 +6,6 @@ let current_stmt = "";
 let current_arg = null;
 
 const re_wildcard = /(?<!\$)[%_]/;
-const re_bad_escape = /\$(?![%_])/;
 const re_special = /[\$%_]/;
 
 const re_id = /^\d{1,9}$/;
@@ -232,10 +231,6 @@ function check_text(params, key) {
 		params.delete(key);
 		return false;
 	}
-	if (re_bad_escape.test(value)) {
-		params.delete(key);
-		return false;
-	}
 	params.set(key, value);
 	return true;
 }
@@ -375,7 +370,7 @@ function validate_params(params, extra_monster) {
 			break;
 	}
 	if (!params.has("ctype") || params.get("ctype") === "1") {
-		check_plain_text(params, "material");
+		check_text(params, "material");
 		check_checkbox(params, "attr");
 		check_checkbox(params, "race");
 		check_checkbox(params, "level", 0);
@@ -688,9 +683,12 @@ function param_to_condition(params) {
 
 	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
 		// material
-		const material = params.get("material");
-		if (material) {
+		if (params.has("material")) {
 			document.getElementById("text_mat").value = material;
+			const replace_map = Object.create(null);
+			replace_map['%'] = '$%';
+			replace_map['_'] = '$_';
+			const material = params.get("material").replace(/%|_/g, (x) => replace_map[x]);
 			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
 			arg.$mat1 = `「${material}」%+%`;
 			arg.$mat2 = `%+「${material}」%`;
