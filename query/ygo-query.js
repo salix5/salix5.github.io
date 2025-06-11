@@ -97,12 +97,12 @@ const extra_setcode = {
 function set_setcode(card, setcode) {
 	const mask = BigInt(0xffff);
 	const len = BigInt(16);
-	const keep = BigInt(0xffffffffffff);
+	setcode = BigInt.asUintN(64, setcode);
 	while (setcode) {
 		if (setcode & mask) {
 			card.setcode.push(Number(setcode & mask));
 		}
-		setcode = (setcode >> len) & keep;
+		setcode = setcode >> len;
 	}
 }
 
