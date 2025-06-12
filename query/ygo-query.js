@@ -85,7 +85,7 @@ const arg_default = {
  */
 
 const use_bigint = !!(window.BigInt);
-const extra_setcode = {
+const extra_setcodes = {
 	8512558: [0x8f, 0x54, 0x59, 0x82, 0x13a],
 };
 
@@ -98,6 +98,7 @@ function set_setcode(card, setcode) {
 	const mask = BigInt(0xffff);
 	const len = BigInt(16);
 	setcode = BigInt.asUintN(64, setcode);
+	card.setcode.length = 0;
 	while (setcode) {
 		if (setcode & mask) {
 			card.setcode.push(Number(setcode & mask));
@@ -134,16 +135,14 @@ function query_db(db, qstr, arg) {
 	stmt.bind(arg);
 	const option = use_bigint ? [null, { useBigInt: true }] : [];
 	while (stmt.step()) {
-		const cdata = stmt.getAsObject(...option);
-		const card = Object.create(null);
-		for (const [column, value] of Object.entries(cdata)) {
+		const card = stmt.getAsObject(...option);
+		for (const [column, value] of Object.entries(card)) {
 			switch (column) {
 				case 'setcode':
 					card.setcode = [];
 					if (use_bigint && value) {
-						if (extra_setcode[card.id]) {
-							for (const x of extra_setcode[card.id])
-								card.setcode.push(x);
+						if (extra_setcodes[card.id]) {
+							card.setcode.push(...extra_setcodes[card.id]);
 						}
 						else {
 							set_setcode(card, value);
@@ -152,13 +151,11 @@ function query_db(db, qstr, arg) {
 					break;
 				case 'level':
 					card.level = Number(value) & 0xff;
-					card.scale = (Number(value) >> 24) & 0xff;
+					card.scale = Number(value) >>> 24;
 					break;
 				default:
 					if (typeof value === 'bigint')
 						card[column] = Number(value);
-					else
-						card[column] = value;
 					break;
 			}
 		}
