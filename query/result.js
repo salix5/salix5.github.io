@@ -367,21 +367,21 @@ function create_rows(card, pack) {
 	if (card.type & TYPE_LINK) {
 		let marker_text = '';
 		for (let marker = LINK_MARKER_TOP_LEFT; marker <= LINK_MARKER_TOP_RIGHT; marker <<= 1) {
-			if (card.def & marker)
+			if (card.marker & marker)
 				marker_text += marker_char[marker];
 			else
 				marker_text += marker_char.default;
 		}
 		marker_text += '<br>';
 
-		if (card.def & LINK_MARKER_LEFT)
+		if (card.marker & LINK_MARKER_LEFT)
 			marker_text += marker_char[LINK_MARKER_LEFT];
 		else
 			marker_text += marker_char.default;
 
 		marker_text += '<span class="transparent">⬛</span>';
 
-		if (card.def & LINK_MARKER_RIGHT)
+		if (card.marker & LINK_MARKER_RIGHT)
 			marker_text += marker_char[LINK_MARKER_RIGHT];
 		else
 			marker_text += marker_char.default;
@@ -389,7 +389,7 @@ function create_rows(card, pack) {
 		marker_text += '<br>';
 
 		for (let marker = LINK_MARKER_BOTTOM_LEFT; marker <= LINK_MARKER_BOTTOM_RIGHT; marker <<= 1) {
-			if (card.def & marker)
+			if (card.marker & marker)
 				marker_text += marker_char[marker];
 			else
 				marker_text += marker_char.default;
