@@ -63,7 +63,8 @@ const arg_default = {
  * 
  * @property {number} type
  * @property {number} atk
- * @property {number} def
+ * @property {number} [def]
+ * @property {number} [marker]
  * @property {number} level
  * @property {number} race
  * @property {number} attribute
@@ -196,6 +197,12 @@ function generate_card(cdata) {
 				continue;
 			case "scale":
 				if (cdata.type & TYPE_PENDULUM)
+					card[column] = value;
+				break;
+			case "def":
+				if (cdata.type & TYPE_LINK)
+					card.marker = value;
+				else
 					card[column] = value;
 				break;
 			default:
