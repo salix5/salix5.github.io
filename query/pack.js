@@ -9,6 +9,7 @@ const pre_release = {
 	DOOD: 101302000,
 
 	// TCG
+	_DUAD: 101301000,
 };
 
 const wiki_link = {
@@ -21,4 +22,5 @@ const wiki_link = {
 	DOOD: "https://yugioh-wiki.net/index.php?DOOM%20OF%20DIMENSIONS#card",
 
 	// TCG
+	_DUAD: "https://yugipedia.com/wiki/Duelist%27s_Advance",
 };
