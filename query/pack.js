@@ -6,6 +6,7 @@ const pre_release = {
 	LPG1: 100240000,
 	VP25: 100241000,
 	TTP1: 100242000,
+	"25TP": 100243000,
 	DOOD: 101302000,
 
 	// TCG
@@ -19,6 +20,7 @@ const wiki_link = {
 	LPG1: "https://yugioh-wiki.net/index.php?LIMITED%20PACK%20GX%20%A1%DD%A5%AA%A5%B7%A5%EA%A5%B9%A5%EC%A5%C3%A5%C9%A1%DD#card",
 	VP25: "https://yugioh-wiki.net/index.php?V%20JUMP%20EDITION#VP25A",
 	TTP1: "https://yugioh-wiki.net/index.php?TACTICAL-TRY%20PACK%20%A1%DD%B9%F5%CB%E2%C6%B3%A1%A6%A3%C8%A3%C5%A3%D2%A3%CF%A1%A6%B8%E6%D6%E0%A1%DD#card",
+	"25TP": "https://yugioh-wiki.net/index.php?%A5%C8%A1%BC%A5%CA%A5%E1%A5%F3%A5%C8%A5%D1%A5%C3%A5%AF2025%20Vol.2#list",
 	DOOD: "https://yugioh-wiki.net/index.php?DOOM%20OF%20DIMENSIONS#card",
 
 	// TCG
