@@ -6,7 +6,7 @@ let current_stmt = "";
 let current_arg = null;
 
 const re_wildcard = /(?<!\$)[%_]/;
-const re_special = /[\$%_]/;
+const re_special = /[$%_]/;
 
 const re_id = /^\d{1,9}$/;
 const re_value = /^\d{1,2}$/;
@@ -753,7 +753,7 @@ function param_to_condition(params) {
 			qstr += " AND def >= $zero AND def <= $def_to";
 			arg.$zero = 0;
 			arg.$def_to = def_to;
-			document.getElementById("text_def2").value.value = def_to;
+			document.getElementById("text_def2").value = def_to;
 		}
 		if (params.has("defm")) {
 			const def_mod = Number.parseInt(params.get("defm"));
