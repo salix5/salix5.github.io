@@ -8,6 +8,7 @@ const pre_release = {
 	TTP1: 100242000,
 	"25TP": 100238000,
 	DOOD: 101302000,
+	SD48: 100244000,
 
 	// TCG
 	_DUAD: 101301000,
@@ -22,6 +23,7 @@ const wiki_link = {
 	TTP1: "https://yugioh-wiki.net/index.php?TACTICAL-TRY%20PACK%20%A1%DD%B9%F5%CB%E2%C6%B3%A1%A6%A3%C8%A3%C5%A3%D2%A3%CF%A1%A6%B8%E6%D6%E0%A1%DD#card",
 	"25TP": "https://yugioh-wiki.net/index.php?%A5%C8%A1%BC%A5%CA%A5%E1%A5%F3%A5%C8%A5%D1%A5%C3%A5%AF2025%20Vol.2#list",
 	DOOD: "https://yugioh-wiki.net/index.php?DOOM%20OF%20DIMENSIONS#card",
+	SD48: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%A5%D1%A5%EF%A1%BC%A1%A6%A5%AA%A5%D6%A1%A6%A5%D5%A5%A7%A5%ED%A1%BC%A5%BA%A1%DD#card",
 
 	// TCG
 	_DUAD: "https://yugipedia.com/wiki/Duelist%27s_Advance",
