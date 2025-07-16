@@ -688,7 +688,7 @@ function param_to_condition(params) {
 			replace_map['%'] = '$%';
 			replace_map['_'] = '$_';
 			replace_map['$'] = '$$';
-			const material = params.get("material").replace(/%|_|\$/g, (x) => replace_map[x]);
+			const material = params.get("material").replace(/[%_$]/g, (x) => replace_map[x]);
 			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
 			arg.$mat1 = `「${material}」%+%`;
 			arg.$mat2 = `%+「${material}」%`;
