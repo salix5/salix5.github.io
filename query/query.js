@@ -462,9 +462,17 @@ function server_validate1(params) {
 	return validate_params(params, true);
 }
 
-// string -> wildcard literal
+/**
+ * Convert a string to a wildcard literal.
+ * @param {string} str 
+ * @returns {string}
+ */
 function string_to_literal(str) {
-	return re_wildcard.test(str) ? str : `%${str}%`;
+	if (!str)
+		return '';
+	if (re_wildcard.test(str))
+		return str;
+	return `%${str.replace(/\$(?![%_])/g, '$$$$')}%`;
 }
 
 /**
