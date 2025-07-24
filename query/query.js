@@ -463,16 +463,16 @@ function server_validate1(params) {
 }
 
 /**
- * Convert a string to a wildcard literal.
+ * Convert a string to a LIKE pattern.
  * @param {string} str 
  * @returns {string}
  */
-function string_to_literal(str) {
+function like_pattern(str) {
 	if (!str)
 		return '';
 	if (re_wildcard.test(str))
 		return str;
-	return `%${str.replace(/\$(?![%_])/g, '$$$$')}%`;
+	return `%${str.replace(/\$(?![%_])/g, '$$$&')}%`;
 }
 
 /**
@@ -527,8 +527,8 @@ function process_name(locale, name_string, arg) {
 			// zh, name
 			name_cmd += ` OR name LIKE $name ESCAPE '$' OR "desc" LIKE $kanji ESCAPE '$'`;
 			name_cmd += ` OR alias IN (${stmt_no_alias} AND name LIKE $name ESCAPE '$')`;
-			arg.$name = string_to_literal(name_string);
-			arg.$kanji = `%※${string_to_literal(name_string)}`;
+			arg.$name = like_pattern(name_string);
+			arg.$kanji = `%※${like_pattern(name_string)}`;
 			// ja, name
 			if (!is_setname) {
 				const jp_list = [];
@@ -900,7 +900,7 @@ function param_to_condition(params) {
 		// keyword
 		document.getElementById("text_keyword").value = keyword;
 		qstr += ` AND (${name_cmd} OR ${desc_str})`;
-		arg.$desc = string_to_literal(keyword);
+		arg.$desc = like_pattern(keyword);
 	}
 	else {
 		// name
@@ -915,7 +915,7 @@ function param_to_condition(params) {
 		if (desc) {
 			document.getElementById("text_effect").value = desc;
 			qstr += ` AND ${desc_str}`;
-			arg.$desc = string_to_literal(desc);
+			arg.$desc = like_pattern(desc);
 		}
 	}
 	return [qstr, arg];
@@ -988,7 +988,7 @@ function get_single_card(cdata) {
 	}
 
 	qstr = `${qstr0} AND name LIKE $fuzzy ESCAPE '$';`;
-	arg.$fuzzy = string_to_literal(cdata);
+	arg.$fuzzy = like_pattern(cdata);
 	const list4 = query(qstr, arg);
 	if (list4.length === 1)
 		return [list4[0], 1];
