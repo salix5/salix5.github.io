@@ -10,6 +10,7 @@ const pre_release = {
 	DOOD: 101302000,
 	SD48: 100244000,
 	DBPR: 100245000,
+	NKC1: 100246000,
 
 	// TCG
 	_DUAD: 101301000,
@@ -26,6 +27,7 @@ const wiki_link = {
 	DOOD: "https://yugioh-wiki.net/index.php?DOOM%20OF%20DIMENSIONS#card",
 	SD48: "https://yugioh-wiki.net/index.php?%A5%B9%A5%C8%A5%E9%A5%AF%A5%C1%A5%E3%A1%BC%A5%C7%A5%C3%A5%AD%A1%DD%A5%D1%A5%EF%A1%BC%A1%A6%A5%AA%A5%D6%A1%A6%A5%D5%A5%A7%A5%ED%A1%BC%A5%BA%A1%DD#card",
 	DBPR: "https://yugioh-wiki.net/index.php?%A5%C7%A5%C3%A5%AD%A5%D3%A5%EB%A5%C9%A5%D1%A5%C3%A5%AF%20%A5%D5%A5%A1%A5%F3%A5%C8%A5%E0%A1%A6%A5%EA%A5%D9%A5%F3%A5%B8%A5%E3%A1%BC%A5%BA#card",
+	NKC1: "https://yugioh-wiki.net/index.php",
 
 	// TCG
 	_DUAD: "https://yugipedia.com/wiki/Duelist%27s_Advance",
