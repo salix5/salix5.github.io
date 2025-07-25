@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "TTP1#5";
+const last_pack = "DOOD#1";
 const unknown_index = {
 };
 
