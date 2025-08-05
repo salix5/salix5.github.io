@@ -3,7 +3,7 @@ var result_per_page = 50;
 var current_params = null;
 
 function is_booster(pack) {
-	if (pack_list[pack] && pack_list[pack][82] === 1)
+	if (pack_list[pack] && pack_list[pack][82] === -1)
 		return true;
 	else
 		return false;

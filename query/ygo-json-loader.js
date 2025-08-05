@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "DOOD#2";
+const last_pack = "DOOD#3";
 const unknown_index = {
 };
 
@@ -91,7 +91,7 @@ if (!from_local) {
 	fetch_list.push(fetch(`text/cid_table.json`).then(response => response.json()).then(data => Object.assign(cid_object, data)));
 	fetch_list.push(fetch(`text/name_table_jp.json`).then(response => response.json()).then(data => Object.assign(jp_object, data)));
 	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(en_object, data)));
-	fetch_list.push(fetch(`text/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
+	fetch_list.push(fetch(`pack/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
 	fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
 	fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
 }
