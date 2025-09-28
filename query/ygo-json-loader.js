@@ -1,5 +1,5 @@
 "use strict";
-const last_pack = "SD48#6";
+const last_pack = "WPP6#1";
 const unknown_index = {
 };
 
