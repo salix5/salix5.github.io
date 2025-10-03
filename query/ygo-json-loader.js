@@ -10,17 +10,16 @@ function object_to_map(obj) {
 	return map;
 }
 
-const domain = "https://salix5.github.io/cdb";
 let SQL = null;
 const db_list = [];
 const fetch_list = [];
 // sqlite
 const promise_sql = initSqlJs({ locateFile: filename => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/${filename}` });
-const promise_db = fetch(`${domain}/cards.zip`)
+const promise_db = fetch('https://salix5.github.io/archive/cards.zip')
 	.then(response => response.blob())
 	.then(JSZip.loadAsync)
 	.then(zip_file => zip_file.file("cards.cdb").async("uint8array"));
-const promise_db2 = fetch(`${domain}/expansions/pre-release.cdb`)
+const promise_db2 = fetch('https://salix5.github.io/cdb/expansions/pre-release.cdb')
 	.then(response => response.arrayBuffer())
 	.then(buf => new Uint8Array(buf));
 fetch_list.push(Promise.all([promise_sql, promise_db, promise_db2])
