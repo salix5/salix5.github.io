@@ -15,17 +15,16 @@
 <div id="dawn"></div>
 <script>
 'use strict';
-var is_pu = false;
-var layer = 0;
-var pu_quotes = [
+const is_pu = false;
+const pu_quotes = [
 '那還是人嗎'
 ];
 
-var ssr_quotes = [
+const ssr_quotes = [
 '那還是人嗎'
 ];
 
-var normal_quotes = [
+const normal_quotes = [
 '那還可以吧', 
 '那還不錯嘛', 
 'NZMB',
@@ -42,7 +41,7 @@ var normal_quotes = [
 '(本留言違反數位中介法已被刪除)',
 ];
 	
-var new_year_quotes = [
+const new_year_quotes = [
 	'年終獎金幾個月啊？',
 	'現在薪水夠用嗎？',
 	'在哪裡上班啊？',
@@ -50,8 +49,8 @@ var new_year_quotes = [
 	'有沒有正在交往的對象啊？',
 ];
 
-var text1 = document.getElementById('text1');
-var div_dawn = document.getElementById('dawn');
+const text1 = document.getElementById('text1');
+const div_dawn = document.getElementById('dawn');
 
 function get_text(layer){
 	var r = 0;
@@ -81,9 +80,9 @@ function getRandomInt(min, max) {
 	if(min == max)
 		return min;
 	
-	let range = max - min + 1;
-	let secureMax = 0xffffffff - 0xffffffff % range;
-	let randomBuffer = new Uint32Array(1);
+	const range = max - min + 1;
+	const secureMax = 0xffffffff - 0xffffffff % range;
+	const randomBuffer = new Uint32Array(1);
 	do {
 		crypto.getRandomValues(randomBuffer);
 	} while (randomBuffer[0] >= secureMax);
@@ -97,18 +96,18 @@ function mark_of_time(){
 
 function until_dawn(){
 	var times = 0;
-	
+	var layer = 0;
 	do{
-		++times;
 		layer = getRandomInt(1, 1000);
+		times++;
 	}while(layer > 8);
 	
 	text1.value = get_text(layer);
 	div_dawn.innerHTML +=  `總共抽了${times}次！<br>`;
 }
 
-layer = getRandomInt(1, 1000);
-text1.value = get_text(layer);
+const gacha = getRandomInt(1, 1000);
+text1.value = get_text(gacha);
 
 </script>
 </body>
