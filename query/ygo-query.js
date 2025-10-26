@@ -89,7 +89,8 @@ const arg_default = {
 
 const use_bigint = !!(window.BigInt);
 const extra_setcodes = {
-	8512558: [0x8f, 0x54, 0x59, 0x82, 0x13a],
+	"8512558": [143, 84, 89, 130, 314],
+	"55088578": [143, 84, 89, 130, 314],
 };
 
 /**
