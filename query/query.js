@@ -581,7 +581,7 @@ function param_to_condition(params) {
 		arg.$tcg = 2;
 	}
 	else if (pack_list[pack]) {
-		qstr += pack_cmd(pack_list[pack], arg);
+		qstr +=` AND ${list_condition("id", "pack", pack_list[pack], arg)}`;
 		arg.pack = pack;
 	}
 	else if (pre_release[pack]) {
