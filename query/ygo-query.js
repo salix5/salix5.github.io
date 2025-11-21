@@ -8,9 +8,10 @@ const CID_BLACK_LUSTER_SOLDIER = 19092;
 const CARD_ARTWORK_VERSIONS_OFFSET = 20;
 const MAX_CARD_ID = 99999999;
 
-const select_all = `SELECT datas.id, ot, alias, setcode, type, atk, def, level, race, attribute, name, "desc" FROM datas, texts WHERE datas.id == texts.id`;
-const select_id = `SELECT datas.id FROM datas, texts WHERE datas.id == texts.id`;
-const select_name = `SELECT datas.id, name FROM datas, texts WHERE datas.id == texts.id`;
+const column_names = `datas.id, datas.ot, datas.alias, datas.setcode, datas.type, datas.atk, datas.def, datas.level, datas.race, datas.attribute, texts.name, texts."desc"`;
+const select_all = `SELECT ${column_names} FROM datas JOIN texts USING (id) WHERE 1`;
+const select_id = `SELECT datas.id FROM datas JOIN texts USING (id) WHERE 1`;
+const select_name = `SELECT datas.id, texts.name FROM datas JOIN texts USING (id) WHERE 1`;
 
 const base_filter = ` AND datas.id != $tyler AND datas.id != $decoy AND NOT type & $token`;
 const no_alt_filter = ` AND (datas.id == $luster OR abs(datas.id - alias) >= $artwork_offset)`;
@@ -505,15 +506,25 @@ function inverse_mapping(table) {
 }
 
 
-
-// print condition for cards in pack
-function pack_cmd(pack, arg) {
-	let cmd = "0";
-	for (let i = 0; i < pack.length; ++i) {
-		if (pack[i] && pack[i] !== 1) {
-			cmd += ` OR datas.id=@p${i}`;
-			arg[`@p${i}`] = pack[i];
+/**
+ * The sqlite condition for a list.
+ * @param {string} column 
+ * @param {string} prefix 
+ * @param {Array} list 
+ * @param {Object} arg 
+ * @returns {string}
+ */
+function list_condition(column, prefix, list, arg) {
+	const set1 = new Set(list);
+	const tokens = [];
+	let index = 0;
+	for (const value of set1) {
+		if (!Number.isSafeInteger(value)) {
+			continue;
 		}
+		tokens.push(`@${prefix}${index}`);
+		arg[`@${prefix}${index}`] = value;
+		index++;
 	}
-	return ` AND (${cmd})`;
+	return `${column} IN (${tokens.join(', ')})`;
 }
