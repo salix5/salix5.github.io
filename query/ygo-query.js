@@ -456,7 +456,7 @@ function print_data(card, newline) {
 		data += newline;
 
 		if (card.type & TYPE_PENDULUM) {
-			data += `【${value_name['scale']}：${card.scale}】${newline}`;
+			data += `🔹${card.scale}/${card.scale}🔸${newline}`;
 		}
 	}
 	else if (card.type & TYPE_SPELL) {
