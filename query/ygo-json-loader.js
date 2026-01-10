@@ -81,11 +81,11 @@ if (localStorage.getItem("last_pack") === last_pack) {
 		from_local = true;
 	}
 	catch (ex) {
-		localStorage.removeItem("last_pack");
+		localStorage.clear();
+		console.log("localStorage cleared");
 	}
 }
 if (!from_local) {
-	localStorage.clear();
 	fetch_list.push(fetch(`text/CardList.json`).then(response => response.json()).then(data => Object.assign(md_card_list, data)));
 	fetch_list.push(fetch(`text/name_table_jp.json`).then(response => response.json()).then(data => Object.assign(jp_object, data)));
 	fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => Object.assign(en_object, data)));
