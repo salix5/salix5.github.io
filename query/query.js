@@ -925,7 +925,7 @@ function param_to_condition(params) {
 function server_analyze1(params) {
 	const valid_params = server_validate1(params);
 	const [condition, arg_final] = param_to_condition(valid_params);
-	const stmt_final = condition ? `${stmt_base}${condition};` : "";
+	const stmt_final = valid_params.size ? `${stmt_base}${condition};` : "";
 	current_stmt = stmt_final;
 	current_arg = arg_final;
 	const result = stmt_final ? query(stmt_final, arg_final) : [];
