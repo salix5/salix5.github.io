@@ -183,15 +183,21 @@ function is_formal(id, type) {
  * @param {string} name 
  */
 function text_link(name) {
-	if (name.endsWith('衍生物'))
-		return `<a href="/query/?desc=${name}" target="_blank">${name}</a>`;
-	if (name.length > 30)
-		return name;
-	if (replace_name[name] === null)
-		return name;
-	if (replace_name[name])
-		return `<a href="/query/?cname=${replace_name[name]}" target="_blank">${name}</a>`;
-	return `<a href="/query/?cname=${name}" target="_blank">${name}</a>`;
+	if (name.length > 30 || replace_name[name] === null) {
+		return document.createTextNode(name);
+	}
+
+	const anchor = document.createElement('a');
+	anchor.target = "_blank";
+	anchor.textContent = name;
+	if (name.endsWith('衍生物')) {
+		anchor.href = `./?desc=${encodeURIComponent(name)}`;
+	}
+	else {
+		const queryName = replace_name[name] ? replace_name[name] : name;
+		anchor.href = `./?cname=${encodeURIComponent(queryName)}`;
+	}
+	return anchor;
 }
 
 /**
@@ -221,7 +227,7 @@ function create_rows(card, pack) {
 	if (is_formal(card.id, card.type)) {
 		const params = new URLSearchParams({ "desc": `「${card.tw_name}」` });
 		const link_id = document.createElement('a');
-		link_id.href = `https://salix5.github.io/query/?${params.toString()}`;
+		link_id.href = `./?${params.toString()}`;
 		link_id.target = '_blank';
 		link_id.appendChild(img_card);
 		cell_pic.appendChild(link_id);
@@ -400,17 +406,30 @@ function create_rows(card, pack) {
 	}
 	cell_effect.appendChild(document.createElement('hr'));
 
-	const replace_map = Object.create(null);
-	replace_map['\n'] = '<br>';
-	replace_map['&'] = '&amp;';
-	replace_map['<'] = '&lt;';
-	replace_map['>'] = '&gt;';
-	replace_map[`"`] = '&quot;';
-	let desc = card.text.desc.replace(/[\n&<>"]/g, (x) => replace_map[x]);
-	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM))
-		desc = desc.replace(/(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g, text_link);
 	const div_desc = document.createElement('div');
-	div_desc.innerHTML = desc;
+	const lines = card.text.desc.split('\n');
+	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM)) {
+		for (const line of lines) {
+			const regex = /(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g;
+			let lastIndex = 0;
+			let match;
+			while ((match = regex.exec(line)) !== null) {
+				const textBefore = line.substring(lastIndex, match.index);
+				div_desc.appendChild(document.createTextNode(textBefore));
+				div_desc.appendChild(text_link(match[0]));
+				lastIndex = regex.lastIndex;
+			}
+			const textAfter = line.substring(lastIndex);
+			div_desc.appendChild(document.createTextNode(textAfter));
+			div_desc.appendChild(document.createElement('br'));
+		};
+	}
+	else {
+		for (const line of lines) {
+			div_desc.appendChild(document.createTextNode(line));
+			div_desc.appendChild(document.createElement('br'));
+		};
+	}
 	cell_effect.appendChild(div_desc);
 
 	if (window.innerWidth <= MAX_WIDTH) {
