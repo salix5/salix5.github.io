@@ -1,7 +1,5 @@
 "use strict";
 const last_pack = "BLZD#1";
-const unknown_index = {
-};
 
 function object_to_map(obj) {
 	const map = new Map();
