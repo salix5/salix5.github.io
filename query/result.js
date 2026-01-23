@@ -63,7 +63,7 @@ function pre_id_to_pack(id) {
 }
 
 function print_pre_id(id) {
-	const index = unknown_index[id] ? unknown_index[id] : id % 1000;
+	const index = id % 1000;
 	return print_pack_number(pre_id_to_pack(id), index);
 }
 
