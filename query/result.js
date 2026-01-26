@@ -110,62 +110,44 @@ function print_limit(limit) {
 		return '';
 }
 
-/**
- * case-insensitive equal
- * @param {string} a 
- * @param {string} b 
- * @returns boolean result
- */
-function is_equal(a, b) {
-	return toHalfWidth(a.toLowerCase()) === toHalfWidth(b.toLowerCase());
-}
-
 function compare_id(a, b) {
 	return a.pack_index - b.pack_index;
 }
 
-function compare_card() {
-	const name = current_params.get("cname") ?? "";
-	const locale = current_params.get("locale") ?? "";
+function compare_card(name, locale) {
 	const zh_collator = new Intl.Collator('zh-Hant');
+	const target_name = name?.toLowerCase() ?? '';
+	const get_match_score = (card) => {
+		if (!target_name) {
+			return 0;
+		}
+		switch (locale) {
+			case 'en':
+				const en_name = card.en_name ?? card.md_name_en;
+				if (en_name) {
+					return en_name.toLowerCase() === target_name ? 1 : 0;
+				}
+				return 0;
+			default:
+				return card.tw_name.toLowerCase() === target_name ? 1 : 0;
+		}
+	}
 
 	return function (a, b) {
-		if (locale === 'en') {
-			const match1 = (a.en_name && is_equal(a.en_name, name)) || (a.md_name_en && is_equal(a.md_name_en, name));
-			const match2 = (b.en_name && is_equal(b.en_name, name)) || (b.md_name_en && is_equal(b.md_name_en, name));
-			if (match1 && match2)
-				return 0;
-			else if (match1)
-				return -1;
-			else if (match2)
-				return 1;
+		if (target_name) {
+			const scoreA = get_match_score(a);
+			const scoreB = get_match_score(b);
+			if (scoreA !== scoreB) {
+				return scoreB - scoreA;
+			}
 		}
-		else {
-			const match1 = (a.jp_name && is_equal(a.jp_name, name)) || (a.md_name_jp && is_equal(a.md_name_jp, name));
-			const match2 = (b.jp_name && is_equal(b.jp_name, name)) || (b.md_name_jp && is_equal(b.md_name_jp, name));
-			if (is_equal(a.tw_name, name) && is_equal(b.tw_name, name))
-				return 0;
-			else if (is_equal(a.tw_name, name))
-				return -1;
-			else if (is_equal(b.tw_name, name))
-				return 1;
-			else if (match1 && match2)
-				return 0;
-			else if (match1)
-				return -1;
-			else if (match2)
-				return 1;
-		}
-
 		if (a.color !== b.color) {
 			return a.color - b.color;
 		}
-		else if (a.level !== b.level) {
+		if (a.level !== b.level) {
 			return b.level - a.level;
 		}
-		else {
-			return zh_collator.compare(a.tw_name, b.tw_name);
-		}
+		return zh_collator.compare(a.tw_name, b.tw_name);
 	}
 }
 
@@ -448,6 +430,8 @@ function show_result(params, result) {
 	current_params = params;
 	const total_pages = Math.ceil(result.length / result_per_page);
 	const page = params.has("page") ? Number.parseInt(params.get("page"), 10) : 1;
+	const name = params.get("cname");
+	const locale = params.get("locale");
 	let pack = params.get("pack");
 	if (pack === "o" || pack === "t" || !is_pack(pack))
 		pack = null;
@@ -457,7 +441,7 @@ function show_result(params, result) {
 		if (pack)
 			result.sort(compare_id);
 		else
-			result.sort(compare_card());
+			result.sort(compare_card(name, locale));
 		div_count.textContent = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		div_count.hidden = false;
 		if (window.innerWidth > MAX_WIDTH)
