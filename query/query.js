@@ -485,7 +485,7 @@ function like_pattern(str) {
 function process_name(locale, name_string, arg) {
 	if (!name_string)
 		return '';
-	let name_cmd = '';
+	let name_cmd = '0';
 	switch (locale) {
 		case 'en': {
 			const en_list = [];
@@ -498,7 +498,6 @@ function process_name(locale, name_string, arg) {
 					break;
 				}
 			}
-			name_cmd = '0';
 			for (let i = 0; i < en_list.length; ++i) {
 				name_cmd += ` OR datas.id=@e${i}`;
 				arg[`@e${i}`] = en_list[i];
@@ -506,14 +505,10 @@ function process_name(locale, name_string, arg) {
 			break;
 		}
 		default: {
-			name_cmd = '0';
 			let is_setname = false;
 			// zh, setcode
 			if (!re_wildcard.test(name_string)) {
-				const replace_map = Object.create(null);
-				replace_map['$%'] = '%';
-				replace_map['$_'] = '_';
-				let zh_name = name_string.replace(/\$%|\$_/g, (x) => replace_map[x]).toLowerCase();
+				const zh_name = name_string.replace(/\$([%_])/g, '$1').toLowerCase();
 				for (const [keyword, value] of Object.entries(setname)) {
 					if (keyword.toLowerCase() === zh_name) {
 						const setcode = Number.parseInt(value);
@@ -692,11 +687,7 @@ function param_to_condition(params) {
 	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
 		// material
 		if (params.has("material")) {
-			const replace_map = Object.create(null);
-			replace_map['%'] = '$%';
-			replace_map['_'] = '$_';
-			replace_map['$'] = '$$';
-			const material = params.get("material").replace(/[%_$]/g, (x) => replace_map[x]);
+			const material = params.get("material").replace(/[%_$]/g, '$$$&');
 			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
 			arg.$mat1 = `「${material}」%+%`;
 			arg.$mat2 = `%+「${material}」%`;
