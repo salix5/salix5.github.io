@@ -478,11 +478,14 @@ function like_pattern(str) {
 /**
  * Generate the name condition of a statement.
  * @param {string} locale 
- * @param {string} name_string 
+ * @param {string?} input 
  * @param {Object} arg 
  * @returns name condition
  */
-function process_name(locale, name_string, arg) {
+function process_name(locale, input, arg) {
+	if (!input)
+		return '';
+	const name_string = re_wildcard.test(input) ? input : input.trim();
 	if (!name_string)
 		return '';
 	let name_cmd = '0';
