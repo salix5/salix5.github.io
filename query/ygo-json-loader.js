@@ -4,7 +4,7 @@ const last_pack = "BLZD#1";
 function object_to_map(obj) {
 	const map = new Map();
 	for (const [key, value] of Object.entries(obj))
-		map.set(Number.parseInt(key), value);
+		map.set(Number.parseInt(key, 10), value);
 	return map;
 }
 
