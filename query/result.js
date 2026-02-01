@@ -1,5 +1,5 @@
 "use strict";
-var result_per_page = 50;
+const result_per_page = 50;
 var current_params = null;
 
 function is_booster(pack) {
