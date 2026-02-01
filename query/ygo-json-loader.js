@@ -50,7 +50,6 @@ let pre_release = null;
 let wiki_link = null;
 fetch_list.push(fetch(`text/name_table_jp.json`).then(response => response.json()).then(data => name_table['ja'] = object_to_map(data)));
 fetch_list.push(fetch(`text/name_table_en.json`).then(response => response.json()).then(data => name_table['en'] = object_to_map(data)));
-fetch_list.push(fetch(`text/cid_table.json`).then(response => response.json()).then(data => cid_table = object_to_map(data)));
 fetch_list.push(fetch(`text/replace_name.json`).then(response => response.json()).then(data => replace_name = data));
 fetch_list.push(fetch(`pack/pre_release.json`).then(response => response.json()).then(data => pre_release = data));
 fetch_list.push(fetch(`pack/wiki_link.json`).then(response => response.json()).then(data => wiki_link = data));
@@ -65,6 +64,7 @@ let ltable_md = null;
 let from_local = false;
 if (localStorage.getItem("last_pack") === last_pack) {
 	try {
+		cid_table = new Map(JSON.parse(localStorage.getItem("cid_table")));
 		md_table['ja'] = new Map(JSON.parse(localStorage.getItem("md_name_jp")));
 		md_table['en'] = new Map(JSON.parse(localStorage.getItem("md_name_en")));
 		md_card_list = JSON.parse(localStorage.getItem("md_card_list"));
@@ -81,6 +81,7 @@ if (localStorage.getItem("last_pack") === last_pack) {
 	}
 }
 if (!from_local) {
+	fetch_list.push(fetch(`text/cid_table.json`).then(response => response.json()).then(data => cid_table = object_to_map(data)));
 	fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => md_table['ja'] = object_to_map(data)));
 	fetch_list.push(fetch(`text/md_name_en.json`).then(response => response.json()).then(data => md_table['en'] = object_to_map(data)));
 	fetch_list.push(fetch(`text/CardList.json`).then(response => response.json()).then(data => md_card_list = data));
@@ -106,6 +107,7 @@ const db_ready = Promise.all(fetch_list)
 		id_to_cid = inverse_mapping(cid_table);
 		if (!from_local) {
 			try {
+				localStorage.setItem("cid_table", JSON.stringify([...cid_table]));
 				localStorage.setItem("md_name_jp", JSON.stringify([...md_table['ja']]));
 				localStorage.setItem("md_name_en", JSON.stringify([...md_table['en']]));
 				localStorage.setItem("md_card_list", JSON.stringify(md_card_list));
