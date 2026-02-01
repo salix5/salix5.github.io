@@ -34,23 +34,7 @@ const mtype_list = [
 ];
 
 const exclude_list = [
-	TYPE_FUSION,
-	TYPE_SYNCHRO,
-	TYPE_XYZ,
-	TYPE_LINK,
-	TYPE_NORMAL,
-
-	TYPE_EFFECT,
-	TYPE_RITUAL,
-	TYPE_PENDULUM,
-	TYPE_TOON,
-	TYPE_SPIRIT,
-
-	TYPE_UNION,
-	TYPE_DUAL,
-	TYPE_TUNER,
-	TYPE_FLIP,
-	TYPE_SPSUMMON,
+	...mtype_list,
 ];
 
 const stype_list = [
