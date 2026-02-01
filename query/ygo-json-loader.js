@@ -12,7 +12,7 @@ let SQL = null;
 const db_list = [];
 const fetch_list = [];
 // sqlite
-const promise_sql = initSqlJs({ locateFile: filename => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/${filename}` });
+const promise_sql = initSqlJs({ locateFile: filename => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/${filename}` });
 const promise_db = fetch('https://salix5.github.io/archive/cards.zip')
 	.then(response => response.blob())
 	.then(JSZip.loadAsync)
