@@ -61,9 +61,8 @@ let pack_list = null;
 let ltable_ocg = null;
 let ltable_tcg = null;
 let ltable_md = null;
-let from_local = false;
-if (localStorage.getItem("last_pack") === last_pack) {
-	try {
+try {
+	if (localStorage.getItem("last_pack") === last_pack) {
 		cid_table = new Map(JSON.parse(localStorage.getItem("cid_table")));
 		md_table['ja'] = new Map(JSON.parse(localStorage.getItem("md_name_jp")));
 		md_table['en'] = new Map(JSON.parse(localStorage.getItem("md_name_en")));
@@ -73,13 +72,19 @@ if (localStorage.getItem("last_pack") === last_pack) {
 		ltable_ocg = JSON.parse(localStorage.getItem("ltable_ocg"));
 		ltable_tcg = JSON.parse(localStorage.getItem("ltable_tcg"));
 		ltable_md = JSON.parse(localStorage.getItem("ltable_md"));
-		from_local = true;
 	}
-	catch (ex) {
+	else {
 		localStorage.clear();
-		console.log("localStorage cleared");
 	}
 }
+catch (e) {
+	try {
+		localStorage.clear();
+	}
+	catch {
+	}
+}
+const from_local = cid_table && md_table['ja'] && md_table['en'] && md_card_list && setname && pack_list && ltable_ocg && ltable_tcg && ltable_md;
 if (!from_local) {
 	fetch_list.push(fetch(`text/cid_table.json`).then(response => response.json()).then(data => cid_table = object_to_map(data)));
 	fetch_list.push(fetch(`text/md_name_jp.json`).then(response => response.json()).then(data => md_table['ja'] = object_to_map(data)));
@@ -92,7 +97,7 @@ if (!from_local) {
 	fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => ltable_md = data));
 }
 
-let id_to_cid = new Map();
+let id_to_cid = null;
 const db_ready = Promise.all(fetch_list)
 	.then(() => {
 		for (const locale of Object.keys(official_name)) {
@@ -117,7 +122,8 @@ const db_ready = Promise.all(fetch_list)
 				localStorage.setItem("ltable_tcg", JSON.stringify(ltable_tcg));
 				localStorage.setItem("ltable_md", JSON.stringify(ltable_md));
 				localStorage.setItem("last_pack", last_pack);
-			} catch (ex) {
+			}
+			catch (e) {
 			}
 		}
 	});
