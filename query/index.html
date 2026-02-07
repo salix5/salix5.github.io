@@ -403,7 +403,8 @@
 		<td colspan="2">
 			<input type="number" id="text_atk1" name="atk_from" class="monster-input" min="-1" max="100000" style="width: 5em">
 			～
-			<input type="number" id="text_atk2" name="atk_to" class="monster-input" min="-1" max="100000" style="width: 5em"> (-1 = ?)
+			<input type="number" id="text_atk2" name="atk_to" class="monster-input" min="-1" max="100000" style="width: 5em">
+			<button type="button" class="value-helper horizontal-padding" data-type="atk" data-value="-1">?</button>
 		</td>
 	</tr>
 	
@@ -415,7 +416,9 @@
 		<td colspan="2">
 			<input type="number" id="text_def1" name="def_from" class="monster-input" min="-2" max="100000" style="width: 5em">
 			～
-			<input type="number" id="text_def2" name="def_to" class="monster-input" min="-1" max="100000" style="width: 5em"> (-2 = 攻守相等)
+			<input type="number" id="text_def2" name="def_to" class="monster-input" min="-1" max="100000" style="width: 5em">
+			<button type="button" class="value-helper horizontal-padding" data-type="def" data-value="-1">?</button>
+			<button type="button" class="value-helper" data-type="def" data-value="-2">DEF = ATK</button>
 		</td>
 	</tr>
 	
