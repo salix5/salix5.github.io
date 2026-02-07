@@ -367,7 +367,7 @@ function create_rows(card, pack) {
 		else
 			marker_text += marker_char.default;
 
-		marker_text += '<span class="transparent">⬛</span>';
+		marker_text += '<span class="transparent">⬜</span>';
 
 		if (card.marker & LINK_MARKER_RIGHT)
 			marker_text += marker_char[LINK_MARKER_RIGHT];
