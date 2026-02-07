@@ -37,7 +37,7 @@ function disable_cb(name, status) {
 function hide_type(type, hidden) {
 	switch (type) {
 		case 0:
-			for (const row of document.querySelectorAll(".monster_row")) {
+			for (const row of document.querySelectorAll(".monster-row")) {
 				row.hidden = hidden;
 			}
 			for (const element of document.querySelectorAll(".monster_input")) {
