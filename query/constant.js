@@ -181,7 +181,7 @@ const marker_char = {
 	[LINK_MARKER_TOP]: '🟥',
 	[LINK_MARKER_TOP_RIGHT]: '🟥',
 
-	default: '⬜',
+	default: '⬛',
 };
 
 const rarity = {
