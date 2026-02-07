@@ -7,6 +7,15 @@
 	<meta name="description" content="卡片資料查詢，包含官方資料庫連結。">
 	<title>卡片查詢</title>
 	<link href="main.css" rel="stylesheet">
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.min.js" integrity="sha512-laAM/mJRoxfgUSDOnpAVE3GGgawvUZ8wQU79lX5sT55mdIKhmc5mOEIy5HcJSAy4K78sQs29wJAr+3GMQUAuMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script defer src="constant.js"></script>
+	<script defer src="ygo-json-loader.js"></script>
+	<script defer src="ygo-query.js"></script>
+	<script defer src="event_handler.js"></script>
+	<script defer src="submit_query.js"></script>
+	<script defer src="query.js"></script>
+	<script defer src="result.js"></script>
 </head>
 <body>
 	<form id="form1" action="/query/" autocomplete="off">
@@ -448,15 +457,5 @@
 	<div class="count" id="div_page" hidden>
 		<select id="select_page"></select>
 	</div>
-	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.min.js" integrity="sha512-laAM/mJRoxfgUSDOnpAVE3GGgawvUZ8wQU79lX5sT55mdIKhmc5mOEIy5HcJSAy4K78sQs29wJAr+3GMQUAuMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="constant.js"></script>
-	<script src="ygo-json-loader.js"></script>
-	<script src="ygo-query.js"></script>
-	<script src="event_handler.js"></script>
-	<script src="submit_query.js"></script>
-	<script src="query.js"></script>
-	<script src="result.js"></script>
 </body>
 </html>
