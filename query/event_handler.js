@@ -133,6 +133,13 @@ form1.addEventListener("reset", function (event) {
 	select_type.dispatchEvent(new Event("change"));
 });
 
+document.querySelectorAll('.value-helper').forEach(btn => {
+	btn.addEventListener("click", function (event) {
+		const target = event.currentTarget;
+		document.getElementById(`text_${target.dataset.type}1`).value = target.dataset.value;
+	});
+});
+
 window.addEventListener("DOMContentLoaded", function (event) {
 	if (window.innerWidth > MAX_WIDTH) {
 		div_count.style.width = MAX_WIDTH + "px";

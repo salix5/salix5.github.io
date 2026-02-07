@@ -127,3 +127,7 @@ input:checked+.button {
 #row_marker input:checked+.marker {
 	background: Red
 }
+
+.horizontal-padding {
+	padding: 0em 1em;
+}
