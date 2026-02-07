@@ -9,12 +9,12 @@ const cb_level = document.getElementsByName("level");
 const cb_scale = document.getElementsByName("scale");
 const monster_checkbox = ["marker", "attr", "race", "level", "scale"];
 
-const row_subtype = document.getElementsByClassName("row_subtype");
+const row_subtype = document.querySelectorAll(".row_subtype");
 const subtype_operator = document.getElementById("subtype_operator");
 const subtype_m = document.getElementById("subtype_m");
 const subtype_s = document.getElementById("subtype_s");
 const subtype_t = document.getElementById("subtype_t");
-const row_exclude = document.getElementsByClassName("row_exclude");
+const row_exclude = document.querySelectorAll(".row_exclude");
 const form1 = document.getElementById("form1");
 
 const div_count = document.getElementById("div_count");
@@ -37,10 +37,10 @@ function disable_cb(name, status) {
 function hide_type(type, hidden) {
 	switch (type) {
 		case 0:
-			for (const row of document.getElementsByClassName("monster_row")) {
+			for (const row of document.querySelectorAll(".monster_row")) {
 				row.hidden = hidden;
 			}
-			for (const element of document.getElementsByClassName("monster_input")) {
+			for (const element of document.querySelectorAll(".monster_input")) {
 				element.disabled = hidden;
 			}
 			for (const cbname of monster_checkbox) {
