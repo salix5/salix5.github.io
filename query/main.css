@@ -106,42 +106,6 @@ hr {
 	font-family: sans-serif;
 }
 
-.t {
-	color: Red;
-}
-
-.f {
-	opacity: 0.4;
-}
-
-.ul {
-	transform: rotate(-45deg);
-}
-
-.ur {
-	transform: rotate(45deg);
-}
-
-.l {
-	transform: rotate(-90deg);
-}
-
-.r {
-	transform: rotate(90deg);
-}
-
-.dl {
-	transform: rotate(-135deg);
-}
-
-.d {
-	transform: rotate(180deg);
-}
-
-.dr {
-	transform: rotate(135deg);
-}
-
 button.submit {
 	padding: 5px 20px;
 }
