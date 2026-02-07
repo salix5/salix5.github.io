@@ -40,7 +40,7 @@ function hide_type(type, hidden) {
 			for (const row of document.querySelectorAll(".monster-row")) {
 				row.hidden = hidden;
 			}
-			for (const element of document.querySelectorAll(".monster_input")) {
+			for (const element of document.querySelectorAll(".monster-input")) {
 				element.disabled = hidden;
 			}
 			for (const cbname of monster_checkbox) {
