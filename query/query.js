@@ -65,6 +65,22 @@ function toFullWidth(str) {
 }
 
 /**
+ * Set the checkboxes by name.
+ * @param {URLSearchParams} params 
+ * @param {string} inputName 
+ * @param {number} offset 
+ */
+function checkByName(params, inputName, offset) {
+	const elements = document.getElementsByName(inputName);
+	for (const val of params.getAll(inputName)) {
+		const idx = Number.parseInt(val) + offset;
+		if (!Number.isNaN(idx) && idx >= 0 && idx < elements.length) {
+			elements[idx].checked = true;
+		}
+	}
+}
+
+/**
  * Initialize the form based on URL parameters.
  * @param {URLSearchParams} params 
  */
@@ -77,36 +93,21 @@ function init_form(params) {
 	switch (params.get("type")) {
 		case "1": {
 			type = TYPE_MONSTER;
-			for (const val of params.getAll("mtype")) {
-				const idx = Number.parseInt(val) - 1;
-				document.getElementsByName("mtype")[idx]?.checked = true;
+			checkByName(params, "mtype", -1);
+			if (params.get("monster_type_op") === "1") {
+				document.getElementById("select_subtype_op").value = "1";
 			}
-			if (params.get("mtype_operator") === "1") {
-				select_subtype_op.value = "1";
-			}
-			else {
-				select_subtype_op.value = "0";
-			}
-			for (const val of params.getAll("exclude")) {
-				const idx = Number.parseInt(val) - 1;
-				document.getElementsByName("exclude")[idx]?.checked = true;
-			}
+			checkByName(params, "exclude", -1);
 			break;
 		}
 		case "2": {
 			type = TYPE_SPELL;
-			for (const val of params.getAll("stype")) {
-				const idx = Number.parseInt(val) - 1;
-				document.getElementsByName("stype")[idx]?.checked = true;
-			}
+			checkByName(params, "stype", -1);
 			break;
 		}
 		case "4": {
 			type = TYPE_TRAP;
-			for (const val of params.getAll("ttype")) {
-				const idx = Number.parseInt(val) - 1;
-				document.getElementsByName("ttype")[idx]?.checked = true;
-			}
+			checkByName(params, "ttype", -1);
 			break;
 		}
 		default:
@@ -121,38 +122,11 @@ function init_form(params) {
 		document.getElementById("text_def2").value = params.get("def_to") ?? "";
 		document.getElementById("text_sum").value = params.get("sum") ?? "";
 
-		for (const value of params.getAll("level")) {
-			const level = Number.parseInt(value);
-			if (Number.isNaN(level) || level < 0 || level > cb_level.length - 1)
-				continue;
-			cb_level[level].checked = true;
-		}
-		for (const value of params.getAll("scale")) {
-			const scale = Number.parseInt(value);
-			if (Number.isNaN(scale) || scale < 0 || scale > cb_scale.length - 1)
-				continue;
-			cb_scale[scale].checked = true;
-		}
-		// attr, race
-		for (const val of params.getAll("attr")) {
-			const idx = Number.parseInt(val) - 1;
-			if (Number.isNaN(idx) || idx < 0 || idx >= cb_attr.length)
-				continue;
-			cb_attr[idx].checked = true;
-		}
-		for (const val of params.getAll("species")) {
-			const idx = Number.parseInt(val) - 1;
-			if (Number.isNaN(idx) || idx < 0 || idx >= cb_race.length)
-				continue;
-			cb_race[idx].checked = true;
-		}
-		// marker
-		for (const val of params.getAll("linkbtn")) {
-			const idx = Number.parseInt(val) - 1;
-			if (Number.isNaN(idx) || idx < 0 || idx >= cb_marker.length)
-				continue;
-			cb_marker[idx].checked = true;
-		}
+		checkByName(params, "level", 0);
+		checkByName(params, "scale", 0);
+		checkByName(params, "attr", -1);
+		checkByName(params, "species", -1);
+		checkByName(params, "linkbtn", -1);
 		if (params.get("marker_op") === "1") {
 			document.getElementById("select_marker_op").value = "1";
 		}
