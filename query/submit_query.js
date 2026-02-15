@@ -1,10 +1,10 @@
 "use strict";
-function url_query() {
+async function url_query() {
 	if (window.location.search.substring(1) === "")
 		return;
 	const params = new URLSearchParams(window.location.search);
 	init_form(params);
-	fetch_query(params);
+	await fetch_query(params);
 }
 
 db_ready.then(() => {
