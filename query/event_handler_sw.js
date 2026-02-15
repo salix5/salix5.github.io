@@ -2,7 +2,7 @@
 const select_subtype_op = document.getElementById("select_subtype_op");
 
 const cb_attr = document.getElementsByName("attr");
-const cb_race = document.getElementsByName("race");
+const cb_race = document.getElementsByName("species");
 const cb_level = document.getElementsByName("level");
 const cb_scale = document.getElementsByName("scale");
 const form1 = document.getElementById("form1");
@@ -29,7 +29,7 @@ document.getElementById("attr_reset").addEventListener("click", function (event)
 	clear_cb("attr");
 });
 document.getElementById("race_reset").addEventListener("click", function (event) {
-	clear_cb("race");
+	clear_cb("species");
 });
 document.getElementById("level_reset").addEventListener("click", function (event) {
 	clear_cb("level");
