@@ -84,135 +84,47 @@ function like_pattern(str) {
 }
 
 /**
- * Parse param into sqlite statement condition.
+ * Initialize the form based on URL parameters.
  * @param {URLSearchParams} params 
- * @returns {[string, Object]}sqlite statement condition
  */
-function param_to_condition(params) {
-	let qstr = "";
-	const arg = { ...arg_default };
-	// id, primary key
-	const id = Number.parseInt(params.get("code"), 10);
-	if (id) {
-		document.getElementById("text_id").value = id;
-		qstr += " AND datas.id == $id";
-		arg.$id = id;
-		return [qstr, arg];
-	}
-
-	qstr += no_alt_filter;
-	// pack
-	const pack = params.get("pack");
-	if (pack === "o") {
-		qstr += " AND datas.ot != $tcg";
-		arg.$tcg = 2;
-	}
-	else if (pack === "t") {
-		qstr += " AND datas.ot == $tcg";
-		arg.$tcg = 2;
-	}
-	else if (pack_list[pack]) {
-		qstr +=` AND ${list_condition("id", "pack", pack_list[pack], arg)}`;
-		arg.pack = pack;
-	}
-	else if (pre_release[pack]) {
-		qstr += " AND datas.id>=$begin AND datas.id<=$end";
-		arg.$begin = pre_release[pack];
-		arg.$end = pre_release[pack] + 998;
-		arg.pack = pack;
-	}
-	document.getElementById("select_pack").value = pack;
+function init_form(params) {
+	document.getElementById("text_id").value = params.get("code") ?? "";
+	document.getElementById("select_pack").value = params.get("pack") ?? "";
 
 	// type
-	arg.$ctype = 0;
-	let subtype = 0;
-	let exc = 0;
-	switch (params.get("ctype")) {
+	let type = 0;
+	switch (params.get("type")) {
 		case "1": {
-			arg.$ctype = TYPE_MONSTER;
+			type = TYPE_MONSTER;
 			for (const val of params.getAll("mtype")) {
 				const idx = Number.parseInt(val) - 1;
-				subtype |= mtype_list[idx];
-				if (document.getElementsByName("mtype")[idx].type === "checkbox")
-					document.getElementsByName("mtype")[idx].checked = true;
+				document.getElementsByName("mtype")[idx]?.checked = true;
 			}
-			let mtype_operator = 0;
 			if (params.get("mtype_operator") === "1") {
-				mtype_operator = 1;
 				select_subtype_op.value = "1";
 			}
 			else {
-				mtype_operator = 0;
 				select_subtype_op.value = "0";
-			}
-			if (subtype) {
-				if (mtype_operator)
-					qstr += " AND type & $mtype == $mtype";
-				else
-					qstr += " AND type & $mtype";
-				arg.$mtype = subtype;
 			}
 			for (const val of params.getAll("exclude")) {
 				const idx = Number.parseInt(val) - 1;
-				exc |= exclude_list[idx];
-				if (document.getElementsByName("exclude")[idx].type === "checkbox")
-					document.getElementsByName("exclude")[idx].checked = true;
-			}
-			if (exc) {
-				qstr += " AND NOT type & $exclude";
-				arg.$exclude = exc;
+				document.getElementsByName("exclude")[idx]?.checked = true;
 			}
 			break;
 		}
 		case "2": {
-			qstr += " AND type & $ctype";
-			arg.$ctype = TYPE_SPELL;
+			type = TYPE_SPELL;
 			for (const val of params.getAll("stype")) {
 				const idx = Number.parseInt(val) - 1;
-				subtype |= stype_list[idx];
-				if (document.getElementsByName("stype").length)
-					document.getElementsByName("stype")[idx].checked = true;
-			}
-			if (subtype) {
-				if (subtype & TYPE_NORMAL) {
-					if (subtype === TYPE_NORMAL) {
-						qstr += " AND type == $ctype";
-					}
-					else {
-						qstr += " AND (type == $ctype OR type & $stype)";
-						arg.$stype = subtype & ~TYPE_NORMAL;
-					}
-				}
-				else {
-					qstr += " AND type & $stype";
-					arg.$stype = subtype;
-				}
+				document.getElementsByName("stype")[idx]?.checked = true;
 			}
 			break;
 		}
-		case "3": {
-			qstr += " AND type & $ctype";
-			arg.$ctype = TYPE_TRAP;
+		case "4": {
+			type = TYPE_TRAP;
 			for (const val of params.getAll("ttype")) {
 				const idx = Number.parseInt(val) - 1;
-				subtype |= ttype_list[idx];
-				if (document.getElementsByName("ttype").length)
-					document.getElementsByName("ttype")[idx].checked = true;
-			}
-			if (subtype) {
-				if (subtype & TYPE_NORMAL) {
-					if (subtype === TYPE_NORMAL) {
-						qstr += " AND type == $ctype";
-					}
-					else {
-						qstr += " AND (type == $ctype OR type & $ttype)";
-						arg.$ttype = subtype & ~TYPE_NORMAL;
-					}
-				}
-				else {
-					qstr += " AND type & $ttype";
-					arg.$ttype = subtype;
-				}
+				document.getElementsByName("ttype")[idx]?.checked = true;
 			}
 			break;
 		}
@@ -220,235 +132,61 @@ function param_to_condition(params) {
 			break;
 	}
 
-	if (arg.$ctype === 0 || arg.$ctype === TYPE_MONSTER) {
-		// material
-		if (params.has("material")) {
-			const material = params.get("material").replace(/[%_$]/g, '$$$&');
-			qstr += ` AND ("desc" LIKE $mat1 ESCAPE '$' OR "desc" LIKE $mat2 ESCAPE '$' OR "desc" LIKE $mat3 ESCAPE '$')`;
-			arg.$mat1 = `「${material}」%+%`;
-			arg.$mat2 = `%+「${material}」%`;
-			arg.$mat3 = `%「${material}」×%`;
-			arg.$ctype = TYPE_MONSTER;
-			document.getElementById("text_mat").value = params.get("material");
-		}
+	if (type === 0 || type === TYPE_MONSTER) {
+		document.getElementById("text_mat").value = params.get("material") ?? "";
+		document.getElementById("text_atk1").value = params.get("atk_from") ?? "";
+		document.getElementById("text_atk2").value = params.get("atk_to") ?? "";
+		document.getElementById("text_def1").value = params.get("def_from") ?? "";
+		document.getElementById("text_def2").value = params.get("def_to") ?? "";
+		document.getElementById("text_sum").value = params.get("sum") ?? "";
 
-		// atk
-		if (params.has("atk_from")) {
-			const atk_from = Number.parseInt(params.get("atk_from"));
-			arg.$ctype = TYPE_MONSTER;
-			if (atk_from === -1) {
-				qstr += " AND atk == $unknown";
-				arg.$unknown = -2;
-			}
-			else {
-				qstr += " AND atk >= $atk_from";
-				arg.$atk_from = atk_from;
-			}
-			document.getElementById("text_atk1").value = atk_from;
+		for (const value of params.getAll("level")) {
+			const level = Number.parseInt(value);
+			if (Number.isNaN(level) || level < 0 || level > cb_level.length - 1)
+				continue;
+			cb_level[level].checked = true;
 		}
-		if (params.has("atk_to")) {
-			const atk_to = Number.parseInt(params.get("atk_to"));
-			arg.$ctype = TYPE_MONSTER;
-			qstr += " AND atk >= $zero AND atk <= $atk_to";
-			arg.$zero = 0;
-			arg.$atk_to = atk_to;
-			document.getElementById("text_atk2").value = atk_to;
+		for (const value of params.getAll("scale")) {
+			const scale = Number.parseInt(value);
+			if (Number.isNaN(scale) || scale < 0 || scale > cb_scale.length - 1)
+				continue;
+			cb_scale[scale].checked = true;
 		}
-		if (params.has("atkm")) {
-			const atk_mod = Number.parseInt(params.get("atkm"));
-			qstr += " AND atk % 1000 == $atkm";
-			arg.$atkm = atk_mod;
-			arg.$ctype = TYPE_MONSTER;
-		}
-
-		// def, exclude link monsters
-		if (params.has("def_from") || params.has("def_to") || params.has("defm") || params.has("sum")) {
-			qstr += " AND NOT type & $link";
-			arg.$link = TYPE_LINK;
-			arg.$ctype = TYPE_MONSTER;
-		}
-		if (params.has("def_from")) {
-			const def_from = Number.parseInt(params.get("def_from"));
-			if (def_from === -1) {
-				qstr += " AND def == $unknown";
-				arg.$unknown = -2;
-			}
-			else if (def_from === -2) {
-				qstr += " AND def == atk AND def >= $zero";
-				arg.$zero = 0;
-			}
-			else {
-				qstr += " AND def >= $def_from";
-				arg.$def_from = def_from;
-			}
-			document.getElementById("text_def1").value = def_from;
-		}
-		if (params.has("def_to")) {
-			const def_to = Number.parseInt(params.get("def_to"));
-			qstr += " AND def >= $zero AND def <= $def_to";
-			arg.$zero = 0;
-			arg.$def_to = def_to;
-			document.getElementById("text_def2").value = def_to;
-		}
-		if (params.has("defm")) {
-			const def_mod = Number.parseInt(params.get("defm"));
-			qstr += " AND def % 1000 == $defm";
-			arg.$defm = def_mod;
-		}
-		if (params.has("sum")) {
-			const sum = Number.parseInt(params.get("sum"));
-			qstr += " AND atk >= $zero AND def >= $zero AND atk + def == $sum";
-			arg.$zero = 0;
-			arg.$sum = sum;
-			document.getElementById("text_sum").value = sum;
-		}
-
-		// lv, rank, link
-		if (params.has("level") || params.has("level_from") || params.has("level_to")) {
-			arg.$ctype = TYPE_MONSTER;
-		}
-		if (params.has("level")) {
-			let level_condtion = "0";
-			let index = 0;
-			for (const value of params.getAll("level")) {
-				const level = Number.parseInt(value);
-				level_condtion += ` OR (level & $mask) == $level${index}`;
-				arg[`$level${index}`] = level;
-				index++;
-				cb_level[level].checked = true;
-			}
-			qstr += ` AND (${level_condtion})`;
-			arg.$mask = 0xff;
-		}
-		if (params.has("level_from")) {
-			qstr += " AND (level & $mask) >= $level_from";
-			arg.$mask = 0xff;
-			arg.$level_from = Number.parseInt(params.get("level_from"));
-		}
-		if (params.has("level_to")) {
-			qstr += " AND (level & $mask) <= $level_to";
-			arg.$mask = 0xff;
-			arg.$level_to = Number.parseInt(params.get("level_to"));
-		}
-
-		// scale, pendulum monster only
-		if (params.has("scale") || params.has("scale_from") || params.has("scale_to")) {
-			qstr += " AND type & $pendulum";
-			arg.$pendulum = TYPE_PENDULUM;
-			arg.$ctype = TYPE_MONSTER;
-		}
-		if (params.has("scale")) {
-			let scale_condtion = "0";
-			let index = 0;
-			for (const value of params.getAll("scale")) {
-				const scale = Number.parseInt(value);
-				scale_condtion += ` OR (level >> $offset & $mask) == $scale${index}`;
-				arg[`$scale${index}`] = scale;
-				index++;
-				cb_scale[scale].checked = true;
-			}
-			qstr += ` AND (${scale_condtion})`;
-			arg.$offset = 24;
-			arg.$mask = 0xff;
-		}
-		if (params.has("scale_from")) {
-			qstr += " AND (level >> $offset & $mask) >= $scale_from";
-			arg.$offset = 24;
-			arg.$mask = 0xff;
-			arg.$scale_from = Number.parseInt(params.get("scale_from"));
-		}
-		if (params.has("scale_to")) {
-			qstr += " AND (level >> $offset & $mask) <= $scale_to";
-			arg.$offset = 24;
-			arg.$mask = 0xff;
-			arg.$scale_to = Number.parseInt(params.get("scale_to"));
-		}
-
 		// attr, race
-		let attr = 0;
 		for (const val of params.getAll("attr")) {
 			const idx = Number.parseInt(val) - 1;
-			attr |= attr_list[idx];
+			if (Number.isNaN(idx) || idx < 0 || idx >= cb_attr.length)
+				continue;
 			cb_attr[idx].checked = true;
 		}
-		if (attr) {
-			qstr += " AND attribute & $attr";
-			arg.$attr = attr;
-			arg.$ctype = TYPE_MONSTER;
-		}
-
-		let race = 0;
-		for (const val of params.getAll("race")) {
+		for (const val of params.getAll("species")) {
 			const idx = Number.parseInt(val) - 1;
-			race |= race_list[idx];
+			if (Number.isNaN(idx) || idx < 0 || idx >= cb_race.length)
+				continue;
 			cb_race[idx].checked = true;
 		}
-		if (race) {
-			qstr += " AND race & $race";
-			arg.$race = race;
-			arg.$ctype = TYPE_MONSTER;
-		}
 		// marker
-		let marker = 0;
-		let marker_operator = 0;
-		for (const val of params.getAll("marker")) {
+		for (const val of params.getAll("linkbtn")) {
 			const idx = Number.parseInt(val) - 1;
-			marker |= marker_list[idx];
-			if (cb_marker)
-				cb_marker[idx].checked = true;
+			if (Number.isNaN(idx) || idx < 0 || idx >= cb_marker.length)
+				continue;
+			cb_marker[idx].checked = true;
 		}
-		if (params.get("marker_operator") === "1") {
-			marker_operator = 1;
-			if (document.getElementById("select_marker_op"))
-				document.getElementById("select_marker_op").value = "1";
-		}
-		if (marker) {
-			qstr += " AND type & $link";
-			arg.$link = TYPE_LINK;
-			if (marker_operator)
-				qstr += " AND def & $marker == $marker";
-			else
-				qstr += " AND def & $marker";
-			arg.$marker = marker;
-			arg.$ctype = TYPE_MONSTER;
-		}
-		if (arg.$ctype === TYPE_MONSTER) {
-			qstr += " AND type & $ctype";
+		if (params.get("marker_op") === "1") {
+			document.getElementById("select_marker_op").value = "1";
 		}
 	}
 
-	const desc_str = `"desc" LIKE $desc ESCAPE '$'`;
-	const locale = params.get("locale");
-	if (locale)
-		document.getElementById("select_locale").value = locale;
-	const keyword = params.get("keyword");
-	let name_cmd = process_name(locale, keyword, arg);
-	if (name_cmd) {
-		// keyword
-		document.getElementById("text_keyword").value = keyword;
-		qstr += ` AND (${name_cmd} OR ${desc_str})`;
-		arg.$desc = like_pattern(keyword);
+	document.getElementById("select_locale").value = params.get("locale") ?? "";
+	if (params.get("keyword")) {
+		document.getElementById("text_keyword").value = params.get("keyword");
 	}
 	else {
-		// name
-		const name = params.get("cname");
-		name_cmd = process_name(locale, name, arg);
-		if (name_cmd) {
-			document.getElementById("text_name").value = name;
-			qstr += ` AND (${name_cmd})`;
-		}
-		// desc
-		const desc = params.get("desc");
-		if (desc) {
-			document.getElementById("text_effect").value = desc;
-			qstr += ` AND ${desc_str}`;
-			arg.$desc = like_pattern(desc);
-		}
+		document.getElementById("text_name").value = params.get("cardname") ?? "";
+		document.getElementById("text_effect").value = params.get("desc") ?? "";
 	}
-	return [qstr, arg];
 }
 
-// entrance of query
 function server_analyze1(params) {
 	const valid_params = server_validate1(params);
 	const [condition, arg_final] = param_to_condition(valid_params);

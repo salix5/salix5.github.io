@@ -177,7 +177,7 @@ function text_link(name) {
 	}
 	else {
 		const queryName = replace_name[name] ? replace_name[name] : name;
-		anchor.href = `./?cname=${encodeURIComponent(queryName)}`;
+		anchor.href = `./?cardname=${encodeURIComponent(queryName)}`;
 	}
 	return anchor;
 }
