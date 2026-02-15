@@ -5,13 +5,7 @@ const MAX_RESULT_LEN = 500;
 let current_stmt = "";
 let current_arg = null;
 
-const re_wildcard = /(?<!\$)[%_]/;
-const re_special = /[$%_]/;
-
 const re_id = /^\d{1,9}$/;
-const re_value = /^\d{1,2}$/;
-const re_pack = /^_?\w{4}$/;
-const re_number = /^-?\d{1,10}$/;
 
 const mtype_list = [
 	TYPE_FUSION,
@@ -68,19 +62,6 @@ function toHalfWidth(str) {
  */
 function toFullWidth(str) {
 	return str.replace(/[A-Za-z0-9]/g, (s) => String.fromCharCode(s.charCodeAt(0) + 0xFEE0));
-}
-
-/**
- * Convert a string to a LIKE pattern.
- * @param {string} str 
- * @returns {string}
- */
-function like_pattern(str) {
-	if (!str)
-		return '';
-	if (re_wildcard.test(str))
-		return str;
-	return `%${str.replace(/\$(?![%_])/g, '$$$&')}%`;
 }
 
 /**
