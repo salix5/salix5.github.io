@@ -52,41 +52,6 @@ const ttype_list = [
 	TYPE_COUNTER,
 ];
 
-const interface_type = {
-	"cname": 1,
-	"locale": 1,
-	"desc": 1,
-	"keyword": 1,
-	"pack": 1,
-	"ctype": 1,
-	"stype": 1,
-	"ttype": 1,
-	"page": 1,
-
-	"mtype": 2,
-	"mtype_operator": 2,
-	"exclude": 2,
-	"attr": 2,
-	"race": 2,
-	"level": 2,
-	"level_from": 2,
-	"level_to": 2,
-	"scale": 2,
-	"scale_from": 2,
-	"scale_to": 2,
-	"atk_from": 2,
-	"atk_to": 2,
-	"atkm": 2,
-	"def_from": 2,
-	"def_to": 2,
-	"defm": 2,
-	"sum": 2,
-
-	"material": 3,
-	"marker": 3,
-	"marker_operator": 3,
-}
-
 /**
  * toHalfWidth()
  * @param {string} str
