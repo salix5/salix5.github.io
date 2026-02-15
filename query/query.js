@@ -142,16 +142,16 @@ function init_form(params) {
 	}
 }
 
-function fetch_query(params) {
+async function fetch_query(params) {
 	const url = new URL('https://salix5.up.railway.app/query');
 	url.search = params.toString();
-	fetch(url)
-		.then(response => response.json())
-		.then(data => {
-			if (data.result.length === 1)
-				document.title = data.result[0].tw_name;
-			show_result(params, data);
-		});
+	const response = await fetch(url);
+	const data = await response.json();
+	if (data.result.length === 1)
+		document.title = data.result[0].tw_name;
+	else
+		document.title = "卡片查詢";
+	show_result(params, data);
 }
 
 function get_sw_str(x) {
