@@ -187,16 +187,16 @@ function init_form(params) {
 	}
 }
 
-function server_analyze1(params) {
-	const valid_params = server_validate1(params);
-	const [condition, arg_final] = param_to_condition(valid_params);
-	const stmt_final = valid_params.size ? `${stmt_base}${condition};` : "";
-	current_stmt = stmt_final;
-	current_arg = arg_final;
-	const result = stmt_final ? query(stmt_final, arg_final) : [];
-	if (result.length === 1)
-		document.title = result[0].tw_name;
-	show_result(valid_params, result);
+function fetch_query(params) {
+	const url = new URL('https://salix5.up.railway.app/query');
+	url.search = params.toString();
+	fetch(url)
+		.then(response => response.json())
+		.then(data => {
+			if (data.result.length === 1)
+				document.title = data.result[0].tw_name;
+			show_result(params, data);
+		});
 }
 
 function get_sw_str(x) {
