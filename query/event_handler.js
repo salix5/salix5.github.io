@@ -2,12 +2,12 @@
 const select_type = document.getElementById("select_type");
 const select_subtype_op = document.getElementById("select_subtype_op");
 
-const cb_marker = document.getElementsByName("marker");
+const cb_marker = document.getElementsByName("linkbtn");
 const cb_attr = document.getElementsByName("attr");
-const cb_race = document.getElementsByName("race");
+const cb_race = document.getElementsByName("species");
 const cb_level = document.getElementsByName("level");
 const cb_scale = document.getElementsByName("scale");
-const monster_checkbox = ["marker", "attr", "race", "level", "scale"];
+const monster_checkbox = ["linkbtn", "attr", "species", "level", "scale"];
 
 const row_subtype = document.querySelectorAll(".row_subtype");
 const subtype_operator = document.getElementById("subtype_operator");
@@ -64,7 +64,7 @@ function hide_type(type, hidden) {
 			subtype_s.hidden = hidden;
 			disable_cb("stype", hidden);
 			break;
-		case 3:
+		case 4:
 			for (const row of row_subtype)
 				row.hidden = hidden;
 			subtype_t.hidden = hidden;
@@ -79,26 +79,26 @@ select_type.addEventListener("change", function (event) {
 	switch (event.currentTarget.value) {
 		case "1":
 			hide_type(2, true);
-			hide_type(3, true);
+			hide_type(4, true);
 			hide_type(0, false);
 			hide_type(1, false);
 			break;
 		case "2":
 			hide_type(0, true);
 			hide_type(1, true);
-			hide_type(3, true);
+			hide_type(4, true);
 			hide_type(2, false);
 			break;
-		case "3":
+		case "4":
 			hide_type(0, true);
 			hide_type(1, true);
 			hide_type(2, true);
-			hide_type(3, false);
+			hide_type(4, false);
 			break;
 		default:
 			hide_type(1, true);
 			hide_type(2, true);
-			hide_type(3, true);
+			hide_type(4, true);
 			hide_type(0, false);
 			break;
 	}
@@ -116,7 +116,7 @@ document.getElementById("attr_reset").addEventListener("click", function (event)
 	clear_cb("attr");
 });
 document.getElementById("race_reset").addEventListener("click", function (event) {
-	clear_cb("race");
+	clear_cb("species");
 });
 document.getElementById("level_reset").addEventListener("click", function (event) {
 	clear_cb("level");
@@ -125,7 +125,7 @@ document.getElementById("scale_reset").addEventListener("click", function (event
 	clear_cb("scale");
 });
 document.getElementById("marker_reset").addEventListener("click", function (event) {
-	clear_cb("marker");
+	clear_cb("linkbtn");
 });
 
 form1.addEventListener("reset", function (event) {
@@ -153,12 +153,12 @@ window.addEventListener("DOMContentLoaded", function (event) {
 	}
 
 	const params = new URLSearchParams(window.location.search);
-	const ctype = params.get("ctype");
-	switch (ctype) {
+	const type = params.get("type");
+	switch (type) {
 		case "1":
 		case "2":
-		case "3":
-			select_type.value = ctype;
+		case "4":
+			select_type.value = type;
 			select_type.dispatchEvent(new Event("change"));
 			break;
 		default:
