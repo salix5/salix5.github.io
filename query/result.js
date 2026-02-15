@@ -421,33 +421,28 @@ function create_rows(card, pack) {
 
 /**
  * @param {URLSearchParams} params 
- * @param {Card[]} result 
+ * @param {object} response
  */
-function show_result(params, result) {
+function show_result(params, response) {
 	table_result.innerHTML = "";
 	select_page.innerHTML = "";
 	div_page.hidden = true;
 	current_params = params;
-	const total_pages = Math.ceil(result.length / result_per_page);
-	const page = params.has("page") ? Number.parseInt(params.get("page"), 10) : 1;
-	const name = params.get("cname");
-	const locale = params.get("locale");
+	const result = response.result;
+	const total_pages = Math.ceil(response.meta.total / result_per_page);
+	const page = response.meta.page;
 	let pack = params.get("pack");
-	if (pack === "o" || pack === "t" || !is_pack(pack))
+	if (pack === "o" || pack === "t")
 		pack = null;
 	if (total_pages && page <= total_pages) {
 		const index_begin = result_per_page * (page - 1);
-		const index_end = Math.min(result_per_page * page - 1, result.length - 1);
-		if (pack)
-			result.sort(compare_id);
-		else
-			result.sort(compare_card(name, locale));
-		div_count.textContent = `搜尋結果共${result.length}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
+		const index_end = Math.min(result_per_page * page - 1, response.meta.total - 1);
+		div_count.textContent = `搜尋結果共${response.meta.total}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		div_count.hidden = false;
 		if (window.innerWidth > MAX_WIDTH)
 			table_result.style.border = "1px solid black";
-		for (let i = index_begin; i <= index_end; ++i) {
-			create_rows(result[i], pack);
+		for (const card of result) {
+			create_rows(card, pack);
 		}
 		if (total_pages > 1) {
 			for (let i = 1; i <= total_pages; ++i) {
