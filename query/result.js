@@ -419,14 +419,19 @@ function create_rows(card, pack) {
 	}
 }
 
+function reset_result() {
+	div_count.textContent = "";
+	div_count.hidden = true;
+	table_result.innerHTML = "";
+	select_page.options.length = 0;
+	div_page.hidden = true;
+}
+
 /**
  * @param {URLSearchParams} params 
  * @param {object} response
  */
 function show_result(params, response) {
-	table_result.innerHTML = "";
-	select_page.options.length = 0;
-	div_page.hidden = true;
 	current_params = params;
 	const result = response.result;
 	const total_pages = Math.ceil(response.meta.total / result_per_page);
