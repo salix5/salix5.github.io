@@ -1,11 +1,4 @@
 "use strict";
-function object_to_map(obj) {
-	const map = new Map();
-	for (const [key, value] of Object.entries(obj))
-		map.set(Number.parseInt(key, 10), value);
-	return map;
-}
-
 const fetch_list = [];
 
 const bls_postfix = Object.create(null);
