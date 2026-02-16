@@ -1,50 +1,5 @@
 "use strict";
-const MAX_TEXT_LEN = 200;
-const MAX_RESULT_LEN = 500;
-
-let current_stmt = "";
-let current_arg = null;
-
 const re_id = /^\d{1,9}$/;
-
-const mtype_list = [
-	TYPE_FUSION,
-	TYPE_SYNCHRO,
-	TYPE_XYZ,
-	TYPE_LINK,
-	TYPE_NORMAL,
-
-	TYPE_EFFECT,
-	TYPE_RITUAL,
-	TYPE_PENDULUM,
-	TYPE_TOON,
-	TYPE_SPIRIT,
-
-	TYPE_UNION,
-	TYPE_DUAL,
-	TYPE_TUNER,
-	TYPE_FLIP,
-	TYPE_SPSUMMON,
-];
-
-const exclude_list = [
-	...mtype_list,
-];
-
-const stype_list = [
-	TYPE_NORMAL,
-	TYPE_QUICKPLAY,
-	TYPE_CONTINUOUS,
-	TYPE_EQUIP,
-	TYPE_RITUAL,
-	TYPE_FIELD,
-];
-
-const ttype_list = [
-	TYPE_NORMAL,
-	TYPE_CONTINUOUS,
-	TYPE_COUNTER,
-];
 
 /**
  * toHalfWidth()
