@@ -425,7 +425,7 @@ function create_rows(card, pack) {
  */
 function show_result(params, response) {
 	table_result.innerHTML = "";
-	select_page.innerHTML = "";
+	select_page.options.length = 0;
 	div_page.hidden = true;
 	current_params = params;
 	const result = response.result;
