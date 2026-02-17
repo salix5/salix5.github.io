@@ -206,7 +206,7 @@ function create_rows(card, pack) {
 	img_card.onerror = imgError;
 
 	if (is_formal(card.id, card.type)) {
-		const params = new URLSearchParams({ "desc": `「${card.tw_name}」` });
+		const params = new URLSearchParams({ "mention": card.id });
 		const link_id = document.createElement('a');
 		link_id.href = `./?${params.toString()}`;
 		link_id.target = '_blank';
