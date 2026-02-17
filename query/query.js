@@ -1,5 +1,6 @@
 "use strict";
 const re_id = /^\d{1,9}$/;
+const api_endpoint = "https://salix5.up.railway.app/query/";
 
 /**
  * toHalfWidth()
@@ -103,7 +104,7 @@ function init_form(params) {
 }
 
 async function fetch_query(params) {
-	const url = new URL("https://salix5.up.railway.app/query");
+	const url = new URL(api_endpoint);
 	url.search = params.toString();
 	const response = await fetch(url);
 	if (!response.ok) {
