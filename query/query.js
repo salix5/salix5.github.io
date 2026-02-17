@@ -143,6 +143,17 @@ db_ready.then(() => {
 form1.addEventListener("submit", event => {
 	event.preventDefault();
 	const params = new URLSearchParams(new FormData(form1));
+	for (const [key, value] of [...params]) {
+		if (value === "") {
+			params.delete(key);
+		}
+	}
+	if (!params.has("mtype")) {
+		params.delete("monster_type_op");
+	}
+	if (!params.has("linkbtn")) {
+		params.delete("marker_op");
+	}
 	const url = `${window.location.pathname}?${params.toString()}`;
 	window.history.pushState({ path: url }, "", url);
 	url_query();
