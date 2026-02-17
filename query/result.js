@@ -382,7 +382,6 @@ function create_rows(card, pack) {
 
 function reset_result() {
 	div_count.textContent = "";
-	div_count.hidden = true;
 	table_result.innerHTML = "";
 	select_page.options.length = 0;
 	div_page.hidden = true;
@@ -406,7 +405,6 @@ function show_result(params, response) {
 		const index_begin = result_per_page * (page - 1);
 		const index_end = Math.min(result_per_page * page - 1, response.meta.total - 1);
 		div_count.textContent = `搜尋結果共${response.meta.total}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
-		div_count.hidden = false;
 		if (window.innerWidth > MAX_WIDTH)
 			table_result.style.border = "1px solid black";
 		for (const card of result) {
@@ -421,9 +419,7 @@ function show_result(params, response) {
 		}
 	}
 	else {
-		const row0 = table_result.insertRow(-1);
-		const cell0 = row0.insertCell(-1);
-		table_result.style.border = "1px solid black";
-		cell0.textContent = "沒有符合搜尋的項目。";
+		div_count.textContent = "沒有符合搜尋的項目。";
 	}
+	div_count.scrollIntoView();
 }
