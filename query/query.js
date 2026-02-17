@@ -43,6 +43,7 @@ function init_form(params) {
 	document.getElementById("form1").reset();
 	document.getElementById("text_id").value = params.get("code") ?? "";
 	document.getElementById("select_pack").value = params.get("pack") ?? "";
+	document.getElementById("text_mention").value = params.get("mention") ?? "";
 
 	// type
 	let type = 0;
@@ -71,7 +72,6 @@ function init_form(params) {
 	}
 
 	if (type === 0 || type === TYPE_MONSTER) {
-		document.getElementById("text_mat").value = params.get("material") ?? "";
 		document.getElementById("text_atk1").value = params.get("atk_from") ?? "";
 		document.getElementById("text_atk2").value = params.get("atk_to") ?? "";
 		document.getElementById("text_def1").value = params.get("def_from") ?? "";
