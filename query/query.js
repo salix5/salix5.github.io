@@ -120,7 +120,6 @@ async function url_query() {
 		return;
 	}
 	div_count.textContent = "Loading...";
-	div_count.hidden = false;
 	const params = new URLSearchParams(window.location.search);
 	init_form(params);
 	try {
@@ -135,7 +134,6 @@ async function url_query() {
 		console.error("fetch error:", error);
 		reset_result();
 		div_count.textContent = "網路錯誤，請稍後再試。";
-		div_count.hidden = false;
 	}
 }
 
@@ -147,6 +145,7 @@ db_ready.then(() => {
 
 form1.addEventListener("submit", event => {
 	event.preventDefault();
+	document.activeElement?.blur();
 	const params = new URLSearchParams(new FormData(form1));
 	for (const [key, value] of [...params]) {
 		if (value === "") {
@@ -170,7 +169,7 @@ select_page.addEventListener("change", event => {
 	const url = `${window.location.pathname}?${params.toString()}`;
 	window.history.pushState({ path: url }, "", url);
 	url_query();
-	window.scrollTo(0, 0);
+	event.currentTarget.blur();
 });
 
 window.addEventListener("popstate", event => {
