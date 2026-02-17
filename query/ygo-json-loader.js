@@ -1,4 +1,7 @@
 "use strict";
+// cleanup localStorage
+// TODO: remove this after all users have updated to the new version
+localStorage.clear();
 const fetch_list = [];
 
 const bls_postfix = Object.create(null);
