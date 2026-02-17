@@ -134,7 +134,7 @@ async function url_query() {
 	catch (error) {
 		console.error("fetch error:", error);
 		reset_result();
-		div_count.textContent = "查詢失敗，請稍後再試。";
+		div_count.textContent = "網路錯誤，請稍後再試。";
 		div_count.hidden = false;
 	}
 }
