@@ -1,5 +1,4 @@
 "use strict";
-// dependency: sql.js, JSZIP
 // special ID
 const ID_TYLER_THE_GREAT_WARRIOR = 68811206;
 const ID_DECOY = 20240828;
@@ -7,24 +6,6 @@ const ID_BLACK_LUSTER_SOLDIER = 5405695;
 const CID_BLACK_LUSTER_SOLDIER = 19092;
 const CARD_ARTWORK_VERSIONS_OFFSET = 20;
 const MAX_CARD_ID = 99999999;
-
-/**
- * @typedef {Object} Record
- * @property {number} id
- * @property {number} ot
- * @property {number} alias
- * @property {number[]} setcode
- * @property {number} type
- * @property {number} atk
- * @property {number} def
- * @property {number} level
- * @property {number} race
- * @property {number} attribute
- * @property {number} scale
- * 
- * @property {string} name
- * @property {string} desc
- */
 
 /**
  * @typedef {Object} CardText
@@ -96,7 +77,7 @@ function print_qa_link(cid) {
 
 /**
  * Check if the card is an alternative artwork card.
- * @param {Record} card
+ * @param {Card} card
  * @returns 
  */
 function is_alternative(card) {
