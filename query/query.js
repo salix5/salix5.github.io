@@ -70,6 +70,10 @@ function init_form(params) {
 		default:
 			break;
 	}
+	if (type) {
+		document.getElementById("select_type").value = type;
+		document.getElementById("select_type").dispatchEvent(new Event("change"));
+	}
 
 	if (type === 0 || type === TYPE_MONSTER) {
 		document.getElementById("text_atk1").value = params.get("atk_from") ?? "";
