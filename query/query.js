@@ -102,7 +102,7 @@ async function fetch_query(params) {
 	url.search = params.toString();
 	const response = await fetch(url);
 	const data = await response.json();
-	if (data.result.length === 1)
+	if (data.result && data.result.length === 1)
 		document.title = data.result[0].tw_name;
 	else
 		document.title = "卡片查詢";
