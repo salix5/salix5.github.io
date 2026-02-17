@@ -109,9 +109,13 @@ function print_limit(limit) {
 		return '';
 }
 
+/**
+ * Handle image loading error by setting a default image.
+ * @param {Event} event 
+ */
 function imgError(event) {
-	this.onerror = null;
-	this.src = "icon/unknown.jpg";
+	event.currentTarget.onerror = null;
+	event.currentTarget.src = "icon/unknown.jpg";
 }
 
 function is_formal(id, type) {
@@ -161,7 +165,7 @@ function create_rows(card, pack) {
 		img_card.src = `https://salix5.github.io/query-data/pics/${card.artid ? card.artid : card.id}.jpg`;
 	else
 		img_card.src = `../cdb/expansions/pics/${card.id}.jpg`;
-	img_card.onerror = imgError;
+	img_card.addEventListener('error', imgError);
 
 	if (is_formal(card.id, card.type)) {
 		const params = new URLSearchParams({ "mention": card.id });
