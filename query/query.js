@@ -71,7 +71,7 @@ function init_form(params) {
 			break;
 	}
 	if (type) {
-		document.getElementById("select_type").value = type;
+		document.getElementById("select_type").value = params.get("type");
 		document.getElementById("select_type").dispatchEvent(new Event("change"));
 	}
 
