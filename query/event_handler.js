@@ -151,17 +151,4 @@ window.addEventListener("DOMContentLoaded", function (event) {
 		div_page.style.width = "100%";
 		table_result.style.width = "100%";
 	}
-
-	const params = new URLSearchParams(window.location.search);
-	const type = params.get("type");
-	switch (type) {
-		case "1":
-		case "2":
-		case "4":
-			select_type.value = type;
-			select_type.dispatchEvent(new Event("change"));
-			break;
-		default:
-			break;
-	}
 });
