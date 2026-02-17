@@ -40,6 +40,7 @@ function checkByName(params, inputName, offset) {
  * @param {URLSearchParams} params 
  */
 function init_form(params) {
+	document.getElementById("form1").reset();
 	document.getElementById("text_id").value = params.get("code") ?? "";
 	document.getElementById("select_pack").value = params.get("pack") ?? "";
 
@@ -98,17 +99,71 @@ function init_form(params) {
 }
 
 async function fetch_query(params) {
-	const url = new URL('https://salix5.up.railway.app/query');
+	const url = new URL("https://salix5.up.railway.app/query");
 	url.search = params.toString();
 	const response = await fetch(url);
-	const data = await response.json();
-	if (data.result && data.result.length === 1)
-		document.title = data.result[0].tw_name;
-	else
-		document.title = "卡片查詢";
-	show_result(params, data);
+	if (!response.ok) {
+		throw new Error(`HTTP error! status: ${response.status}`);
+	}
+	return response.json();
 }
 
+async function url_query() {
+	if (window.location.search.substring(1) === "") {
+		form1.reset();
+		reset_result();
+		return;
+	}
+	div_count.textContent = "Loading...";
+	div_count.hidden = false;
+	const params = new URLSearchParams(window.location.search);
+	init_form(params);
+	try {
+		const data = await fetch_query(params);
+		if (data.result && data.result.length === 1)
+			document.title = data.result[0].tw_name;
+		else
+			document.title = "卡片查詢";
+		show_result(params, data);
+	}
+	catch (error) {
+		console.error("fetch error:", error);
+		reset_result();
+		div_count.textContent = "查詢失敗，請稍後再試。";
+		div_count.hidden = false;
+	}
+}
+
+db_ready.then(() => {
+	document.getElementById("button1").disabled = false;
+	document.getElementById("button2").disabled = false;
+	url_query();
+});
+
+form1.addEventListener("submit", event => {
+	event.preventDefault();
+	const params = new URLSearchParams(new FormData(form1));
+	const url = `${window.location.pathname}?${params.toString()}`;
+	window.history.pushState({ path: url }, "", url);
+	url_query();
+});
+
+select_page.addEventListener("change", event => {
+	const params = new URLSearchParams(window.location.search);
+	params.set("page", select_page.selectedIndex + 1);
+	const url = `${window.location.pathname}?${params.toString()}`;
+	window.history.pushState({ path: url }, "", url);
+	url_query();
+	window.scrollTo(0, 0);
+});
+
+window.addEventListener("popstate", event => {
+	url_query();
+});
+
+
+
+// The following functions are for small world, which is currently disabled.
 function get_sw_str(x) {
 	const sw_str1 = `race == $race_${x} AND attribute != $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
 	const sw_str2 = ` OR race != $race_${x} AND attribute == $attr_${x} AND (level & 0xff) != $lv_${x} AND atk != $atk_${x} AND def != $def_${x}`;
