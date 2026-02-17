@@ -1,6 +1,5 @@
 "use strict";
 const result_per_page = 50;
-var current_params = null;
 
 function is_booster(pack) {
 	if (pack_list[pack] && pack_list[pack][82] === -1)
@@ -432,8 +431,10 @@ function reset_result() {
  * @param {object} response
  */
 function show_result(params, response) {
-	current_params = params;
+	reset_result();
 	const result = response.result;
+	if (!result)
+		return;
 	const total_pages = Math.ceil(response.meta.total / result_per_page);
 	const page = response.meta.page;
 	let pack = params.get("pack");
