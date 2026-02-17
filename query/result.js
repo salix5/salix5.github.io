@@ -109,48 +109,6 @@ function print_limit(limit) {
 		return '';
 }
 
-function compare_id(a, b) {
-	return a.pack_index - b.pack_index;
-}
-
-function compare_card(name, locale) {
-	const zh_collator = new Intl.Collator('zh-Hant');
-	const target_name = name?.toLowerCase() ?? '';
-	const get_match_score = (card) => {
-		if (!target_name) {
-			return 0;
-		}
-		switch (locale) {
-			case 'en':
-				const en_name = card.en_name ?? card.md_name_en;
-				if (en_name) {
-					return en_name.toLowerCase() === target_name ? 1 : 0;
-				}
-				return 0;
-			default:
-				return card.tw_name.toLowerCase() === target_name ? 1 : 0;
-		}
-	}
-
-	return function (a, b) {
-		if (target_name) {
-			const scoreA = get_match_score(a);
-			const scoreB = get_match_score(b);
-			if (scoreA !== scoreB) {
-				return scoreB - scoreA;
-			}
-		}
-		if (a.color !== b.color) {
-			return a.color - b.color;
-		}
-		if (a.level !== b.level) {
-			return b.level - a.level;
-		}
-		return zh_collator.compare(a.tw_name, b.tw_name);
-	}
-}
-
-
 function imgError(event) {
 	this.onerror = null;
 	this.src = "icon/unknown.jpg";
