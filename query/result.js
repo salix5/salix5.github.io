@@ -465,10 +465,3 @@ function show_result(params, response) {
 		cell0.textContent = "沒有符合搜尋的項目。";
 	}
 }
-
-select_page.onchange = (event) => {
-	if (current_params) {
-		current_params.set("page", select_page.selectedIndex + 1);
-		window.location.search = '?' + current_params.toString();
-	}
-};
