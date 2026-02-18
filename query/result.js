@@ -396,15 +396,16 @@ function show_result(params, response) {
 	const result = response.result;
 	if (!result)
 		return;
-	const total_pages = Math.ceil(response.meta.total / result_per_page);
-	const page = response.meta.page;
+	const total = response.meta.total;
+	const page = response.page;
+	const total_pages = Math.ceil(total / result_per_page);
 	let pack = params.get("pack");
 	if (pack === "o" || pack === "t")
 		pack = null;
 	if (total_pages && page <= total_pages) {
 		const index_begin = result_per_page * (page - 1);
-		const index_end = Math.min(result_per_page * page - 1, response.meta.total - 1);
-		div_count.textContent = `搜尋結果共${response.meta.total}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
+		const index_end = Math.min(result_per_page * page - 1, total - 1);
+		div_count.textContent = `搜尋結果共${total}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
 		if (window.innerWidth > MAX_WIDTH)
 			table_result.style.border = "1px solid black";
 		for (const card of result) {
