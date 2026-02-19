@@ -125,7 +125,7 @@ async function url_query() {
 	try {
 		const data = await fetch_query(params);
 		data.page = Number.parseInt(params.get("page") ?? "1");
-		if (data.result && data.result.length === 1)
+		if (data.result.length === 1)
 			document.title = data.result[0].tw_name;
 		else
 			document.title = "卡片查詢";

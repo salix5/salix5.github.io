@@ -394,8 +394,6 @@ function reset_result() {
 function show_result(params, response) {
 	reset_result();
 	const result = response.result;
-	if (!result)
-		return;
 	const total = response.meta.total;
 	const page = response.page;
 	const total_pages = Math.ceil(total / result_per_page);
