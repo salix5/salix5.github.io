@@ -103,10 +103,15 @@ function init_form(params) {
 	}
 }
 
+let currentController = null;
 async function fetch_query(params) {
+	if (currentController) {
+		currentController.abort();
+	}
+	currentController = new AbortController();
 	const url = new URL(api_endpoint);
 	url.search = params.toString();
-	const response = await fetch(url);
+	const response = await fetch(url, { signal: currentController.signal });
 	if (!response.ok) {
 		throw new Error(`HTTP error! status: ${response.status}`);
 	}
@@ -132,6 +137,9 @@ async function url_query() {
 		show_result(data);
 	}
 	catch (error) {
+		if (error.name === "AbortError") {
+			return;
+		}
 		console.error("fetch error:", error);
 		reset_result();
 		div_count.textContent = "網路錯誤，請稍後再試。";
