@@ -118,8 +118,11 @@ function imgError(event) {
 	event.currentTarget.src = "icon/unknown.jpg";
 }
 
+const mention_set = new Set([
+	101305044,
+]);
 function is_mentioned(id, type) {
-	return !(type & TYPE_TOKEN) && id <= MAX_CARD_ID;
+	return !(type & TYPE_TOKEN) && (id <= MAX_CARD_ID || mention_set.has(id));
 }
 
 /**
