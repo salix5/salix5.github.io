@@ -54,16 +54,15 @@ function print_pack_number(pack, index) {
 }
 
 function pre_id_to_pack(id) {
-	for (const [key, value] of Object.entries(pre_release)) {
-		if (id >= value && id <= value + 998)
-			return key;
-	}
-	return 'XXXX';
+	const index = id % 1000;
+	const begin = id - index;
+	return id_to_pack[begin] ?? 'XXXX';
 }
 
 function print_pre_id(id) {
 	const index = id % 1000;
-	return print_pack_number(pre_id_to_pack(id), index);
+	const pack = pre_id_to_pack(id);
+	return print_pack_number(pack, index);
 }
 
 /**
@@ -73,22 +72,16 @@ function print_pre_id(id) {
  * @returns 
  */
 function print_id(card, pack) {
-	const str_id = card.id.toString().padStart(8, '0');
-	let link_text = '';
-
 	if (card.type & TYPE_TOKEN) {
-		link_text = 'token';
+		return 'token';
 	}
-	else if (pack && 'pack_index' in card) {
-		link_text = print_pack_number(pack, card.pack_index);
+	if (pack && Object.hasOwn(card, 'pack_index')) {
+		return print_pack_number(pack, card.pack_index);
 	}
-	else if (card.id > 99999999) {
-		link_text = print_pre_id(card.id);
+	if (card.id > 99999999) {
+		return print_pre_id(card.id);
 	}
-	else {
-		link_text = str_id;
-	}
-	return link_text;
+	return card.id.toString().padStart(8, '0');
 }
 
 function print_ad(x) {
@@ -216,7 +209,7 @@ function create_rows(card, pack) {
 			db_url = print_yp_link(card.id);
 		}
 		else {
-			const pre_pack = pre_id_to_pack(card.id)
+			const pre_pack = pre_id_to_pack(card.id);
 			let str_site = '';
 			let str_pack = '';
 			if (pre_pack.charAt(0) === '_') {
@@ -399,7 +392,7 @@ function show_result(response) {
 	const total = response.meta.total;
 	const page = response.page;
 	const total_pages = Math.ceil(total / result_per_page);
-	const pack = response.meta.pack;
+	const pack = response.meta.pack ?? "";
 	if (total_pages && page <= total_pages) {
 		const index_begin = result_per_page * (page - 1);
 		const index_end = Math.min(result_per_page * page - 1, total - 1);
