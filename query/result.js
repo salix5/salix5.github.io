@@ -118,8 +118,8 @@ function imgError(event) {
 	event.currentTarget.src = "icon/unknown.jpg";
 }
 
-function is_formal(id, type) {
-	return id <= MAX_CARD_ID && !(type & TYPE_TOKEN);
+function is_mentioned(id, type) {
+	return !(type & TYPE_TOKEN) && id <= MAX_CARD_ID;
 }
 
 /**
@@ -167,7 +167,7 @@ function create_rows(card, pack) {
 		img_card.src = `../cdb/expansions/pics/${card.id}.jpg`;
 	img_card.addEventListener('error', imgError);
 
-	if (is_formal(card.id, card.type)) {
+	if (is_mentioned(card.id, card.type)) {
 		const params = new URLSearchParams({ "mention": card.id });
 		const link_id = document.createElement('a');
 		link_id.href = `./?${params.toString()}`;
