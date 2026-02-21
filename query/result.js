@@ -349,7 +349,7 @@ function create_rows(card, pack) {
 	const lines = card.text.desc.split('\n');
 	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM)) {
 		for (const line of lines) {
-			const regex = /(?<=「)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g;
+			const regex = /(?<=「)(?!」)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g;
 			let lastIndex = 0;
 			let match;
 			while ((match = regex.exec(line)) !== null) {
