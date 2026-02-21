@@ -68,7 +68,7 @@ function print_pre_id(id) {
 /**
  * Print the card id.
  * @param {Card} card 
- * @param {string} pack 
+ * @param {string?} pack 
  * @returns 
  */
 function print_id(card, pack) {
@@ -141,7 +141,7 @@ function text_link(name) {
 
 /**
  * @param {Card} card 
- * @param {string} pack 
+ * @param {string?} pack 
  */
 function create_rows(card, pack) {
 	const row_pic = table_result.insertRow(-1);
@@ -392,7 +392,7 @@ function show_result(response) {
 	const total = response.meta.total;
 	const page = response.page;
 	const total_pages = Math.ceil(total / result_per_page);
-	const pack = response.meta.pack ?? "";
+	const pack = response.meta.pack ?? null;
 	if (total_pages && page <= total_pages) {
 		const index_begin = result_per_page * (page - 1);
 		const index_end = Math.min(result_per_page * page - 1, total - 1);
