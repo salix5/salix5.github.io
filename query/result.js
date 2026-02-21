@@ -44,7 +44,7 @@ function print_pack_number(pack, index) {
 	else if (pack === 'VJMP' || cat === 'SL') {
 		str_index = index.toString().padStart(3, '0');
 	}
-	else if (index === null || index > 200) {
+	else if (index > 200 || !Number.isSafeInteger(index)) {
 		str_index = '???';
 	}
 	else {
