@@ -21,8 +21,14 @@ game_name['ja'] = 'md_name_jp';
 const replace_name = Object.create(null);
 const pre_release = Object.create(null);
 const wiki_link = Object.create(null);
+const id_to_pack = Object.create(null);
 fetch_list.push(fetch(`text/replace_name.json`).then(response => response.json()).then(data => Object.assign(replace_name, data)));
-fetch_list.push(fetch(`pack/pre_release.json`).then(response => response.json()).then(data => Object.assign(pre_release, data)));
+fetch_list.push(fetch(`pack/pre_release.json`).then(response => response.json()).then(data => Object.assign(pre_release, data))
+	.then(obj => {
+		for (const [pack, begin] of Object.entries(obj)) {
+			id_to_pack[begin] = pack;
+		}
+	}));
 fetch_list.push(fetch(`pack/wiki_link.json`).then(response => response.json()).then(data => Object.assign(wiki_link, data)));
 
 const pack_list = Object.create(null);
