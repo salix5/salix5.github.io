@@ -129,7 +129,7 @@ async function url_query() {
 			document.title = data.result[0].tw_name;
 		else
 			document.title = "卡片查詢";
-		show_result(params, data);
+		show_result(data);
 	}
 	catch (error) {
 		console.error("fetch error:", error);
