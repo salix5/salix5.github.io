@@ -388,18 +388,15 @@ function reset_result() {
 }
 
 /**
- * @param {URLSearchParams} params 
  * @param {object} response
  */
-function show_result(params, response) {
+function show_result(response) {
 	reset_result();
 	const result = response.result;
 	const total = response.meta.total;
 	const page = response.page;
 	const total_pages = Math.ceil(total / result_per_page);
-	let pack = params.get("pack");
-	if (pack === "o" || pack === "t")
-		pack = null;
+	const pack = response.meta.pack;
 	if (total_pages && page <= total_pages) {
 		const index_begin = result_per_page * (page - 1);
 		const index_end = Math.min(result_per_page * page - 1, total - 1);
