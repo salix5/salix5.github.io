@@ -299,6 +299,12 @@ function create_rows(card, pack) {
 		div_limit.innerHTML = `${lfstr_ocg} / ${lfstr_tcg} / ${lfstr_md}`;
 		div_alias.appendChild(div_limit);
 	}
+	if (card.cid && genesys_point[card.cid]) {
+		const genesys_status = `Genesys：${genesys_point[card.cid]}`;
+		const div_genesys = document.createElement('div');
+		div_genesys.textContent = genesys_status;
+		div_alias.appendChild(div_genesys);
+	}
 	cell_data.appendChild(div_alias);
 
 	const row_effect = table_result.insertRow(-1);
