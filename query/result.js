@@ -354,15 +354,14 @@ function create_rows(card, pack) {
 	const div_desc = document.createElement('div');
 	const lines = card.text.desc.split('\n');
 	if (!(card.type & TYPE_NORMAL) || (card.type & TYPE_PENDULUM)) {
+		const regex = /(?<=「)(?!」)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g;
 		for (const line of lines) {
-			const regex = /(?<=「)(?!」)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g;
 			let lastIndex = 0;
-			let match;
-			while ((match = regex.exec(line)) !== null) {
+			for (const match of line.matchAll(regex)) {
 				const textBefore = line.substring(lastIndex, match.index);
 				div_desc.appendChild(document.createTextNode(textBefore));
 				div_desc.appendChild(text_link(match[0]));
-				lastIndex = regex.lastIndex;
+				lastIndex = match.index + match[0].length;
 			}
 			const textAfter = line.substring(lastIndex);
 			div_desc.appendChild(document.createTextNode(textAfter));
