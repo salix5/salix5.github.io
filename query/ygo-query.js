@@ -99,12 +99,15 @@ function print_data(card, newline) {
 
 	if (card.type & TYPE_MONSTER) {
 		mtype = type_name[TYPE_MONSTER];
-		if (card.type & TYPE_RITUAL)
+		if (card.type & TYPE_RITUAL) {
 			subtype = `/${type_name[TYPE_RITUAL]}`;
-		else if (card.type & TYPE_FUSION)
+		}
+		else if (card.type & TYPE_FUSION) {
 			subtype = `/${type_name[TYPE_FUSION]}`;
-		else if (card.type & TYPE_SYNCHRO)
+		}
+		else if (card.type & TYPE_SYNCHRO) {
 			subtype = `/${type_name[TYPE_SYNCHRO]}`;
+		}
 		else if (card.type & TYPE_XYZ) {
 			subtype = `/${type_name[TYPE_XYZ]}`;
 			lvstr = `\u2606`;
@@ -112,6 +115,9 @@ function print_data(card, newline) {
 		else if (card.type & TYPE_LINK) {
 			subtype = `/${type_name[TYPE_LINK]}`;
 			lvstr = `LINK-`;
+		}
+		else if (card.type & TYPE_SPSUMMON) {
+			subtype = `/${type_name[TYPE_SPSUMMON]}`;
 		}
 		if (card.type & TYPE_PENDULUM) {
 			subtype += `/${type_name[TYPE_PENDULUM]}`;
@@ -132,8 +138,6 @@ function print_data(card, newline) {
 			subtype += `/${type_name[TYPE_FLIP]}`;
 		if (card.type & TYPE_TOON)
 			subtype += `/${type_name[TYPE_TOON]}`;
-		if (card.type & TYPE_SPSUMMON)
-			subtype += `/${type_name[TYPE_SPSUMMON]}`;
 		if (card.type & TYPE_EFFECT)
 			subtype += `/${type_name[TYPE_EFFECT]}`;
 		data = `[${mtype}${subtype}]${newline}`;
