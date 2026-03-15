@@ -1,8 +1,5 @@
 "use strict";
 // special ID
-const ID_BLACK_LUSTER_SOLDIER = 5405695;
-const CID_BLACK_LUSTER_SOLDIER = 19092;
-const CARD_ARTWORK_VERSIONS_OFFSET = 20;
 const MAX_CARD_ID = 99999999;
 
 /**
@@ -71,18 +68,6 @@ function print_yp_link(id) {
  */
 function print_qa_link(cid) {
 	return `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${cid}&sort=2&request_locale=ja`;
-}
-
-/**
- * Check if the card is an alternative artwork card.
- * @param {Card} card
- * @returns 
- */
-function is_alternative(card) {
-	if (card.id === ID_BLACK_LUSTER_SOLDIER)
-		return false;
-	else
-		return Math.abs(card.id - card.alias) < CARD_ARTWORK_VERSIONS_OFFSET;
 }
 
 /**
