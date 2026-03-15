@@ -12,34 +12,34 @@ const MAX_CARD_ID = 99999999;
  */
 
 /**
- * @typedef {Object} Card
+ * @typedef {object} Card
  * @property {number} id
- * @property {number} ot
- * @property {number} alias
- * @property {number} artid
- * @property {number[]} setcode
+ * @property {number} [cid]
+ * @property {number} [rule_code]
+ * @property {string} tw_name
+ * @property {string} [ae_name]
+ * @property {string} [en_name]
+ * @property {string} [jp_name]
+ * @property {string} [jp_ruby]
+ * @property {string} [kr_name]
+ * @property {string} [md_name_en]
+ * @property {string} [md_name_jp]
  * 
+ * @property {number} ot
+ * @property {number[]} setcode
  * @property {number} type
  * @property {number} atk
  * @property {number} [def]
  * @property {number} [marker]
  * @property {number} level
- * @property {number} race
+ * @property {bigint} race
  * @property {number} attribute
  * @property {number} [scale]
- * @property {number} color - Card color for sorting
- * 
- * @property {string} tw_name
+ * @property {number} [md_rarity]
  * @property {CardText} text
  * 
- * @property {number} [cid]
- * @property {number} [md_rarity]
- * @property {string} [ae_name]
- * @property {string} [en_name]
- * @property {string} [jp_name]
- * @property {string} [kr_name]
- * @property {string} [md_name_en]
- * @property {string} [md_name_jp]
+ * @property {number} artid
+ * @property {number} color - Card color for sorting
  * @property {number} [pack_index]
  */
 
