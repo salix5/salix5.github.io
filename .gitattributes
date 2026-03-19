@@ -1,3 +1,0 @@
-*.cdb binary
-*.wasm binary
-*.json eol=lf
