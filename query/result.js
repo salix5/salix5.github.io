@@ -158,9 +158,9 @@ function create_rows(card, pack) {
 	const img_card = document.createElement('img');
 	img_card.className = 'pic';
 	if (card.id <= 99999999)
-		img_card.src = `https://salix5.github.io/query-data/pics/${card.artid ? card.artid : card.id}.jpg`;
+		img_card.src = `https://cdn.jsdelivr.net/gh/salix5/query-data@master/pics/${card.artid ? card.artid : card.id}.jpg`;
 	else
-		img_card.src = `../cdb/expansions/pics/${card.id}.jpg`;
+		img_card.src = `icon/unknown.jpg`;
 	img_card.addEventListener('error', imgError);
 
 	if (is_mentioned(card.id, card.type)) {
