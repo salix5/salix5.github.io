@@ -1,10 +1,5 @@
-# salix5.github.io
-
 ## 卡片查詢
 <https://salix5.github.io/query/>
-
-## 小世界跳板搜尋
-目前暫時無法使用
 
 ## 字段列表
 <https://docs.google.com/spreadsheets/d/1W-PvJDVEdpd-A8EYSRjPcWoKQwqSqytm9Arx0xZvMjs/edit?usp=sharing>
