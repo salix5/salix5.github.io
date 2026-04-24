@@ -1,13 +1,6 @@
 "use strict";
 const result_per_page = 50;
 
-function is_booster(pack) {
-	if (pack_list[pack] && pack_list[pack][82] === -1)
-		return true;
-	else
-		return false;
-}
-
 function print_pack_number(pack, index) {
 	let str_pack = '';
 	let str_ot = '';
@@ -36,10 +29,6 @@ function print_pack_number(pack, index) {
 	else if ((cat === 'SD' || cat === 'SR') && index > 50) {
 		let sub_index = index - 50;
 		str_index = `P${sub_index.toString().padStart(2, '0')}`;
-	}
-	else if (is_booster(pack) && index > 80) {
-		let sub_index = index - 80;
-		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
 	else if (pack === 'VJMP' || cat === 'SL') {
 		str_index = index.toString().padStart(3, '0');

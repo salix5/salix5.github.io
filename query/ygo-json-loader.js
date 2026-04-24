@@ -31,12 +31,10 @@ fetch_list.push(fetch(`pack/pre_release.json`).then(response => response.json())
 	}));
 fetch_list.push(fetch(`pack/wiki_link.json`).then(response => response.json()).then(data => Object.assign(wiki_link, data)));
 
-const pack_list = Object.create(null);
 const ltable_ocg = Object.create(null);
 const ltable_tcg = Object.create(null);
 const ltable_md = Object.create(null);
 const genesys_point = Object.create(null);
-fetch_list.push(fetch(`pack/pack_list.json`).then(response => response.json()).then(data => Object.assign(pack_list, data)));
 fetch_list.push(fetch(`text/lflist.json`).then(response => response.json()).then(data => Object.assign(ltable_ocg, data)));
 fetch_list.push(fetch(`text/lflist_tcg.json`).then(response => response.json()).then(data => Object.assign(ltable_tcg, data)));
 fetch_list.push(fetch(`text/lflist_md.json`).then(response => response.json()).then(data => Object.assign(ltable_md, data)));
