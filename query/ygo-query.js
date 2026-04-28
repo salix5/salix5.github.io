@@ -53,15 +53,6 @@ function print_db_link(cid, request_locale) {
 }
 
 /**
- * Return the link to Yugipedia page.
- * @param {number} id
- * @returns URL
- */
-function print_yp_link(id) {
-	return `https://yugipedia.com/wiki/${id.toString().padStart(8, '0')}`;
-}
-
-/**
  * Return the link to Q&A page.
  * @param {number} cid database id
  * @returns page address
@@ -128,7 +119,7 @@ function print_data(card) {
 		const attribute = `/${attribute_name[card.attribute] ?? 'null'}`;
 		const race = `/${race_name[card.race] ?? 'null'}`;
 		result.push(`${level}${attribute}${race}`);
-		
+
 		const attack = `${value_name['atk']}${print_ad(card.atk)}`;
 		const defense = !(card.type & TYPE_LINK) ? `/${value_name['def']}${print_ad(card.def)}` : '';
 		result.push(`${attack}${defense}`);

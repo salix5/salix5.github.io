@@ -194,10 +194,6 @@ function create_rows(card, pack) {
 			const request_locale = (card.ot === 2) ? 'en' : 'ja';
 			db_url = print_db_link(card.cid, request_locale);
 		}
-		else if (card.cid === 0) {
-			link_db_text = card.en_name;
-			db_url = print_yp_link(card.id);
-		}
 		else {
 			const pre_pack = pre_id_to_pack(card.id);
 			let str_site = '';
