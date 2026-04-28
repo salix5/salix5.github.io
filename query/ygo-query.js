@@ -73,17 +73,14 @@ function print_qa_link(cid) {
 /**
  * Print the card data (without Link Marker).
  * @param {Card} card
- * @param {string} newline newline char
- * @returns card data
+ * @returns {string[]} data lines
  */
-function print_data(card, newline) {
-	let mtype = '';
-	let subtype = '';
-	let lvstr = '\u2605';
-	let data = '';
-
+function print_data(card) {
+	const result = [];
 	if (card.type & TYPE_MONSTER) {
-		mtype = type_name[TYPE_MONSTER];
+		let subtype = '';
+		let lvstr = '\u2605';
+		const mtype = type_name[TYPE_MONSTER];
 		if (card.type & TYPE_RITUAL) {
 			subtype = `/${type_name[TYPE_RITUAL]}`;
 		}
@@ -125,31 +122,26 @@ function print_data(card, newline) {
 			subtype += `/${type_name[TYPE_TOON]}`;
 		if (card.type & TYPE_EFFECT)
 			subtype += `/${type_name[TYPE_EFFECT]}`;
-		data = `[${mtype}${subtype}]${newline}`;
+		result.push(`[${mtype}${subtype}]`);
 
-		data += `${lvstr}${card.level === 0 ? '?' : card.level}`;
-		if (card.attribute)
-			data += `/${attribute_name[card.attribute]}`;
-		else
-			data += `/${attribute_name['unknown']}`;
-		if (card.race)
-			data += `/${race_name[card.race]}`;
-		else
-			data += `/${race_name['unknown']}`;
-		data += newline;
-
-		data += `${value_name['atk']}${print_ad(card.atk)}`;
-		if (!(card.type & TYPE_LINK)) {
-			data += `/${value_name['def']}${print_ad(card.def)}`;
-		}
-		data += newline;
+		const level = `${lvstr}${card.level || '?'}`;
+		const attribute = `/${attribute_name[card.attribute] ?? 'null'}`;
+		const race = `/${race_name[card.race] ?? 'null'}`;
+		result.push(`${level}${attribute}${race}`);
+		
+		const attack = `${value_name['atk']}${print_ad(card.atk)}`;
+		const defense = !(card.type & TYPE_LINK) ? `/${value_name['def']}${print_ad(card.def)}` : '';
+		result.push(`${attack}${defense}`);
 
 		if (card.type & TYPE_PENDULUM) {
-			data += `🔹${card.scale}/${card.scale}🔸${newline}`;
+			const scale_left = '🔹';
+			const scale_right = '🔸';
+			result.push(`${scale_left}${card.scale}/${card.scale}${scale_right}`);
 		}
 	}
 	else if (card.type & TYPE_SPELL) {
-		mtype = `${type_name[TYPE_SPELL]}`;
+		const mtype = `${type_name[TYPE_SPELL]}`;
+		let subtype = '';
 		if (card.type & TYPE_QUICKPLAY)
 			subtype = `/${type_name[TYPE_QUICKPLAY]}`;
 		else if (card.type & TYPE_CONTINUOUS)
@@ -162,17 +154,18 @@ function print_data(card, newline) {
 			subtype = `/${type_name[TYPE_FIELD]}`;
 		else
 			subtype = `/${type_name[TYPE_NORMAL]}`;
-		data = `[${mtype}${subtype}]${newline}`;
+		result.push(`[${mtype}${subtype}]`);
 	}
 	else if (card.type & TYPE_TRAP) {
-		mtype = `${type_name[TYPE_TRAP]}`;
+		const mtype = `${type_name[TYPE_TRAP]}`;
+		let subtype = '';
 		if (card.type & TYPE_CONTINUOUS)
 			subtype = `/${type_name[TYPE_CONTINUOUS]}`;
 		else if (card.type & TYPE_COUNTER)
 			subtype = `/${type_name[TYPE_COUNTER]}`;
 		else
 			subtype = `/${type_name[TYPE_NORMAL]}`;
-		data = `[${mtype}${subtype}]${newline}`;
+		result.push(`[${mtype}${subtype}]`);
 	}
-	return data;
+	return result;
 }
