@@ -146,8 +146,9 @@ function create_rows(card, pack) {
 	}
 	const img_card = document.createElement('img');
 	img_card.className = 'pic';
-	if (card.id <= 99999999)
-		img_card.src = `https://cdn.jsdelivr.net/gh/salix5/query-data@master/pics/${card.artid ? card.artid : card.id}.jpg`;
+	const pics_id = card.artid || card.id;
+	if (Number.isSafeInteger(pics_id) && pics_id <= MAX_CARD_ID)
+		img_card.src = `https://cdn.jsdelivr.net/gh/salix5/query-data@master/pics/${pics_id}.jpg`;
 	else
 		img_card.src = `icon/unknown.jpg`;
 	img_card.addEventListener('error', imgError);
