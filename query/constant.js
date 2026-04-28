@@ -87,7 +87,7 @@ const LINK_MARKER_TOP = 0x080;
 const LINK_MARKER_TOP_RIGHT = 0x100;
 
 const attribute_name = {
-	unknown: '？',
+	0: '？',
 	[ATTRIBUTE_EARTH]: '地',
 	[ATTRIBUTE_WATER]: '水',
 	[ATTRIBUTE_FIRE]: '炎',
@@ -98,7 +98,7 @@ const attribute_name = {
 };
 
 const race_name = {
-	unknown: '？族',
+	0: '？族',
 	[RACE_WARRIOR]: '戰士族',
 	[RACE_SPELLCASTER]: '魔法使族',
 	[RACE_FAIRY]: '天使族',

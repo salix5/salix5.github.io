@@ -301,7 +301,11 @@ function create_rows(card, pack) {
 	cell_effect.className = "effect";
 	const div_stat = document.createElement('div');
 	div_stat.className = 'stat';
-	div_stat.innerHTML = `${print_data(card, '<br>')}`;
+	for(const line of print_data(card)) {
+		const div_line = document.createElement('div');
+		div_line.textContent = line;
+		div_stat.appendChild(div_line);
+	}
 	cell_effect.appendChild(div_stat);
 
 	if (card.type & TYPE_LINK) {
@@ -372,7 +376,7 @@ function create_rows(card, pack) {
 
 function reset_result() {
 	div_count.textContent = "";
-	table_result.innerHTML = "";
+	table_result.replaceChildren();
 	select_page.options.length = 0;
 	div_page.hidden = true;
 }
