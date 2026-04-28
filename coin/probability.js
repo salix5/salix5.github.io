@@ -17,26 +17,24 @@ function C(n, k) {
 	return x1 / x2;
 }
 
-function prob(n, x) {
-	return C(n, x) * Math.pow(0.5, n);
-}
-
 function check(e) {
 	let acc = 0;
 	let i = 0;
 	let n = Number.parseInt(text1.value);
-	if (!Number.isSafeInteger(n) || n < 10 || n > 200) {
-		div1.innerHTML = '請輸入10~200的整數';
+	if (!Number.isSafeInteger(n) || n < 10 || n > 1000) {
+		div1.textContent = '請輸入10~1000的整數';
 		text1.value = '';
 		text1.focus();
 		return;
 	}
 
-	for (i = 0; i <= n - 1; ++i) {
-		acc = acc + prob(n, i) * 2;
+	let currentProb = Math.pow(0.5, n);
+	for (i = 0; i <= n; ++i) {
+		acc += currentProb * 2;
 		if (acc > err)
 			break;
+		currentProb = currentProb * (n - i) / (i + 1);
 	}
-	--i;
-	div1.innerHTML = `拒絕域：正面${i}次以下或${n - i}次以上`;
+	const boundary = i - 1;
+	div1.textContent = `拒絕域：正面${boundary}次以下或${n - boundary}次以上`;
 }
