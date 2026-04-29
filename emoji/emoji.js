@@ -25,7 +25,7 @@ function get_discord_timestamp(id) {
 function create_url(e) {
 	const result = text1.value.match(re_emoji);
 	let timestamp = -1;
-	div_link.innerHTML = '';
+	div_link.replaceChildren();
 	if (re_snowflake.test(text1.value)) {
 		timestamp = get_discord_timestamp(text1.value);
 	}
