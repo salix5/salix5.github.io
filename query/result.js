@@ -306,38 +306,40 @@ function create_rows(card, pack) {
 	cell_effect.appendChild(div_stat);
 
 	if (card.type & TYPE_LINK) {
-		let marker_text = '';
+		const marker1 = document.createElement('div');
 		for (let marker = LINK_MARKER_TOP_LEFT; marker <= LINK_MARKER_TOP_RIGHT; marker <<= 1) {
 			if (card.marker & marker)
-				marker_text += marker_char[marker];
+				marker1.appendChild(document.createTextNode(marker_char[marker]));
 			else
-				marker_text += marker_char.default;
+				marker1.appendChild(document.createTextNode(marker_char.default));
 		}
-		marker_text += '<br>';
+		cell_effect.appendChild(marker1);
 
+		const marker2 = document.createElement('div');
 		if (card.marker & LINK_MARKER_LEFT)
-			marker_text += marker_char[LINK_MARKER_LEFT];
+			marker2.appendChild(document.createTextNode(marker_char[LINK_MARKER_LEFT]));
 		else
-			marker_text += marker_char.default;
+			marker2.appendChild(document.createTextNode(marker_char.default));
 
-		marker_text += '<span class="transparent">⬜</span>';
+		const center = document.createElement('span');
+		center.textContent = '⬜';
+		center.className = 'transparent';
+		marker2.appendChild(center);
 
 		if (card.marker & LINK_MARKER_RIGHT)
-			marker_text += marker_char[LINK_MARKER_RIGHT];
+			marker2.appendChild(document.createTextNode(marker_char[LINK_MARKER_RIGHT]));
 		else
-			marker_text += marker_char.default;
+			marker2.appendChild(document.createTextNode(marker_char.default));
+		cell_effect.appendChild(marker2);
 
-		marker_text += '<br>';
-
+		const marker3 = document.createElement('div');
 		for (let marker = LINK_MARKER_BOTTOM_LEFT; marker <= LINK_MARKER_BOTTOM_RIGHT; marker <<= 1) {
 			if (card.marker & marker)
-				marker_text += marker_char[marker];
+				marker3.appendChild(document.createTextNode(marker_char[marker]));
 			else
-				marker_text += marker_char.default;
+				marker3.appendChild(document.createTextNode(marker_char.default));
 		}
-		const div_marker = document.createElement("div");
-		div_marker.innerHTML = marker_text;
-		cell_effect.appendChild(div_marker);
+		cell_effect.appendChild(marker3);
 	}
 	cell_effect.appendChild(document.createElement('hr'));
 
