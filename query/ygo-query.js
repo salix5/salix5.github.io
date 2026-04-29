@@ -40,26 +40,6 @@ const MAX_CARD_ID = 99999999;
  * @property {number} [pack_index]
  */
 
-const use_bigint = !!(window.BigInt);
-
-/**
- * Return the link to DB page.
- * @param {number} cid 
- * @param {string} request_locale 
- * @returns URL
- */
-function print_db_link(cid, request_locale) {
-	return `https://www.db.yugioh-card.com/yugiohdb/card_search.action?ope=2&cid=${cid}&request_locale=${request_locale}`;
-}
-
-/**
- * Return the link to Q&A page.
- * @param {number} cid database id
- * @returns page address
- */
-function print_qa_link(cid) {
-	return `https://www.db.yugioh-card.com/yugiohdb/faq_search.action?ope=4&cid=${cid}&sort=2&request_locale=ja`;
-}
 
 /**
  * Print the card data (without Link Marker).
