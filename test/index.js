@@ -9,8 +9,8 @@ const ssr_quotes = [
 ];
 
 const normal_quotes = [
-	'那還可以吧', 
-	'那還不錯嘛', 
+	'那還可以吧',
+	'那還不錯嘛',
 	'NZMB',
 	'好8我接受',
 	'嗯 你說得對',
@@ -24,7 +24,7 @@ const normal_quotes = [
 	'該退坑了吧',
 	'(本留言違反數位中介法已被刪除)',
 ];
-	
+
 const new_year_quotes = [
 	'年終獎金幾個月啊？',
 	'現在薪水夠用嗎？',
@@ -36,22 +36,22 @@ const new_year_quotes = [
 const text1 = document.getElementById('text1');
 const div_dawn = document.getElementById('dawn');
 
-function get_text(layer){
+function get_text(layer) {
 	let r = 0;
 	let text = '';
-	if(1<= layer && layer <= 8){ 
+	if (1 <= layer && layer <= 8) {
 		// pick up
 		r = getRandomInt(0, pu_quotes.length - 1);
 		text = pu_quotes[r];
 	}
-	else if(is_pu && 9 <= layer && layer <= 10){
+	else if (is_pu && 9 <= layer && layer <= 10) {
 		r = getRandomInt(0, ssr_quotes.length - 1);
 		text = ssr_quotes[r];
 	}
-	else{
+	else {
 		r = getRandomInt(0, normal_quotes.length - 1);
 		text = normal_quotes[r];
-		if(r == 8){
+		if (r == 8) {
 			const msg = document.createElement('div');
 			msg.textContent = 'To absent friend.';
 			div_dawn.appendChild(msg);
@@ -65,7 +65,7 @@ function getRandomInt(min, max) {
 	max = Math.floor(max);
 	if (min == max)
 		return min;
-	
+
 	const range = max - min + 1;
 	const bound = (-range >>> 0) % range;
 	const randomBuffer = new Uint32Array(1);
@@ -75,19 +75,19 @@ function getRandomInt(min, max) {
 	return min + randomBuffer[0] % range;
 }
 
-function mark_of_time(){
+function mark_of_time() {
 	text1.select();
 	document.execCommand("copy");
 }
 
-function until_dawn(){
+function until_dawn() {
 	let times = 0;
 	let layer = 0;
 	do {
 		layer = getRandomInt(1, 1000);
 		times++;
 	} while (layer > 8);
-	
+
 	text1.value = get_text(layer);
 	const msg = document.createElement('div');
 	msg.textContent = `總共抽了${times}次！`;
