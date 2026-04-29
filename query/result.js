@@ -81,14 +81,13 @@ function print_ad(x) {
 }
 
 function print_limit(limit) {
-	if (limit === 0)
-		return '<img src="icon/0.png" height="18" width="18">';
-	else if (limit === 1)
-		return '<img src="icon/1.png" height="18" width="18">';
-	else if (limit === 2)
-		return '<img src="icon/2.png" height="18" width="18">';
-	else
-		return '';
+	if (!Number.isSafeInteger(limit) || limit < 0 || limit > 2)
+		return null;
+	const img = document.createElement('img');
+	img.src = `icon/${limit}.png`;
+	img.height = 18;
+	img.width = 18;
+	return img;
 }
 
 /**
@@ -255,34 +254,35 @@ function create_rows(card, pack) {
 	}
 
 	// limit
-	let lfstr_ocg = '';
-	let lfstr_tcg = '';
-	let lfstr_md = '';
-	let show_lflist = false;
-	if (Number.isSafeInteger(ltable_ocg[card.id])) {
-		lfstr_ocg = `OCG：${print_limit(ltable_ocg[card.id])}`;
-		show_lflist = true;
-	}
-	else {
-		lfstr_ocg = `OCG：-`;
-	}
-	if (Number.isSafeInteger(ltable_tcg[card.id])) {
-		lfstr_tcg = `TCG：${print_limit(ltable_tcg[card.id])}`;
-		show_lflist = true;
-	}
-	else {
-		lfstr_tcg = `TCG：-`;
-	}
-	if (Number.isSafeInteger(ltable_md[card.id])) {
-		lfstr_md = `MD：${print_limit(ltable_md[card.id])}`;
-		show_lflist = true;
-	}
-	else {
-		lfstr_md = `MD：-`;
-	}
-	if (show_lflist) {
+	const limit_ocg = ltable_ocg[card.id] ?? null;
+	const limit_tcg = ltable_tcg[card.id] ?? null;
+	const limit_md = ltable_md[card.id] ?? null;
+	if (limit_ocg !== null || limit_tcg !== null || limit_md !== null) {
 		const div_limit = document.createElement('div');
-		div_limit.innerHTML = `${lfstr_ocg} / ${lfstr_tcg} / ${lfstr_md}`;
+		const img1=print_limit(limit_ocg);
+		if (img1) {
+			div_limit.appendChild(document.createTextNode('OCG：'));
+			div_limit.appendChild(img1);
+		}
+		else {
+			div_limit.appendChild(document.createTextNode('OCG：-'));
+		}
+		const img2 = print_limit(limit_tcg);
+		if (img2) {
+			div_limit.appendChild(document.createTextNode(' / TCG：'));
+			div_limit.appendChild(img2);
+		}
+		else {
+			div_limit.appendChild(document.createTextNode(' / TCG：-'));
+		}
+		const img3 = print_limit(limit_md);
+		if (img3) {
+			div_limit.appendChild(document.createTextNode(' / MD：'));
+			div_limit.appendChild(img3);
+		}
+		else {
+			div_limit.appendChild(document.createTextNode(' / MD：-'));
+		}
 		div_alias.appendChild(div_limit);
 	}
 	if (card.cid && genesys_point[card.cid]) {
