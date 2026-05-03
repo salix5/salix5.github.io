@@ -18,16 +18,17 @@ const replace_name = {
 };
 
 function print_pack_number(pack, card) {
+	const pack_name = pack.substring(0, 4);
 	const locale = (card.ot === 2) ? 'EN' : 'JP';
-	const cat = pack.substring(0, 2);
+	const cat = pack_name.substring(0, 2);
 	const index = card.pack_index;
 	let str_index = '';
 
-	if (pack === 'WPP2' && index > 70) {
+	if (pack_name === 'WPP2' && index > 70) {
 		let sub_index = index - 70;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
-	else if (pack === 'WPP3' && index > 60) {
+	else if (pack_name === 'WPP3' && index > 60) {
 		let sub_index = index - 60;
 		str_index = `S${sub_index.toString().padStart(2, '0')}`;
 	}
@@ -38,7 +39,7 @@ function print_pack_number(pack, card) {
 	else {
 		str_index = index.toString().padStart(3, '0');
 	}
-	return `${pack}-${locale}${str_index}`;
+	return `${pack_name}-${locale}${str_index}`;
 }
 
 /**
