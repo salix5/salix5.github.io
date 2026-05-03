@@ -1,4 +1,3 @@
-"use strict";
 const select_type = document.getElementById("select_type");
 const select_subtype_op = document.getElementById("select_subtype_op");
 
@@ -10,17 +9,14 @@ const cb_scale = document.getElementsByName("scale");
 const monster_checkbox = ["linkbtn", "attr", "species", "level", "scale"];
 
 const row_subtype = document.querySelectorAll(".row_subtype");
+const row_exclude = document.querySelectorAll(".row_exclude");
+const monster_row = document.querySelectorAll(".monster-row");
+const monster_input = document.querySelectorAll(".monster-input");
+
 const subtype_operator = document.getElementById("subtype_operator");
 const subtype_m = document.getElementById("subtype_m");
 const subtype_s = document.getElementById("subtype_s");
 const subtype_t = document.getElementById("subtype_t");
-const row_exclude = document.querySelectorAll(".row_exclude");
-const form1 = document.getElementById("form1");
-
-const div_count = document.getElementById("div_count");
-const div_page = document.getElementById("div_page");
-const select_page = document.getElementById("select_page");
-const table_result = document.getElementById("table_result");
 
 function clear_cb(name) {
 	for (const cb of document.getElementsByName(name)) {
@@ -37,21 +33,13 @@ function disable_cb(name, status) {
 function hide_type(type, hidden) {
 	switch (type) {
 		case 0:
-			for (const row of document.querySelectorAll(".monster-row")) {
-				row.hidden = hidden;
-			}
-			for (const element of document.querySelectorAll(".monster-input")) {
-				element.disabled = hidden;
-			}
-			for (const cbname of monster_checkbox) {
-				disable_cb(cbname, hidden);
-			}
+			monster_row.forEach(row => row.hidden = hidden);
+			monster_input.forEach(input => input.disabled = hidden);
+			monster_checkbox.forEach(cbname => disable_cb(cbname, hidden));
 			break;
 		case 1:
-			for (const row of row_subtype)
-				row.hidden = hidden;
-			for (const row of row_exclude)
-				row.hidden = hidden;
+			row_subtype.forEach(row => row.hidden = hidden);
+			row_exclude.forEach(row => row.hidden = hidden);
 			subtype_operator.hidden = hidden;
 			subtype_m.hidden = hidden;
 			select_subtype_op.disabled = hidden;
@@ -59,14 +47,12 @@ function hide_type(type, hidden) {
 			disable_cb("exclude", hidden);
 			break;
 		case 2:
-			for (const row of row_subtype)
-				row.hidden = hidden;
+			row_subtype.forEach(row => row.hidden = hidden);
 			subtype_s.hidden = hidden;
 			disable_cb("stype", hidden);
 			break;
 		case 4:
-			for (const row of row_subtype)
-				row.hidden = hidden;
+			row_subtype.forEach(row => row.hidden = hidden);
 			subtype_t.hidden = hidden;
 			disable_cb("ttype", hidden);
 			break;
@@ -128,7 +114,7 @@ document.getElementById("marker_reset").addEventListener("click", function (even
 	clear_cb("linkbtn");
 });
 
-form1.addEventListener("reset", function (event) {
+document.getElementById("form1").addEventListener("reset", function (event) {
 	select_type.value = "";
 	select_type.dispatchEvent(new Event("change"));
 });
@@ -138,17 +124,4 @@ document.querySelectorAll('.value-helper').forEach(btn => {
 		const target = event.currentTarget;
 		document.getElementById(`text_${target.dataset.type}1`).value = target.dataset.value;
 	});
-});
-
-window.addEventListener("DOMContentLoaded", function (event) {
-	if (window.innerWidth > MAX_WIDTH) {
-		div_count.style.width = MAX_WIDTH + "px";
-		div_page.style.width = MAX_WIDTH + "px";
-		table_result.style.width = MAX_WIDTH + "px";
-	}
-	else {
-		div_count.style.width = "100%";
-		div_page.style.width = "100%";
-		table_result.style.width = "100%";
-	}
 });

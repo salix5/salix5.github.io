@@ -19,6 +19,13 @@ body {
 	background-color: #cccccc;
 }
 
+#div_count,
+#div_page,
+#table_result {
+	width: 100%;
+	max-width: 900px;
+}
+
 table.hidden {
 	border-style: none;
 	margin: 0 auto;

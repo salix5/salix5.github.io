@@ -150,10 +150,10 @@
 				<option value="SSB1">SSB1 (聖誕禮盒2021)</option>
 			</optgroup>
 			<optgroup label="TCG">
-				<option value="_MZMU">Maze of Muertos</option>
-				<option value="_BPRO">BPRO-EN</option>
-				<option value="_DOOD">DOOD-EN</option>
-				<option value="_DUAD">DUAD-EN</option>
+				<option value="MZMU-EN">Maze of Muertos</option>
+				<option value="BPRO-EN">BPRO-EN</option>
+				<option value="DOOD-EN">DOOD-EN</option>
+				<option value="DUAD-EN">DUAD-EN</option>
 				<option value="t">TCG特有卡</option>
 				<option value="o">排除TCG特有卡</option>
 			</optgroup>
@@ -455,12 +455,12 @@
 		<select id="select_page"></select>
 	</div>
 	
-	<script src="constant.js"></script>
-	<script src="ygo-json-loader.js"></script>
-	<script src="ygo-query.js"></script>
-	<script src="ygo-utility.js"></script>
-	<script src="event_handler.js"></script>
-	<script src="result.js"></script>
-	<script src="query.js"></script>
+	<script type="module" src="event_handler.mjs"></script>
+	<script type="module" src="ygo-constant.mjs"></script>
+	<script type="module" src="ygo-json-loader.mjs"></script>
+	<script type="module" src="ygo-utility.mjs"></script>
+	<script type="module" src="ygo-query.mjs"></script>
+	<script type="module" src="result.mjs"></script>
+	<script type="module" src="query.mjs"></script>
 </body>
 </html>
