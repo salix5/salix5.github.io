@@ -44,7 +44,11 @@ function checkByName(params, inputName, offset) {
  */
 function init_form(params) {
 	form1.reset();
-	document.getElementById("text_id").value = params.get("code") ?? "";
+	const code = Number.parseInt(params.get("code") ?? "", 10);
+	if (Number.isSafeInteger(code) && code > 0) {
+		document.getElementById("text_id").value = code;
+		return;
+	}
 	document.getElementById("select_pack").value = params.get("pack") ?? "";
 	document.getElementById("text_mention").value = params.get("mention") ?? "";
 
