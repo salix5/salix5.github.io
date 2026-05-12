@@ -9,7 +9,7 @@ const div_page = document.getElementById("div_page");
 const select_page = document.getElementById("select_page");
 
 const mention_set = new Set([
-	101305044,
+	101306052,
 ]);
 
 const replace_name = {
