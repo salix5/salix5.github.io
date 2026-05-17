@@ -31,7 +31,7 @@ import { lang } from './ygo-json-loader.mjs';
  * @property {bigint} race
  * @property {number} attribute
  * @property {number} [scale]
- * @property {number} [md_rarity]
+ * @property {string} [md_rarity]
  * @property {CardText} text
  * 
  * @property {number} artid

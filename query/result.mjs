@@ -1,4 +1,4 @@
-import { link_markers, marker_char, MAX_CARD_ID, MAX_WIDTH, md_rarity, monster_types } from "./ygo-constant.mjs";
+import { link_markers, marker_char, MAX_CARD_ID, MAX_WIDTH, monster_types } from "./ygo-constant.mjs";
 import { genesys_point, ltable_md, ltable_ocg, ltable_tcg, keyword, fictional_names, get_pack_name } from "./ygo-json-loader.mjs";
 import { print_db_link, print_qa_link } from "./ygo-utility.mjs";
 import { print_data } from "./ygo-query.mjs";
@@ -229,7 +229,7 @@ function create_rows(card, pack) {
 		}
 		if (card.md_rarity) {
 			const div_md = document.createElement('div');
-			div_md.textContent = `MD：${md_rarity[card.md_rarity]}`;
+			div_md.textContent = `MD：${card.md_rarity}`;
 			div_alias.appendChild(div_md);
 		}
 	}

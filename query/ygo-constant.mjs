@@ -186,7 +186,7 @@ export const link_markers = {
 	LINK_MARKER_TOP_RIGHT,
 };
 
-export const md_rarity = {
+export const rarity = {
 	1: 'N',
 	2: 'R',
 	3: 'SR',
