@@ -12,6 +12,7 @@ import { lang } from './ygo-json-loader.mjs';
  * @property {number} id
  * @property {number} [cid]
  * @property {number} [rule_code]
+ * @property {number} [another_code]
  * @property {string} tw_name
  * @property {string} [ae_name]
  * @property {string} [en_name]
