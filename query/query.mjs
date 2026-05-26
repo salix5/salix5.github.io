@@ -39,13 +39,24 @@ function checkByName(params, inputName, offset) {
 }
 
 /**
+ * Convert a URL parameter to an integer.
+ * @param {URLSearchParams} params 
+ * @param {string} key 
+ * @returns {number|null}
+ */
+function toInteger(params, key) {
+	const parsed = Number.parseInt(params.get(key), 10);
+	return Number.isSafeInteger(parsed) ? parsed : null;
+}
+
+/**
  * Initialize the form based on URL parameters.
  * @param {URLSearchParams} params 
  */
 function init_form(params) {
 	form1.reset();
-	const code = Number.parseInt(params.get("code") ?? "", 10);
-	if (Number.isSafeInteger(code) && code > 0) {
+	const code = toInteger(params, "code");
+	if (code !== null && code > 0) {
 		document.getElementById("text_id").value = code;
 		return;
 	}
@@ -83,10 +94,30 @@ function init_form(params) {
 	}
 
 	if (type === 0 || type === card_types.TYPE_MONSTER) {
-		document.getElementById("text_atk1").value = params.get("atk_from") ?? "";
-		document.getElementById("text_atk2").value = params.get("atk_to") ?? "";
-		document.getElementById("text_def1").value = params.get("def_from") ?? "";
-		document.getElementById("text_def2").value = params.get("def_to") ?? "";
+		const atk_from = toInteger(params, "atk_from");
+		const atk_to = toInteger(params, "atk_to");
+		if (atk_from === -1 || atk_to === -1) {
+			document.getElementById("text_atk1").value = -1;
+			document.getElementById("text_atk2").value = "";
+		}
+		else {
+			document.getElementById("text_atk1").value = (atk_from !== null && atk_from >= 0) ? atk_from : "";
+			document.getElementById("text_atk2").value = (atk_to !== null && atk_to >= 0) ? atk_to : "";
+		}
+		const def_from = toInteger(params, "def_from");
+		const def_to = toInteger(params, "def_to");
+		if (def_from === -1 || def_to === -1) {
+			document.getElementById("text_def1").value = -1;
+			document.getElementById("text_def2").value = "";
+		}
+		else if (def_from === -2) {
+			document.getElementById("text_def1").value = -2;
+			document.getElementById("text_def2").value = "";
+		}
+		else {
+			document.getElementById("text_def1").value = (def_from !== null && def_from >= 0) ? def_from : "";
+			document.getElementById("text_def2").value = (def_to !== null && def_to >= 0) ? def_to : "";
+		}
 		document.getElementById("text_sum").value = params.get("sum") ?? "";
 
 		checkByName(params, "level", 0);
