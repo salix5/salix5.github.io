@@ -12,11 +12,6 @@ const mention_set = new Set([
 	101306052,
 ]);
 
-const replace_name = {
-	__proto__: null,
-	"魔導": "魔導%士%",
-};
-
 function print_pack_number(pack, card) {
 	const pack_name = pack.substring(0, 4);
 	const locale = (card.ot === 2) ? 'EN' : 'JP';
@@ -122,8 +117,7 @@ function text_link(name) {
 		anchor.href = `./?desc=${encodeURIComponent(name)}`;
 		return anchor;
 	}
-	const queryName = Object.hasOwn(replace_name, name) ? replace_name[name] : name;
-	anchor.href = `./?cardname=${encodeURIComponent(queryName)}`;
+	anchor.href = `./?cardname=${encodeURIComponent(name)}`;
 	return anchor;
 }
 
