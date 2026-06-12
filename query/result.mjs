@@ -10,6 +10,7 @@ const select_page = document.getElementById("select_page");
 
 const mention_set = new Set([
 	101306052,
+	101306058,
 ]);
 
 function print_pack_number(pack, card) {
