@@ -42,9 +42,9 @@ export function get_pack_name(id) {
 	return pack_name?.substring(0, 4) ?? null;
 }
 
-export { default as keyword } from './text/keyword.json' with { type: 'json' };
-export { default as fictional_names } from './text/fictional_names.json' with { type: 'json' };
-export { default as ltable_ocg } from './text/lflist.json' with { type: 'json' };
-export { default as ltable_tcg } from './text/lflist_tcg.json' with { type: 'json' };
-export { default as ltable_md } from './text/lflist_md.json' with { type: 'json' };
-export { default as genesys_point } from './text/genesys_point.json' with { type: 'json' };
+export { default as keyword } from './data/keyword.json' with { type: 'json' };
+export { default as fictional_names } from './data/fictional_names.json' with { type: 'json' };
+export { default as ltable_ocg } from './data/lflist.json' with { type: 'json' };
+export { default as ltable_tcg } from './data/lflist_tcg.json' with { type: 'json' };
+export { default as ltable_md } from './data/lflist_md.json' with { type: 'json' };
+export { default as genesys_point } from './data/genesys_point.json' with { type: 'json' };
