@@ -13,33 +13,19 @@ export const official_name = {
 	'ko': 'kr_name',
 };
 
-export const lang = {
-	__proto__: null,
-	'zh-tw': lang_zhtw,
-};
-
-export const collator_locale = {
-	__proto__: null,
-	'ae': 'en-US',
-	'en': 'en-US',
-	'ja': 'ja-JP',
-	'ko': 'ko-KR',
-	'zh-tw': 'zh-Hant',
-};
-
-export const bls_postfix = {
-	__proto__: null,
-	'ae': ' (Normal)',
-	'en': ' (Normal)',
-	'ja': '（通常モンスター）',
-	'ko': ' (일반)',
-	'zh-tw': '（通常怪獸）',
-};
-
 export const game_name = {
 	__proto__: null,
 	'en': 'md_name_en',
 	'ja': 'md_name_jp',
+};
+
+export const language_pack = {
+	__proto__: null,
+	'zh-tw': {
+		strings: lang_zhtw,
+		collator: 'zh-Hant',
+		bls_postfix: '（通常怪獸）',
+	},
 };
 
 const pack_id_table = Object.fromEntries(Object.entries(pre_release).map(([k, v]) => [v, k]));

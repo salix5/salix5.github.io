@@ -1,5 +1,5 @@
 import { card_types, monster_types } from './ygo-constant.mjs';
-import { lang } from './ygo-json-loader.mjs';
+import { language_pack } from './ygo-json-loader.mjs';
 
 /**
  * @typedef {Object} CardText
@@ -58,7 +58,7 @@ export function print_ad(x) {
  * @returns {string[]} data lines
  */
 export function print_data(card) {
-	const strings = lang['zh-tw'];
+	const strings = language_pack['zh-tw'].strings;
 	const result = [];
 	if (card.type & card_types.TYPE_MONSTER) {
 		const mtype = strings.type_name[card_types.TYPE_MONSTER];
