@@ -5,24 +5,6 @@ const api_endpoint = "https://salix5.up.railway.app/query/";
 const form1 = document.getElementById("form1");
 
 /**
- * toHalfWidth()
- * @param {string} str
- * @returns
- */
-function toHalfWidth(str) {
-	return str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0));
-}
-
-/**
- * toFullWidth()
- * @param {string} str
- * @returns 
- */
-function toFullWidth(str) {
-	return str.replace(/[A-Za-z0-9]/g, (s) => String.fromCharCode(s.charCodeAt(0) + 0xFEE0));
-}
-
-/**
  * Set the checkboxes by name.
  * @param {URLSearchParams} params 
  * @param {string} inputName 
