@@ -142,7 +142,7 @@ function create_rows(card, pack) {
 	img_card.className = 'pic';
 	const pics_id = card.artid || card.id;
 	if (Number.isSafeInteger(pics_id) && pics_id <= MAX_CARD_ID)
-		img_card.src = `https://cdn.jsdelivr.net/gh/salix5/query-data@master/pics/${pics_id}.jpg`;
+		img_card.src = `https://cdn.jsdelivr.net/gh/salix5/query-data/pics/${pics_id}.jpg`;
 	else
 		img_card.src = `icon/unknown.jpg`;
 	img_card.addEventListener('error', imgError);
