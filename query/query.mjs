@@ -43,6 +43,10 @@ function init_form(params) {
 		return;
 	}
 	document.getElementById("select_pack").value = params.get("pack") ?? "";
+	const pack = document.getElementById("select_pack").value;
+	if (pack && pack !== "o" && pack !== "t") {
+		return;
+	}
 	document.getElementById("text_mention").value = params.get("mention") ?? "";
 
 	// type
@@ -148,13 +152,12 @@ async function url_query() {
 	const params = new URLSearchParams(window.location.search);
 	init_form(params);
 	try {
-		const data = await fetch_query(params);
-		data.page = Number.parseInt(params.get("page") ?? "1");
-		if (data.result.length === 1)
-			document.title = data.result[0].tw_name;
+		const resp = await fetch_query(params);
+		if (resp.result.length === 1)
+			document.title = resp.result[0].text.tw_name;
 		else
 			document.title = "卡片查詢";
-		show_result(data);
+		show_result(resp);
 	}
 	catch (error) {
 		if (error.name === "AbortError") {

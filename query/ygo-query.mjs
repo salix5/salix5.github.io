@@ -2,41 +2,42 @@ import { card_types, monster_types } from './ygo-constant.mjs';
 import { language_pack } from './ygo-json-loader.mjs';
 
 /**
- * @typedef {Object} CardText
- * @property {string} desc
- * @property {string} [db_desc]
+ * @typedef {object} CardData
+ * @property {number} ot
+ * @property {number} type
+ * @property {number} atk
+ * @property {number} def
+ * @property {number} level
+ * @property {number} race
+ * @property {number} attribute
+ * @property {number} scale
+ * @property {number} marker
+ * @property {string} setcode
+ * @property {number} rule_code
+ * @property {number} another_code
+ * @property {number} md_rarity
+ * @property {number} color
  */
 
 /**
- * @typedef {object} Card
- * @property {number} id
- * @property {number} [cid]
- * @property {number} [rule_code]
- * @property {number} [another_code]
- * @property {string} tw_name
- * @property {string} [ae_name]
+ * @typedef {object} CardText
  * @property {string} [en_name]
  * @property {string} [jp_name]
  * @property {string} [jp_ruby]
  * @property {string} [kr_name]
  * @property {string} [md_name_en]
  * @property {string} [md_name_jp]
- * 
- * @property {number} ot
- * @property {number[]} setcode
- * @property {number} type
- * @property {number} atk
- * @property {number} [def]
- * @property {number} [marker]
- * @property {number} level
- * @property {bigint} race
- * @property {number} attribute
- * @property {number} [scale]
- * @property {string} [md_rarity]
+ * @property {string} tw_name
+ * @property {string} description
+ */
+
+/**
+ * @typedef {object} Card
+ * @property {number} id
+ * @property {number|null} cid
+ * @property {CardData} data
  * @property {CardText} text
- * 
  * @property {number} artid
- * @property {number} color - Card color for sorting
  * @property {number} [pack_index]
  */
 
@@ -53,83 +54,84 @@ export function print_ad(x) {
 }
 
 /**
- * Print the card data (without Link Marker).
- * @param {Card} card
+ * Return the formatted lines of card data in `locale` (without Link Marker). 
+ * @param {CardData} data 
+ * @param {string} locale 
  * @returns {string[]} data lines
  */
-export function print_data(card) {
-	const strings = language_pack['zh-tw'].strings;
+export function print_data(data, locale) {
+	const strings = language_pack[locale].strings;
 	const result = [];
-	if (card.type & card_types.TYPE_MONSTER) {
+	if (data.type & card_types.TYPE_MONSTER) {
 		const mtype = strings.type_name[card_types.TYPE_MONSTER];
 		let subtype = '';
 		let lvstr = '\u2605';
-		if (card.type & monster_types.TYPE_RITUAL) {
+		if (data.type & monster_types.TYPE_RITUAL) {
 			subtype = `/${strings.type_name[monster_types.TYPE_RITUAL]}`;
 		}
-		else if (card.type & monster_types.TYPE_FUSION) {
+		else if (data.type & monster_types.TYPE_FUSION) {
 			subtype = `/${strings.type_name[monster_types.TYPE_FUSION]}`;
 		}
-		else if (card.type & monster_types.TYPE_SYNCHRO) {
+		else if (data.type & monster_types.TYPE_SYNCHRO) {
 			subtype = `/${strings.type_name[monster_types.TYPE_SYNCHRO]}`;
 		}
-		else if (card.type & monster_types.TYPE_XYZ) {
+		else if (data.type & monster_types.TYPE_XYZ) {
 			subtype = `/${strings.type_name[monster_types.TYPE_XYZ]}`;
 			lvstr = `\u2606`;
 		}
-		else if (card.type & monster_types.TYPE_LINK) {
+		else if (data.type & monster_types.TYPE_LINK) {
 			subtype = `/${strings.type_name[monster_types.TYPE_LINK]}`;
 			lvstr = `LINK-`;
 		}
-		else if (card.type & monster_types.TYPE_SPSUMMON) {
+		else if (data.type & monster_types.TYPE_SPSUMMON) {
 			subtype = `/${strings.type_name[monster_types.TYPE_SPSUMMON]}`;
 		}
-		if (card.type & monster_types.TYPE_PENDULUM) {
+		if (data.type & monster_types.TYPE_PENDULUM) {
 			subtype += `/${strings.type_name[monster_types.TYPE_PENDULUM]}`;
 		}
 
 		// extype
-		if (card.type & monster_types.TYPE_NORMAL)
+		if (data.type & monster_types.TYPE_NORMAL)
 			subtype += `/${strings.type_name[monster_types.TYPE_NORMAL]}`;
-		if (card.type & monster_types.TYPE_SPIRIT)
+		if (data.type & monster_types.TYPE_SPIRIT)
 			subtype += `/${strings.type_name[monster_types.TYPE_SPIRIT]}`;
-		if (card.type & monster_types.TYPE_UNION)
+		if (data.type & monster_types.TYPE_UNION)
 			subtype += `/${strings.type_name[monster_types.TYPE_UNION]}`;
-		if (card.type & monster_types.TYPE_DUAL)
+		if (data.type & monster_types.TYPE_DUAL)
 			subtype += `/${strings.type_name[monster_types.TYPE_DUAL]}`;
-		if (card.type & monster_types.TYPE_TUNER)
+		if (data.type & monster_types.TYPE_TUNER)
 			subtype += `/${strings.type_name[monster_types.TYPE_TUNER]}`;
-		if (card.type & monster_types.TYPE_FLIP)
+		if (data.type & monster_types.TYPE_FLIP)
 			subtype += `/${strings.type_name[monster_types.TYPE_FLIP]}`;
-		if (card.type & monster_types.TYPE_TOON)
+		if (data.type & monster_types.TYPE_TOON)
 			subtype += `/${strings.type_name[monster_types.TYPE_TOON]}`;
-		if (card.type & monster_types.TYPE_EFFECT)
+		if (data.type & monster_types.TYPE_EFFECT)
 			subtype += `/${strings.type_name[monster_types.TYPE_EFFECT]}`;
 		result.push(`[${mtype}${subtype}]`);
 
-		const level = `${lvstr}${card.level || '?'}`;
-		const attribute = `/${strings.attribute_name[card.attribute] ?? 'null'}`;
-		const race = `/${strings.race_name[card.race] ?? 'null'}`;
+		const level = `${lvstr}${data.level || '?'}`;
+		const attribute = `/${strings.attribute_name[data.attribute] ?? 'null'}`;
+		const race = `/${strings.race_name[data.race] ?? 'null'}`;
 		result.push(`${level}${attribute}${race}`);
 
-		const attack = `${strings.value_name['atk']}${print_ad(card.atk)}`;
-		const defense = !(card.type & monster_types.TYPE_LINK) ? `/${strings.value_name['def']}${print_ad(card.def)}` : '';
+		const attack = `${strings.value_name['atk']}${print_ad(data.atk)}`;
+		const defense = !(data.type & monster_types.TYPE_LINK) ? `/${strings.value_name['def']}${print_ad(data.def)}` : '';
 		result.push(`${attack}${defense}`);
 
-		if (card.type & monster_types.TYPE_PENDULUM) {
+		if (data.type & monster_types.TYPE_PENDULUM) {
 			const scale_left = '🔹';
 			const scale_right = '🔸';
-			result.push(`${scale_left}${card.scale}/${card.scale}${scale_right}`);
+			result.push(`${scale_left}${data.scale}/${data.scale}${scale_right}`);
 		}
 	}
-	else if (card.type & card_types.TYPE_SPELL) {
-		const extype = card.type & ~card_types.TYPE_SPELL;
+	else if (data.type & card_types.TYPE_SPELL) {
+		const extype = data.type & ~card_types.TYPE_SPELL;
 		const mtype = `${strings.type_name[card_types.TYPE_SPELL]}`;
 		const subtype = `/${strings.type_name[extype] ?? '???'}`;
 		result.push(`[${mtype}${subtype}]`);
 	}
-	else if (card.type & card_types.TYPE_TRAP) {
-		const extype = card.type & ~card_types.TYPE_TRAP;
+	else if (data.type & card_types.TYPE_TRAP) {
+		const extype = data.type & ~card_types.TYPE_TRAP;
 		const mtype = `${strings.type_name[card_types.TYPE_TRAP]}`;
 		const subtype = `/${strings.type_name[extype] ?? '???'}`;
 		result.push(`[${mtype}${subtype}]`);

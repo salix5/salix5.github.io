@@ -1,4 +1,4 @@
-import { link_markers, marker_char, MAX_CARD_ID, MAX_WIDTH, monster_types } from "./ygo-constant.mjs";
+import { link_markers, marker_char, MAX_CARD_ID, MAX_WIDTH, monster_types, rarity } from "./ygo-constant.mjs";
 import { genesys_point, ltable_md, ltable_ocg, ltable_tcg, keyword, fictional_names, get_pack_name } from "./ygo-json-loader.mjs";
 import { print_db_link, print_qa_link } from "./ygo-utility.mjs";
 import { print_data } from "./ygo-query.mjs";
@@ -13,9 +13,15 @@ const mention_set = new Set([
 	101306058,
 ]);
 
+/**
+ * Print the formatted pack number for a card.
+ * @param {string} pack 
+ * @param {import('./ygo-query.mjs').Card} card 
+ * @returns 
+ */
 function print_pack_number(pack, card) {
 	const pack_name = pack.substring(0, 4);
-	const locale = (card.ot === 2) ? 'EN' : 'JP';
+	const locale = (card.data.ot === 2) ? 'EN' : 'JP';
 	const cat = pack_name.substring(0, 2);
 	const index = card.pack_index;
 	let str_index = '';
@@ -40,19 +46,19 @@ function print_pack_number(pack, card) {
 
 /**
  * Print the card id.
- * @param {Card} card 
+ * @param {import('./ygo-query.mjs').Card} card 
  * @param {string?} pack 
  * @returns 
  */
 function print_id(card, pack) {
-	if (card.type & monster_types.TYPE_TOKEN) {
+	if (card.data.type & monster_types.TYPE_TOKEN) {
 		return 'token';
 	}
 	if (pack && Object.hasOwn(card, 'pack_index')) {
 		return print_pack_number(pack, card);
 	}
 	if (get_pack_name(card.id)) {
-		const ot = (card.ot === 2) ? 'EN' : 'JP';
+		const ot = (card.data.ot === 2) ? 'EN' : 'JP';
 		const index = (card.id % 1000).toString().padStart(3, '0');
 		return `${get_pack_name(card.id)}-${ot}${index}`;
 	}
@@ -79,7 +85,7 @@ function imgError(event) {
 }
 
 function is_mentionable(card) {
-	return !(card.type & monster_types.TYPE_TOKEN) && (card.id <= MAX_CARD_ID || mention_set.has(card.id));
+	return card.id <= MAX_CARD_ID || mention_set.has(card.id);
 }
 
 /**
@@ -102,6 +108,13 @@ function is_fictional(str) {
 	return Object.hasOwn(fictional_names, str);
 }
 
+function create_link(href) {
+	const link = document.createElement('a');
+	link.href = href;
+	link.target = '_blank';
+	link.rel = 'noreferrer';
+	return link;
+}
 
 /**
  * @param {string} name 
@@ -110,20 +123,14 @@ function text_link(name) {
 	if (is_keyword(name)) {
 		return document.createTextNode(name);
 	}
-	const anchor = document.createElement('a');
+	const href = is_fictional(name) ? `./?desc=${encodeURIComponent(`「${name}」`)}` : `./?cardname=${encodeURIComponent(name)}`;
+	const anchor = create_link(href);
 	anchor.textContent = name;
-	anchor.target = "_blank";
-	anchor.rel = "noreferrer";
-	if (is_fictional(name)) {
-		anchor.href = `./?desc=${encodeURIComponent(name)}`;
-		return anchor;
-	}
-	anchor.href = `./?cardname=${encodeURIComponent(name)}`;
 	return anchor;
 }
 
 /**
- * @param {Card} card 
+ * @param {import('./ygo-query.mjs').Card} card 
  * @param {string?} pack 
  */
 function create_rows(card, pack) {
@@ -147,12 +154,11 @@ function create_rows(card, pack) {
 		img_card.src = `icon/unknown.jpg`;
 	img_card.addEventListener('error', imgError);
 
+	const data = card.data;
+	const text = card.text;
 	if (is_mentionable(card)) {
-		const params = new URLSearchParams({ "mention": card.id });
-		const link_id = document.createElement('a');
-		link_id.href = `./?${params.toString()}`;
-		link_id.target = '_blank';
-		link_id.rel = 'noreferrer';
+		const params = new URLSearchParams({ "mention": card.id.toString() });
+		const link_id = create_link(`./?${params.toString()}`);
 		link_id.appendChild(img_card);
 		cell_pic.appendChild(link_id);
 	}
@@ -165,9 +171,9 @@ function create_rows(card, pack) {
 
 	const div_name = document.createElement('div');
 	const st = document.createElement('strong');
-	st.textContent = card.tw_name;
+	st.textContent = text.tw_name;
 	div_name.appendChild(st);
-	if (card.ot === 2) {
+	if (data.ot === 2) {
 		const img_tcg = document.createElement('img');
 		img_tcg.src = 'icon/tcg.png';
 		img_tcg.height = 20;
@@ -176,79 +182,62 @@ function create_rows(card, pack) {
 	}
 	cell_data.appendChild(div_name);
 
-	const div_alias = document.createElement('div');
-	div_alias.className = 'minor';
+	const div_metadata = document.createElement('div');
+	div_metadata.className = 'minor';
 
 	// db link
-	if (!(card.type & monster_types.TYPE_TOKEN)) {
-		let link_db_text = '';
-		let db_url = '';
-
+	if (!(data.type & monster_types.TYPE_TOKEN)) {
+		const { jp_name, md_name_jp, en_name, md_name_en } = text;
+		const lang_jp = jp_name ?? (md_name_jp ? `${md_name_jp}  (MD)` : null);
+		const lang_en = en_name ?? (md_name_en ? `${md_name_en}  (MD)` : null);
+		const div_db = document.createElement('div');
 		if (card.cid) {
-			if (card.jp_name)
-				link_db_text = card.jp_name;
-			else if (card.md_name_jp)
-				link_db_text = `${card.md_name_jp}`;
-			else
-				link_db_text = card.en_name;
-			const request_locale = (card.ot === 2) ? 'en' : 'ja';
-			db_url = print_db_link(card.cid, request_locale);
+			const request_locale = (data.ot === 2) ? 'en' : 'ja';
+			const link_db = create_link(print_db_link(card.cid, request_locale));
+			link_db.textContent = lang_jp ?? lang_en ?? 'null';
+			div_db.appendChild(link_db);
 		}
 		else if (get_pack_name(card.id)) {
-			link_db_text = 'Yugipedia';
-			const ot = (card.ot === 2) ? 'EN' : 'JP';
+			const locale = (data.ot === 2) ? 'EN' : 'JP';
 			const index = (card.id % 1000).toString().padStart(3, '0');
-			const card_number = `${get_pack_name(card.id)}-${ot}${index}`;
-			db_url = `https://yugipedia.com/wiki/${card_number}`;
-		}
-		const div_db = document.createElement('div');
-		if (db_url) {
-			const link_db = document.createElement('a');
-			link_db.textContent = link_db_text;
-			link_db.href = db_url;
-			link_db.target = '_blank';
-			link_db.rel = 'noreferrer';
+			const card_number = `${get_pack_name(card.id)}-${locale}${index}`;
+			const link_db = create_link(`https://yugipedia.com/wiki/${card_number}`);
+			link_db.textContent = 'Yugipedia';
 			div_db.appendChild(link_db);
 		}
 		else {
-			div_db.textContent = link_db_text;
+			div_db.textContent = 'Unknown';
 		}
-		div_alias.appendChild(div_db);
-		if ((card.jp_name || card.md_name_jp) && (card.en_name || card.md_name_en)) {
+		div_metadata.appendChild(div_db);
+		if (lang_jp && lang_en) {
 			const div_en = document.createElement('div');
-			if (card.en_name)
-				div_en.textContent = card.en_name;
-			else
-				div_en.textContent = `${card.md_name_en}  (MD)`;
-			div_alias.appendChild(div_en);
-		}
-		if (card.md_rarity) {
-			const div_md = document.createElement('div');
-			div_md.textContent = `MD：${card.md_rarity}`;
-			div_alias.appendChild(div_md);
+			div_en.textContent = lang_en;
+			div_metadata.appendChild(div_en);
 		}
 	}
 
 	// id
 	const div_id = document.createElement('div');
 	div_id.textContent = print_id(card, pack);
-	div_alias.appendChild(div_id);
-	if (card.cid && card.ot !== 2) {
+	div_metadata.appendChild(div_id);
+	if (card.cid && data.ot !== 2) {
 		const div_qa = document.createElement('div');
-		const link_faq = document.createElement('a');
+		const link_faq = create_link(print_qa_link(card.cid));
 		link_faq.textContent = 'Q&A';
-		link_faq.href = print_qa_link(card.cid);
-		link_faq.target = '_blank';
-		link_faq.rel = 'noreferrer';
 		div_qa.appendChild(link_faq);
-		div_alias.appendChild(div_qa);
+		div_metadata.appendChild(div_qa);
+	}
+	if (data.md_rarity) {
+		const div_md = document.createElement('div');
+		div_md.textContent = `MD：${rarity[data.md_rarity]}`;
+		div_metadata.appendChild(div_md);
 	}
 
 	// limit
-	const limit_ocg = ltable_ocg[card.id] ?? null;
-	const limit_tcg = ltable_tcg[card.id] ?? null;
-	const limit_md = ltable_md[card.id] ?? null;
-	if (limit_ocg !== null || limit_tcg !== null || limit_md !== null) {
+	const limit_ocg = ltable_ocg[card.id];
+	const limit_tcg = ltable_tcg[card.id];
+	const limit_md = ltable_md[card.id];
+	if (limit_ocg !== undefined || limit_tcg !== undefined || limit_md !== undefined) {
 		const div_limit = document.createElement('div');
 		const img1 = print_limit(limit_ocg);
 		if (img1) {
@@ -274,32 +263,31 @@ function create_rows(card, pack) {
 		else {
 			div_limit.appendChild(document.createTextNode(' / MD：-'));
 		}
-		div_alias.appendChild(div_limit);
+		div_metadata.appendChild(div_limit);
 	}
 	if (card.cid && genesys_point[card.cid]) {
-		const genesys_status = `Genesys：${genesys_point[card.cid]}`;
 		const div_genesys = document.createElement('div');
-		div_genesys.textContent = genesys_status;
-		div_alias.appendChild(div_genesys);
+		div_genesys.textContent = `Genesys：${genesys_point[card.cid]}`;
+		div_metadata.appendChild(div_genesys);
 	}
-	cell_data.appendChild(div_alias);
+	cell_data.appendChild(div_metadata);
 
 	const row_effect = table_result.insertRow(-1);
 	const cell_effect = row_effect.insertCell(-1);
 	cell_effect.className = "effect";
 	const div_stat = document.createElement('div');
 	div_stat.className = 'stat';
-	for (const line of print_data(card)) {
+	for (const line of print_data(data, 'zh-tw')) {
 		const div_line = document.createElement('div');
 		div_line.textContent = line;
 		div_stat.appendChild(div_line);
 	}
 	cell_effect.appendChild(div_stat);
 
-	if (card.type & monster_types.TYPE_LINK) {
+	if (data.type & monster_types.TYPE_LINK) {
 		const marker1 = document.createElement('div');
 		for (let marker = link_markers.LINK_MARKER_TOP_LEFT; marker <= link_markers.LINK_MARKER_TOP_RIGHT; marker <<= 1) {
-			if (card.marker & marker)
+			if (data.marker & marker)
 				marker1.appendChild(document.createTextNode(marker_char[marker]));
 			else
 				marker1.appendChild(document.createTextNode(marker_char.default));
@@ -307,7 +295,7 @@ function create_rows(card, pack) {
 		cell_effect.appendChild(marker1);
 
 		const marker2 = document.createElement('div');
-		if (card.marker & link_markers.LINK_MARKER_LEFT)
+		if (data.marker & link_markers.LINK_MARKER_LEFT)
 			marker2.appendChild(document.createTextNode(marker_char[link_markers.LINK_MARKER_LEFT]));
 		else
 			marker2.appendChild(document.createTextNode(marker_char.default));
@@ -317,7 +305,7 @@ function create_rows(card, pack) {
 		center.className = 'transparent';
 		marker2.appendChild(center);
 
-		if (card.marker & link_markers.LINK_MARKER_RIGHT)
+		if (data.marker & link_markers.LINK_MARKER_RIGHT)
 			marker2.appendChild(document.createTextNode(marker_char[link_markers.LINK_MARKER_RIGHT]));
 		else
 			marker2.appendChild(document.createTextNode(marker_char.default));
@@ -325,7 +313,7 @@ function create_rows(card, pack) {
 
 		const marker3 = document.createElement('div');
 		for (let marker = link_markers.LINK_MARKER_BOTTOM_LEFT; marker <= link_markers.LINK_MARKER_BOTTOM_RIGHT; marker <<= 1) {
-			if (card.marker & marker)
+			if (data.marker & marker)
 				marker3.appendChild(document.createTextNode(marker_char[marker]));
 			else
 				marker3.appendChild(document.createTextNode(marker_char.default));
@@ -335,8 +323,8 @@ function create_rows(card, pack) {
 	cell_effect.appendChild(document.createElement('hr'));
 
 	const div_desc = document.createElement('div');
-	const lines = card.text.desc.split('\n');
-	if (!(card.type & monster_types.TYPE_NORMAL) || (card.type & monster_types.TYPE_PENDULUM)) {
+	const lines = text.description.split('\n');
+	if (!(data.type & monster_types.TYPE_NORMAL) || (data.type & monster_types.TYPE_PENDULUM)) {
 		const re_mention = /(?<=「)(?!」)[^「」]*「?[^「」]*」?[^「」]*(?=」)/g;
 		for (const line of lines) {
 			let lastIndex = 0;
@@ -364,16 +352,6 @@ function create_rows(card, pack) {
 	}
 }
 
-function verify_card(card) {
-	if (!Number.isSafeInteger(card.id))
-		return false;
-	if (Object.hasOwn(card, 'cid') && !Number.isSafeInteger(card.cid))
-		return false;
-	if (!Number.isSafeInteger(card.ot))
-		return false;
-	return true;
-}
-
 export function clear_result() {
 	div_count.textContent = "";
 	table_result.replaceChildren();
@@ -381,41 +359,37 @@ export function clear_result() {
 	div_page.hidden = true;
 }
 
-const result_per_page = 50;
-const null_card = {
-	id: -1,
-	type: 0,
-	text: {
-		desc: "",
-	},
-	tw_name: "null"
-};
+const PAGE_SIZE = 50;
+const PAGE_LIMIT = 40;
 /**
  * @param {object} response
  */
 export function show_result(response) {
 	clear_result();
 	const result = response.result;
-	const total = response.meta.total;
-	const page = response.page;
-	const total_pages = Math.ceil(total / result_per_page);
-	const pack = response.meta.pack ?? null;
-	if (total_pages && page <= total_pages) {
-		const index_begin = result_per_page * (page - 1);
-		const index_end = Math.min(result_per_page * page - 1, total - 1);
-		div_count.textContent = `搜尋結果共${total}筆，此為${index_begin + 1}~${index_end + 1}筆。`;
+	const { total, page, pack } = response.meta;
+	const total_pages = Math.ceil(total / PAGE_SIZE);
+	if (pack) {
+		div_count.textContent = `總共${total}張`;
 		if (window.innerWidth > MAX_WIDTH)
 			table_result.style.border = "1px solid black";
 		for (const card of result) {
-			if (!verify_card(card)) {
-				console.error("Invalid card data:", card);
-				create_rows(null_card, null);
-				continue;
-			}
+			create_rows(card, pack);
+		}
+		div_page.hidden = true;
+	}
+	else if (total_pages > 0 && page <= total_pages) {
+		const index_begin = PAGE_SIZE * (page - 1);
+		const index_end = Math.min(PAGE_SIZE * page - 1, total - 1);
+		div_count.textContent = `第${index_begin + 1}~${index_end + 1}張，總共${total}張`;
+		if (window.innerWidth > MAX_WIDTH)
+			table_result.style.border = "1px solid black";
+		for (const card of result) {
 			create_rows(card, pack);
 		}
 		if (total_pages > 1) {
-			for (let i = 1; i <= total_pages; ++i) {
+			const display_pages = Math.min(total_pages, PAGE_LIMIT);
+			for (let i = 1; i <= display_pages; ++i) {
 				select_page.add(new Option(`第${i}頁`));
 			}
 			select_page.selectedIndex = page - 1;
@@ -423,7 +397,7 @@ export function show_result(response) {
 		}
 	}
 	else {
-		div_count.textContent = "沒有符合搜尋的項目。";
+		div_count.textContent = "沒有符合條件的項目。";
 	}
 	div_count.scrollIntoView();
 }
