@@ -363,11 +363,12 @@ const PAGE_SIZE = 50;
 const PAGE_LIMIT = 40;
 /**
  * @param {object} response
+ * @param {number} page
  */
-export function show_result(response) {
+export function show_result(response, page) {
 	clear_result();
 	const result = response.result;
-	const { total, page, pack } = response.meta;
+	const { total, pack } = response.meta;
 	const total_pages = Math.ceil(total / PAGE_SIZE);
 	if (pack) {
 		div_count.textContent = `總共${total}張`;

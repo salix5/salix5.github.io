@@ -157,7 +157,11 @@ async function url_query() {
 			document.title = resp.result[0].text.tw_name;
 		else
 			document.title = "卡片查詢";
-		show_result(resp);
+		let page = Number.parseInt(params.get("page"));
+		if (Number.isNaN(page)) {
+			page = 1;
+		}
+		show_result(resp, page);
 	}
 	catch (error) {
 		if (error.name === "AbortError") {
