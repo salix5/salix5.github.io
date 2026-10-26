@@ -1,4 +1,4 @@
-import wiki_link from "./wiki_link.json" with { type: "json" };
+import wiki_link from "../pack/wiki_link.json" with { type: "json" };
 
 const div_link = document.getElementById("div_link");
 for (const [pack, url] of Object.entries(wiki_link)) {
