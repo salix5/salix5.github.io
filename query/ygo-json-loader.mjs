@@ -38,7 +38,9 @@ export function get_pack_name(id) {
 		return null;
 	const pack_id = id - id % 1000;
 	const pack_name = pack_id_table[pack_id];
-	return pack_name?.substring(0, 4) ?? null;
+	if (!pack_name)
+		return null;
+	return pack_name.substring(0, 4);
 }
 
 export { default as keyword } from './data/keyword.json' with { type: 'json' };
