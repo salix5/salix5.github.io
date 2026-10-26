@@ -1,4 +1,4 @@
-import pre_release from './pack/pre_release.json' with { type: 'json' };
+import pre_release from '../pack/pre_release.json' with { type: 'json' };
 import lang_zhtw from './lang/zh-tw.json' with { type: 'json' };
 
 // TODO: remove this after all users have updated to the new version
